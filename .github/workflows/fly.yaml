@@ -1,6 +1,6 @@
 
 
-name: Fly CRM Web Deploy
+name: Fly CRM Deploy
 on:
   push:
     branches:

@@ -1,12 +1,16 @@
-import React from 'react';
-import './App.css';
-import SignUp from './SignUp and Login/SignUp';
+import React from "react";
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import SignUp from "./Pages/SignUp";
+import Login from "./Pages/Login";
 
 function App() {
   return (
     <div className="App">
-      {/* <p>Welcome to CRM Project</p> */}
-      <SignUp/>
+      <Routes>
+        <Route path="/" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
@@ -8,6 +8,8 @@ import reportWebVitals from './reportWebVitals';
 import Login from './pages/login';
 import SignUp from './pages/signup';
 import PageNotFound from './pages/404';
+import ForgotPassword from './pages/forgot-password';
+// import { Redirect } from 'react-router-dom';
 
 
 const root = ReactDOM.createRoot(
@@ -18,8 +20,10 @@ root.render(
     <BrowserRouter>
     <Routes>
       <Route  path="/" element={<Login/>} />
-      <Route  path="/signup" element={<SignUp/>} />
-      <Route  path="*" element={<PageNotFound/>} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="*" element={<PageNotFound />} />
+        {/* <Redirect to="/404" element={<PageNotFound/>} /> */}
     </Routes>
     </BrowserRouter>
   </React.StrictMode>

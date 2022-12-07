@@ -69,6 +69,7 @@ function SignUp() {
                     <input {...register('password_confirm', { required: true, min:8 , max:25, pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/ })}  
                             style={{ borderColor: errors.password_confirm ? "#b92828" : "" }}
                                 className='bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white border-[1.8px]' type="password" name="password_confirm" placeholder='Confirm your password' />
+                            {/* {errors.password_confirm && <p className='text-[#b92828] text-[12px]'>Password must be at least 8 characters, can contain at least one uppercase, lowercase, a number and a special character</p>} */}
                             {errors.password_confirm && <p className='text-[#b92828] text-[12px]'>Password must be at least 8 characters, can contain at least one uppercase, lowercase, a number and a special character</p>}
                 </div>
             

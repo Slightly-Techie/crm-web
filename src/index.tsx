@@ -9,7 +9,6 @@ import Login from './pages/login';
 import SignUp from './pages/signup';
 import PageNotFound from './pages/404';
 import ForgotPassword from './pages/forgot-password';
-// import { Redirect } from 'react-router-dom';
 
 
 const root = ReactDOM.createRoot(
@@ -23,7 +22,6 @@ root.render(
         <Route path="/signup" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="*" element={<PageNotFound />} />
-        {/* <Redirect to="/404" element={<PageNotFound/>} /> */}
     </Routes>
     </BrowserRouter>
   </React.StrictMode>

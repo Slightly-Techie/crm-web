@@ -1,9 +1,30 @@
+import { useForm} from 'react-hook-form';
 import stars from "../assets/icons/Stars.png";
 import rocket from "../assets/icons/big-blue-flying-rocket.png";
 import githubLogo from "../assets/icons/Github-logo.png";
 import googleLogo from "../assets/icons/Google-logo.png";
-import {Link} from "react-router-dom";
-function SignUp(){
+import { Link } from "react-router-dom";
+
+
+//defining data types to be used 
+interface FormData{
+    firstname: String
+    lastname: String
+    email: String
+    password: String
+    password_confirm: String
+}
+
+function SignUp() {
+    
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ mode: "onChange" });
+    // get data and clean then send to backend
+    // const onSubmit = handleSubmit(({firstname, lastname, email, password, password_confirm}) => { console.log(firstname, lastname, email, password, password_confirm) });
+    
+    // get raw data and send to backend
+    const onSubmit = handleSubmit((data: any) => { console.log(data) });
+
+
     return(
     <div className="flex bg-[#111111] text-white font-[Monolisa]  max-h-full SignUp" >
         <div className="w-1/2 border-solid border-r-[1px] border-[#353535] max-h-full left">
@@ -17,29 +38,40 @@ function SignUp(){
         </div>
         <div className="right w-1/2">
             <div className="ml-[176px] mr-[176px] mt-[140px] mb-[120px] div">
-            <form
-                onSubmit={(e: React.SyntheticEvent) => {
-                e.preventDefault();
-                const target = e.target as typeof e.target & {
-                    email: { value: string };
-                    password: { value: string };
-                };
-                const email = target.email.value; // typechecks!
-                const password = target.password.value; // typechecks!
-                // etc...
-                }}
-                >
+            <form method='POST' onSubmit={onSubmit}>
                     <h3 className='text-[20px] font-bold '>Create An Account</h3>
                 <div className="mt-[40px] mb-5">
-                    <input className='bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] pl-4 focus:outline-none focus:border-white border-[1.8px]' type="email" name="email" placeholder='Johndoe@slightytechie.io' />
+                            <input {...register('firstname', { required: true, min:2 , max:25, pattern:/^[a-zA-Z]+$/ })} 
+                            style={{ borderColor: errors.firstname ? "#b92828" : "" }}
+                                className='bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white border-[1.8px]' type="text" name="firstname" placeholder='Enter your firstname' />
+                           {errors.firstname && <p className='text-[#b92828] text-[12px]'>Firstname must be only letters</p>}
+                </div>
+                <div className=" mb-5">
+                    <input {...register('lastname', { required: true, min:2 , max:25, pattern:/^[a-zA-Z]+$/ })} 
+                            style={{ borderColor: errors.lastname ? "#b92828" : "" }}
+                                className='bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white border-[1.8px]' type="text" name="lastname" placeholder='Enter your lastname' />
+                            {errors.lastname && <p className='text-[#b92828] text-[12px]'>Lastname must be only letters</p>}
+                </div>
+                <div className=" mb-5">
+                    <input {...register('email', { required: true, min:2 , max:25, pattern: /^\S+@\S+$/i })}  
+                            style={{ borderColor: errors.email ? "#b92828" : "" }}
+                                className='bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white border-[1.8px]' type="email" name="email" placeholder='Johndoe@slightytechie.io' />
+                            {errors.email && <p className='text-[#b92828] text-[12px]'>Email must be valid</p>}
                 </div>
                 <div className="mb-5">
-                    <input className='bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] pl-4 focus:outline-none focus:border-white border-[1.8px]' type="password" name="password" placeholder='Enter your password' />
+                    <input {...register('password', { required: true, min:8 , max:25, pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/ })} 
+                            style={{ borderColor: errors.password ? "#b92828" : "" }}
+                                className='bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white border-[1.8px]' type="password" name="password" placeholder='Enter your password' />
+                            {errors.password && <p className='text-[#b92828] text-[12px]'>Password must be at least 8 characters, can contain at least one uppercase, lowercase, a number and a special character</p>}
+                        </div>
+                        
+               <div className="mb-5">
+                    <input {...register('password_confirm', { required: true, min:8 , max:25, pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/ })}  
+                            style={{ borderColor: errors.password_confirm ? "#b92828" : "" }}
+                                className='bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white border-[1.8px]' type="password" name="password_confirm" placeholder='Confirm your password' />
+                            {/* {errors.password_confirm && <p className='text-[#b92828] text-[12px]'>Password must be at least 8 characters, can contain at least one uppercase, lowercase, a number and a special character</p>} */}
+                            {errors.password_confirm && <p className='text-[#b92828] text-[12px]'>Password must be at least 8 characters, can contain at least one uppercase, lowercase, a number and a special character</p>}
                 </div>
-                <div className="mb-5">
-                    <input className='bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] pl-4 focus:outline-none focus:border-white border-[1.8px]' type="password" name="password" placeholder='Confirm your password' />
-                </div>
-                {/* <p className="mb-3 text-center text-[#353535] text-[11px] font-bold">Forgot your <Link className="font-bold hover:text-gray-400" to='/' ><u>password?</u></Link></p> */}
             
                 <button id="btn" role="btn" type="submit" >Create your account</button>
                         

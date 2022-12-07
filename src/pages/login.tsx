@@ -1,9 +1,20 @@
+import {useForm} from 'react-hook-form';
 import stars from "../assets/icons/Stars.png";
 import rocket from "../assets/icons/big-blue-flying-rocket.png";
 import githubLogo from "../assets/icons/Github-logo.png";
 import googleLogo from "../assets/icons/Google-logo.png";
-import {Link} from "react-router-dom";
-function Login(){
+import { Link } from "react-router-dom";
+
+//defining data types to be used
+interface FormData{
+    email: String
+    password: String
+}
+
+function Login() {
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ mode: "onChange" });
+    // const onSubmit = handleSubmit(({email, password}) => { console.log(email, password) });
+    const onSubmit = handleSubmit((data: any) => { console.log(data) });
     return(
     <div className="flex bg-[#111111] text-white font-[Monolisa] max-h-full  Login" >
         <div className="w-1/2 border-solid border-r-[1px] border-[#353535] left">
@@ -18,24 +29,19 @@ function Login(){
         </div>
         <div className="right w-1/2">
             <div className="ml-[176px] mr-[176px] mt-[140px] mb-[120px] div">
-            <form
-                onSubmit={(e: React.SyntheticEvent) => {
-                e.preventDefault();
-                const target = e.target as typeof e.target & {
-                    email: { value: string };
-                    password: { value: string };
-                };
-                const email = target.email.value; // typechecks!
-                const password = target.password.value; // typechecks!
-                // etc...
-                }}
-                >
+            <form method='POST' onSubmit={onSubmit}>
                     <h3 className='text-[20px] font-bold '>Login To Your Account</h3>
                 <div className="mt-[40px] mb-5">
-                    <input className='bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] pl-4 focus:outline-none focus:border-white border-[1.8px]' type="email" name="email" placeholder='Johndoe@slightytechie.io' required />
+                   <input {...register('email', { required: true, min:2 , max:25, pattern: /^\S+@\S+$/i })}  
+                            style={{ borderColor: errors.email ? "#b92828" : "" }}
+                                className='bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white border-[1.8px]' type="email" name="email" placeholder='Johndoe@slightytechie.io' />
+                            {errors.email && <p className='text-[#b92828] text-[12px]'>Email must be valid</p>}
                 </div>
                 <div className="mb-3">
-                    <input className='bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] pl-4 focus:outline-none focus:border-white border-[1.8px]' type="password" name="password" placeholder='Enter your password' required />
+                    <input {...register('password', { required: true, min:8 , max:25, pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/ })} 
+                            style={{ borderColor: errors.password ? "#b92828" : "" }}
+                                className='bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white border-[1.8px]' type="password" name="password" placeholder='Enter your password' />
+                            {errors.password && <p className='text-[#b92828] text-[12px]'>Password must be at least 8 characters, can contain at least one uppercase, lowercase, a number and a special character</p>}
                 </div>
                 <p className="mb-3 text-center text-[#353535] text-[11px] font-bold">Forgot your <Link className="font-bold hover:text-gray-400" to='/forgot-password' ><u>password?</u></Link></p>
             

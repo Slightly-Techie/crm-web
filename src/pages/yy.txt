@@ -1,0 +1,18 @@
+curl 'https://crm-api.fly.dev/api/v1/users/register' \
+  -H 'authority: crm-api.fly.dev' \
+  -H 'accept: application/json' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'origin: http://localhost:3000' \
+  -H 'pragma: no-cache' \
+  -H 'referer: http://localhost:3000/' \
+  -H 'sec-ch-ua: "Not?A_Brand";v="8", "Chromium";v="108", "Google Chrome";v="108"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: cross-site' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36' \
+  --data-raw '{"firstname":"Brian","lastname":"Cozy","email":"brian@cozy.com","password":"Cozy1234","password_confirm":"Cozy1234"}' \
+  --compressed

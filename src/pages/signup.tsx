@@ -3,18 +3,19 @@ import stars from "../assets/icons/Stars.png";
 import rocket from "../assets/icons/big-blue-flying-rocket.png";
 import githubLogo from "../assets/icons/Github-logo.png";
 import googleLogo from "../assets/icons/Google-logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //defining data types to be used
 interface FormData {
-  firstname: String;
-  lastname: String;
+  first_name: String;
+  last_name: String;
   email: String;
   password: String;
-  password_confirm: String;
+  password_confirmation: String;
 }
 
 function SignUp() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -27,24 +28,28 @@ function SignUp() {
   // get raw data and send to backend
 
   // watch the values of the password and password_confirm fields
-  const [password, password_confirm] = watch(["password", "password_confirm"]);
+  const [password, password_confirmation] = watch([
+    "password",
+    "password_confirmation",
+  ]);
 
   const passwordMatch =
-    password === password_confirm &&
-    password_confirm !== undefined &&
-    password_confirm !== "";
+    password === password_confirmation &&
+    password_confirmation !== undefined &&
+    password_confirmation !== "";
 
   const onSubmit = handleSubmit((data: any) => {
-    fetch("https://7755-154-160-27-20.eu.ngrok.io/api/v1/users/register", {
+    fetch("https://crm-api.fly.dev/api/v1/users/register", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: data,
+      body: JSON.stringify(data),
     })
       .then((res) => {
-        console.log(res);
+        console.log(res.body);
+        navigate("/dashboard");
       })
       .catch((err) => {
         console.log(err);
@@ -68,19 +73,18 @@ function SignUp() {
             <h3 className="text-[20px] font-bold ">Create An Account</h3>
             <div className="mt-[40px] mb-5">
               <input
-                {...register("firstname", {
+                {...register("first_name", {
                   required: true,
                   min: 2,
                   max: 25,
                   pattern: /^[a-zA-Z]+$/,
                 })}
-                style={{ borderColor: errors.firstname ? "#b92828" : "" }}
+                style={{ borderColor: errors.first_name ? "#b92828" : "" }}
                 className="bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white"
                 type="text"
-                name="firstname"
                 placeholder="Enter your firstname"
               />
-              {errors.firstname && (
+              {errors.first_name && (
                 <p className="text-[#b92828] text-[12px]">
                   Firstname must be only letters
                 </p>
@@ -88,19 +92,18 @@ function SignUp() {
             </div>
             <div className=" mb-5">
               <input
-                {...register("lastname", {
+                {...register("last_name", {
                   required: true,
                   min: 2,
                   max: 25,
                   pattern: /^[a-zA-Z]+$/,
                 })}
-                style={{ borderColor: errors.lastname ? "#b92828" : "" }}
+                style={{ borderColor: errors.last_name ? "#b92828" : "" }}
                 className="bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white"
                 type="text"
-                name="lastname"
                 placeholder="Enter your lastname"
               />
-              {errors.lastname && (
+              {errors.last_name && (
                 <p className="text-[#b92828] text-[12px]">
                   Lastname must be only letters
                 </p>
@@ -151,7 +154,7 @@ function SignUp() {
 
             <div className="mb-5">
               <input
-                {...register("password_confirm", {
+                {...register("password_confirmation", {
                   required: true,
                   min: 8,
                   max: 25,
@@ -159,7 +162,7 @@ function SignUp() {
                     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
                 })}
                 style={{
-                  borderColor: errors.password_confirm
+                  borderColor: errors.password_confirmation
                     ? "#b92828"
                     : passwordMatch
                     ? "#21c129"
@@ -167,11 +170,10 @@ function SignUp() {
                 }}
                 className="bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white"
                 type="password"
-                name="password_confirm"
                 placeholder="Confirm your password"
               />
               {/* {errors.password_confirm && <p className='text-[#b92828] text-[12px]'>Password must be at least 8 characters, can contain at least one uppercase, lowercase, a number and a special character</p>} */}
-              {errors.password_confirm && (
+              {errors.password_confirmation && (
                 <p className="text-[#b92828] text-[12px]">
                   Password must be at least 8 characters, can contain at least
                   one uppercase, lowercase, a number and a special character

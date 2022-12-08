@@ -3,7 +3,7 @@ import stars from "../assets/icons/Stars.png";
 import rocket from "../assets/icons/big-blue-flying-rocket.png";
 import githubLogo from "../assets/icons/Github-logo.png";
 import googleLogo from "../assets/icons/Google-logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //defining data types to be used
 interface FormData {
@@ -12,6 +12,7 @@ interface FormData {
 }
 
 function Login() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -19,7 +20,21 @@ function Login() {
   } = useForm<FormData>({ mode: "onChange" });
   // const onSubmit = handleSubmit(({email, password}) => { console.log(email, password) });
   const onSubmit = handleSubmit((data: any) => {
-    console.log(data);
+    fetch("https://crm-api.fly.dev/api/v1/users/login", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: data,
+    })
+      .then((res) => {
+        console.log(res);
+        navigate("/dashboard");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   });
   return (
     <div className="flex bg-[#111111] text-white font-[Monolisa] max-h-full  Login">

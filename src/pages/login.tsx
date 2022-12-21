@@ -37,22 +37,22 @@ function Login() {
       });
   });
   return (
-    <div className="flex bg-[#111111] text-white font-[Monolisa] max-h-full  Login">
-      <div className="w-1/2 border-solid border-r-[1px] border-[#353535] left">
-        <div className="ml-[139px] mt-[260px] mb-[15%]">
-          <img className="mb-5" src={stars} alt="" />
-          <p className="text-[18px] font-medium">Welcome to the</p>
-          <p className="text-[35px] font-semibold">SLightly Techie</p>
+    <div className="flex flex-col lg:flex-row overflow-hidden bg-[#111111] text-white font-[Monolisa] max-h-full Login">
+      <div className="lg:w-1/2 border-solid hidden lg:flex lg:border-r-[1px] text-center flex items-center justify-center border-[#353535]">
+        <div className="mt-[250px] mb-[15%] sm:text-center">
+          <img className="mb-5 mx-auto" src={stars} alt="" />
+          <p className="text-[18px] font-medium ">Welcome to the</p>
+          <p className="text-[35px] font-semibold">Slightly Techie</p>
           <p className="text-[35px] font-semibold">Network</p>
           <span id="text-animate"></span>
-          <img className="mt-5" src={rocket} alt="" />
+          <img className="mt-5 mx-auto" src={rocket} alt="" />
         </div>
       </div>
-      <div className="right w-1/2">
-        <div className="ml-[176px] mr-[176px] mt-[140px] mb-[120px] div">
+      <div className="right lg:w-1/2 mx-auto">
+        <div className="lg:ml-[176px] lg:mr-[176px] mx-auto flex items-center justify-center mt-[140px] mb-[120px] div">
           <form method="POST" onSubmit={onSubmit}>
-            <h3 className="text-[20px] font-bold ">Login To Your Account</h3>
-            <div className="mt-[40px] mb-5">
+            <h3 className="text-[20px] font-bold text-center">Login To Your Account</h3>
+            <div className="mt-[40px] mb-5 grid place-items-center">
               <input
                 {...register("email", {
                   required: true,
@@ -72,7 +72,7 @@ function Login() {
                 </p>
               )}
             </div>
-            <div className="mb-3">
+            <div className="mb-3 grid place-items-center">
               <input
                 {...register("password", {
                   required: true,
@@ -88,7 +88,7 @@ function Login() {
                 placeholder="Enter your password"
               />
               {errors.password && (
-                <p className="text-[#b92828] text-[12px]">
+                <p className="text-[#b92828] text-[12px] text-center">
                   Password must be at least 8 characters, can contain at least
                   one uppercase, lowercase, a number and a special character
                 </p>
@@ -104,9 +104,11 @@ function Login() {
               </Link>
             </p>
 
-            <button id="btn" type="submit">
-              Login to your account
-            </button>
+            <div className="mx-auto flex items-center justify-center">
+              <button id="btn" type="submit">
+                Login to your account
+              </button>
+            </div>
 
             <div className="mt-6 mb-6 flex justify-center mx-auto gap-[1.3rem]">
               <hr className="w-[2.5rem] border-[#353535]" />

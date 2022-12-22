@@ -9,6 +9,9 @@ import SignUp from "./pages/signup";
 import PageNotFound from "./pages/404";
 import ForgotPassword from "./pages/forgot-password";
 import Dash from "./pages/dash";
+import UserProfile from "./pages/User-Profile";
+import Header from "./layout/header";
+import Footer from "./layout/Footer";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -16,13 +19,16 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/dashboard" element={<Dash />} />
+        <Route path="/profile" element={<UserProfile />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   </React.StrictMode>
 );

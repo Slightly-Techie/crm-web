@@ -21,9 +21,8 @@ function SignUp() {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<FormData>({ mode: "onChange" });
+  } = useForm<FormData>({ mode: "onSubmit" });
   // get data and clean then send to backend
-  // const onSubmit = handleSubmit(({firstname, lastname, email, password, password_confirm}) => { console.log(firstname, lastname, email, password, password_confirm) });
 
   // get raw data and send to backend
 
@@ -48,8 +47,7 @@ function SignUp() {
       body: JSON.stringify(data),
     })
       .then((res) => {
-        console.log(res.body);
-        navigate("/dashboard");
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);

@@ -4,11 +4,17 @@ import rocket from "../assets/icons/big-blue-flying-rocket.png";
 import githubLogo from "../assets/icons/Github-logo.png";
 import googleLogo from "../assets/icons/Google-logo.png";
 import { Link, useNavigate } from "react-router-dom";
+import axios, { AxiosError } from "axios";
+import { useState } from "react";
 
 //defining data types to be used
 interface FormData {
   email: String;
   password: String;
+}
+
+interface ResponseDataError {
+  detail: string;
 }
 
 function Login() {
@@ -17,23 +23,29 @@ function Login() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({ mode: "onChange" });
-  // const onSubmit = handleSubmit(({email, password}) => { console.log(email, password) });
+  } = useForm<FormData>({ mode: "onSubmit" });
+  const [responseError, setResponseError] = useState<string | undefined>();
+  const [isRequestSent, setIsRequestSent] = useState(false);
+
   const onSubmit = handleSubmit((data: any) => {
-    fetch("https://crm-api.fly.dev/api/v1/users/login", {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: data,
-    })
+    setIsRequestSent(true);
+    let formData = new FormData();
+    formData.append("username", data.email);
+    formData.append("password", data.password);
+
+    axios
+      .post("https://crm-api.fly.dev/api/v1/users/login", formData)
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
         navigate("/dashboard");
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((err: AxiosError) => {
+        console.log(err.response?.data);
+        const response_data = err.response?.data as ResponseDataError;
+        setResponseError(response_data?.detail);
+      })
+      .finally(() => {
+        setIsRequestSent(false);
       });
   });
   return (
@@ -91,6 +103,11 @@ function Login() {
                 <p className="text-[#b92828] text-[12px] text-center">
                   Password must be at least 8 characters, can contain at least
                   one uppercase, lowercase, a number and a special character
+                </p>
+              )}
+              {responseError && (
+                <p className="text-[#b92828] text-[12px] pt-1">
+                  {responseError}
                 </p>
               )}
             </div>

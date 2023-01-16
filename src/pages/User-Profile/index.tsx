@@ -34,7 +34,7 @@ const UserProfile = () => {
             <div className="flex flex-col items-center">
               <div className="w-[200px] h-[200px] rounded-full overflow-hidden">
                 <img
-                  src={"https://avatars.dicebear.com/api/initials/Johnkdoe.svg"}
+                  src={"https://avatars.dicebear.com/api/initials/JohnKdoe.svg"}
                   alt="profile"
                   className="w-full h-full object-cover"
                 />
@@ -59,7 +59,7 @@ const UserProfile = () => {
                       disabled
                       readOnly
                       value="John K."
-                      className="w-full p-2 rounded-md bg-transparent border-2 border-[#3A3A3A]"
+                      className="w-full p-2 rounded-md bg-[#111111] border-2 border-[#3A3A3A]"
                     />
                   </div>
                   <div className="flex flex-col gap-2 w-full">
@@ -68,7 +68,7 @@ const UserProfile = () => {
                       disabled
                       readOnly
                       value="Doe"
-                      className="w-full p-2 rounded-md bg-transparent border-2 border-[#3A3A3A]"
+                      className="w-full p-2 rounded-md bg-[#111111] border-2 border-[#3A3A3A]"
                     />
                   </div>
                 </div>
@@ -79,7 +79,7 @@ const UserProfile = () => {
                       disabled
                       readOnly
                       value={field.value}
-                      className="w-full p-2 rounded-md bg-transparent border-2 border-[#3A3A3A]"
+                      className="w-full p-2 rounded-md bg-[#111111] border-2 border-[#3A3A3A]"
                     />
                   </div>
                 ))}
@@ -95,7 +95,7 @@ const UserProfile = () => {
                       disabled
                       readOnly
                       value={field.value}
-                      className="w-full p-2 rounded-md text-opacity-30 bg-transparent border-2 border-[#3A3A3A]"
+                      className="w-full p-2 rounded-md text-opacity-30 bg-[#111111] border-2 border-[#3A3A3A]"
                     />
                   </div>
                 ))}
@@ -111,11 +111,16 @@ const UserProfile = () => {
                       disabled
                       readOnly
                       value={field.value}
-                      className="w-full p-2 rounded-md text-opacity-30 bg-transparent border-2 border-[#3A3A3A]"
+                      className="w-full p-2 rounded-md text-opacity-30 bg-[#111111] border-2 border-[#3A3A3A]"
                     />
                   </div>
                 ))}
               </div>
+            </div>
+            <div className="w-full bg-[#282828] border border-[#3A3A3A] rounded-md p-4">
+              <button className="bg-[#03A49A] w-full p-2 rounded-md text-slate-50 duration-150">
+                Save Profile Information
+              </button>
             </div>
           </div>
         </div>

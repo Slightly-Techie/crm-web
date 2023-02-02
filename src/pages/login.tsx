@@ -37,7 +37,8 @@ function Login() {
       .post("https://crm-api.fly.dev/api/v1/users/login", formData)
       .then((res) => {
         console.log(res.data);
-        navigate("/dashboard");
+        sessionStorage.setItem("st-token", res.data.token);
+        navigate("/profile");
       })
       .catch((err: AxiosError) => {
         console.log(err.response?.data);
@@ -49,9 +50,9 @@ function Login() {
       });
   });
   return (
-    <div className="flex bg-[#111111] text-white font-[Monolisa] max-h-full  Login">
-      <div className="w-1/2 border-solid border-r-[1px] border-[#353535] left">
-        <div className="ml-[139px] mt-[260px] mb-[15%]">
+    <div className="flex bg-[#111111] text-white font-[Monolisa] h-screen">
+      <div className="flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#353535] left">
+        <div className="">
           <img className="mb-5" src={stars} alt="" />
           <p className="text-[18px] font-medium">Welcome to the</p>
           <p className="text-[35px] font-semibold">SLightly Techie</p>
@@ -61,10 +62,14 @@ function Login() {
         </div>
       </div>
       <div className="right w-1/2">
-        <div className="ml-[176px] mr-[176px] mt-[140px] mb-[120px] div">
-          <form method="POST" onSubmit={onSubmit}>
+        <div className="flex justify-center items-center h-full">
+          <form
+            className="flex flex-col justify-center items-center"
+            method="POST"
+            onSubmit={onSubmit}
+          >
             <h3 className="text-[20px] font-bold ">Login To Your Account</h3>
-            <div className="mt-[40px] mb-5">
+            <div className="mt-8 mb-5">
               <input
                 {...register("email", {
                   required: true,
@@ -84,7 +89,7 @@ function Login() {
                 </p>
               )}
             </div>
-            <div className="mb-3">
+            <div className="">
               <input
                 {...register("password", {
                   required: true,
@@ -111,7 +116,7 @@ function Login() {
                 </p>
               )}
             </div>
-            <p className="mb-3 text-center text-[#353535] text-[11px] font-bold">
+            <p className="my-2 text-[#353535] text-[11px] font-bold">
               Forgot your{" "}
               <Link
                 className="font-bold hover:text-gray-400"
@@ -125,7 +130,7 @@ function Login() {
               Login to your account
             </button>
 
-            <div className="mt-6 mb-6 flex justify-center mx-auto gap-[1.3rem]">
+            <div className="flex items-center my-6 gap-1">
               <hr className="w-[2.5rem] border-[#353535]" />
               <p className="text-[#353535] text-[11px] font-bold">
                 continue with social media
@@ -133,7 +138,7 @@ function Login() {
               <hr className="w-[2.5rem] border-[#353535]" />
             </div>
 
-            <div className="flex flex-col items-center gap-[1.2rem]">
+            <div className="flex flex-col gap-2">
               <button
                 className="bg-[#3A3A3A] hover:bg-black rounded-sm flex items-center justify-center text-[13px] w-[20rem] pr-[16px] pl-[16px] h-[48px] gap-2"
                 type="submit"
@@ -149,7 +154,7 @@ function Login() {
                 <p>Continue with Github</p>
               </button>
             </div>
-            <p className="mt-7 text-center text-[12px]">
+            <p className="my-7 text-[12px]">
               Not registered?{" "}
               <Link to="/signup">
                 <u className="font-bold hover:text-gray-400">create account</u>

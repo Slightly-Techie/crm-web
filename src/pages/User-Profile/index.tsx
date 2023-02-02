@@ -1,7 +1,41 @@
-import React from "react";
+import axios from "axios";
+import jwtDecode from "jwt-decode";
+import React, { useEffect, useState } from "react";
 import { Colors } from "../constants";
 
+type UserField = {
+  email: string;
+  first_name: string;
+  last_name: string;
+  github_profile: string | null;
+  twitter_profile: string | null;
+  linkedin_profile: string | null;
+  portfolio_url: string | null;
+  profile_pic_url: string | null;
+  id: number;
+};
+
 const UserProfile = () => {
+  const [user, setUser] = useState<UserField | null>(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("st-token");
+    if (token) {
+      const userObj = jwtDecode(token) as { sub: string };
+      const userId = userObj.sub;
+      axios
+        .get(`https://crm-api.fly.dev/api/v1/users/profile/`, {
+          params: { id: userId },
+        })
+        .then((res) => {
+          setUser(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
+
   const UserFields = [
     // { title: "First Name:", value: "John K." },
     // { title: "Last Name:", value: "Doe" },

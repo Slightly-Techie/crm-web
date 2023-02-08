@@ -1,7 +1,7 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
-import { Colors } from "../constants";
+import { API_URL, Colors } from "../constants";
 
 type UserField = {
   email: string;
@@ -24,7 +24,7 @@ const UserProfile = () => {
       const userObj = jwtDecode(token) as { sub: string };
       const userId = userObj.sub;
       axios
-        .get(`https://crm-api.fly.dev/api/v1/users/profile/`, {
+        .get(`${API_URL}/api/v1/users/profile/`, {
           params: { id: userId },
         })
         .then((res) => {

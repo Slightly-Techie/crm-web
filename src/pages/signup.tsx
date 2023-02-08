@@ -4,6 +4,7 @@ import rocket from "../assets/icons/big-blue-flying-rocket.png";
 import githubLogo from "../assets/icons/Github-logo.png";
 import googleLogo from "../assets/icons/Google-logo.png";
 import { Link, useNavigate } from "react-router-dom";
+import { API_URL } from "./constants";
 
 //defining data types to be used
 interface FormData {
@@ -38,7 +39,7 @@ function SignUp() {
     password_confirmation !== "";
 
   const onSubmit = handleSubmit((data: any) => {
-    fetch("https://crm-api.fly.dev/api/v1/users/register", {
+    fetch(`${API_URL}/api/v1/users/register`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

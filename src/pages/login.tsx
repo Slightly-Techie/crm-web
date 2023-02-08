@@ -6,6 +6,7 @@ import googleLogo from "../assets/icons/Google-logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import { API_URL } from "./constants";
 
 //defining data types to be used
 interface FormData {
@@ -34,7 +35,7 @@ function Login() {
     formData.append("password", data.password);
 
     axios
-      .post("https://crm-api.fly.dev/api/v1/users/login", formData)
+      .post(`${API_URL}/api/v1/users/login`, formData)
       .then((res) => {
         console.log(res.data);
         sessionStorage.setItem("st-token", res.data.token);

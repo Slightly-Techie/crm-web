@@ -56,13 +56,16 @@ function SignUp() {
   });
 
   return (
-    <div className="flex bg-[#111111] text-white font-[Monolisa] h-screen">
-      <div className="flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#353535] max-h-full left">
+    <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] h-screen">
+      <div className="flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
         <div className="">
           <img className="mb-5" src={stars} alt="" />
-          <p className="text-[18px] font-medium">Welcome to the</p>
-          <p className="text-[35px] font-semibold">SLightly Techie</p>
-          <p className="text-[35px] font-semibold">Network</p>
+          <div className="w-[440px] ">
+            <p className="text-[55px] font-bold leading-[70px]">
+              Welcome to the Slightly Techie Network
+            </p>
+          </div>
+          <span id="text-animate"></span>
           <img className="mt-5" src={rocket} alt="" />
         </div>
       </div>
@@ -79,7 +82,7 @@ function SignUp() {
                   pattern: /^[a-zA-Z]+$/,
                 })}
                 style={{ borderColor: errors.first_name ? "#b92828" : "" }}
-                className="bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white"
+                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
                 type="text"
                 placeholder="Enter your firstname"
               />
@@ -98,7 +101,7 @@ function SignUp() {
                   pattern: /^[a-zA-Z]+$/,
                 })}
                 style={{ borderColor: errors.last_name ? "#b92828" : "" }}
-                className="bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white"
+                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
                 type="text"
                 placeholder="Enter your lastname"
               />
@@ -117,7 +120,7 @@ function SignUp() {
                   pattern: /^\S+@\S+$/i,
                 })}
                 style={{ borderColor: errors.email ? "#b92828" : "" }}
-                className="bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white"
+                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
                 type="email"
                 name="email"
                 placeholder="Johndoe@slightytechie.io"
@@ -138,7 +141,7 @@ function SignUp() {
                     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
                 })}
                 style={{ borderColor: errors.password ? "#b92828" : "" }}
-                className="bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white"
+                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
                 type="password"
                 name="password"
                 placeholder="Enter your password"
@@ -167,7 +170,7 @@ function SignUp() {
                     ? "#21c129"
                     : "",
                 }}
-                className="bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white"
+                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
                 type="password"
                 placeholder="Confirm your password"
               />
@@ -180,13 +183,17 @@ function SignUp() {
               )}
             </div>
 
-            <button id="btn" type="submit">
+            <button
+              className="bg-[#3D4450] dark:bg-white text-[#F5F5F5] text-sm dark:text-black hover:bg-[#525b6c] rounded-sm flex items-center justify-center w-full h-[48px]"
+              id="btn"
+              type="submit"
+            >
               Create your account
             </button>
 
-            <div className="mt-6 mb-6 flex justify-center mx-auto gap-[1.3rem]">
+            <div className="flex items-center justify-center my-6 gap-1 w-full">
               <hr className="w-[2.5rem] border-[#353535]" />
-              <p className="text-[#353535] text-[11px] font-bold">
+              <p className="text-[#353535] text-[12px] font-semibold">
                 continue with social media
               </p>
               <hr className="w-[2.5rem] border-[#353535]" />
@@ -194,14 +201,14 @@ function SignUp() {
 
             <div className="flex flex-col items-center gap-[1.2rem]">
               <button
-                className="bg-[#3A3A3A] hover:bg-black rounded-sm flex items-center justify-center text-[13px] w-[20rem] pr-[16px] pl-[16px] h-[48px] gap-2"
+                className="bg-[#3D4450] text-[#F5F5F5] hover:bg-[#525b6c] dark:bg-[#3A3A3A] dark:hover:bg-black rounded-sm flex items-center justify-center text-[13px] w-[20rem] h-[48px] gap-2"
                 type="submit"
               >
                 <img src={googleLogo} alt="Google logo png" />
                 <p>Continue with Google</p>
               </button>
               <button
-                className="bg-[#3A3A3A] hover:bg-black rounded-sm flex items-center justify-center text-[13px] pr-[16px] pl-[16px] h-[48px] w-[20rem] gap-2"
+                className="bg-[#3D4450] text-[#F5F5F5] hover:bg-[#525b6c] dark:bg-[#3A3A3A] dark:hover:bg-black rounded-sm flex items-center justify-center text-[13px] w-[20rem] h-[48px] gap-2"
                 type="submit"
               >
                 <img src={githubLogo} alt="Github logo png" />

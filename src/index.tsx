@@ -8,7 +8,7 @@ import Login from "./pages/login";
 import SignUp from "./pages/signup";
 import PageNotFound from "./pages/404";
 import ForgotPassword from "./pages/forgot-password";
-import Dash from "./pages/dash";
+import Dash from "./pages/dashboard";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

@@ -55,21 +55,21 @@ function SignUp() {
   });
 
   return (
-    <div className="flex bg-[#111111] text-white font-[Monolisa]  max-h-full SignUp">
-      <div className="w-1/2 border-solid border-r-[1px] border-[#353535] max-h-full left">
-        <div className="ml-[139px] mt-[260px]">
-          <img className="mb-5" src={stars} alt="" />
+    <div className="flex flex-col lg:flex-row overflow-hidden bg-[#111111] text-white font-[Monolisa] max-h-full Login">
+      <div className="lg:w-1/2 border-solid hidden lg:flex lg:border-r-[1px] text-center flex items-center justify-center border-[#353535]">
+        <div className="mt-[150px] mb-[15%] sm:text-center">
+          <img className="mb-5 mx-auto" src={stars} alt="" />
           <p className="text-[18px] font-medium">Welcome to the</p>
-          <p className="text-[35px] font-semibold">SLightly Techie</p>
+          <p className="text-[35px] font-semibold">Slightly Techie</p>
           <p className="text-[35px] font-semibold">Network</p>
-          <img className="mt-5" src={rocket} alt="" />
+          <img className="mt-5 mx-auto" src={rocket} alt="" />
         </div>
       </div>
-      <div className="right w-1/2">
-        <div className="ml-[176px] mr-[176px] mt-[140px] mb-[120px] div">
+      <div className="right lg:w-1/2 mx-auto">
+        <div className="lg:ml-[176px] lg:mr-[176px] mx-auto flex items-center justify-center mt-[140px] mb-[120px]"> {/* ml-[176px] mr-[176px]*/}
           <form method="POST" onSubmit={onSubmit}>
-            <h3 className="text-[20px] font-bold ">Create An Account</h3>
-            <div className="mt-[40px] mb-5">
+            <h3 className="text-[20px] font-bold text-center">Create An Account</h3>
+            <div className="mt-[40px] mb-5 grid place-items-center">
               <input
                 {...register("first_name", {
                   required: true,
@@ -88,7 +88,7 @@ function SignUp() {
                 </p>
               )}
             </div>
-            <div className=" mb-5">
+            <div className=" mb-5 grid place-items-center">
               <input
                 {...register("last_name", {
                   required: true,
@@ -107,7 +107,7 @@ function SignUp() {
                 </p>
               )}
             </div>
-            <div className=" mb-5">
+            <div className="mb-5 grid place-items-center">
               <input
                 {...register("email", {
                   required: true,
@@ -127,7 +127,7 @@ function SignUp() {
                 </p>
               )}
             </div>
-            <div className="mb-5">
+            <div className="mb-5 grid place-items-center">
               <input
                 {...register("password", {
                   required: true,
@@ -143,14 +143,14 @@ function SignUp() {
                 placeholder="Enter your password"
               />
               {errors.password && (
-                <p className="text-[#b92828] text-[12px]">
+                <p className="text-[#b92828] text-[12px] text-center">
                   Password must be at least 8 characters, can contain at least
-                  one uppercase, lowercase, a number and a special character
+                  one uppercase, lowercase,  a number and a special character
                 </p>
               )}
             </div>
 
-            <div className="mb-5">
+            <div className="mb-5 grid place-items-center">
               <input
                 {...register("password_confirmation", {
                   required: true,
@@ -163,8 +163,8 @@ function SignUp() {
                   borderColor: errors.password_confirmation
                     ? "#b92828"
                     : passwordMatch
-                    ? "#21c129"
-                    : "",
+                      ? "#21c129"
+                      : "",
                 }}
                 className="bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white"
                 type="password"
@@ -172,16 +172,18 @@ function SignUp() {
               />
               {/* {errors.password_confirm && <p className='text-[#b92828] text-[12px]'>Password must be at least 8 characters, can contain at least one uppercase, lowercase, a number and a special character</p>} */}
               {errors.password_confirmation && (
-                <p className="text-[#b92828] text-[12px]">
+                <p className="text-[#b92828] text-[12px] text-center">
                   Password must be at least 8 characters, can contain at least
                   one uppercase, lowercase, a number and a special character
                 </p>
               )}
             </div>
 
-            <button id="btn" type="submit">
-              Create your account
-            </button>
+            <div className="mx-auto flex items-center justify-center">
+              <button id="btn" type="submit">
+                Create your account
+              </button>
+            </div>
 
             <div className="mt-6 mb-6 flex justify-center mx-auto gap-[1.3rem]">
               <hr className="w-[2.5rem] border-[#353535]" />

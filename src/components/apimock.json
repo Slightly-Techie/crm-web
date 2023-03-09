@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "Joshua Nii",
+    "location": "Accra, Ghana",
+    "work_exprerience": ["Andela", "Microsoft", "Paystack", "Flutterwave", "Goldman Sachs"],
+    "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
+    "profile_image": "https://s3.amazon.whatever.com"
+  },
+  {
+    "id": 2,
+    "name": "Joshua Nii",
+    "location": "Accra, Ghana",
+    "work_exprerience": ["Andela", "Microsoft", "Paystack", "Flutterwave", "Goldman Sachs"],
+    "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
+    "profile_image": "https://s3.amazon.whatever.com"
+  },
+  {
+    "id": 3,
+    "name": "Joshua Nii",
+    "location": "Accra, Ghana",
+    "work_exprerience": ["Andela", "Microsoft", "Paystack", "Flutterwave", "Goldman Sachs"],
+    "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
+    "profile_image": "https://s3.amazon.whatever.com"
+  },
+  {
+    "id": 4,
+    "name": "Joshua Nii",
+    "location": "Accra, Ghana",
+    "work_exprerience": ["Andela", "Microsoft", "Paystack", "Flutterwave", "Goldman Sachs"],
+    "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
+    "profile_image": "https://s3.amazon.whatever.com"
+  },
+  {
+    "id": 5,
+    "name": "Joshua Nii",
+    "location": "Accra, Ghana",
+    "work_exprerience": ["Andela", "Microsoft", "Paystack", "Flutterwave", "Goldman Sachs"],
+    "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
+    "profile_image": "https://s3.amazon.whatever.com"
+  },
+  {
+    "id": 6,
+    "name": "Joshua Nii",
+    "location": "Accra, Ghana",
+    "work_exprerience": ["Andela", "Microsoft", "Paystack", "Flutterwave", "Goldman Sachs"],
+    "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
+    "profile_image": "https://s3.amazon.whatever.com"
+  }
+]

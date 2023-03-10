@@ -19,13 +19,13 @@ const UserProfile = () => {
   const [user, setUser] = useState<UserField | null>(null);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("st-token");
+    const token = localStorage.getItem("st-token");
     if (token) {
-      const userObj = jwtDecode(token) as { sub: string };
-      const userId = userObj.sub;
       axios
         .get(`${API_URL}/api/v1/users/profile/`, {
-          params: { id: userId },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         })
         .then((res) => {
           setUser(res.data);
@@ -106,8 +106,8 @@ const UserProfile = () => {
                     />
                   </div>
                 </div>
-                {UserFields.map((field) => (
-                  <div className="flex flex-col gap-2">
+                {UserFields.map((field, i) => (
+                  <div key={`field-${i}`} className="flex flex-col gap-2">
                     {field.title}
                     <input
                       disabled
@@ -122,8 +122,8 @@ const UserProfile = () => {
             <div className="w-full bg-[#282828] border border-[#3A3A3A] rounded-md p-4">
               <h2 className="text-2xl font-bold">Basic</h2>
               <div className="flex flex-col gap-5 my-7">
-                {BasicFields.map((field) => (
-                  <div className="flex flex-col gap-2">
+                {BasicFields.map((field, i) => (
+                  <div key={`fields-${i}`} className="flex flex-col gap-2">
                     {field.title}
                     <input
                       disabled
@@ -138,8 +138,8 @@ const UserProfile = () => {
             <div className="w-full bg-[#282828] border border-[#3A3A3A] rounded-md p-4">
               <h2 className="text-2xl font-bold">Socials</h2>
               <div className="flex flex-col gap-5 my-7">
-                {SocialFields.map((field) => (
-                  <div className="flex flex-col gap-2">
+                {SocialFields.map((field, i) => (
+                  <div key={`fieldx-${i}`} className="flex flex-col gap-2">
                     {field.title}
                     <input
                       disabled

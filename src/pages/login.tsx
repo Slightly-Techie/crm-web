@@ -37,8 +37,7 @@ function Login() {
     axios
       .post(`${API_URL}/api/v1/users/login`, formData)
       .then((res) => {
-        console.log(res.data);
-        sessionStorage.setItem("st-token", res.data.token);
+        localStorage.setItem("st-token", res.data.token);
         navigate("/profile");
       })
       .catch((err: AxiosError) => {

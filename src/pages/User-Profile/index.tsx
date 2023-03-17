@@ -1,6 +1,5 @@
 import axios from "axios";
-import jwtDecode from "jwt-decode";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { API_URL, Colors } from "../constants";
 
 type UserField = {
@@ -15,19 +14,35 @@ type UserField = {
   id: number;
 };
 
+// inital UserField state
+const initialUserField: UserField = {
+  email: "",
+  first_name: "",
+  last_name: "",
+  github_profile: null,
+  twitter_profile: null,
+  linkedin_profile: null,
+  portfolio_url: null,
+  profile_pic_url: null,
+  id: 0,
+};
+
 const UserProfile = () => {
-  const [user, setUser] = useState<UserField | null>(null);
+  const [user, setUser] = useState<UserField>(initialUserField);
 
   useEffect(() => {
     const token = localStorage.getItem("st-token");
     if (token) {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("st-token")}`,
+        },
+      };
       axios
-        .get(`${API_URL}/api/v1/users/profile/`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        .get(`${API_URL}/api/v1/users/profile/`, config)
         .then((res) => {
+          console.log(res.data);
+
           setUser(res.data);
         })
         .catch((err) => {
@@ -39,13 +54,13 @@ const UserProfile = () => {
   const UserFields = [
     // { title: "First Name:", value: "John K." },
     // { title: "Last Name:", value: "Doe" },
-    { title: "Email:", value: "Johndoe@slightlytechie.com" },
-    { title: "Username:", value: "JohnKDoe" },
+    { title: "Email:", value: user.email },
+    { title: "Username:", value: `@${user.first_name}${user.last_name}` },
   ];
 
   const BasicFields = [
-    { title: "Github Url", value: "https://www.github.com/johnkdoe" },
-    { title: "Portfolio Url", value: "https://www.jkDoe.tech" },
+    { title: "Github Url", value: user?.github_profile },
+    { title: "Portfolio Url", value: user.portfolio_url },
     { title: "Bio:", value: "I perform computer magic everyday for a living" },
     {
       title: "Location",
@@ -54,8 +69,8 @@ const UserProfile = () => {
   ];
 
   const SocialFields = [
-    { title: "Twitter", value: "https://www.twitter.com/johnkdoe" },
-    { title: "LinkedIn", value: "https://www.linkedin.com/in/johnkdoe" },
+    { title: "Twitter", value: user.twitter_profile },
+    { title: "LinkedIn", value: user.linkedin_profile },
   ];
   return (
     <div
@@ -68,7 +83,11 @@ const UserProfile = () => {
             <div className="flex flex-col items-center">
               <div className="w-[200px] h-[200px] rounded-full overflow-hidden">
                 <img
-                  src={"https://avatars.dicebear.com/api/initials/JohnKdoe.svg"}
+                  src={
+                    user.profile_pic_url
+                      ? user.profile_pic_url
+                      : "https://avatars.dicebear.com/api/initials/JohnKdoe.svg"
+                  }
                   alt="profile"
                   className="w-full h-full object-cover"
                 />
@@ -92,7 +111,7 @@ const UserProfile = () => {
                     <input
                       disabled
                       readOnly
-                      value="John K."
+                      value={user.first_name}
                       className="w-full p-2 rounded-md bg-[#111111] border-2 border-[#3A3A3A]"
                     />
                   </div>
@@ -101,7 +120,7 @@ const UserProfile = () => {
                     <input
                       disabled
                       readOnly
-                      value="Doe"
+                      value={user.last_name}
                       className="w-full p-2 rounded-md bg-[#111111] border-2 border-[#3A3A3A]"
                     />
                   </div>
@@ -112,7 +131,7 @@ const UserProfile = () => {
                     <input
                       disabled
                       readOnly
-                      value={field.value}
+                      value={field.value ? field.value : "N/A"}
                       className="w-full p-2 rounded-md bg-[#111111] border-2 border-[#3A3A3A]"
                     />
                   </div>
@@ -128,7 +147,7 @@ const UserProfile = () => {
                     <input
                       disabled
                       readOnly
-                      value={field.value}
+                      value={field.value ? field.value : "N/A"}
                       className="w-full p-2 rounded-md text-opacity-30 bg-[#111111] border-2 border-[#3A3A3A]"
                     />
                   </div>
@@ -144,7 +163,7 @@ const UserProfile = () => {
                     <input
                       disabled
                       readOnly
-                      value={field.value}
+                      value={field.value ? field.value : "N/A"}
                       className="w-full p-2 rounded-md text-opacity-30 bg-[#111111] border-2 border-[#3A3A3A]"
                     />
                   </div>

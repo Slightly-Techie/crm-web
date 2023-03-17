@@ -86,7 +86,7 @@ const UserProfile = () => {
                   src={
                     user.profile_pic_url
                       ? user.profile_pic_url
-                      : "https://avatars.dicebear.com/api/initials/JohnKdoe.svg"
+                      : `https://avatars.dicebear.com/api/initials/${user.first_name}${user.last_name}.svg`
                   }
                   alt="profile"
                   className="w-full h-full object-cover"

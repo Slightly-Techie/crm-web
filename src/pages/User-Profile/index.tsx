@@ -39,7 +39,7 @@ const UserProfile = () => {
         },
       };
       axios
-        .get(`${API_URL}/api/v1/users/profile/`, config)
+        .get(`${API_URL}/api/v1/users/profile`, config)
         .then((res) => {
           console.log(res.data);
 

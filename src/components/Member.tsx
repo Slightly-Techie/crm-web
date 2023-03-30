@@ -6,12 +6,12 @@ import { MemberProps } from "../shared/type";
 
 
 
-const Member = ({data}: MemberProps) => {
+const Member = ({ data }: MemberProps) => {
   return (
 
-    <div className="border-secondary border rounded-md p-4">
+    <div className="border-[#DCDDE1] border rounded-md p-4">
       <div className="flex items-center gap-4 mb-2">
-        <img src={data.profile_image} alt="profile image" />
+        <img src={data.profile_image} alt=" image" />
 
         <div>
           <h3 className="text-lg font-medium">{data.name}</h3>
@@ -19,10 +19,13 @@ const Member = ({data}: MemberProps) => {
         </div>
       </div>
 
-      <p className="mb-2 flex items-center gap-1 bg-[#F1F6F7] p-2 font-medium text-[#5D6675] text-sm">
-        <img src={Circle} alt="circle" />
-        Visit Website
-      </p>
+      <div>
+        <p className="mb-2 inline-flex items-center gap-1 rounded-sm bg-[#F1F6F7] p-2 font-medium text-[#5D6675] text-sm">
+          <img src={Circle} alt="circle" />
+          Visit Website
+        </p>
+      </div>
+
 
       <div className="mb-2">
         <h2 className="font-medium text-[#5D6675] text-sm">Work Experience</h2>

@@ -3,15 +3,15 @@ import ProfileImage from "../assets/icons/bryan.png"
 
 function Navbar() {
   return (
-    <div className="w-full  flex items-center justify-between py-6 px-10 border-b border-secondary">
+    <div className="w-full  flex items-center justify-between py-6 px-10 border-b border-[#DCDDE1]">
       <div className="p-3">
-        <h1 className="font-bold text-xl">Slightly Techie CRM</h1>
+        <h1 className="font-bold text-xl text-[#3D4450]">Slightly Techie CRM</h1>
       </div>
 
       <div className="gap-16 flex">
-        <button className="nav-btn font-semibold border border-primary text-lg text-secondary">Recent Activity</button>
-        <button className="nav-btn font-semibold text-lg text-secondary">Marketplace</button>
-        <button className="nav-btn font-semibold text-lg text-secondary">Scoreboard</button>
+        <button className="nav-btn px-6">Recent Activity</button>
+        <button className="nav-btn px-6">Marketplace</button>
+        <button className="nav-btn px-6">Scoreboard</button>
       </div>
 
       <div className="flex items-center gap-4">

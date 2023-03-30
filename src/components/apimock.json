@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Joshua Nii",
+    "name": "Joshua Nyarko",
     "location": "Accra, Ghana",
     "work_exprerience": ["Andela", "Microsoft", "Paystack", "Flutterwave", "Goldman Sachs"],
     "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
@@ -9,7 +9,7 @@
   },
   {
     "id": 2,
-    "name": "Joshua Nii",
+    "name": "Kwasi Dadson",
     "location": "Accra, Ghana",
     "work_exprerience": ["Andela", "Microsoft", "Paystack", "Flutterwave", "Goldman Sachs"],
     "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
@@ -17,7 +17,7 @@
   },
   {
     "id": 3,
-    "name": "Joshua Nii",
+    "name": "Rachel",
     "location": "Accra, Ghana",
     "work_exprerience": ["Andela", "Microsoft", "Paystack", "Flutterwave", "Goldman Sachs"],
     "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
@@ -25,7 +25,7 @@
   },
   {
     "id": 4,
-    "name": "Joshua Nii",
+    "name": "Jerry Elikem",
     "location": "Accra, Ghana",
     "work_exprerience": ["Andela", "Microsoft", "Paystack", "Flutterwave", "Goldman Sachs"],
     "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
@@ -33,7 +33,7 @@
   },
   {
     "id": 5,
-    "name": "Joshua Nii",
+    "name": "Emmanuel Sane",
     "location": "Accra, Ghana",
     "work_exprerience": ["Andela", "Microsoft", "Paystack", "Flutterwave", "Goldman Sachs"],
     "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
@@ -41,7 +41,7 @@
   },
   {
     "id": 6,
-    "name": "Joshua Nii",
+    "name": "Charly Wellington",
     "location": "Accra, Ghana",
     "work_exprerience": ["Andela", "Microsoft", "Paystack", "Flutterwave", "Goldman Sachs"],
     "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],

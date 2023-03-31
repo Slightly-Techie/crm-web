@@ -12,3 +12,13 @@ test("check button", () => {
   const button = getByText("Login to your account");
   expect(button).toBeTruthy();
 });
+
+test("check button", () => {
+  const { getByText } = render(
+    <BrowserRouter>
+      <Login />
+    </BrowserRouter>
+  );
+  const button = getByText("Login to your account");
+  expect(button).toBeTruthy();
+});

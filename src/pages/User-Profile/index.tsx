@@ -35,12 +35,7 @@ const UserProfile = () => {
   const [user, setUser] = useState<UserField>(initialUserField);
   const [editMode, setEditMode] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<inputeField>();
+  const { register, handleSubmit, setValue } = useForm<inputeField>();
 
   useEffect(() => {
     const token = localStorage.getItem("st-token");

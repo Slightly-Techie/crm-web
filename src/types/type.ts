@@ -10,3 +10,7 @@ export interface IMember {
   stack: string[];
   profile_image: string;
 }
+
+export type WithoutNullableKeys<Type> = {
+  [Key in keyof Type]-?: WithoutNullableKeys<NonNullable<Type[Key]>>;
+};

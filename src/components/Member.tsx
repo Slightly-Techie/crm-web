@@ -1,6 +1,6 @@
 import React from "react";
 import Circle from "../assets/icons/circle.png";
-import { MemberProps } from "../shared/type";
+import { MemberProps } from "../types/type";
 
 const Member = ({ data }: MemberProps) => {
   return (

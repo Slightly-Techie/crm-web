@@ -1,7 +1,7 @@
 import React from "react";
 import Search from "../assets/icons/search.png";
 import Member from "./Member";
-import { IMember } from "../shared/type";
+import { IMember } from "../types/type";
 import jsondata from "./apimock.json";
 
 function Team() {

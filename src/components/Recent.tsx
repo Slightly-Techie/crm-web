@@ -7,7 +7,9 @@ function Recent() {
         <div className="flex justify-between px-3 ">
           <h2 className="">Leaderboard</h2>
 
-          <span className="text-[#3D4450] font-bold text-base">March 10, 2023</span>
+          <span className="text-[#3D4450] font-bold text-base">
+            March 10, 2023
+          </span>
         </div>
       </div>
 
@@ -18,7 +20,6 @@ function Recent() {
           <span className="text-[#3D4450] font-normal text-sm">Points</span>
         </div>
       </div>
-
     </div>
   );
 }

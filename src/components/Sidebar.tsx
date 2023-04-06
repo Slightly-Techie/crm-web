@@ -1,7 +1,7 @@
 import React from "react";
-import Bag from "../assets/icons/bag.png"
-import Person from "../assets/icons/person.png"
-import Cart from "../assets/icons/cart.png"
+import Bag from "../assets/icons/bag.png";
+import Person from "../assets/icons/person.png";
+import Cart from "../assets/icons/cart.png";
 
 function Sidebar() {
   return (

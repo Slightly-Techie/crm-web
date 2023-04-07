@@ -61,7 +61,6 @@ function Login() {
           </div>
           <span id="text-animate"></span>
           <img className="mt-5 mx-auto" src={rocket} alt="" />
-          <img className="mt-5 mx-auto" src={rocket} alt="" />
         </div>
       </div>
       <div className="right w-1/2">

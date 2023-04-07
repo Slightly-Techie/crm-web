@@ -10,6 +10,7 @@ processes = []
 
 [env]
   PORT = "8080"
+  REACT_APP_API_URL = "https://crm-api.fly.dev"
 
 [[statics]]
   guest_path = "/app/build"

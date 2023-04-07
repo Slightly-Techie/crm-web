@@ -1,0 +1,260 @@
+@font-face {
+  font-family: "TT Hoves Hairline";
+  src: url("./assets/fonts/TTHoves/TTHoves-HairlineItalic.eot");
+  src: local("TT Hoves Hairline Italic"), local("TTHoves-HairlineItalic"),
+    url("./assets/fonts/TTHoves/TTHoves-HairlineItalic.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-HairlineItalic.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-HairlineItalic.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-HairlineItalic.ttf") format("truetype");
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-ExtraLightItalic.eot");
+  src: local("TT Hoves ExtraLight Italic"), local("TTHoves-ExtraLightItalic"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraLightItalic.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraLightItalic.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraLightItalic.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraLightItalic.ttf")
+      format("truetype");
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-Thin.eot");
+  src: local("TT Hoves Thin"), local("TTHoves-Thin"),
+    url("./assets/fonts/TTHoves/TTHoves-Thin.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-Thin.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-Thin.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-Thin.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-DemiBold.eot");
+  src: local("TT Hoves DemiBold"), local("TTHoves-DemiBold"),
+    url("./assets/fonts/TTHoves/TTHoves-DemiBold.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-DemiBold.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-DemiBold.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-DemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-BoldItalic.eot");
+  src: local("TT Hoves Bold Italic"), local("TTHoves-BoldItalic"),
+    url("./assets/fonts/TTHoves/TTHoves-BoldItalic.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-BoldItalic.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-BoldItalic.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-BoldItalic.ttf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-Black.eot");
+  src: local("TT Hoves Black"), local("TTHoves-Black"),
+    url("./assets/fonts/TTHoves/TTHoves-Black.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-Black.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-Black.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-ExtraLight.eot");
+  src: local("TT Hoves ExtraLight"), local("TTHoves-ExtraLight"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraLight.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraLight.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraLight.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraLight.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-Bold.eot");
+  src: local("TT Hoves Bold"), local("TTHoves-Bold"),
+    url("./assets/fonts/TTHoves/TTHoves-Bold.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-Bold.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-Bold.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-ThinItalic.eot");
+  src: local("TT Hoves Thin Italic"), local("TTHoves-ThinItalic"),
+    url("./assets/fonts/TTHoves/TTHoves-ThinItalic.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-ThinItalic.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-ThinItalic.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-ThinItalic.ttf") format("truetype");
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-Italic.eot");
+  src: local("TT Hoves Italic"), local("TTHoves-Italic"),
+    url("./assets/fonts/TTHoves/TTHoves-Italic.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-Italic.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-Italic.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-BlackItalic.eot");
+  src: local("TT Hoves Black Italic"), local("TTHoves-BlackItalic"),
+    url("./assets/fonts/TTHoves/TTHoves-BlackItalic.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-BlackItalic.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-BlackItalic.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-BlackItalic.ttf") format("truetype");
+  font-weight: 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-ExtraBold.eot");
+  src: local("TT Hoves ExtraBold"), local("TTHoves-ExtraBold"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraBold.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraBold.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraBold.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-DemiBoldItalic.eot");
+  src: local("TT Hoves DemiBold Italic"), local("TTHoves-DemiBoldItalic"),
+    url("./assets/fonts/TTHoves/TTHoves-DemiBoldItalic.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-DemiBoldItalic.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-DemiBoldItalic.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-DemiBoldItalic.ttf") format("truetype");
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-MediumItalic.eot");
+  src: local("TT Hoves Medium Italic"), local("TTHoves-MediumItalic"),
+    url("./assets/fonts/TTHoves/TTHoves-MediumItalic.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-MediumItalic.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-MediumItalic.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-MediumItalic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-ExtraBoldItalic.eot");
+  src: local("TT Hoves ExtraBold Italic"), local("TTHoves-ExtraBoldItalic"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraBoldItalic.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraBoldItalic.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraBoldItalic.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-ExtraBoldItalic.ttf") format("truetype");
+  font-weight: 800;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-Regular.eot");
+  src: local("TT Hoves Regular"), local("TTHoves-Regular"),
+    url("./assets/fonts/TTHoves/TTHoves-Regular.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-Regular.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-Regular.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Hoves Hairline";
+  src: url("./assets/fonts/TTHoves/TTHoves-Hairline.eot");
+  src: local("TT Hoves Hairline"), local("TTHoves-Hairline"),
+    url("./assets/fonts/TTHoves/TTHoves-Hairline.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-Hairline.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-Hairline.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-Hairline.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-LightItalic.eot");
+  src: local("TT Hoves Light Italic"), local("TTHoves-LightItalic"),
+    url("./assets/fonts/TTHoves/TTHoves-LightItalic.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-LightItalic.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-LightItalic.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-LightItalic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-Light.eot");
+  src: local("TT Hoves Light"), local("TTHoves-Light"),
+    url("./assets/fonts/TTHoves/TTHoves-Light.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-Light.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-Light.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Hoves";
+  src: url("./assets/fonts/TTHoves/TTHoves-Medium.eot");
+  src: local("TT Hoves Medium"), local("TTHoves-Medium"),
+    url("./assets/fonts/TTHoves/TTHoves-Medium.eot?#iefix")
+      format("embedded-opentype"),
+    url("./assets/fonts/TTHoves/TTHoves-Medium.woff2") format("woff2"),
+    url("./assets/fonts/TTHoves/TTHoves-Medium.woff") format("woff"),
+    url("./assets/fonts/TTHoves/TTHoves-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}

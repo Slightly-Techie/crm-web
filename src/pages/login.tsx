@@ -60,7 +60,8 @@ function Login() {
             </p>
           </div>
           <span id="text-animate"></span>
-          <img className="mt-5" src={rocket} alt="" />
+          <img className="mt-5 mx-auto" src={rocket} alt="" />
+          <img className="mt-5 mx-auto" src={rocket} alt="" />
         </div>
       </div>
       <div className="right w-1/2">
@@ -109,7 +110,7 @@ function Login() {
                 placeholder="Enter your password"
               />
               {errors.password && (
-                <p className="text-[#b92828] text-[12px]">
+                <p className="text-[#b92828] text-[12px] text-center">
                   Password must be at least 8 characters, can contain at least
                   one uppercase, lowercase, a number and a special character
                 </p>

@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "name": "Joshua Nyarko",
+    "location": "Accra, Ghana",
+    "work_exprerience": [
+      "Andela",
+      "Microsoft",
+      "Paystack",
+      "Flutterwave",
+      "Goldman Sachs"
+    ],
+    "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
+    "profile_image": "https://s3.amazon.whatever.com"
+  },
+  {
+    "id": 2,
+    "name": "Kwasi Dadson",
+    "location": "Accra, Ghana",
+    "work_exprerience": [
+      "Andela",
+      "Microsoft",
+      "Paystack",
+      "Flutterwave",
+      "Goldman Sachs"
+    ],
+    "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
+    "profile_image": "https://s3.amazon.whatever.com"
+  },
+  {
+    "id": 3,
+    "name": "Rachel",
+    "location": "Accra, Ghana",
+    "work_exprerience": [
+      "Andela",
+      "Microsoft",
+      "Paystack",
+      "Flutterwave",
+      "Goldman Sachs"
+    ],
+    "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
+    "profile_image": "https://s3.amazon.whatever.com"
+  },
+  {
+    "id": 4,
+    "name": "Jerry Elikem",
+    "location": "Accra, Ghana",
+    "work_exprerience": [
+      "Andela",
+      "Microsoft",
+      "Paystack",
+      "Flutterwave",
+      "Goldman Sachs"
+    ],
+    "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
+    "profile_image": "https://s3.amazon.whatever.com"
+  },
+  {
+    "id": 5,
+    "name": "Emmanuel Sane",
+    "location": "Accra, Ghana",
+    "work_exprerience": [
+      "Andela",
+      "Microsoft",
+      "Paystack",
+      "Flutterwave",
+      "Goldman Sachs"
+    ],
+    "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
+    "profile_image": "https://s3.amazon.whatever.com"
+  },
+  {
+    "id": 6,
+    "name": "Charly Wellington",
+    "location": "Accra, Ghana",
+    "work_exprerience": [
+      "Andela",
+      "Microsoft",
+      "Paystack",
+      "Flutterwave",
+      "Goldman Sachs"
+    ],
+    "stack": ["Ruby", "HMTL", "Javascript", "Backend", "Python"],
+    "profile_image": "https://s3.amazon.whatever.com"
+  }
+]

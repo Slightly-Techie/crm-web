@@ -56,8 +56,8 @@ function SignUp() {
   });
 
   return (
-    <div className="flex flex-col lg:flex-row overflow-hidden bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] max-h-full">
-      <div className="hidden lg:flex justify-center items-center lg:w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
+    <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] h-screen">
+      <div className="flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
         <div className="">
           <img className="mb-5" src={stars} alt="" />
           <div className="w-[440px] ">
@@ -69,11 +69,11 @@ function SignUp() {
           <img className="mt-5" src={rocket} alt="" />
         </div>
       </div>
-      <div className="right lg:w-1/2 mx-auto">
-        <div className="flex flex-col justify-center items-center mx-auto">
+      <div className="right w-1/2">
+        <div className="flex justify-center items-center h-full">
           <form method="POST" onSubmit={onSubmit}>
-          <h3 className="text-[20px] font-bold text-center">Create An Account</h3>
-            <div className="mt-[40px] mb-5 grid place-items-center">
+            <h3 className="text-[20px] font-bold ">Create An Account</h3>
+            <div className="mt-[40px] mb-5">
               <input
                 {...register("first_name", {
                   required: true,
@@ -82,12 +82,12 @@ function SignUp() {
                   pattern: /^[a-zA-Z]+$/,
                 })}
                 style={{ borderColor: errors.first_name ? "#b92828" : "" }}
-                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] mx-auto w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
+                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
                 type="text"
                 placeholder="Enter your firstname"
               />
               {errors.first_name && (
-                <p className="text-[#b92828] text-center text-[12px]">
+                <p className="text-[#b92828] text-[12px]">
                   Firstname must be only letters
                 </p>
               )}
@@ -147,7 +147,7 @@ function SignUp() {
                 placeholder="Enter your password"
               />
               {errors.password && (
-                <p className="text-[#b92828] lg:w-1/2 text-[12px] text-center ">
+                <p className="text-[#b92828] text-[12px] text-center">
                   Password must be at least 8 characters, can contain at least
                   one uppercase, lowercase, a number and a special character
                 </p>
@@ -167,8 +167,8 @@ function SignUp() {
                   borderColor: errors.password_confirmation
                     ? "#b92828"
                     : passwordMatch
-                      ? "#21c129"
-                      : "",
+                    ? "#21c129"
+                    : "",
                 }}
                 className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
                 type="password"
@@ -176,23 +176,20 @@ function SignUp() {
               />
               {/* {errors.password_confirm && <p className='text-[#b92828] text-[12px]'>Password must be at least 8 characters, can contain at least one uppercase, lowercase, a number and a special character</p>} */}
               {errors.password_confirmation && (
-                <p className="text-[#b92828] lg:w-1/2 text-[12px] text-center">
+                <p className="text-[#b92828] text-[12px] text-center">
                   Password must be at least 8 characters, can contain at least
                   one uppercase, lowercase, a number and a special character
                 </p>
               )}
             </div>
 
-            <div className="flex items-center justify-center">
-              <button
-                className="bg-[#3D4450] dark:bg-white text-[#F5F5F5] text-sm dark:text-black hover:bg-[#525b6c] rounded-sm  w-full h-[48px]"
-                id="btn"
-                type="submit"
-              >
-                Create your account
-              </button>
-            </div>
-
+            <button
+              className="bg-[#3D4450] dark:bg-white text-[#F5F5F5] text-sm dark:text-black hover:bg-[#525b6c] rounded-sm flex items-center justify-center w-full h-[48px]"
+              id="btn"
+              type="submit"
+            >
+              Create your account
+            </button>
 
             <div className="flex items-center justify-center my-6 gap-1 w-full">
               <hr className="w-[2.5rem] border-[#353535]" />

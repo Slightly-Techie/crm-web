@@ -6,7 +6,6 @@ import googleLogo from "../assets/icons/Google-logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useState } from "react";
-import { API_URL } from "./constants";
 
 //defining data types to be used
 interface FormData {
@@ -35,10 +34,10 @@ function Login() {
     formData.append("password", data.password);
 
     axios
-      .post(`${API_URL}/api/v1/users/login`, formData)
+      .post("https://crm-api.fly.dev/api/v1/users/login", formData)
       .then((res) => {
-        localStorage.setItem("st-token", res.data.token);
-        navigate("/profile");
+        console.log(res.data);
+        navigate("/dashboard");
       })
       .catch((err: AxiosError) => {
         console.log(err.response?.data);
@@ -50,31 +49,22 @@ function Login() {
       });
   });
   return (
-    <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] h-screen">
-      <div className="flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
-        <div className="">
-          <img className="mb-5" src={stars} alt="" />
-          <div className="w-[440px] ">
-            <p className="text-[55px] font-bold leading-[70px]">
-              Welcome to the Slightly Techie Network
-            </p>
-          </div>
+    <div className="flex flex-col lg:flex-row overflow-hidden bg-[#111111] text-white font-[Monolisa] max-h-full Login">
+      <div className="lg:w-1/2 border-solid hidden lg:flex lg:border-r-[1px] text-center  items-center justify-center border-[#353535]">
+        <div className="mt-[250px] mb-[15%] sm:text-center">
+          <img className="mb-5 mx-auto" src={stars} alt="" />
+          <p className="text-[18px] font-medium ">Welcome to the</p>
+          <p className="text-[35px] font-semibold">Slightly Techie</p>
+          <p className="text-[35px] font-semibold">Network</p>
           <span id="text-animate"></span>
-          <img className="mt-5 mx-auto" src={rocket} alt="" />
           <img className="mt-5 mx-auto" src={rocket} alt="" />
         </div>
       </div>
-      <div className="right w-1/2">
-        <div className="flex justify-center items-center h-full">
-          <form
-            className="flex flex-col justify-center items-center"
-            method="POST"
-            onSubmit={onSubmit}
-          >
-            <div className="w-full">
-              <h3 className="text-[20px] font-bold ">Login To Your Account</h3>
-            </div>
-            <div className="mt-8 mb-5">
+      <div className="right lg:w-1/2 mx-auto">
+        <div className="lg:ml-[176px] lg:mr-[176px] mx-auto flex items-center justify-center mt-[140px] mb-[120px] div">
+          <form method="POST" onSubmit={onSubmit}>
+            <h3 className="text-[20px] font-bold text-center">Login To Your Account</h3>
+            <div className="mt-[40px] mb-5 grid place-items-center ">
               <input
                 {...register("email", {
                   required: true,
@@ -83,7 +73,7 @@ function Login() {
                   pattern: /^\S+@\S+$/i,
                 })}
                 style={{ borderColor: errors.email ? "#b92828" : "" }}
-                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
+                className="bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white"
                 type="email"
                 name="email"
                 placeholder="Johndoe@slightytechie.io"
@@ -94,7 +84,7 @@ function Login() {
                 </p>
               )}
             </div>
-            <div className="">
+            <div className="mb-3 grid place-items-center">
               <input
                 {...register("password", {
                   required: true,
@@ -104,7 +94,7 @@ function Login() {
                     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
                 })}
                 style={{ borderColor: errors.password ? "#b92828" : "" }}
-                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
+                className="bg-[#1E1E1E] border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] placeholder:text-[#353535] pl-4 focus:outline-none focus:border-white"
                 type="password"
                 name="password"
                 placeholder="Enter your password"
@@ -121,7 +111,7 @@ function Login() {
                 </p>
               )}
             </div>
-            <p className="my-2 text-[#353535] text-[11px] font-bold">
+            <p className="mb-3 text-center text-[#353535] text-[11px] font-bold">
               Forgot your{" "}
               <Link
                 className="font-bold hover:text-gray-400"
@@ -131,40 +121,37 @@ function Login() {
               </Link>
             </p>
 
-            <button
-              className="bg-[#3D4450] dark:bg-white text-[#F5F5F5] text-sm dark:text-black hover:bg-[#525b6c] rounded-sm flex items-center justify-center w-full h-[48px]"
-              id="btn"
-              type="submit"
-              disabled={isRequestSent}
-            >
-              Login to your account
-            </button>
+            <div className="mx-auto flex items-center justify-center">
+              <button id="btn" type="submit">
+                Login to your account
+              </button>
+            </div>
 
-            <div className="flex items-center my-6 gap-1">
+            <div className="mt-6 mb-6 flex justify-center mx-auto gap-[1.3rem]">
               <hr className="w-[2.5rem] border-[#353535]" />
-              <p className="text-[#353535] text-[12px] font-semibold">
+              <p className="text-[#353535] text-[11px] font-bold">
                 continue with social media
               </p>
               <hr className="w-[2.5rem] border-[#353535]" />
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col items-center gap-[1.2rem]">
               <button
-                className="bg-[#3D4450] text-[#F5F5F5] hover:bg-[#525b6c] dark:bg-[#3A3A3A] dark:hover:bg-black rounded-sm flex items-center justify-center text-[13px] w-[20rem] h-[48px] gap-2"
+                className="bg-[#3A3A3A] hover:bg-black rounded-sm flex items-center justify-center text-[13px] w-[20rem] pr-[16px] pl-[16px] h-[48px] gap-2"
                 type="submit"
               >
                 <img src={googleLogo} alt="Google logo png" />
                 <p>Continue with Google</p>
               </button>
               <button
-                className="bg-[#3D4450] text-[#F5F5F5] hover:bg-[#525b6c] dark:bg-[#3A3A3A] dark:hover:bg-black rounded-sm flex items-center justify-center text-[13px] h-[48px] w-[20rem] gap-2"
+                className="bg-[#3A3A3A] hover:bg-black rounded-sm flex items-center justify-center text-[13px] pr-[16px] pl-[16px] h-[48px] w-[20rem] gap-2"
                 type="submit"
               >
                 <img src={githubLogo} alt="Github logo png" />
                 <p>Continue with Github</p>
               </button>
             </div>
-            <p className="my-7 text-[12px]">
+            <p className="mt-7 text-center text-[12px]">
               Not registered?{" "}
               <Link to="/signup">
                 <u className="font-bold hover:text-gray-400">create account</u>

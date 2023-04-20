@@ -56,8 +56,8 @@ function SignUp() {
   });
 
   return (
-    <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] h-screen">
-      <div className="flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
+    <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] min-h-screen">
+      <div className="hidden lg:flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
         <div className="">
           <img className="mb-5" src={stars} alt="" />
           <div className="w-[440px] ">
@@ -69,9 +69,12 @@ function SignUp() {
           <img className="mt-5" src={rocket} alt="" />
         </div>
       </div>
-      <div className="right w-1/2">
+      <div className="lg:w-1/2 w-full">
         <div className="flex justify-center items-center h-full">
-          <form method="POST" onSubmit={onSubmit}>
+          <form
+            className="flex flex-col justify-center items-center w-[20rem] py-8"
+            onSubmit={onSubmit}
+          >
             <h3 className="text-[20px] font-bold ">Create An Account</h3>
             <div className="mt-[40px] mb-5">
               <input

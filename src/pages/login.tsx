@@ -50,8 +50,8 @@ function Login() {
       });
   });
   return (
-    <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] h-screen">
-      <div className="flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
+    <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] min-h-screen">
+      <div className="hidden lg:flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
         <div className="">
           <img className="mb-5" src={stars} alt="" />
           <div className="w-[440px] ">
@@ -60,15 +60,13 @@ function Login() {
             </p>
           </div>
           <span id="text-animate"></span>
-          <img className="mt-5 mx-auto" src={rocket} alt="" />
-          <img className="mt-5 mx-auto" src={rocket} alt="" />
+          <img className="mt-5" src={rocket} alt="" />
         </div>
       </div>
-      <div className="right w-1/2">
+      <div className="w-full lg:w-1/2">
         <div className="flex justify-center items-center h-full">
           <form
-            className="flex flex-col justify-center items-center"
-            method="POST"
+            className="flex flex-col justify-center items-center w-[20rem] py-8"
             onSubmit={onSubmit}
           >
             <div className="w-full">

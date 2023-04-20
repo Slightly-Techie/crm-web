@@ -4,9 +4,9 @@ import rocket from "../assets/icons/big-blue-flying-rocket.png";
 import githubLogo from "../assets/icons/Github-logo.png";
 import googleLogo from "../assets/icons/Google-logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useState } from "react";
-import { API_URL } from "./constants";
+import { userLogin } from "../services/api";
 
 //defining data types to be used
 interface FormData {
@@ -34,11 +34,10 @@ function Login() {
     formData.append("username", data.email);
     formData.append("password", data.password);
 
-    axios
-      .post(`${API_URL}/api/v1/users/login`, formData)
+    userLogin(formData)
       .then((res) => {
         localStorage.setItem("st-token", res.data.token);
-        navigate("/profile");
+        navigate("/");
       })
       .catch((err: AxiosError) => {
         console.log(err.response?.data);

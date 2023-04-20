@@ -14,3 +14,15 @@ export interface IMember {
 export type WithoutNullableKeys<Type> = {
   [Key in keyof Type]-?: WithoutNullableKeys<NonNullable<Type[Key]>>;
 };
+
+export type userProfile = {
+  email: string;
+  first_name: string;
+  last_name: string;
+  github_profile: string | null;
+  twitter_profile: string | null;
+  linkedin_profile: string | null;
+  portfolio_url: string | null;
+  profile_pic_url: string | null;
+  id: number;
+};

@@ -4,7 +4,7 @@ import rocket from "../assets/icons/big-blue-flying-rocket.png";
 import githubLogo from "../assets/icons/Github-logo.png";
 import googleLogo from "../assets/icons/Google-logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import { API_URL } from "./constants";
+import { userRegister } from "../services/api";
 
 //defining data types to be used
 interface FormData {
@@ -23,9 +23,6 @@ function SignUp() {
     formState: { errors },
     watch,
   } = useForm<FormData>({ mode: "onSubmit" });
-  // get data and clean then send to backend
-
-  // get raw data and send to backend
 
   // watch the values of the password and password_confirm fields
   const [password, password_confirmation] = watch([
@@ -38,17 +35,10 @@ function SignUp() {
     password_confirmation !== undefined &&
     password_confirmation !== "";
 
-  const onSubmit = handleSubmit((data: any) => {
-    fetch(`${API_URL}/api/v1/users/register`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(data),
-    })
-      .then((res) => {
-        navigate("/");
+  const onSubmit = handleSubmit((data) => {
+    userRegister(data)
+      .then(() => {
+        navigate("/login");
       })
       .catch((err) => {
         console.log(err);

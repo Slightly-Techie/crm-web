@@ -1,25 +1,14 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { WithoutNullableKeys } from "../../types/type";
-import { API_URL, Colors } from "../constants";
+import { userProfile, WithoutNullableKeys } from "../../types/type";
+import { Colors } from "../constants";
+import { getUserProfile, updateUserProfile } from "../../services/api";
+import { useQuery } from "react-query";
 
-type UserField = {
-  email: string;
-  first_name: string;
-  last_name: string;
-  github_profile: string | null;
-  twitter_profile: string | null;
-  linkedin_profile: string | null;
-  portfolio_url: string | null;
-  profile_pic_url: string | null;
-  id: number;
-};
-
-type inputeField = WithoutNullableKeys<Omit<UserField, "id">>;
+type inputeField = WithoutNullableKeys<Omit<userProfile, "id">>;
 
 // inital UserField state
-const initialUserField: UserField = {
+const initialUserField: userProfile = {
   email: "",
   first_name: "",
   last_name: "",
@@ -32,58 +21,37 @@ const initialUserField: UserField = {
 };
 
 const UserProfile = () => {
-  const [user, setUser] = useState<UserField>(initialUserField);
+  const [user, setUser] = useState<userProfile>(initialUserField);
   const [editMode, setEditMode] = useState(false);
 
   const { register, handleSubmit, setValue } = useForm<inputeField>();
 
-  useEffect(() => {
-    const token = localStorage.getItem("st-token");
-    if (token) {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("st-token")}`,
-        },
-      };
-      axios
-        .get(`${API_URL}/api/v1/users/profile`, config)
-        .then((res) => {
-          console.log(res.data);
-
-          setUser(res.data);
-          setValue("email", res.data.email);
-          setValue("first_name", res.data.first_name);
-          setValue("last_name", res.data.last_name);
-          setValue("github_profile", res.data.github_profile);
-          setValue("twitter_profile", res.data.twitter_profile);
-          setValue("linkedin_profile", res.data.linkedin_profile);
-          setValue("portfolio_url", res.data.portfolio_url);
-          setValue("profile_pic_url", res.data.profile_pic_url);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [setValue]);
+  const query = useQuery({
+    queryKey: ["userProfile"],
+    queryFn: getUserProfile,
+    onSuccess(res) {
+      setUser(res.data);
+      setUser(res.data);
+      setValue("email", res.data.email);
+      setValue("first_name", res.data.first_name);
+      setValue("last_name", res.data.last_name);
+      setValue("github_profile", res.data.github_profile);
+      setValue("twitter_profile", res.data.twitter_profile);
+      setValue("linkedin_profile", res.data.linkedin_profile);
+      setValue("portfolio_url", res.data.portfolio_url);
+      setValue("profile_pic_url", res.data.profile_pic_url);
+    },
+  });
 
   const onSubmit = handleSubmit((data) => {
-    const token = localStorage.getItem("st-token");
-    if (token) {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("st-token")}`,
-        },
-      };
-      axios
-        .put(`${API_URL}/api/v1/users/profile`, data, config)
-        .then((res) => {
-          console.log(res.data);
-          setUser(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    updateUserProfile(data)
+      .then((res) => {
+        console.log(res.data);
+        setUser(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   });
 
   return (
@@ -96,15 +64,17 @@ const UserProfile = () => {
           <div className="hidden md:flex w-[350px] justify-center p-4">
             <div className="flex flex-col items-center">
               <div className="w-[200px] h-[200px] rounded-full overflow-hidden">
-                <img
-                  src={
-                    user.profile_pic_url
-                      ? user.profile_pic_url
-                      : `https://avatars.dicebear.com/api/initials/${user.first_name}${user.last_name}.svg`
-                  }
-                  alt="profile"
-                  className="w-full h-full object-cover"
-                />
+                {query.isSuccess && (
+                  <img
+                    src={
+                      user.profile_pic_url
+                        ? user.profile_pic_url
+                        : `https://avatars.dicebear.com/api/initials/${user.first_name} ${user.last_name}.svg`
+                    }
+                    alt="profile"
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
               <div className="my-4 w-full">
                 <button

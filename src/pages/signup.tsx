@@ -85,7 +85,7 @@ function SignUp() {
                 </p>
               )}
             </div>
-            <div className=" mb-5 grid place-items-center">
+            <div className="mb-5 grid">
               <input
                 {...register("last_name", {
                   required: true,
@@ -104,7 +104,7 @@ function SignUp() {
                 </p>
               )}
             </div>
-            <div className="mb-5 grid place-items-center">
+            <div className="mb-5 grid">
               <input
                 {...register("email", {
                   required: true,
@@ -124,7 +124,7 @@ function SignUp() {
                 </p>
               )}
             </div>
-            <div className="mb-5 grid place-items-center">
+            <div className="mb-5 grid">
               <input
                 {...register("password", {
                   required: true,

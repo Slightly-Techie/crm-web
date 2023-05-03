@@ -1,5 +1,5 @@
-import stars from "../assets/icons/Stars.png";
-import rocket from "../assets/icons/big-blue-flying-rocket.png";
+import stars from "../../../assets/icons/Stars.png";
+import rocket from "../../../assets/icons/big-blue-flying-rocket.png";
 
 import { Link } from "react-router-dom";
 function ForgotPassword() {

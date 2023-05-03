@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
-import stars from "../assets/icons/Stars.png";
-import rocket from "../assets/icons/big-blue-flying-rocket.png";
-import githubLogo from "../assets/icons/Github-logo.png";
-import googleLogo from "../assets/icons/Google-logo.png";
+import stars from "../../../assets/icons/Stars.png";
+import rocket from "../../../assets/icons/big-blue-flying-rocket.png";
+import githubLogo from "../../../assets/icons/Github-logo.png";
+import googleLogo from "../../../assets/icons/Google-logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { useState } from "react";
-import { userLogin } from "../services/api";
+import { userLogin } from "../../../services/api";
 
 //defining data types to be used
 interface FormData {

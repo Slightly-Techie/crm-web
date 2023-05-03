@@ -14,7 +14,7 @@ export const userRegister = (data: any) =>
   axios.post(`${API_URL}/api/v1/users/register`, data);
 
 export const getUserProfile = () =>
-  axios.get(`${API_URL}/api/v1/users/profile`, config);
+  axios.get(`${API_URL}/api/v1/users/me`, config);
 
 export const updateUserProfile = (data: any) =>
   axios.put(`${API_URL}/api/v1/users/profile`, data, config);

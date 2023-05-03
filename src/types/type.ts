@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface MemberProps {
   data: IMember;
 }
@@ -26,3 +28,8 @@ export type userProfile = {
   profile_pic_url: string | null;
   id: number;
 };
+
+export interface NavbarProps {
+  isOpen: boolean;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+}

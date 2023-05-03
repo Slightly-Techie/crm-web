@@ -17,9 +17,9 @@ function Navbar({ setIsOpen, isOpen }: NavbarProps) {
   });
 
   return (
-    <div className="w-full gap-4 sticky top-0 bg-white sm:bg-primary sm:static flex items-center justify-between py-6 px-[14px] sm:px-[16px] border-b border-[#DCDDE1]">
-      <div className="p-3">
-        <h1 className="font-bold w-[63px] lg:w-full text-lg sm:text-xl text-[#3D4450]">
+    <div className="w-full gap-2 sticky top-0 bg-white sm:bg-primary sm:static flex items-center justify-between py-2 lg:py-6 px-[19px] sm:px-[16px] border-b border-[#DCDDE1]">
+      <div>
+        <h1 className="font-bold w-[120px] lg:w-full text-lg sm:text-xl text-[#3D4450]">
           Slightly Techie CRM
         </h1>
       </div>

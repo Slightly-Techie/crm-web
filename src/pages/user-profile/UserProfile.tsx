@@ -62,8 +62,11 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="flex bg-primary w-full sm:w-[calc(100% - 48px)] sm:max-w-[1000px]">
-      <form onSubmit={onSubmit} className="flex flex-col gap-12 w-full">
+    <div className="flex bg-primary w-full justify-center">
+      <form
+        onSubmit={onSubmit}
+        className="flex flex-col gap-12 w-full sm:w-[calc(100% - 48px)] sm:max-w-[1000px]"
+      >
         <div>
           {editMode && (
             <div className="h-14 flex flex-row gap-4 items-center justify-end">
@@ -86,9 +89,9 @@ const UserProfile = () => {
             <div className="h-14 flex flex-row items-center border-b border-[#DCDDE1]">
               <h1 className="text-xl font-medium">Profile</h1>
             </div>
-            <div className="flex flex-col md:flex-row md:h-[calc(100%-3.5rem)] md:gap-[55px] sm:gap-[40px] mt-[10px]">
-              <div className="w-1/3 h-full flex flex-col items-center justify-center">
-                <div className="w-[100px] lg:w-[200px] lg:h-[200px] rounded-full overflow-hidden">
+            <div className="flex flex-col md:flex-row md:h-[calc(100%-3.5rem)] md:gap-[25px] sm:gap-[20px] mt-[10px]">
+              <div className="w-1/3 h-full flex flex-col items-center justify-center my-0 mx-auto">
+                <div className="w-[150px] lg:w-[200px] lg:h-[200px] rounded-full overflow-hidden">
                   {query.isSuccess && (
                     <img
                       src={
@@ -97,7 +100,7 @@ const UserProfile = () => {
                           : `https://avatars.dicebear.com/api/initials/${user.first_name} ${user.last_name}.svg`
                       }
                       alt="profile"
-                      className="w-[100px] lg:w-full lg:h-full aspect-h-1 object-cover"
+                      className="w-[150px] lg:w-full lg:h-full aspect-h-1 object-cover"
                     />
                   )}
                 </div>

@@ -22,7 +22,7 @@ function Sidebar({ isOpen }: NavbarProps) {
       </aside>
 
       {isOpen && (
-        <aside className="py-6 px-5 w-20 border-r-[#DCDDE1] border-r bg-white z-40 absolute left-0 bottom-0 top-0">
+        <aside className="py-6 px-5 w-20 border-r-[#DCDDE1] border-r bg-white z-40 fixed left-0 bottom-0 top-0">
           <div className="bg-secondary p-2 mx-auto rounded-sm text-white">
             <h1 className="font-bold text-xl">ST</h1>
           </div>

@@ -14,6 +14,9 @@ import UserList from "./pages/UserList";
 import ProtectedRoute from "./components/protectedRoute";
 import { QueryClient, QueryClientProvider } from "react-query";
 
+// adding new signup form
+import NewSignUp from "./pages/New-SignUp/NewSignUp";
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -44,6 +47,8 @@ root.render(
               </ProtectedRoute>
             }
           />
+          {/* adding a route for the new sign up form */}
+          <Route path="/new-signup" element={<NewSignUp />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>

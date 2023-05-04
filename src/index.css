@@ -24,6 +24,11 @@ body {
   font-family: "TT Hoves";
 }
 
+/* Reset css */
+mark {
+  background: none;
+}
+
 #text-animate {
   white-space: pre;
 }

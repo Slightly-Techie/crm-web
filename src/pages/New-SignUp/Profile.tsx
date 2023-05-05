@@ -1,34 +1,33 @@
-import React from "react";
-
-function Profile() {
+function Profile({ register }: any) {
   return (
     <>
       <div className=" my-4">
-        <label className="text-[#000] dark:text-[#fff]" htmlFor="">
-          Email
-        </label>
+        <label className="text-[#000] dark:text-[#fff]">Email</label>
         <input
           className="w-full border-b-[1px]  text-[#000] dark:text-white border-b-[#33333380] input__transparent py-2 focus:outline-none focus:border-b-[1px] focus:border-b-[#333]"
           type="text"
           placeholder="kofi@example.com"
+          {...register("email")}
         />
       </div>
       <div className="my-4">
-        <label className="text-[#000] dark:text-white" htmlFor="">
-          Phone Number
-        </label>
+        <label className="text-[#000] dark:text-white">Phone Number</label>
         <input
           className=" text-[#000] dark:text-white w-full border-b-[1px] border-b-[#33333380] input__transparent py-2 focus:outline-none focus:border-b-[1px] focus:border-b-[#333]"
           type="text"
+          {...register("phone")}
         />
       </div>
       <div className="my-4">
-        <label className="text-[#000] dark:text-white" htmlFor="">
+        <label className="text-[#000] dark:text-white">
           What type of techie are you?
         </label>
-        <select className="w-full mt-4 border-b-[1px] text-[#000] dark:text-white border-b-[#33333380] input__transparent py-2 focus:outline-none focus:border-b-[1px] focus:border-b-[#333]">
+        <select
+          {...register("portfolio")}
+          className="w-full mt-4 border-b-[1px] text-[#000] dark:text-white border-b-[#33333380] input__transparent py-2 focus:outline-none focus:border-b-[1px] focus:border-b-[#333]"
+        >
           <option value="Backend">Backend</option>
-          <option value="Fronted">Frontend</option>
+          <option value="Frontend">Frontend</option>
           <option value="Full Stack">Full Stack</option>
           <option value="UI/UX">UI/UX</option>
           <option value="Mobile">Mobile</option>
@@ -36,7 +35,7 @@ function Profile() {
         </select>
       </div>
       {/* <div className="my-4">
-            <label className="text-[#000] dark:text-white" htmlFor="">
+            <label className="text-[#000] dark:text-white" >
             If Other above, please specify
             </label>
             <input

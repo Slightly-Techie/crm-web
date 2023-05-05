@@ -2,7 +2,7 @@ import React from "react";
 import Search from "../assets/icons/search.png";
 import Member from "./Member";
 import { IMember } from "../types/type";
-import jsondata from "./apimock.json";
+import jsondata from "../data/apimock.json";
 
 function Team() {
   const data = jsondata as IMember[];
@@ -36,11 +36,11 @@ function Team() {
           action=""
           className="bg-white w-full border flex justify-between p-2  border-[#DCDDE1] rounded"
         >
-          <div className="flex items-center py-2 px-3 gap-2">
+          <div className="w-full flex items-center py-2 px-3 gap-2">
             <img src={Search} alt="search icon" />
             <input
               type="text"
-              className="border-none placeholder-gray-500 text-black focus:outline-none"
+              className="w-full border-none placeholder-gray-500 text-black focus:outline-none"
               placeholder="Search by keyword"
             />
           </div>

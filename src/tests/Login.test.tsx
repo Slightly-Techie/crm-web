@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import Login from "../pages/login";
+import Login from "../pages/auth/Login/login";
 import { BrowserRouter } from "react-router-dom";
 
 test("check button", () => {

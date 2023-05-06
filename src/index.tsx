@@ -6,6 +6,7 @@ import "./fonts.css";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AppRoutes } from "./routes/Routes";
+import AuthProvider from "./services/AuthProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -17,7 +18,9 @@ root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <AppRoutes />
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>

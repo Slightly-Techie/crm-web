@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { getUserProfile } from "../services/api";
+import useEndpoints from "../services/api";
 import { NavbarProps, userProfile } from "../types/type";
 import { useQuery } from "react-query";
 import HamburgerIcon from "../assets/icons/menu.png";
 import CloseIcon from "../assets/icons/close.png";
 
 function Navbar({ setIsOpen, isOpen }: NavbarProps) {
+  const { getUserProfile } = useEndpoints();
   const [user, setUser] = useState<undefined | userProfile>();
   const query = useQuery({
     queryKey: ["userProfile"],

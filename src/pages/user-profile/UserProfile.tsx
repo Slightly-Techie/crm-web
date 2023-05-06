@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { userProfile, WithoutNullableKeys } from "../../types/type";
-import { getUserProfile, updateUserProfile } from "../../services/api";
+import useEndpoints from "../../services/api";
 import { useQuery } from "react-query";
 
 type inputeField = WithoutNullableKeys<Omit<userProfile, "id">>;
@@ -20,6 +20,7 @@ const initialUserField: userProfile = {
 };
 
 const UserProfile = () => {
+  const { getUserProfile, updateUserProfile } = useEndpoints();
   const [user, setUser] = useState<userProfile>(initialUserField);
   const [editMode, setEditMode] = useState(false);
 

@@ -11,6 +11,7 @@ interface FormData {
   first_name: String;
   last_name: String;
   email: String;
+  phone_number: String;
   password: String;
   password_confirmation: String;
 }
@@ -36,7 +37,10 @@ function SignUp() {
     password_confirmation !== "";
 
   const onSubmit = handleSubmit((data) => {
-    userRegister(data)
+    userRegister({
+      ...data,
+      bio: "",
+    })
       .then(() => {
         navigate("/login");
       })
@@ -121,6 +125,25 @@ function SignUp() {
               {errors.email && (
                 <p className="text-[#b92828] text-[12px]">
                   Email must be valid
+                </p>
+              )}
+            </div>
+            <div className="mb-5 grid">
+              <input
+                {...register("phone_number", {
+                  required: true,
+                  min: 2,
+                  max: 25,
+                  pattern: /^\S+@\S+$/i,
+                })}
+                style={{ borderColor: errors.phone_number ? "#b92828" : "" }}
+                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
+                type="tel"
+                placeholder="Phone number"
+              />
+              {errors.phone_number && (
+                <p className="text-[#b92828] text-[12px]">
+                  Phone must be valid {errors.phone_number?.message}
                 </p>
               )}
             </div>

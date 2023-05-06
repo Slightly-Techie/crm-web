@@ -7,6 +7,9 @@ module.exports = {
       primary: "#F5F5F5",
       white: "#ffffff",
       secondary: "#3D4450",
+      st: {
+        gray200: "#DCDDE1",
+      },
     },
   },
   plugins: [],

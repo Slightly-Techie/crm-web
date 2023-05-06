@@ -13,10 +13,10 @@ const useEndpoints = () => {
   return { getUserProfile, updateUserProfile };
 };
 
-export default useEndpoints;
-
 export const userLogin = (formData: globalThis.FormData) =>
-  axios.post(`${API_URL}/api/v1/users/login`, formData);
+  axios.post(`/api/v1/users/login`, formData);
 
 export const userRegister = (data: any) =>
-  axios.post(`${API_URL}/api/v1/users/register`, data);
+  axios.post(`/api/v1/users/register`, data);
+
+export default useEndpoints;

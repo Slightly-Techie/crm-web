@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import useEndpoints from "../services/api";
 import { NavbarProps, userProfile } from "../types/type";
 import { useQuery } from "react-query";
 import HamburgerIcon from "../assets/icons/menu.png";
 import CloseIcon from "../assets/icons/close.png";
+import AccountMenu from "./account-menu";
+import useLogout from "../hooks/useLogout";
 
 function Navbar({ setIsOpen, isOpen }: NavbarProps) {
+  const logout = useLogout();
   const { getUserProfile } = useEndpoints();
   const [user, setUser] = useState<undefined | userProfile>();
   const query = useQuery({
@@ -34,20 +36,25 @@ function Navbar({ setIsOpen, isOpen }: NavbarProps) {
       <div className="flex items-center gap-2 sm:gap-4 lg:w-[300px]">
         {query.isSuccess && (
           <>
-            <h2 className="font-bold text-lg w-[100px] lg:w-[220px] sm:text-xl text-secondary inline-block">
+            <h2 className="flex justify-end shrink-0 font-bold text-lg w-[100px] lg:w-[220px] sm:text-xl text-secondary">
               Welcome {user && user.first_name}!
             </h2>
-            <Link to={"/profile"}>
-              <img
-                className="w-12 h-12 rounded-full"
-                src={
-                  user?.profile_pic_url
-                    ? user?.profile_pic_url
-                    : `https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`
-                }
-                alt="profile"
-              />
-            </Link>
+            <AccountMenu
+              items={[
+                {
+                  type: "link",
+                  link: "/profile",
+                  value: "Profile",
+                },
+                {
+                  type: "button",
+                  value: "Logout",
+                  onClick() {
+                    logout();
+                  },
+                },
+              ]}
+            />
           </>
         )}
       </div>

@@ -13,7 +13,7 @@ const useLogout = () => {
       user: undefined,
     });
     try {
-      await axios("/api/v1/users/logout");
+      await axios.post("/api/v1/users/logout");
       navigate("/login");
     } catch (error) {
       console.error(error);

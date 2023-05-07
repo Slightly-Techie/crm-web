@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface MemberProps {
   data: IMember;
 }
@@ -27,7 +29,11 @@ export type userProfile = {
   id: number;
 };
 
-// New user signup form types
+export interface NavbarProps {
+  isOpen: boolean;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+}
+
 export type TNewUserFields = Record<
   | "email"
   | "phone"

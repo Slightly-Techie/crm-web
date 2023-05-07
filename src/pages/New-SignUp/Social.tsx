@@ -10,7 +10,6 @@ type SocialsFormType = {
   errors: FieldErrors<TSocialsType>;
 };
 function Social({ register, errors }: SocialsFormType) {
-  console.log(errors);
   return (
     <>
       <div className=" my-4">

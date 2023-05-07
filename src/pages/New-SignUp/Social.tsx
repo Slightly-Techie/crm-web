@@ -1,44 +1,71 @@
-function Social({ register }: any) {
+import { FieldErrors, RegisterOptions, UseFormRegister } from "react-hook-form";
+import { TNewUserFields } from "../../types/type";
+
+type TSocialsType = Pick<
+  TNewUserFields,
+  "twitter_handle" | "linkedin_profile" | "working"
+>;
+type SocialsFormType = {
+  register: UseFormRegister<TSocialsType | RegisterOptions>;
+  errors: FieldErrors<TSocialsType>;
+};
+function Social({ register, errors }: SocialsFormType) {
+  console.log(errors);
   return (
     <>
       <div className=" my-4">
-        <label className=" text-[#000] dark:text-white" htmlFor="">
-          What's your Twitter handle?
+        <label className=" text-[#000] dark:text-[#f1f3f7]" htmlFor="">
+          1. What's your Twitter handle?
         </label>
         <input
-          {...register("twitter_handle")}
-          className="w-full border-b-[1px] text-[#000] dark:text-white  border-b-[#33333380] input__transparent py-2 focus:outline-none focus:border-b-[1px] focus:border-b-[#333]"
+          {...register("twitter_handle", {
+            required: true,
+          })}
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
           type="text"
         />
+        {errors.twitter_handle && <small>Provide your twitter username </small>}
       </div>
       <div className="my-4">
-        <label className=" text-[#000] dark:text-white" htmlFor="">
-          What's your linkedIn profile?
+        <label className=" text-[#000] dark:text-[#f1f3f7]" htmlFor="">
+          2. What's your linkedIn profile?
         </label>
         <input
-          {...register("linkedin_profile")}
-          className="w-full text-[#000] dark:text-white border-b-[1px] border-b-[#33333380] input__transparent py-2 focus:outline-none focus:border-b-[1px] focus:border-b-[#333]"
+          {...register("linkedin_profile", {
+            required: true,
+          })}
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
           type="text"
         />
+        {errors.linkedin_profile && (
+          <small>Provide a link to your LinkedIn profile</small>
+        )}
       </div>
       <div className="my-4">
-        <label className=" text-[#000] dark:text-white" htmlFor="">
-          Are you currently working?
+        <label className=" text-[#000] dark:text-[#f1f3f7]" htmlFor="">
+          3. Are you currently working?
         </label>
-        <section className="flex text-[#000] dark:text-white gap-4 my-4 ">
+        <section className="flex text-[#000] dark:text-[#f1f3f7] gap-4 my-4 ">
           <div className="">
-            <input type="checkbox" className=" rounded-full" />
-            <label className="mx-2 text-[#000] dark:text-white" htmlFor=" ">
-              Yes
-            </label>
+            <input
+              type="radio"
+              value="Yes"
+              {...register("working", {
+                required: true,
+              })}
+            />
+            <label className="mx-2 text-[#000] dark:text-[#f1f3f7]">Yes</label>
           </div>
           <div className="">
-            <input type="checkbox" />
-            <label className="mx-2 text-[#000] dark:text-white" htmlFor="">
-              No
-            </label>
+            <input
+              type="radio"
+              value="No"
+              {...register("working", { required: true })}
+            />
+            <label className="mx-2 text-[#000] dark:text-white">No</label>
           </div>
         </section>
+        {errors.working && <small>Select one option </small>}
       </div>
     </>
   );

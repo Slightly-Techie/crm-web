@@ -99,6 +99,7 @@ mark {
   background: transparent;
 }
 
-* {
-  /* outline: 1px solid limegreen; */
+/* invalid form inputs */
+small {
+  color: rgb(255, 85, 85);
 }

@@ -26,3 +26,17 @@ export type userProfile = {
   profile_pic_url: string | null;
   id: number;
 };
+
+// New user signup form types
+export type TNewUserFields = Record<
+  | "email"
+  | "phone"
+  | "portfolio"
+  | "languages"
+  | "experience_yrs"
+  | "experience_summary"
+  | "twitter_handle"
+  | "linkedin_profile"
+  | "working",
+  string
+>;

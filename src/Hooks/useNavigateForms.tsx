@@ -5,32 +5,36 @@ import Skills from "../pages/New-SignUp/Skills";
 import Social from "../pages/New-SignUp/Social";
 
 function useNavigateForms() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ mode: "onSubmit" });
   const [currentFormIndex, setCurrentFormIndex] = React.useState(0);
   const Forms = [
     {
       category: "Profile",
-      element: <Profile register={register} />,
+      element: <Profile register={register} errors={errors} />,
     },
     {
-      category: "Profile",
-      element: <Skills register={register} />,
+      category: "Skills",
+      element: <Skills register={register} errors={errors} />,
     },
     {
-      category: "Profile",
-      element: <Social register={register} />,
+      category: "Social",
+      element: <Social register={register} errors={errors} />,
     },
   ];
 
   const currentForm = Forms[currentFormIndex];
 
   const next = () => {
-    if (currentFormIndex === 2) return null;
+    if (currentFormIndex === 2) return;
     setCurrentFormIndex((prev) => prev + 1);
   };
 
   const previous = () => {
-    if (currentFormIndex === 0) return null;
+    if (currentFormIndex === 0) return;
     setCurrentFormIndex((prev) => prev - 1);
   };
   return { next, previous, currentForm, handleSubmit, currentFormIndex };

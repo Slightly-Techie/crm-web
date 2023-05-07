@@ -1,12 +1,12 @@
-import { FieldErrors, RegisterOptions, UseFormRegister } from "react-hook-form";
+import { FieldErrors, RegisterOptions } from "react-hook-form";
 import { TNewUserFields } from "../../types/type";
 
-type TSkillsType = Pick<
-  TNewUserFields,
-  "experience_yrs" | "experience_summary" | "languages"
->;
+type SkillsFields = "experience_yrs" | "experience_summary" | "languages";
+
+type TSkillsType = Pick<TNewUserFields, SkillsFields>;
+
 type SkillsFormType = {
-  register: UseFormRegister<TSkillsType | RegisterOptions>;
+  register: (name: SkillsFields, options?: RegisterOptions) => {};
   errors: FieldErrors<TSkillsType>;
 };
 

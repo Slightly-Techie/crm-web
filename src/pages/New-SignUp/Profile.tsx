@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { NEW_USER_DATA } from "./NewSignUp";
-import { FieldErrors, RegisterOptions, UseFormRegister } from "react-hook-form";
+import { FieldErrors, RegisterOptions } from "react-hook-form";
 import { TNewUserFields } from "../../types/type";
 
-type TProfileType = Pick<TNewUserFields, "email" | "phone" | "portfolio">;
+type ProfileFields = "email" | "phone" | "portfolio";
+
+type TProfileType = Pick<TNewUserFields, ProfileFields>;
 
 type ProfileFormType = {
-  register: UseFormRegister<TProfileType | RegisterOptions>;
+  register: (name: ProfileFields, options?: RegisterOptions) => {};
   errors: FieldErrors<TProfileType>;
 };
 

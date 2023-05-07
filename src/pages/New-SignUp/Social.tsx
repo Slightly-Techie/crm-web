@@ -1,12 +1,12 @@
-import { FieldErrors, RegisterOptions, UseFormRegister } from "react-hook-form";
+import { FieldErrors, RegisterOptions } from "react-hook-form";
 import { TNewUserFields } from "../../types/type";
 
-type TSocialsType = Pick<
-  TNewUserFields,
-  "twitter_handle" | "linkedin_profile" | "working"
->;
+type SocialsFields = "twitter_handle" | "linkedin_profile" | "working";
+
+type TSocialsType = Pick<TNewUserFields, SocialsFields>;
+
 type SocialsFormType = {
-  register: UseFormRegister<TSocialsType | RegisterOptions>;
+  register: (name: SocialsFields, options?: RegisterOptions) => {};
   errors: FieldErrors<TSocialsType>;
 };
 function Social({ register, errors }: SocialsFormType) {
@@ -14,7 +14,7 @@ function Social({ register, errors }: SocialsFormType) {
     <>
       <div className=" my-4">
         <label className=" text-[#000] dark:text-[#f1f3f7]" htmlFor="">
-          1. What's your Twitter handle?
+          What's your Twitter handle?
         </label>
         <input
           {...register("twitter_handle", {
@@ -27,7 +27,7 @@ function Social({ register, errors }: SocialsFormType) {
       </div>
       <div className="my-4">
         <label className=" text-[#000] dark:text-[#f1f3f7]" htmlFor="">
-          2. What's your linkedIn profile?
+          What's your linkedIn profile?
         </label>
         <input
           {...register("linkedin_profile", {
@@ -42,7 +42,7 @@ function Social({ register, errors }: SocialsFormType) {
       </div>
       <div className="my-4">
         <label className=" text-[#000] dark:text-[#f1f3f7]" htmlFor="">
-          3. Are you currently working?
+          Are you currently working?
         </label>
         <section className="flex text-[#000] dark:text-[#f1f3f7] gap-4 my-4 ">
           <div className="">

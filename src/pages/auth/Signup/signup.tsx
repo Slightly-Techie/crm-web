@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
-import stars from "../assets/icons/Stars.png";
-import rocket from "../assets/icons/big-blue-flying-rocket.png";
-import githubLogo from "../assets/icons/Github-logo.png";
-import googleLogo from "../assets/icons/Google-logo.png";
+import stars from "../../../assets/icons/Stars.png";
+import rocket from "../../../assets/icons/big-blue-flying-rocket.png";
+import githubLogo from "../../../assets/icons/Github-logo.png";
+import googleLogo from "../../../assets/icons/Google-logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import { API_URL } from "./constants";
+import { userRegister } from "../../../services/api";
 
 //defining data types to be used
 interface FormData {
@@ -23,9 +23,6 @@ function SignUp() {
     formState: { errors },
     watch,
   } = useForm<FormData>({ mode: "onSubmit" });
-  // get data and clean then send to backend
-
-  // get raw data and send to backend
 
   // watch the values of the password and password_confirm fields
   const [password, password_confirmation] = watch([
@@ -38,17 +35,10 @@ function SignUp() {
     password_confirmation !== undefined &&
     password_confirmation !== "";
 
-  const onSubmit = handleSubmit((data: any) => {
-    fetch(`${API_URL}/api/v1/users/register`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(data),
-    })
-      .then((res) => {
-        navigate("/");
+  const onSubmit = handleSubmit((data) => {
+    userRegister(data)
+      .then(() => {
+        navigate("/login");
       })
       .catch((err) => {
         console.log(err);
@@ -56,8 +46,8 @@ function SignUp() {
   });
 
   return (
-    <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] h-screen">
-      <div className="flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
+    <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] min-h-screen">
+      <div className="hidden lg:flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
         <div className="">
           <img className="mb-5" src={stars} alt="" />
           <div className="w-[440px] ">
@@ -69,9 +59,12 @@ function SignUp() {
           <img className="mt-5" src={rocket} alt="" />
         </div>
       </div>
-      <div className="right w-1/2">
+      <div className="lg:w-1/2 w-full">
         <div className="flex justify-center items-center h-full">
-          <form method="POST" onSubmit={onSubmit}>
+          <form
+            className="flex flex-col justify-center items-center w-[20rem] py-8"
+            onSubmit={onSubmit}
+          >
             <h3 className="text-[20px] font-bold ">Create An Account</h3>
             <div className="mt-[40px] mb-5">
               <input
@@ -92,7 +85,7 @@ function SignUp() {
                 </p>
               )}
             </div>
-            <div className=" mb-5 grid place-items-center">
+            <div className="mb-5 grid">
               <input
                 {...register("last_name", {
                   required: true,
@@ -111,7 +104,7 @@ function SignUp() {
                 </p>
               )}
             </div>
-            <div className="mb-5 grid place-items-center">
+            <div className="mb-5 grid">
               <input
                 {...register("email", {
                   required: true,
@@ -131,7 +124,7 @@ function SignUp() {
                 </p>
               )}
             </div>
-            <div className="mb-5 grid place-items-center">
+            <div className="mb-5 grid">
               <input
                 {...register("password", {
                   required: true,

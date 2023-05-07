@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
-import stars from "../assets/icons/Stars.png";
-import rocket from "../assets/icons/big-blue-flying-rocket.png";
-import githubLogo from "../assets/icons/Github-logo.png";
-import googleLogo from "../assets/icons/Google-logo.png";
+import stars from "../../../assets/icons/Stars.png";
+import rocket from "../../../assets/icons/big-blue-flying-rocket.png";
+import githubLogo from "../../../assets/icons/Github-logo.png";
+import googleLogo from "../../../assets/icons/Google-logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useState } from "react";
-import { API_URL } from "./constants";
+import { userLogin } from "../../../services/api";
 
 //defining data types to be used
 interface FormData {
@@ -34,11 +34,10 @@ function Login() {
     formData.append("username", data.email);
     formData.append("password", data.password);
 
-    axios
-      .post(`${API_URL}/api/v1/users/login`, formData)
+    userLogin(formData)
       .then((res) => {
         localStorage.setItem("st-token", res.data.token);
-        navigate("/profile");
+        navigate("/");
       })
       .catch((err: AxiosError) => {
         console.log(err.response?.data);
@@ -50,8 +49,8 @@ function Login() {
       });
   });
   return (
-    <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] h-screen">
-      <div className="flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
+    <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] min-h-screen">
+      <div className="hidden lg:flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
         <div className="">
           <img className="mb-5" src={stars} alt="" />
           <div className="w-[440px] ">
@@ -60,15 +59,13 @@ function Login() {
             </p>
           </div>
           <span id="text-animate"></span>
-          <img className="mt-5 mx-auto" src={rocket} alt="" />
-          <img className="mt-5 mx-auto" src={rocket} alt="" />
+          <img className="mt-5" src={rocket} alt="" />
         </div>
       </div>
-      <div className="right w-1/2">
+      <div className="w-full lg:w-1/2">
         <div className="flex justify-center items-center h-full">
           <form
-            className="flex flex-col justify-center items-center"
-            method="POST"
+            className="flex flex-col justify-center items-center w-[20rem] py-8"
             onSubmit={onSubmit}
           >
             <div className="w-full">

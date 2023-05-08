@@ -1,6 +1,5 @@
 import { FieldErrors, RegisterOptions } from "react-hook-form";
 import { TNewUserFields } from "../../types/type";
-import { logToConsole } from "../../utils";
 
 type SocialsFields = "twitter_handle" | "linkedin_profile" | "working";
 
@@ -11,7 +10,6 @@ type SocialsFormType = {
   errors: FieldErrors<TSocialsType>;
 };
 function Social({ register, errors }: SocialsFormType) {
-  logToConsole(errors);
   return (
     <>
       <div className=" my-4">

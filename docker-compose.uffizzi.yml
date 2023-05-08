@@ -3,8 +3,8 @@ x-uffizzi:
   ingress:
     service: crm-frontend
     port: 8080  
-  continuous_previews:
-    delete_preview_after: 1h
+  # continuous_previews:
+  #   delete_preview_after: 1h
 
 services:
   crm-frontend:

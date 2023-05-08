@@ -3,8 +3,6 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import "./fonts.css";
-import { AppRoutes } from "./routes/Routes";
-
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AppRoutes } from "./routes/Routes";
 import AuthProvider from "./services/AuthProvider";

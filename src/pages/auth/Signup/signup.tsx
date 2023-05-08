@@ -5,6 +5,7 @@ import githubLogo from "../../../assets/icons/Github-logo.png";
 import googleLogo from "../../../assets/icons/Google-logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { userRegister } from "../../../services/api";
+import { logToConsole } from "../../../utils";
 
 //defining data types to be used
 interface FormData {
@@ -45,7 +46,7 @@ function SignUp() {
         navigate("/login");
       })
       .catch((err) => {
-        console.log(err);
+        logToConsole(err);
       });
   });
 
@@ -143,7 +144,7 @@ function SignUp() {
               />
               {errors.phone_number && (
                 <p className="text-[#b92828] text-[12px]">
-                  Phone must be valid {errors.phone_number?.message}
+                  Phone number must be valid
                 </p>
               )}
             </div>

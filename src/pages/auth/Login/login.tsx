@@ -20,7 +20,7 @@ interface ResponseDataError {
 }
 
 function Login() {
-  const { setAuth } = useAuthContext();
+  const { setAuth, setPersist, persist } = useAuthContext();
   const {
     register,
     handleSubmit,
@@ -45,7 +45,6 @@ function Login() {
       navigate(from, { replace: true });
     } catch (error) {
       const err = error as AxiosError;
-      console.log(err.response?.data);
       const response_data = err.response?.data as ResponseDataError;
       setResponseError(response_data?.detail);
     } finally {
@@ -141,7 +140,20 @@ function Login() {
               Login to your account
             </button>
 
-            <div className="flex items-center my-6 gap-1">
+            <div className="w-full pt-4">
+              <label htmlFor="remember-checkbox" className="text-sm">
+                Remember me
+              </label>
+              <input
+                type="checkbox"
+                id="remember-checkbox"
+                className="ml-2"
+                checked={persist}
+                onChange={() => setPersist(!persist)}
+              />
+            </div>
+
+            <div className="flex items-center mb-6 my-4 gap-1">
               <hr className="w-[2.5rem] border-[#353535]" />
               <p className="text-[#353535] text-[12px] font-semibold">
                 continue with social media

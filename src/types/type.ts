@@ -33,3 +33,16 @@ export interface NavbarProps {
   isOpen: boolean;
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
 }
+
+export type TNewUserFields = Record<
+  | "email"
+  | "phone"
+  | "portfolio"
+  | "languages"
+  | "experience_yrs"
+  | "experience_summary"
+  | "twitter_handle"
+  | "linkedin_profile"
+  | "working",
+  string
+>;

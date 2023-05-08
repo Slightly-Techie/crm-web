@@ -19,10 +19,6 @@ const Member = ({ data }: MemberProps) => {
           <img src={Circle} alt="circle" />
           Visit Website
         </p>
-        <p className="mb-2 inline-flex items-center gap-1 rounded-sm bg-[#F1F6F7] p-2 font-medium text-[#5D6675] text-sm">
-          <img src={Circle} alt="circle" />
-          Visit Website of Memmmmmmbbbbbeeerrrrrrr
-        </p>
       </div>
 
       <div className="mb-2">

@@ -49,12 +49,12 @@ jobs:
           cat docker-compose.rendered.yml
       - name: Hash Rendered Compose File
         id: hash
-        run: echo "COMPOSE_FILE_HASH=$(md5sum docker-compose.rendered.yml | awk '{ print $1 }')" >> $GITHUB_ENV
+        run: echo "::set-output name=hash::$(md5sum docker-compose.rendered.yml | awk '{ print $1 }')"
       - name: Cache Rendered Compose File
         uses: actions/cache@v3
         with:
           path: docker-compose.rendered.yml
-          key: ${{ env.COMPOSE_FILE_HASH }}
+          key: ${{ steps.hash.outputs.hash }}
   
   deploy-uffizzi-preview:
     name: Use Remote Workflow to Preview on Uffizzi
@@ -62,7 +62,7 @@ jobs:
     uses: UffizziCloud/preview-action/.github/workflows/reusable.yaml@v2
     with:
       compose-file-cache-key: ${{ needs.render-compose-file.outputs.compose-file-cache-key }}
-      compose-file-cache-path: ${{ needs.render-compose-file.outputs.compose-file-cache-path }}
+      compose-file-cache-path: docker-compose.rendered.yml
       server: https://app.uffizzi.com
     permissions:
       contents: read

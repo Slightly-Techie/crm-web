@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { NEW_USER_DATA } from "./NewSignUp";
 import { FieldErrors, RegisterOptions } from "react-hook-form";
 import { TNewUserFields } from "../../types/type";
+import { NEW_USER_DATA } from "./NewSignUp";
 
 type ProfileFields = "email" | "phone" | "portfolio";
 

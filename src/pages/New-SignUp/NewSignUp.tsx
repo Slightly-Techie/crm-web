@@ -1,7 +1,8 @@
 import stars from "../../assets/icons/Stars.png";
 import rocket from "../../assets/icons/big-blue-flying-rocket.png";
-import useNavigateForms from "../../Hooks/useNavigateForms";
+import useNavigateForms from "../../hooks/useNavigateForms";
 import { TNewUserFields } from "../../types/type";
+import { logToConsole } from "../../utils";
 import SubmitSuccess from "./SubmitSuccess";
 import { useState } from "react";
 
@@ -26,7 +27,7 @@ function NewSignUp() {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
     if (currentFormIndex === 2) {
       //send to db then
-      console.log(NEW_USER_DATA);
+      logToConsole(NEW_USER_DATA);
       setStatus("submitted");
       return;
     }

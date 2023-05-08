@@ -1,14 +1,13 @@
 import axios from "../../lib/axios";
-import { API_URL } from "../../constants";
 import useAxiosAuth from "../../hooks/useAxiosAuth";
 
 const useEndpoints = () => {
   const authAxios = useAxiosAuth();
 
-  const getUserProfile = () => authAxios.get(`${API_URL}/api/v1/users/me`);
+  const getUserProfile = () => authAxios.get(`/api/v1/users/me`);
 
   const updateUserProfile = (data: any) =>
-    authAxios.put(`${API_URL}/api/v1/users/profile`, data);
+    authAxios.put(`/api/v1/users/profile`, data);
 
   return { getUserProfile, updateUserProfile };
 };

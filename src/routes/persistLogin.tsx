@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../services/AuthProvider";
-import useRefreshToken from "../hooks/useRefreshToken";
 import { Outlet } from "react-router-dom";
 import Loading from "../pages/loading";
+import useRefreshToken from "../hooks/useRefreshToken";
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -23,13 +23,6 @@ const PersistLogin = () => {
     !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    console.log("isLoading: ", isLoading);
-    console.log("aT: ", JSON.stringify(auth?.accessToken));
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading]);
 
   return <>{!persist ? <Outlet /> : isLoading ? <Loading /> : <Outlet />}</>;
 };

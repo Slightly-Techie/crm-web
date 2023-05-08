@@ -10,7 +10,7 @@ interface IAuthContext {
   auth: Auth;
   setAuth: React.Dispatch<React.SetStateAction<Auth>>;
   persist: boolean;
-  setPersist: React.Dispatch<React.SetStateAction<boolean>>;
+  setPersist: (value: boolean) => void;
 }
 
 const initialAuthContext: IAuthContext = {
@@ -30,7 +30,12 @@ const AuthContext = createContext<IAuthContext>(initialAuthContext);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [auth, setAuth] = useState<Auth>(initialAuthContext.auth);
-  const [persist, setPersist] = useState(initialAuthContext.persist);
+  const [persist, _setPersist] = useState(initialAuthContext.persist);
+
+  const setPersist = (value: boolean) => {
+    _setPersist(value);
+    localStorage.setItem("persist", JSON.stringify(value));
+  };
 
   return (
     <AuthContext.Provider value={{ auth, setAuth, persist, setPersist }}>

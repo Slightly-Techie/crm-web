@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { userProfile, WithoutNullableKeys } from "../../types/type";
 import useEndpoints from "../../services/api";
 import { useQuery } from "react-query";
+import { logToConsole } from "../../utils";
 
 type inputeField = WithoutNullableKeys<Omit<userProfile, "id">>;
 
@@ -53,7 +54,7 @@ const UserProfile = () => {
         setEditMode(false);
       })
       .catch((err) => {
-        console.log(err);
+        logToConsole(err);
       });
   });
 

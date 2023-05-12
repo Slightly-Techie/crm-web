@@ -4,7 +4,7 @@ import useNavigateForms from "../../hooks/useNavigateForms";
 import { TNewUserFields } from "../../types/type";
 import SubmitSuccess from "./SubmitSuccess";
 import { useState } from "react";
-// 
+
 export let NEW_USER_DATA: TNewUserFields = {
   email: "",
   phone: "",

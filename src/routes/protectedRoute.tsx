@@ -1,15 +1,15 @@
-import { Navigate, useLocation } from "react-router-dom";
-import { getLocalToken } from "../utils";
+import { useAuthContext } from "../services/AuthProvider";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const isAuthenticated = getLocalToken() !== undefined;
+const ProtectedRoute = () => {
+  const { auth } = useAuthContext();
+  const location = useLocation();
 
-  let location = useLocation();
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-  return children;
+  return auth?.accessToken ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" state={{ from: location }} replace />
+  );
 };
 
 export default ProtectedRoute;

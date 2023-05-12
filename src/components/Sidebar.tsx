@@ -3,14 +3,17 @@ import Bag from "../assets/icons/bag.png";
 import Person from "../assets/icons/person.png";
 import Cart from "../assets/icons/cart.png";
 import { NavbarProps } from "../types/type";
+import { Link } from "react-router-dom";
 
 function Sidebar({ isOpen }: NavbarProps) {
   return (
     <>
       <aside className="py-6 px-3 lg:px-5 sm:w-15 lg:w-20 border-r-[#DCDDE1] border-r bg-white hidden sm:block">
-        <div className="bg-secondary p-2 mx-auto rounded-sm text-white">
-          <h1 className="font-bold text-xl">ST</h1>
-        </div>
+        <Link to={"/"}>
+          <button className="bg-secondary p-2 mx-auto rounded-sm text-white">
+            <h1 className="font-bold text-xl">ST</h1>
+          </button>
+        </Link>
 
         <div className="grid gap-8 mt-10 place-items-center">
           <img src={Bag} alt="Bag icon" />

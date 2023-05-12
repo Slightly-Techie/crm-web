@@ -1,5 +1,5 @@
 import React from "react";
-import { Colors } from "../pages/constants";
+import { Colors } from "../constants";
 
 const Footer = () => {
   return (

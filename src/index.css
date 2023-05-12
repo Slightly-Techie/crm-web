@@ -24,6 +24,11 @@ body {
   font-family: "TT Hoves";
 }
 
+/* Reset css */
+mark {
+  background: none;
+}
+
 #text-animate {
   white-space: pre;
 }
@@ -83,4 +88,18 @@ body {
   .nav-btn {
     @apply bg-white rounded-3xl py-2 px-4 border border-[#DCDDE1] font-semibold text-lg text-secondary;
   }
+}
+
+.new-sign-upbg {
+  background-image: url("../src/assets/imgs/magic-pattern.jpg");
+  background-size: cover;
+}
+
+.input__transparent {
+  background: transparent;
+}
+
+/* invalid form inputs */
+small {
+  color: rgb(255, 85, 85);
 }

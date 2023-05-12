@@ -3,10 +3,11 @@ import stars from "../../../assets/icons/Stars.png";
 import rocket from "../../../assets/icons/big-blue-flying-rocket.png";
 import githubLogo from "../../../assets/icons/Github-logo.png";
 import googleLogo from "../../../assets/icons/Google-logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { userLogin } from "../../../services/api";
+import { useAuthContext } from "../../../services/AuthProvider";
 
 //defining data types to be used
 interface FormData {
@@ -19,7 +20,7 @@ interface ResponseDataError {
 }
 
 function Login() {
-  const navigate = useNavigate();
+  const { setAuth, setPersist, persist } = useAuthContext();
   const {
     register,
     handleSubmit,
@@ -27,26 +28,28 @@ function Login() {
   } = useForm<FormData>({ mode: "onSubmit" });
   const [responseError, setResponseError] = useState<string | undefined>();
   const [isRequestSent, setIsRequestSent] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
-  const onSubmit = handleSubmit((data: any) => {
-    setIsRequestSent(true);
-    let formData = new FormData();
-    formData.append("username", data.email);
-    formData.append("password", data.password);
+  const onSubmit = handleSubmit(async (input: any) => {
+    try {
+      setIsRequestSent(true);
+      let formData = new FormData();
+      formData.append("username", input.email);
+      formData.append("password", input.password);
 
-    userLogin(formData)
-      .then((res) => {
-        localStorage.setItem("st-token", res.data.token);
-        navigate("/");
-      })
-      .catch((err: AxiosError) => {
-        console.log(err.response?.data);
-        const response_data = err.response?.data as ResponseDataError;
-        setResponseError(response_data?.detail);
-      })
-      .finally(() => {
-        setIsRequestSent(false);
-      });
+      const { data } = await userLogin(formData);
+
+      setAuth({ isAuthenticated: true, accessToken: data.token });
+      navigate(from, { replace: true });
+    } catch (error) {
+      const err = error as AxiosError;
+      const response_data = err.response?.data as ResponseDataError;
+      setResponseError(response_data?.detail);
+    } finally {
+      setIsRequestSent(false);
+    }
   });
   return (
     <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] min-h-screen">
@@ -137,7 +140,20 @@ function Login() {
               Login to your account
             </button>
 
-            <div className="flex items-center my-6 gap-1">
+            <div className="w-full pt-4">
+              <label htmlFor="remember-checkbox" className="text-sm">
+                Remember me
+              </label>
+              <input
+                type="checkbox"
+                id="remember-checkbox"
+                className="ml-2"
+                checked={persist}
+                onChange={() => setPersist(!persist)}
+              />
+            </div>
+
+            <div className="flex items-center mb-6 my-4 gap-1">
               <hr className="w-[2.5rem] border-[#353535]" />
               <p className="text-[#353535] text-[12px] font-semibold">
                 continue with social media

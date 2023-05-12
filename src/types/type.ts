@@ -34,6 +34,7 @@ export interface NavbarProps {
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
 }
 
+// New user signup form types
 export type TNewUserFields = Record<
   | "email"
   | "phone"

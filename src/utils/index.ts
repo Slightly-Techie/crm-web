@@ -1,5 +1,5 @@
-export const getLocalToken = () => {
-  const token = localStorage.getItem("st-token");
-
-  return token === null ? undefined : token;
+export const logToConsole = (message?: any, ...optionalParams: any[]) => {
+  if (process.env.NODE_ENV === "development") {
+    console.log(message, ...optionalParams);
+  }
 };

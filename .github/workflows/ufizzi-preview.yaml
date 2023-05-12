@@ -3,7 +3,7 @@ name: Build Images and Deploy preview environment
 
 on:
   pull_request:
-    types: [opened,reopened,synchronize,closed]
+    types: [opened,reopened,synchronize]
 
 jobs:
   build-frontend:

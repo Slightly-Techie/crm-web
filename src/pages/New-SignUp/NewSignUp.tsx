@@ -1,6 +1,6 @@
 import stars from "../../assets/icons/Stars.png";
 import rocket from "../../assets/icons/big-blue-flying-rocket.png";
-import useNavigateForms from "../../hooks/useNavigateForms";
+import useNavigateForms from "../../useHooks/useNavigateForms";
 import { TNewUserFields } from "../../types/type";
 import SubmitSuccess from "./SubmitSuccess";
 import { useState } from "react";

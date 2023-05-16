@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import HamburgerIcon from "../assets/icons/menu.png";
 import CloseIcon from "../assets/icons/close.png";
 import AccountMenu from "./account-menu";
-import useLogout from "../hooks/useLogout";
+import useLogout from "../useHooks/useLogout";
 
 function Navbar({ setIsOpen, isOpen }: NavbarProps) {
   const logout = useLogout();

@@ -1,5 +1,5 @@
 import axios from "../../lib/axios";
-import useAxiosAuth from "../../useHooks/useAxiosAuth";
+import useAxiosAuth from "../../hooks/useAxiosAuth";
 
 const useEndpoints = () => {
   const authAxios = useAxiosAuth();

@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import React, { useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { Link } from "react-router-dom";
-import useMouseOverCallback from "../useHooks/useMouseOverCallback";
+import useMouseOverCallback from "../hooks/useMouseOverCallback";
 
 type AccountMenuProps = {
   items: {

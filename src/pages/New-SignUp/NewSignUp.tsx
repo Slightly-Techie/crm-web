@@ -1,9 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import stars from "../../assets/icons/Stars.png";
 import rocket from "../../assets/icons/big-blue-flying-rocket.png";
-import useNavigateForms from "../../Hooks/useNavigateForms";
+import useNavigateForms from "../../hooks/useNavigateForms";
 import { TNewUserFields } from "../../types/type";
-import SubmitSuccess from "./SubmitSuccess";
+import SubmitStatus from "./SubmitStatus";
 import { useState } from "react";
+
+export type Status = "onsubmit" | "success" | "error" | "progress";
 
 export let NEW_USER_DATA: TNewUserFields = {
   email: "",
@@ -18,15 +21,28 @@ export let NEW_USER_DATA: TNewUserFields = {
 };
 
 function NewSignUp() {
-  const [status, setStatus] = useState("In Progress");
+  const [status, setStatus] = useState<Status>("progress");
   const { handleSubmit, next, previous, currentForm, currentFormIndex } =
     useNavigateForms();
+  const navigate = useNavigate();
 
   const onSubmit = (data: Partial<TNewUserFields>) => {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
     if (currentFormIndex === 2) {
-      //send to db then
-      setStatus("submitted");
+      setStatus("onsubmit");
+
+      //* we are not using 'finally' block to navigate the user because the user is redirected
+      //*to different pages depending on the status of the submission
+
+      //TODO: remember to use async/await in the try/catch block in the final code
+      try {
+        //submitting data to db then
+        setStatus("success");
+        navigate("/");
+      } catch (e) {
+        setStatus("error");
+        navigate("/new-signup");
+      }
       return;
     }
     next();
@@ -53,8 +69,8 @@ function NewSignUp() {
             />
           </div>
         </div>
-        {status === "submitted" ? (
-          <SubmitSuccess />
+        {status !== "progress" ? (
+          <SubmitStatus status={status} />
         ) : (
           <div className=" p-8 lg:w-5/6 mx-auto my-auto flex flex-col gap-4  justify-center h-fit">
             <section className="flex text-[#000] dark:text-[#f1f3f7]  mx-auto text-[1.5rem] font-medium justify-between">
@@ -73,7 +89,7 @@ function NewSignUp() {
                   </button>
                 )}
                 {currentFormIndex <= 2 && (
-                  <button className="px-8 py-2 hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7] dark:text-[#000] rounded-sm">
+                  <button className="px-8 py-2 bg-[#001] hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7] dark:text-[#000] rounded-sm">
                     {currentFormIndex === 2 ? "Submit" : "Next"}
                   </button>
                 )}

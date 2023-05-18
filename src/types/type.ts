@@ -41,7 +41,7 @@ export type TNewUserFields = Record<
   | "languages"
   | "experience_yrs"
   | "experience_summary"
-  | "twitter_handle"
+  | "twitter_username"
   | "linkedin_profile"
   | "working",
   string

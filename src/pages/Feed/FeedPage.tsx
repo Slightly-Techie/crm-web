@@ -6,9 +6,9 @@ import Posts from "./Posts";
 
 function FeedPage() {
   return (
-    <div className="w-full">
+    <div className="max-w-screen bg-[#fafafa]">
       <FeedNav />
-      <div className=" grid gap-4  lg:grid-cols-3 ">
+      <div className="feed w-[95%] mx-auto grid  lg:grid-cols-feed ">
         <Leaderboard />
         <Posts />
         <Announcements />

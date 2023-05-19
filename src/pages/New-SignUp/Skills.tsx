@@ -49,7 +49,7 @@ function Skills({ register, errors }: SkillsFormType) {
           })}
           cols={30}
           rows={3}
-          className="w-full text-[#000] dark:text-[#f1f3f7] my-4 border-[1px] px-2 py-2 border-[#3333337c] dark:bg-[transparent] focus:outline-none focus:border-[#333]"
+          className="w-full text-[#000] resize-none dark:text-[#f1f3f7] my-4 border-[1px] px-2 py-2 border-[#3333337c] dark:bg-[transparent] focus:outline-none focus:border-[#333]"
         />
         {errors.experience_summary && (
           <small>{errors.experience_summary.message}</small>

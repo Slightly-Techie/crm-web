@@ -1,16 +1,17 @@
 import React from "react";
 import { Status } from "./NewSignUp";
-import { Oval } from "react-loader-spinner";
+import Loading from "../loading";
+
 type StatusProp = {
-  status?: Status;
+  status: Status;
 };
 
 const Error = () => {
   return (
     <div className="w-full h-full grid place-content-center p-2">
       <h1 className=" text-[2rem] lg:text-[3.5rem] text-[#000] dark:text-[#f3f1f7]   text-center font-medium">
-        The was an <mark className="text-[#ff7676]">error</mark> submitting your
-        request{" "}
+        There was an <mark className="text-[#ff7676]">error</mark> submitting
+        your request{" "}
       </h1>
       <p className="text-[#333] dark:text-white text-center ">
         Please try again.
@@ -31,8 +32,8 @@ const Success = () => {
 
 const Submit = () => {
   return (
-    <div className="w-full h-full grid place-content-center p-2">
-      <Oval />
+    <div className="w-full h-full grid place-content-center p-2 overflow-hidden">
+      <Loading />
     </div>
   );
 };

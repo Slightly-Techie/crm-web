@@ -17,7 +17,7 @@ function AppRoutes() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/new-signup" element={<NewSignUp />} />
-      {/*INFO: the feed route may change...it's used here for development */}
+      {/* the feed route may change...it's used here for development */}
       <Route path="/feed" element={<FeedPage />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>

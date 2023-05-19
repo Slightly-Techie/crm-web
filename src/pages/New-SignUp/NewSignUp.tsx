@@ -30,11 +30,10 @@ function NewSignUp() {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
     if (currentFormIndex === 2) {
       setStatus("onsubmit");
-
       //* we are not using 'finally' block to navigate the user because the user is redirected
       //*to different pages depending on the status of the submission
 
-      //TODO: remember to use async/await in the try/catch block in the final code
+      //TODO: use async/await in the try/catch block in the final code
       try {
         //submitting data to db then
         setStatus("success");

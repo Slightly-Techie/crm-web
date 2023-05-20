@@ -110,7 +110,7 @@ small {
 }
 
 .scrollbar::-webkit-scrollbar {
-  width: 0.6rem;
+  width: 0.4rem;
 }
 
 .scrollbar::-webkit-scrollbar-track {
@@ -118,7 +118,7 @@ small {
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(190, 190, 190, 0.349);
+  background-color: rgba(190, 190, 190, 0.164);
   border-radius: 2rem;
   display: none;
 }

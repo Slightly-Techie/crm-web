@@ -1,44 +1,40 @@
 import React from "react";
-import { RiImageAddLine } from "react-icons/ri";
 import UserPost from "../../components/UserPost";
+import UsersPosts from "../../data/feedmock.json";
+import CreatePost from "./CreatePost";
+import { PostDataTypes } from "../../types/type";
+
+// profile_url, username and name will automatically be set when the user logs in
+
+let PostData: PostDataTypes = {
+  profile_url:
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cG9ydHJhaXR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
+  username: "diabeney",
+  post: "",
+  name: "Addo Diabene",
+  image_url: "",
+  id: "",
+};
 
 function Posts() {
+  const [feedPosts, setFeedPosts] = React.useState(UsersPosts);
+  function handlePostSubmit(data: Partial<PostDataTypes>) {
+    PostData = { ...PostData, ...data };
+    const updatedFeeds = [...feedPosts];
+    //send to db then update Posts
+    updatedFeeds.unshift(PostData);
+    setFeedPosts(updatedFeeds);
+  }
   return (
-    <div className="h-full post p-4 bg-[#fff]">
-      <h1 className="text-2xl font-semibold ">Feed</h1>
+    <div className="h-full post p-4 bg-[#fff] dark:bg-[#020202] dark:text-st-gray200 ">
+      <h1 className="text-2xl pb-4 font-semibold ">Feed</h1>
       <section>
-        <form className="w-full">
-          <textarea
-            className="w-full min-h-20 resize-none p-4 border-[#c7c7c76a] border-[1px] rounded-md"
-            placeholder="What's on your mind?"
-          />
-          <div className=" py-2 border-b-[#c7c7c76a] border-b-[1px] flex justify-between items-center">
-            <div>
-              <label htmlFor="imageUpload" className=" w-fit block mr-0">
-                {" "}
-                <RiImageAddLine size={24} />
-              </label>
-              <input
-                type="file"
-                id="imageUpload"
-                className=" hidden relative h-[0.1px] -z-50"
-                accept="image/*"
-              />
-            </div>
-            <button className="px-4 py-1 bg-secondary text-white rounded-sm">
-              Send
-            </button>
-          </div>
-        </form>
+        <CreatePost submitHandler={handlePostSubmit} />
       </section>
       <section>
-        <UserPost />
-        <UserPost />
-        <UserPost />
-        <UserPost />
-        <UserPost />
-        <UserPost />
-        <UserPost />
+        {feedPosts.map((item) => (
+          <UserPost key={item.id} post={item} />
+        ))}
       </section>
     </div>
   );

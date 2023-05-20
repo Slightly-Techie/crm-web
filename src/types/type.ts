@@ -47,3 +47,8 @@ export type TNewUserFields = Record<
   | "working",
   string
 >;
+
+export type PostDataTypes = Record<
+  "profile_url" | "username" | "post" | "name" | "image_url" | "id",
+  string
+>;

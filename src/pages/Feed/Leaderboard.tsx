@@ -3,12 +3,12 @@ import React from "react";
 function Leaderboard() {
   return (
     <div className="  w-[24rem] p-4  sticky self-start top-[5rem]">
-      <div className="bg-[#fff] rounded-lg border-solid border-[1px] border-[#c7c7c76a] p-4 ">
-        <h1 className=" text-2xl font-semibold text-center ">
+      <div className="bg-[#fff] dark:bg-[#010101] rounded-lg border-solid border-[1px] dark:border-none border-[#c7c7c76a] p-4 ">
+        <h1 className=" text-2xl font-semibold text-center dark:text-st-gray200 ">
           Techie Leaderboard
         </h1>
         <ul className="w-full">
-          <li className="p-4 border-[1px] bg-[#fafafaf4] border-[#c7c7c76a] rounded-md mt-4 flex justify-around items-center ">
+          <li className="p-4 border-[1px] bg-[#fafafaf4] dark:bg-[#333] dark:text-st-gray200 border-[#c7c7c76a] rounded-md mt-4 flex justify-around items-center ">
             <div className="w-24 aspect-square overflow-x-hidden rounded-full">
               <img
                 className="h-full w-full object-cover"
@@ -21,7 +21,7 @@ function Leaderboard() {
               <p className="text-[#b4b4b4dc]">@briannewton</p>
             </div>
           </li>
-          <li className="px-4 py-1 flex justify-between  border-solid border-[1px] border-[#c7c7c76a] bg-[#fafafaf4] items-center rounded-md mt-4">
+          <li className="px-4 py-1 flex justify-between  border-solid border-[1px] dark:bg-[#333] dark:text-st-gray200 border-[#c7c7c76a] bg-[#fafafaf4] items-center rounded-md mt-4">
             <div className="w-12 aspect-square overflow-x-hidden rounded-full">
               <img
                 className="h-full w-full object-cover"
@@ -34,7 +34,7 @@ function Leaderboard() {
               2ND
             </span>
           </li>
-          <li className="px-4 py-1 flex   border-solid border-[1px] border-[#c7c7c76a] justify-between bg-[#fafafaf4] items-center rounded-md mt-4">
+          <li className="px-4 py-1 flex   border-solid border-[1px] dark:bg-[#333] dark:text-st-gray200 border-[#c7c7c76a] justify-between bg-[#fafafaf4] items-center rounded-md mt-4">
             <div className="w-12 aspect-square overflow-x-hidden rounded-full">
               <img
                 className="h-full w-full object-cover"
@@ -47,7 +47,7 @@ function Leaderboard() {
               3RD
             </span>
           </li>
-          <li className="px-4 py-1 flex   border-solid border-[1px] border-[#c7c7c76a] justify-between bg-[#fafafaf4] items-center rounded-md mt-4">
+          <li className="px-4 py-1 flex   border-solid border-[1px] dark:bg-[#333] dark:text-st-gray200 border-[#c7c7c76a] justify-between bg-[#fafafaf4] items-center rounded-md mt-4">
             <div className="w-12 aspect-square overflow-x-hidden rounded-full">
               <img
                 className="h-full w-full object-cover"
@@ -60,7 +60,7 @@ function Leaderboard() {
               4TH
             </span>
           </li>
-          <li className="px-4 py-1 flex  border-solid border-[1px] border-[#c7c7c76a] justify-between  bg-[#fafafaf4] items-center rounded-md mt-4">
+          <li className="px-4 py-1 flex  border-solid border-[1px] dark:bg-[#333] dark:text-st-gray200 border-[#c7c7c76a] justify-between  bg-[#fafafaf4] items-center rounded-md mt-4">
             <div className="w-12 aspect-square overflow-x-hidden rounded-full">
               <img
                 className="h-full w-full object-cover"

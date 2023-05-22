@@ -9,9 +9,9 @@ import { PostDataTypes } from "../../types/type";
 let PostData: PostDataTypes = {
   profile_url:
     "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cG9ydHJhaXR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60",
-  username: "diabeney",
+  username: "marvink",
   post: "",
-  name: "Addo Diabene",
+  name: "Marvin Kwadwo",
   image_url: "",
   id: "",
 };
@@ -26,7 +26,7 @@ function Posts() {
     setFeedPosts(updatedFeeds);
   }
   return (
-    <div className="h-full post p-4 bg-[#fff] dark:bg-[#020202] dark:text-st-gray200 ">
+    <div className="h-full mx-auto pt-8 p-4 bg-[#fff] lg:w-[95%] dark:bg-[#020202] dark:text-st-gray200 ">
       <h1 className="text-2xl pb-4 font-semibold ">Feed</h1>
       <section>
         <CreatePost submitHandler={handlePostSubmit} />

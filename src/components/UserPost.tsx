@@ -9,7 +9,7 @@ type UserPostProps = {
 
 function UserPost({ post }: UserPostProps) {
   return (
-    <div className="border-b-[#c7c7c76a] border-b-[1px] pb-4">
+    <div className="border-b-[#c7c7c73b] border-b-[1px] pb-4">
       <section className="flex gap-4 p-4">
         <div className="w-12 aspect-square rounded-full overflow-hidden ">
           <img

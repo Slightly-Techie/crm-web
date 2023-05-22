@@ -3,7 +3,7 @@ import { RiUserLine } from "react-icons/ri";
 
 function FeedNav() {
   return (
-    <div className=" w-full bg-[#ffffff53] dark:bg-[#0202022f] backdrop-saturate-200 dark:text-st-gray200 sticky z-50 top-0 h-20 backdrop-blur-sm px-4 py-4 flex justify-between items-start border-b-solid border-b-[#cecece73] border-b-[1px]">
+    <div className="w-full bg-[#ffffff53] dark:bg-[#0202022f] backdrop-saturate-200 dark:text-st-gray200 lg:sticky z-50 top-0 h-20 backdrop-blur-sm px-4 py-4 flex justify-between items-start border-b-solid border-b-[#cecece73] border-b-[1px]">
       <section className="p-2 aspect-square bg-secondary my-auto ">
         <p>ST</p>
       </section>
@@ -14,7 +14,7 @@ function FeedNav() {
           </button>
         </section>
         <section className="flex gap-4 items-center px-4 justify-center">
-          <h3>Welcome, Bryan</h3>
+          <h3 className="hidden lg:block">Welcome, Bryan</h3>
           <div className=" w-12 aspect-square rounded-full overflow-hidden  ">
             <img
               className="w-full h-full object-cover  "

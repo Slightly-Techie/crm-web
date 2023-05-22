@@ -8,10 +8,14 @@ import { FiBell } from "react-icons/fi";
 
 function FeedPage() {
   const [showScoreboard, setShowScoreboard] = React.useState(false);
-  const [showAnnouncements, setShowAnnouncements] = React.useState(false);
+  const [showAnnouncements, setShowAnnouncements] = React.useState(true);
 
   function toggleShowScoreboard() {
     setShowScoreboard((prev) => !prev);
+  }
+
+  function toggleShowAnnouncement() {
+    setShowAnnouncements((prev) => !prev);
   }
   return (
     <div className="max-w-screen bg-[#fafafa] dark:bg-[#020202]">
@@ -22,7 +26,7 @@ function FeedPage() {
             {" "}
             <RiContactsLine color="inherit" size={24} />{" "}
           </button>
-          <button className="">
+          <button onClick={toggleShowAnnouncement} className="">
             {" "}
             <FiBell color="inherit" size={24} />{" "}
           </button>
@@ -33,7 +37,10 @@ function FeedPage() {
             toggleScoreboard={toggleShowScoreboard}
           />
           <Posts />
-          <Announcements />
+          <Announcements
+            show={showAnnouncements}
+            toggleScoreboard={toggleShowAnnouncement}
+          />
         </div>
       </div>
     </div>

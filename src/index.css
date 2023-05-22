@@ -126,3 +126,18 @@ small {
 .scrollbar:hover::-webkit-scrollbar-thumb {
   display: block;
 }
+
+.red {
+  border: 1px solid red;
+}
+
+.blue {
+  border: 1px solid blue;
+}
+
+.lime {
+  border: 1px solid lime;
+}
+* {
+  /* outline: 1px solid rgb(8, 255, 8); */
+}

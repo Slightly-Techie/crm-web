@@ -1,8 +1,24 @@
 import React from "react";
+import { RiCloseLine } from "react-icons/ri";
 
-function Announcements() {
+type LeaderboardProps = {
+  show: boolean;
+  toggleScoreboard: () => void;
+};
+
+function Announcements({ show, toggleScoreboard }: LeaderboardProps) {
   return (
-    <div className="scrollbar announcement  w-[24rem] sticky p-4   self-start top-[5rem]">
+    <div
+      className={`w-screen ${
+        show ? "translate-x-0" : "translate-x-full"
+      } lg:translate-x-0 p-4 overflow-y-scroll fixed top-0 h-screen scrollbar lg:h-[calc(100vh-5rem)] bg-[#fff] dark:bg-[#000] z-[100] lg:z-10 lg:w-[24rem] lg:sticky self-start lg:top-[5rem]`}
+    >
+      <button
+        onClick={toggleScoreboard}
+        className=" dark:text-white text-[#010101] lg:hidden block ml-auto"
+      >
+        <RiCloseLine color=" inherit" size={24} />
+      </button>
       <div className="bg-[#fff] dark:bg-[#000] dark:text-st-gray200 rounded-lg border-solid border-[1px] border-[#c7c7c73b] dark:border-none p-4 mb-4">
         <h3 className="text-2xl font-semibold py-2">Announcements</h3>
         <section className="py-2 border-y-[1px] border-[#c7c7c73b] ">

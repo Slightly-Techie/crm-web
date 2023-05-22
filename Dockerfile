@@ -1,16 +1,16 @@
 
-
-
 FROM node:16-alpine
 
 WORKDIR /app
 
-COPY . .
+COPY ./package*.json .
+
+RUN npm i
 
 ENV NODE_ENV=production \
     REACT_APP_API_URL=https://crm-api.fly.dev
 
-RUN npm i
+COPY . .
 
 RUN npm run build
 

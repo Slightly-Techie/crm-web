@@ -13,8 +13,9 @@ export const REGEXVALIDATION = {
   name: /^[a-zA-Z]+$/,
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/,
-  phoneNumber: /^(?:\+233|0)[23567]\d{8}$|^(\+|0{2})\d{1,3}\d{4,14}$/,
+  phoneNumberSingle: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
+  phoneNumberMultiple:
+    /^(?:(?:[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6})(?:\/|$)){1,7}$/,
   linkedIn:
     /^(https?:\/\/)?([a-z]{2,3}\.)?linkedin\.com\/(in|pub|company)\/[\w-]+\/?$/,
-  twitter: /^(https?:\/\/)?(www\.)?twitter\.com\/[A-Za-z0-9_]{1,15}\/?$/,
 };

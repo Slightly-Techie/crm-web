@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NEW_USER_DATA } from "./NewSignUp";
 import { FieldErrors, RegisterOptions } from "react-hook-form";
 import { TNewUserFields } from "../../types/type";
+import { REGEXVALIDATION } from "../../constants";
 
 type ProfileFields = "email" | "phone" | "portfolio";
 
@@ -27,7 +28,7 @@ function Profile({ register, errors }: ProfileFormType) {
           placeholder="kofi@example.com"
           {...register("email", {
             required: true,
-            pattern: /^\S+@\S+\.\S+$/i,
+            pattern: REGEXVALIDATION.email,
           })}
         />
         {errors.email && <small>Email must be valid</small>}

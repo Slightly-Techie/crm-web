@@ -20,7 +20,7 @@ function Social({ register, errors }: SocialsFormType) {
         <input
           {...register("twitter_handle", {
             required: true,
-            pattern: REGEXVALIDATION.twitter,
+            pattern: REGEXVALIDATION.name,
           })}
           className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
           type="text"

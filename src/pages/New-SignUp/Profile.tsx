@@ -42,6 +42,7 @@ function Profile({ register, errors }: ProfileFormType) {
           type="text"
           {...register("phone", {
             required: "Provide your phone number(s)",
+            pattern: REGEXVALIDATION.phoneNumberMultiple,
           })}
           placeholder="0123456789/098765431"
         />

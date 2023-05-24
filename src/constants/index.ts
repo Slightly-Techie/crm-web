@@ -16,6 +16,7 @@ export const REGEXVALIDATION = {
   phoneNumberSingle: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
   phoneNumberMultiple:
     /^(?:(?:[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6})(?:\/|$)){1,7}$/,
+  twitter: /^(?!.*\.{2})[A-Za-z0-9_]{1,15}$/,
   linkedIn:
     /^(https?:\/\/)?([a-z]{2,3}\.)?linkedin\.com\/(in|pub|company)\/[\w-]+\/?$/,
 };

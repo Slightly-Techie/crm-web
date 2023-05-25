@@ -28,14 +28,16 @@ const UserProfile = () => {
   const { register, handleSubmit, setValue } = useForm<inputeField>();
 
   const setDefaultValues = (user: userProfile | inputeField) => {
-    setValue("email", user.email);
-    setValue("first_name", user.first_name);
-    setValue("last_name", user.last_name);
-    setValue("github_profile", user.github_profile!);
-    setValue("twitter_profile", user.twitter_profile!);
-    setValue("linkedin_profile", user.linkedin_profile!);
-    setValue("portfolio_url", user.portfolio_url!);
-    setValue("profile_pic_url", user.profile_pic_url!);
+    if (!editMode) {
+      setValue("email", user.email);
+      setValue("first_name", user.first_name);
+      setValue("last_name", user.last_name);
+      setValue("github_profile", user.github_profile!);
+      setValue("twitter_profile", user.twitter_profile!);
+      setValue("linkedin_profile", user.linkedin_profile!);
+      setValue("portfolio_url", user.portfolio_url!);
+      setValue("profile_pic_url", user.profile_pic_url!);
+    }
   };
 
   const query = useQuery({

@@ -42,7 +42,7 @@ function CreatePost({ submitHandler }: CreatePostProp) {
     if ((!postText || !isNonWhitespace(postText)) && !selectedFile) return;
     const data = {
       content: postText,
-      feed_pic_url: preview,
+      feed_pic_url: "",
       id: id.next().value,
     };
     submitHandler(data);
@@ -90,6 +90,7 @@ function CreatePost({ submitHandler }: CreatePostProp) {
               className="hidden relative h-[0.1px] -z-50"
               accept="image/*"
               onChange={(e) => onSelectFile(e)}
+              disabled
               key={selectedFile?.name} // Add a unique key to the input element
             />
           </div>

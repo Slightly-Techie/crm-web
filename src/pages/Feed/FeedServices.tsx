@@ -25,10 +25,8 @@ export function usePostFeeds() {
       return res.data;
     },
     {
-      onSuccess: (data) => {
-        queryClient.setQueryData("feed-data", (oldPosts: any) => {
-          return [...oldPosts, data];
-        });
+      onSuccess: () => {
+        queryClient.invalidateQueries(["feed-data"]);
       },
     }
   );

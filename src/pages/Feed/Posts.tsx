@@ -13,7 +13,6 @@ function Posts() {
       ...userPostData,
       title: "",
     };
-    // console.log(PostData);
     createNewPost(PostData);
   }
 

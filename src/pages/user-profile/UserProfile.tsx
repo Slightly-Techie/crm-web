@@ -133,7 +133,7 @@ const UserProfile = () => {
                     <input
                       disabled={!editMode}
                       {...register("last_name", { required: true })}
-                      className=" rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px]"
+                      className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px]"
                     />
                   </div>
                 </div>

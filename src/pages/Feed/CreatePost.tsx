@@ -3,11 +3,15 @@ import { RiImageAddLine } from "react-icons/ri";
 import { RiCloseLine } from "react-icons/ri";
 import { PostDataTypes } from "../../types/type";
 import { id } from "../../utils";
+import { isNonWhitespace } from "../../utils";
+
+export type NewPostFields = Pick<
+  PostDataTypes,
+  "content" | "feed_pic_url" | "id"
+>;
 
 type CreatePostProp = {
-  submitHandler: (
-    data: Pick<PostDataTypes, "post" | "image_url" | "id">
-  ) => void;
+  submitHandler: (data: NewPostFields) => void;
 };
 
 function CreatePost({ submitHandler }: CreatePostProp) {
@@ -35,8 +39,12 @@ function CreatePost({ submitHandler }: CreatePostProp) {
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!postText && !selectedFile) return;
-    const data = { post: postText, image_url: preview, id: id.next().value };
+    if ((!postText || !isNonWhitespace(postText)) && !selectedFile) return;
+    const data = {
+      content: postText,
+      feed_pic_url: preview,
+      id: id.next().value,
+    };
     submitHandler(data);
     setPostText("");
     setSelectedFile(null);

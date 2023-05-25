@@ -4,11 +4,11 @@ import { RiUserLine } from "react-icons/ri";
 function FeedNav() {
   return (
     <div className="w-full bg-[#ffffff53] dark:bg-[#0202022f] backdrop-saturate-200 dark:text-st-gray200 lg:sticky z-50 top-0 h-20 backdrop-blur-sm px-4 py-4 flex justify-between items-start border-b-solid border-b-[#cecece73] border-b-[1px]">
-      <section className="p-2 aspect-square bg-secondary my-auto ">
-        <p>ST</p>
+      <section className="p-2 aspect-square bg-secondary dark:bg-st-gray200 my-auto ">
+        <p className=" text-st-gray200 dark:text-secondary ">ST</p>
       </section>
       <div className="flex gap-8 items-center px-4">
-        <section className="flex items-center gap-2">
+        <section className="flex items-center gap-2 border-[1px] border-st-gray200 p-2 rounded-3xl ">
           <button>
             <RiUserLine className=" inline-block my-auto" /> Techies
           </button>

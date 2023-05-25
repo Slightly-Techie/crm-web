@@ -2,19 +2,20 @@ import React from "react";
 import { RiCloseLine } from "react-icons/ri";
 
 type LeaderboardProps = {
-  show: boolean;
-  toggleScoreboard: () => void;
+  show: "Announcement" | "Scoreboard" | null;
+  toggleAnnouncement: (target: null) => void;
 };
 
-function Announcements({ show, toggleScoreboard }: LeaderboardProps) {
+function Announcements({ show, toggleAnnouncement }: LeaderboardProps) {
+  const showAnnouncement = show === "Announcement";
   return (
     <div
       className={`w-screen ${
-        show ? "translate-x-0" : "translate-x-full"
+        showAnnouncement ? "translate-x-0" : "translate-x-full"
       } lg:translate-x-0 p-4 overflow-y-scroll fixed top-0 h-screen scrollbar lg:h-[calc(100vh-5rem)] bg-[#fff] dark:bg-[#000] z-[100] lg:z-10 lg:w-[24rem] lg:sticky self-start lg:top-[5rem]`}
     >
       <button
-        onClick={toggleScoreboard}
+        onClick={() => toggleAnnouncement(null)}
         className=" dark:text-white text-[#010101] lg:hidden block ml-auto"
       >
         <RiCloseLine color=" inherit" size={24} />
@@ -53,8 +54,9 @@ function Announcements({ show, toggleScoreboard }: LeaderboardProps) {
         <section className="p-4">
           <h3 className="text-lg font-semibold">Elvis DSA</h3>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque
-            quisquam labore dolorum nisi? Cumque, laudantium?
+            Insert the things Kwesi has been saying or posting about the techies
+            on Twitter over here So that all who visit the site can be notified
+            of the month’s new techie.
           </p>
         </section>
       </div>

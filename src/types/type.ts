@@ -48,7 +48,15 @@ export type TNewUserFields = Record<
   string
 >;
 
-export type PostDataTypes = Record<
-  "profile_url" | "username" | "post" | "name" | "image_url" | "id",
-  string
->;
+export type PostDataTypes = {
+  content: string;
+  feed_pic_url: string;
+  id: string;
+  created_at?: string;
+  user: {
+    first_name: string;
+    last_name: string;
+    profile_pic_url: string;
+    id?: string;
+  };
+};

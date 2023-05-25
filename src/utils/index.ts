@@ -47,10 +47,14 @@ const generateRandomIds = function () {
   return randomId;
 };
 
-export const id: Generator<string> = (function* () {
+export const id: Generator<string, string, string> = (function* () {
   let generatedId;
   while (true) {
     generatedId = generateRandomIds();
     yield generatedId;
   }
 })();
+
+export function isNonWhitespace(input: string) {
+  return /\S+/g.test(input);
+}

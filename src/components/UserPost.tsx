@@ -1,10 +1,7 @@
 import React from "react";
-
+import { PostDataTypes } from "../types/type";
 type UserPostProps = {
-  post: Record<
-    "profile_url" | "name" | "username" | "post" | "image_url",
-    string
-  >;
+  post: PostDataTypes;
 };
 
 function UserPost({ post }: UserPostProps) {
@@ -13,22 +10,24 @@ function UserPost({ post }: UserPostProps) {
       <section className="flex gap-4 p-4">
         <div className="w-12 aspect-square rounded-full overflow-hidden ">
           <img
-            src={post.profile_url}
+            src={post.user.profile_pic_url}
             alt="Profile"
             className="w-full h-full object-cover object-center"
           />
         </div>
         <div>
-          <h3 className=" text-lg font-semibold">{post.name}</h3>
-          <p className="text-sm font-light">@{post.username}</p>
+          <h3 className=" text-lg font-semibold">
+            {post.user.first_name} {post.user.last_name}
+          </h3>
+          <p className="text-sm font-light">{post.created_at}</p>
         </div>
       </section>
       <section>
-        <p>{post.post}</p>
+        <p>{post.content}</p>
       </section>
-      {post.image_url && (
+      {post.feed_pic_url && (
         <section className="my-4 overflow-hidden rounded-lg">
-          <img src={post.image_url} alt="user" />
+          <img src={post.feed_pic_url} alt="user" />
         </section>
       )}
     </div>

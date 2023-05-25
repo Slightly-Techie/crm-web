@@ -13,11 +13,11 @@ export let NEW_USER_DATA: TNewUserFields = {
   phone: "",
   portfolio: "",
   languages: "",
-  experience_yrs: "",
+  experience_yrs: "", // number
   experience_summary: "",
   twitter_username: "",
   linkedin_profile: "",
-  working: "",
+  working: "", // remove
 };
 
 function NewSignUp() {

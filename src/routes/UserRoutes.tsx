@@ -4,6 +4,7 @@ import UserList from "../pages/dashboard/UserList";
 import ProtectedRoute from "../routes/protectedRoute";
 import Dashboard from "../layout/dashboard";
 import PersistLogin from "./persistLogin";
+import FeedPage from "../pages/Feed/FeedPage";
 
 function UserRoutes() {
   return (
@@ -15,6 +16,7 @@ function UserRoutes() {
               <Route path="" element={<UserList />} />
               <Route path="profile" element={<UserProfile />} />
             </Route>
+            <Route path="/feed" element={<FeedPage />} />
           </Route>
         </Route>
       </Routes>

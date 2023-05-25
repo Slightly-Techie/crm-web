@@ -30,7 +30,7 @@ const Success = () => {
   );
 };
 
-const Submit = () => {
+const Loader = () => {
   return (
     <div className="w-full h-full grid place-content-center p-2 overflow-hidden">
       <Loading />
@@ -40,7 +40,7 @@ const Submit = () => {
 
 function SubmitStatus({ status }: StatusProp) {
   if (status === "error") return <Error />;
-  if (status === "onsubmit") return <Submit />;
+  if (status === "onsubmit") return <Loader />;
   if (status === "success") return <Success />;
 
   return null;

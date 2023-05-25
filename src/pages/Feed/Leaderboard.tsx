@@ -2,19 +2,20 @@ import React from "react";
 import { RiCloseLine } from "react-icons/ri";
 
 type LeaderboardProps = {
-  show: boolean;
-  toggleScoreboard: () => void;
+  show: "Announcement" | "Scoreboard" | null;
+  toggleScoreboard: (target: null) => void;
 };
 
 function Leaderboard({ show, toggleScoreboard }: LeaderboardProps) {
+  const showScoreBoard = show === "Scoreboard";
   return (
     <div
       className={`w-screen ${
-        show ? "translate-x-0" : "-translate-x-full"
+        showScoreBoard ? "translate-x-0" : "-translate-x-full"
       } lg:translate-x-0 p-4 fixed top-0 h-screen bg-[#fff] dark:bg-[#000] z-[100] lg:h-fit lg:z-10 lg:w-[24rem] lg:sticky self-start lg:top-[5rem] `}
     >
       <button
-        onClick={toggleScoreboard}
+        onClick={() => toggleScoreboard(null)}
         className=" dark:text-white text-[#010101] lg:hidden block ml-auto"
       >
         <RiCloseLine color=" inherit" size={24} />

@@ -35,18 +35,25 @@ export interface NavbarProps {
 }
 
 // New user signup form types
-export type TNewUserFields = Record<
-  | "email"
-  | "phone"
-  | "portfolio"
-  | "languages"
-  | "experience_yrs"
-  | "experience_summary"
-  | "twitter_username"
-  | "linkedin_profile"
-  | "working",
-  string
->;
+
+export type TNewUserFields = {
+  email: string;
+  first_name: string;
+  last_name: string;
+  password: string;
+  password_confirmation: string;
+  portfolio: string;
+  bio: string;
+  phone_number: string;
+  years_of_experience: number | null;
+  github_profile: string;
+  twitter_profile: string;
+  linkedin_profile: string;
+  portfolio_url: string;
+  stack: string;
+  // profile_pic_url: "string";
+  // is_active: string;
+};
 
 export type PostDataTypes = {
   content: string;

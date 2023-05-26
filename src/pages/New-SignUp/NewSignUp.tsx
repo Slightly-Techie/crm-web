@@ -9,15 +9,20 @@ import { useState } from "react";
 export type Status = "onsubmit" | "success" | "error" | "progress";
 
 export let NEW_USER_DATA: TNewUserFields = {
+  first_name: "",
+  last_name: "",
+  password: "",
+  password_confirmation: "",
   email: "",
-  phone: "",
+  phone_number: "",
   portfolio: "",
-  languages: "",
-  experience_yrs: "", // number
-  experience_summary: "",
-  twitter_username: "",
+  stack: "",
+  years_of_experience: null,
+  bio: "",
+  twitter_profile: "",
   linkedin_profile: "",
-  working: "", // remove
+  github_profile: "",
+  portfolio_url: "",
 };
 
 function NewSignUp() {
@@ -28,28 +33,33 @@ function NewSignUp() {
 
   const onSubmit = (data: Partial<TNewUserFields>) => {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
-    if (currentFormIndex === 2) {
+    if (currentFormIndex === 3) {
+      const { years_of_experience } = NEW_USER_DATA;
+      NEW_USER_DATA = {
+        ...NEW_USER_DATA,
+        years_of_experience: Number(years_of_experience),
+      };
       setStatus("onsubmit");
-      //* we are not using 'finally' block to navigate the user because the user is redirected
-      //*to different pages depending on the status of the submission
-
-      //TODO: use async/await in the try/catch block in the final code
-      try {
-        //submitting data to db then
+      setTimeout(() => {
+        console.log(NEW_USER_DATA);
         setStatus("success");
-        navigate("/");
-      } catch (e) {
-        setStatus("error");
-        navigate("/new-signup");
-      }
-      return;
+      }, 1000);
+      // try {
+      //   //submitting data to db then
+      //   setStatus("success");
+      //   navigate("/");
+      // } catch (e) {
+      //   setStatus("error");
+      //   navigate("/new-signup");
+      // }
+      // return;
     }
     next();
   };
 
   return (
-    <div className="w-full  bg-white dark:bg-[#111111]">
-      <div className="w-screen h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-[#111111] max-w-[1440px] mx-auto">
+    <div className="w-full  bg-white dark:bg-[#111111] overflow-x-hidden">
+      <div className="w-screen min-h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-[#111111] max-w-[1440px] mx-auto">
         <div className="new-sign-upbg  lg:block  ">
           <div className="flex flex-col gap-4 justify-center p-0 lg:p-8 w-4/5 mx-auto  h-full">
             <img
@@ -87,9 +97,9 @@ function NewSignUp() {
                     Back
                   </button>
                 )}
-                {currentFormIndex <= 2 && (
+                {currentFormIndex <= 3 && (
                   <button className="px-8 py-2 bg-[#001] hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7] dark:text-[#000] rounded-sm">
-                    {currentFormIndex === 2 ? "Submit" : "Next"}
+                    {currentFormIndex === 3 ? "Submit" : "Next"}
                   </button>
                 )}
               </section>

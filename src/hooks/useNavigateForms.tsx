@@ -3,12 +3,14 @@ import { useForm } from "react-hook-form";
 import Profile from "../pages/New-SignUp/Profile";
 import Skills from "../pages/New-SignUp/Skills";
 import Social from "../pages/New-SignUp/Social";
+import CreatePassword from "../pages/New-SignUp/CreatePassword";
 
 function useNavigateForms() {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm({ mode: "onSubmit" });
   const [currentFormIndex, setCurrentFormIndex] = React.useState(0);
   const Forms = [
@@ -24,12 +26,18 @@ function useNavigateForms() {
       category: "Social",
       element: <Social register={register} errors={errors} />,
     },
+    {
+      category: "Create Password",
+      element: (
+        <CreatePassword register={register} errors={errors} watch={watch} />
+      ),
+    },
   ];
 
   const currentForm = Forms[currentFormIndex];
 
   const next = () => {
-    if (currentFormIndex === 2) return;
+    if (currentFormIndex === 3) return;
     setCurrentFormIndex((prev) => prev + 1);
   };
 

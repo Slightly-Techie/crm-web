@@ -101,7 +101,6 @@ function Login() {
                   required: true,
                   min: 8,
                   max: 25,
-                  pattern: REGEXVALIDATION.password,
                 })}
                 style={{ borderColor: errors.password ? "#b92828" : "" }}
                 className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"

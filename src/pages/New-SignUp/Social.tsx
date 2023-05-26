@@ -1,5 +1,6 @@
 import { FieldErrors, RegisterOptions } from "react-hook-form";
 import { TNewUserFields } from "../../types/type";
+import { REGEXVALIDATION } from "../../constants";
 
 type SocialsFields = "twitter_handle" | "linkedin_profile" | "working";
 
@@ -19,6 +20,7 @@ function Social({ register, errors }: SocialsFormType) {
         <input
           {...register("twitter_handle", {
             required: true,
+            pattern: REGEXVALIDATION.twitter,
           })}
           className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
           type="text"
@@ -32,6 +34,7 @@ function Social({ register, errors }: SocialsFormType) {
         <input
           {...register("linkedin_profile", {
             required: true,
+            pattern: REGEXVALIDATION.linkedIn,
           })}
           className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
           type="text"

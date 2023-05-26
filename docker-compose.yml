@@ -1,0 +1,12 @@
+
+version: "3"
+
+services:
+  crm-frontend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:8080"
+    volumes:
+      - /app/node_modules

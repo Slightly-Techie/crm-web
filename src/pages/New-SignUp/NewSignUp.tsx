@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router-dom";
 import stars from "../../assets/icons/Stars.png";
 import rocket from "../../assets/icons/big-blue-flying-rocket.png";
 import useNavigateForms from "../../hooks/useNavigateForms";
 import { TNewUserFields } from "../../types/type";
 import SubmitStatus from "./SubmitStatus";
 import { useState } from "react";
+import useAxiosAuth from "../../hooks/useAxiosAuth";
 
 export type Status = "onsubmit" | "success" | "error" | "progress";
 
@@ -23,36 +23,39 @@ export let NEW_USER_DATA: TNewUserFields = {
   linkedin_profile: "",
   github_profile: "",
   portfolio_url: "",
+  is_active: false,
+  profile_pic_url: "",
 };
 
 function NewSignUp() {
   const [status, setStatus] = useState<Status>("progress");
+  const authAxios = useAxiosAuth();
   const { handleSubmit, next, previous, currentForm, currentFormIndex } =
     useNavigateForms();
-  const navigate = useNavigate();
 
   const onSubmit = (data: Partial<TNewUserFields>) => {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
     if (currentFormIndex === 3) {
-      const { years_of_experience } = NEW_USER_DATA;
+      const { years_of_experience, password, password_confirmation } =
+        NEW_USER_DATA;
+      if (password !== password_confirmation) return;
       NEW_USER_DATA = {
         ...NEW_USER_DATA,
         years_of_experience: Number(years_of_experience),
       };
       setStatus("onsubmit");
-      setTimeout(() => {
-        console.log(NEW_USER_DATA);
-        setStatus("success");
-      }, 1000);
-      // try {
-      //   //submitting data to db then
-      //   setStatus("success");
-      //   navigate("/");
-      // } catch (e) {
-      //   setStatus("error");
-      //   navigate("/new-signup");
-      // }
-      // return;
+      authAxios
+        .post("/api/v1/users/register", NEW_USER_DATA)
+        .then((res) => {
+          setStatus("success");
+        })
+        .catch((err) => {
+          if (err.response.data.detail) {
+            alert(err.response.data.detail);
+            setStatus("progress");
+            return;
+          }
+        });
     }
     next();
   };
@@ -81,7 +84,7 @@ function NewSignUp() {
         {status !== "progress" ? (
           <SubmitStatus status={status} />
         ) : (
-          <div className=" p-8 lg:w-5/6 mx-auto my-auto flex flex-col gap-4  justify-center h-fit">
+          <div className=" p-8 md:w-[30rem] lg:w-5/6 mx-auto my-auto flex flex-col gap-4 justify-center h-fit">
             <section className="flex text-[#000] dark:text-[#f1f3f7]  mx-auto text-[1.5rem] font-medium justify-between">
               <h3>{currentForm.category}</h3>
             </section>

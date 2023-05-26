@@ -25,7 +25,7 @@ function Profile({ register, errors }: ProfileFormType) {
     selectValue === "" || PORTFOLIOS.includes(selectValue) ? false : true;
   return (
     <>
-      <div className=" my-4">
+      <div className="my-4">
         <label className="text-[#000] dark:text-[#f1f3f7]">First Name</label>
         <input
           className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] "

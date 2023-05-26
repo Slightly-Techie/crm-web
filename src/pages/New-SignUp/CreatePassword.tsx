@@ -40,7 +40,7 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
           type="password"
         />
         {errors.password && (
-          <small>
+          <small className="">
             Password should be at least 8 characters and must contain an
             uppercase letter, lowercase letter and a number
           </small>
@@ -67,6 +67,7 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
           className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
           type="password"
         />
+        {errors.password_confirmation && <small>Passwords should match</small>}
       </div>
     </>
   );

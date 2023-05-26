@@ -51,8 +51,9 @@ export type TNewUserFields = {
   linkedin_profile: string;
   portfolio_url: string;
   stack: string;
-  // profile_pic_url: "string";
-  // is_active: string;
+  profile_pic_url: string;
+  is_active: boolean;
+  role_id?: number;
 };
 
 export type PostDataTypes = {

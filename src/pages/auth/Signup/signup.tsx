@@ -6,6 +6,7 @@ import googleLogo from "../../../assets/icons/Google-logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { userRegister } from "../../../services/api";
 import { logToConsole } from "../../../utils";
+import { REGEXVALIDATION } from "../../../constants";
 
 //defining data types to be used
 interface FormData {
@@ -77,7 +78,7 @@ function SignUp() {
                   required: true,
                   min: 2,
                   max: 25,
-                  pattern: /^[a-zA-Z]+$/,
+                  pattern: REGEXVALIDATION.name,
                 })}
                 style={{ borderColor: errors.first_name ? "#b92828" : "" }}
                 className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
@@ -96,7 +97,7 @@ function SignUp() {
                   required: true,
                   min: 2,
                   max: 25,
-                  pattern: /^[a-zA-Z]+$/,
+                  pattern: REGEXVALIDATION.name,
                 })}
                 style={{ borderColor: errors.last_name ? "#b92828" : "" }}
                 className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
@@ -115,7 +116,7 @@ function SignUp() {
                   required: true,
                   min: 2,
                   max: 25,
-                  pattern: /^\S+@\S+$/i,
+                  pattern: REGEXVALIDATION.email,
                 })}
                 style={{ borderColor: errors.email ? "#b92828" : "" }}
                 className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
@@ -133,14 +134,12 @@ function SignUp() {
               <input
                 {...register("phone_number", {
                   required: true,
-                  min: 2,
-                  max: 25,
-                  pattern: /^\S+@\S+$/i,
+                  pattern: REGEXVALIDATION.phoneNumberSingle,
                 })}
                 style={{ borderColor: errors.phone_number ? "#b92828" : "" }}
                 className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
                 type="tel"
-                placeholder="Phone number"
+                placeholder="Phone numbersssss"
               />
               {errors.phone_number && (
                 <p className="text-[#b92828] text-[12px]">
@@ -154,8 +153,7 @@ function SignUp() {
                   required: true,
                   min: 8,
                   max: 25,
-                  pattern:
-                    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+                  pattern: REGEXVALIDATION.password,
                 })}
                 style={{ borderColor: errors.password ? "#b92828" : "" }}
                 className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
@@ -177,8 +175,7 @@ function SignUp() {
                   required: true,
                   min: 8,
                   max: 25,
-                  pattern:
-                    /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+                  pattern: REGEXVALIDATION.password,
                 })}
                 style={{
                   borderColor: errors.password_confirmation

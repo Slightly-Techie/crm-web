@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import Search from "../assets/icons/search.png";
 import Member from "./Member";
-import { IMember } from "../types/type";
-import jsondata from "../data/apimock.json";
+import { ITechie } from "../types/type";
+import { useQuery } from "react-query";
+import useEndpoints from "../services/api";
 
 function Team() {
-  const data = jsondata as IMember[];
+  const [techies, setTechies] = useState<ITechie[]>([]);
+  const { getTechiesList } = useEndpoints();
+
+  const { isLoading, isError } = useQuery({
+    queryKey: "techies",
+    queryFn: getTechiesList,
+    onSuccess: ({ data }) => {
+      console.log(data);
+
+      setTechies(data);
+    },
+    refetchOnWindowFocus: false,
+    retry: 3,
+  });
 
   return (
-    <section className="w-4/5 py-8 bg-white rounded-sm border border-[#DCDDE1]">
+    <section className="w-4/5 py-4 bg-white rounded-sm border border-[#DCDDE1]">
       <div className="flex items-center gap-4 pb-4 px-8 border-b border-b-[#DCDDE1]">
         <h3 className="font-medium text-secondary flex gap-1 items-center text-base">
           Team Memebers
@@ -52,10 +66,12 @@ function Team() {
       </div>
 
       {/* User Info */}
-      <div className="grid mt-8 px-8 grid-cols-3 gap-4">
-        {data.map((user) => (
-          <Member key={`${user.id}`} data={user} />
-        ))}
+      <div className="w-full h-[calc(100%-148px)] overflow-y-scroll">
+        <div className="grid mt-8 px-8 grid-cols-3 gap-4">
+          {techies.map((user) => (
+            <Member key={`${user.id}`} data={user} />
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,16 +1,30 @@
 import React from "react";
 import Circle from "../assets/icons/circle.png";
-import { MemberProps } from "../types/type";
+import { ITechie } from "../types/type";
+
+interface MemberProps {
+  data: ITechie;
+}
 
 const Member = ({ data }: MemberProps) => {
   return (
     <div className="border-[#DCDDE1] border rounded-md p-4">
       <div className="flex items-center gap-4 mb-2">
-        <img src={data.profile_image} alt="profile" />
+        <img
+          className="w-12 h-12 aspect-square shrink-0 rounded-full"
+          src={
+            data?.profile_pic_url
+              ? data?.profile_pic_url
+              : `https://avatars.dicebear.com/api/initials/${data?.first_name} ${data?.last_name}.svg`
+          }
+          alt="profile"
+        />
 
         <div>
-          <h3 className="text-lg font-medium">{data.name}</h3>
-          <p className="font-medium text-[#5D6675] text-sm">{data.location}</p>
+          <h3 className="text-lg font-medium">
+            {data.first_name} {data.last_name}
+          </h3>
+          <p className="font-medium text-[#5D6675] text-sm">Accra, Ghana</p>
         </div>
       </div>
 
@@ -24,7 +38,7 @@ const Member = ({ data }: MemberProps) => {
       <div className="mb-2">
         <h2 className="font-medium text-[#5D6675] text-sm">Work Experience</h2>
         <div className="flex flex-wrap gap-2 mt-4">
-          {data.work_exprerience.map((item, i) => (
+          {["Slightly Techie", "Andela", "Microsoft"].map((item, i) => (
             <p key={`work-${i}`} className="font-medium text-[#5D6675] text-sm">
               {item},
             </p>
@@ -37,12 +51,12 @@ const Member = ({ data }: MemberProps) => {
         <p className="flex bg-[#F1F3F7] rounded-3xl p-2 text-xs">
           Software Engineering
         </p>
-        {data.stack.map((item, i) => (
+        {data.skills.map((item, i) => (
           <p
             key={`stack-${i}`}
             className="bg-[#F1F3F7] rounded-3xl p-2 text-xs"
           >
-            {item}
+            {item.name}
           </p>
         ))}
       </div>

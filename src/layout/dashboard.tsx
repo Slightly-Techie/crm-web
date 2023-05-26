@@ -10,9 +10,9 @@ const Dashboard = () => {
     <>
       <div className="flex relative h-screen">
         <Sidebar isOpen={isOpen} />
-        <main className="w-full pb-8 bg-primary overflow-scroll">
+        <main className="w-full pb-8 bg-primary h-screen overflow-clip">
           <Navbar setIsOpen={setIsOpen} isOpen={isOpen} />
-          <div className="flex justify-center sm:justify-start px-5 gap-4 mt-8 w-[calc(100% - 48px)] max-w-[100%]">
+          <div className="flex justify-center sm:justify-start p-8 w-[calc(100vw-80px)] h-[calc(100vh-104px)] overflow-y-scroll">
             <Outlet />
           </div>
         </main>

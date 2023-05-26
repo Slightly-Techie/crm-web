@@ -37,6 +37,7 @@ function Skills({ register, errors }: SkillsFormType) {
           })}
           className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
           type="number"
+          min={0}
         />
       </div>
       <div className="my-4">
@@ -49,7 +50,7 @@ function Skills({ register, errors }: SkillsFormType) {
           })}
           cols={30}
           rows={3}
-          className="w-full text-[#000] dark:text-[#f1f3f7] my-4 border-[1px] px-2 py-2 border-[#3333337c] dark:bg-[transparent] focus:outline-none focus:border-[#333]"
+          className="w-full text-[#000] resize-none dark:text-[#f1f3f7] my-4 border-[1px] px-2 py-2 border-[#3333337c] dark:bg-[transparent] focus:outline-none focus:border-[#333]"
         />
         {errors.experience_summary && (
           <small>{errors.experience_summary.message}</small>

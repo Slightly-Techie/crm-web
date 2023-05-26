@@ -103,3 +103,41 @@ mark {
 small {
   color: rgb(255, 85, 85);
 }
+
+.announcement {
+  height: calc(100vh - 5rem);
+  overflow-y: scroll;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 0.4rem;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(190, 190, 190, 0.164);
+  border-radius: 2rem;
+  display: none;
+}
+
+.scrollbar:hover::-webkit-scrollbar-thumb {
+  display: block;
+}
+
+.red {
+  border: 1px solid red;
+}
+
+.blue {
+  border: 1px solid blue;
+}
+
+.lime {
+  border: 1px solid lime;
+}
+* {
+  /* outline: 1px solid rgb(8, 255, 8); */
+}

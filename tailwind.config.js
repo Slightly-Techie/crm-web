@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{html,js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      gridTemplateColumns: {
+        feed: "auto 1fr auto",
+      },
+    },
     colors: {
       primary: "#F5F5F5",
       white: "#ffffff",

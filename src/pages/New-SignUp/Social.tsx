@@ -2,7 +2,7 @@ import { FieldErrors, RegisterOptions } from "react-hook-form";
 import { TNewUserFields } from "../../types/type";
 import { REGEXVALIDATION } from "../../constants";
 
-type SocialsFields = "twitter_handle" | "linkedin_profile" | "working";
+type SocialsFields = "twitter_username" | "linkedin_profile" | "working";
 
 type TSocialsType = Pick<TNewUserFields, SocialsFields>;
 
@@ -15,17 +15,19 @@ function Social({ register, errors }: SocialsFormType) {
     <>
       <div className=" my-4">
         <label className=" text-[#000] dark:text-[#f1f3f7]" htmlFor="">
-          What's your Twitter handle?
+          What's your Twitter username?
         </label>
         <input
-          {...register("twitter_handle", {
+          {...register("twitter_username", {
             required: true,
             pattern: REGEXVALIDATION.twitter,
           })}
           className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
           type="text"
         />
-        {errors.twitter_handle && <small>Provide your twitter username </small>}
+        {errors.twitter_username && (
+          <small>Provide your twitter username </small>
+        )}
       </div>
       <div className="my-4">
         <label className=" text-[#000] dark:text-[#f1f3f7]" htmlFor="">

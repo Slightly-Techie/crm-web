@@ -64,8 +64,21 @@ export type TNewUserFields = Record<
   | "languages"
   | "experience_yrs"
   | "experience_summary"
-  | "twitter_handle"
+  | "twitter_username"
   | "linkedin_profile"
   | "working",
   string
 >;
+
+export type PostDataTypes = {
+  content: string;
+  feed_pic_url: string;
+  id: string;
+  created_at?: string;
+  user: {
+    first_name: string;
+    last_name: string;
+    profile_pic_url: string;
+    id?: string;
+  };
+};

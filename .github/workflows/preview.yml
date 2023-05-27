@@ -4,19 +4,44 @@ on:
   workflow_dispatch:
   pull_request:
     types: [opened, reopened, synchronize]
+permissions:
+      contents: read
+      pull-requests: write 
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 jobs:
   create-deploy:
-      name: Deploy app
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - uses: superfly/flyctl-actions/setup-flyctl@master
-        # bash syntax to replace non-alnum with dashes
-        - run: echo "review-${GITHUB_HEAD_REF//[^[:alnum:]]/-}" > ./app
-        - run: echo "deploying to $(cat ./app)"
-        # - name: Setup tmate session # this lets you SSH into the container
-        #   uses: mxschmitt/action-tmate@v3
-        - run: flyctl apps create -o personal $(cat ./app)
-        - run: flyctl deploy -a $(cat ./app) --remote-only
+    name: Deploy app
+    runs-on: ubuntu-latest
+    steps:
+    - name: Git Checkout
+      uses: actions/checkout@v2
+    
+    - name: Deploy to fly
+      id: apply
+      run: |
+        echo "review-${GITHUB_HEAD_REF//[^[:alnum:]]/-}" > ./app
+        echo "deploying to $(cat ./app)"
+        flyctl apps create -o personal $(cat ./app)
+        flyctl deploy -a $(cat ./app) --remote-only
+    
+    - name: Write PR with preview link
+      uses: actions/github-script@v6
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `${{ steps.validate.outputs.stdout }}
+          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
+
+
+
+

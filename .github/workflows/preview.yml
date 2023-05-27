@@ -21,7 +21,7 @@ jobs:
       uses: superfly/flyctl-actions/setup-flyctl@master
     
     - name: Deploy app
-      id: apply
+      id: deploy
       run: |
         echo "review-${GITHUB_HEAD_REF//[^[:alnum:]]/-}" > ./app
         echo "deploying to $(cat ./app)"
@@ -31,7 +31,7 @@ jobs:
     - name: Write PR with preview link
       uses: actions/github-script@v6
       env:
-        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        PLAN: "terraform\n${{ steps.deploy.outputs.stdout }}"
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |

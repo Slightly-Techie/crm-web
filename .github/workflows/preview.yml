@@ -24,6 +24,7 @@ jobs:
       id: deploy
       run: |
         echo "review-${GITHUB_HEAD_REF//[^[:alnum:]]/-}" > ./app
+        echo "::set-output name=app_name::$(cat ./app)"
         if flyctl status -a $(cat ./app); then 
           echo "Deploying to $(cat ./app)"
           flyctl deploy -a $(cat ./app) --remote-only
@@ -36,12 +37,15 @@ jobs:
     - name: Write PR with preview link
       uses: actions/github-script@v6
       env:
-        app: $(cat ./app)
+        app: ${{steps.deploy.outputs.app_name}}
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           const appName = process.env.app
-          const output = `Visit your preview environment at https://${appName}.fly.dev/
+          const link = document.createElement('a')
+          link.href = `https://${appName}.fly.dev/`
+          link.textContent = 'here'
+          const output = `Visit your preview environment at ${link.href}
           *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
           github.rest.issues.createComment({

@@ -7,8 +7,6 @@ const useEndpoints = () => {
 
   const getUserProfile = () => authAxios.get(`/api/v1/users/me`);
 
-  const getAllUsers = () => authAxios.get(`/api/v1/users/`);
-
   const updateUserProfile = (data: any) =>
     authAxios.put(`/api/v1/users/profile`, data);
 

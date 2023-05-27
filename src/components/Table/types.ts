@@ -1,8 +1,3 @@
-// export type Columns = {
-//   header: string;
-//   accessorKey: string;
-// };
-
 import { ColumnDef } from "@tanstack/react-table";
 
 export interface TableProps {
@@ -15,6 +10,8 @@ export interface TableProps {
   emails?: string[];
   ids?: number[];
   actionsToPerform?: (par: { action?: string; id?: number }) => void;
+  value?: string;
+  onChange?: (e: any) => void;
 }
 
 export interface PopupActionProps {

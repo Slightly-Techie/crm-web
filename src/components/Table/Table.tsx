@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { PopupActionProps, TableProps } from "./types";
 import MenuIcon from "../../assets/icons/more.png";
+import Search from "../../assets/icons/search.png";
 import "./styles.css";
 import {
   getCoreRowModel,
@@ -9,7 +10,6 @@ import {
 } from "@tanstack/react-table";
 
 function TableComponent(props: TableProps) {
-  const [globalFilter, setGlobalFilter] = useState("");
   const [selected, setSelected] = useState(false);
   const [selectedId, setSelectedId] = useState<string | undefined>("");
   const data = props.data || [];
@@ -27,8 +27,6 @@ function TableComponent(props: TableProps) {
   const table = useReactTable({
     data,
     columns,
-    state: { globalFilter },
-    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -39,20 +37,19 @@ function TableComponent(props: TableProps) {
         onClick={() => {
           if (selected) {
             setSelected((prev) => !prev);
+            setSelectedId("");
           }
         }}
       >
         {props.searchIncluded && (
-          <div>
+          <div className="flex border-2 gap-[5px] w-[50%] items-center mb-[20px] p-[10px] rounded-xl border-secondary">
+            <img src={Search} alt="search Icon" />
             <input
               type="text"
-              placeholder="Search Name"
-              value={globalFilter ?? ""}
-              onChange={(value) => {
-                setGlobalFilter(String(value));
-                console.log("val", globalFilter);
-              }}
-              className="p-[15px] text-sm border-2 focus:outline-none focus:ring focus:border-blue-300 border-gray-400 m-[10px]"
+              placeholder="Search Name or Email"
+              value={props.value}
+              onChange={props.onChange}
+              className="p-[15px] text-sm border-none focus:outline-none dark:bg-[#232323] dark:text-white w-full"
             />
           </div>
         )}
@@ -77,7 +74,10 @@ function TableComponent(props: TableProps) {
             {table.getRowModel().rows.map((row, j) => (
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>
+                  <td
+                    key={cell.id}
+                    className="dark:bg-[#232323] dark:text-white"
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
@@ -90,6 +90,7 @@ function TableComponent(props: TableProps) {
                       selectedId={selectedId}
                       dropdownActions={props.dropdownActions}
                       id={props.ids && props.ids[j]}
+                      email={props.emails && props.emails[j]}
                       actionToPerform={props.actionsToPerform}
                     />
                   )}
@@ -105,6 +106,7 @@ function TableComponent(props: TableProps) {
 export function PopupAction(props: PopupActionProps) {
   const actions = {
     id: props.id,
+    email: props.email,
   };
 
   return (
@@ -113,23 +115,23 @@ export function PopupAction(props: PopupActionProps) {
         <img
           src={MenuIcon}
           alt="dropdown menu icon"
+          className="menu-image"
           onClick={() => {
-            if (props.selected === props.rowId) {
+            if (props.selectedId === props.rowId) {
               props.onSelected?.("");
-              console.log("abc");
             }
             props.onSelected?.(props.rowId);
-            console.log(props.rowId);
           }}
         />
         {props.rowId === props.selectedId && (
           <>
             {props.selected && (
-              <div className="menu-list">
+              <div className="menu-list dark:bg-[#232323] dark:border-[#353535] dark:text-white bg-white">
                 {Object.entries(props.dropdownActions).map(([key, action]) => {
                   const actionText = action.replace(/\s+/g, "-").toLowerCase();
                   return (
                     <p
+                      className="dark:bg-[#232323] dark:border-[#353535] dark:text-white dark:hover:bg-secondary hover:bg-[#e2e8f0]"
                       key={key}
                       onClick={() => {
                         props.actionToPerform?.({

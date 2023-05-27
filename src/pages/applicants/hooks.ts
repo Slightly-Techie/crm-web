@@ -1,18 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useEndpoints from "../../services/api";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ApplicantProfile } from "./types";
 import useAxiosAuth from "../../hooks/useAxiosAuth";
 
 export function useApplicantHooks() {
-  const { getAllUsers } = useEndpoints();
+  const { getTechiesList } = useEndpoints();
   const [users, setUsers] = useState<undefined | ApplicantProfile[]>();
   const [message, setMessage] = useState("");
+  const [filter, setFilter] = useState("");
+  const [debouncedInputValue, setDebouncedInputValue] = useState("");
+  const [newData, setNewData] = useState<undefined | ApplicantProfile[]>();
   const authAxios = useAxiosAuth();
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ["allUsers"],
-    queryFn: getAllUsers,
+    queryFn: getTechiesList,
     onSuccess(res) {
       setUsers(res.data);
     },
@@ -29,11 +32,38 @@ export function useApplicantHooks() {
       setMessage("Activation successful");
       setTimeout(() => {
         setMessage("");
-      }, 1000);
+      }, 2000);
     },
   });
 
-  const tableData = users
+  useEffect(() => {
+    const delayInputTimeoutId = setTimeout(() => {
+      setDebouncedInputValue(filter);
+    }, 500);
+    return () => clearTimeout(delayInputTimeoutId);
+  }, [filter]);
+
+  useEffect(() => {
+    if (debouncedInputValue) {
+      const filteredUserData = users?.filter(
+        (user) =>
+          user?.first_name
+            .toLowerCase()
+            .includes(debouncedInputValue.toLowerCase().trim()) ||
+          user?.last_name
+            .toLowerCase()
+            .includes(debouncedInputValue.toLowerCase().trim()) ||
+          user?.email
+            .toLowerCase()
+            .includes(debouncedInputValue.toLowerCase().trim())
+      );
+      setNewData(filteredUserData);
+    } else {
+      setNewData(users);
+    }
+  }, [debouncedInputValue, users]);
+
+  const tableData = newData
     ?.filter((user) => user?.is_active === false)
     .map(
       ({
@@ -48,11 +78,20 @@ export function useApplicantHooks() {
           name: first_name + " " + last_name,
           email: email,
           phone_number: phone_number || "N / A",
-          years_of_experience: years_of_experience || "N / A",
+          years_of_experience: years_of_experience?.toString() || "N / A",
           id: id,
         };
       }
     );
 
-  return { tableData, users, mutation, message, query };
+  return {
+    tableData,
+    users,
+    mutation,
+    message,
+    query,
+    filter,
+    setFilter,
+    newData,
+  };
 }

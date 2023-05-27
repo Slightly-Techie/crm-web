@@ -88,7 +88,7 @@ td {
 	left: -100px;
 	top: 65px;
 	padding: 16px;
-	background: #ffffff;
+	/* background: #ffffff; */
 	border: 1px solid #e2e8f0;
 	border-radius: 4px;
 	width: 200px;
@@ -103,7 +103,13 @@ td {
 }
 
 .menu-list p:hover {
-	background-color: #e2e8f0;
+	/* background-color: #e2e8f0; */
 	border-radius: 4px;
 	padding: 5px;
+}
+
+@media (prefers-color-scheme: dark) {
+	.menu-image {
+		filter: invert();
+	}
 }

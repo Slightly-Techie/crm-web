@@ -42,10 +42,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           const appName = process.env.app
-          const link = document.createElement('a')
-          link.href = `https://${appName}.fly.dev/`
-          link.textContent = 'here'
-          const output = `Visit your preview environment at ${link.href}
+          const output = `Visit your preview environment at https://${appName}.fly.dev/
           *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
           github.rest.issues.createComment({

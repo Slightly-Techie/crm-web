@@ -11,7 +11,7 @@ env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 jobs:
   create-deploy:
-    name: Create app
+    name: Create/Deploy app
     runs-on: ubuntu-latest
     steps:
     - name: Git Checkout
@@ -20,7 +20,7 @@ jobs:
     - name: Install flyctl
       uses: superfly/flyctl-actions/setup-flyctl@master
     
-    - name: Create app
+    - name: Create/Deploy app
       id: deploy
       run: |
         echo "review-${GITHUB_HEAD_REF//[^[:alnum:]]/-}" > ./app

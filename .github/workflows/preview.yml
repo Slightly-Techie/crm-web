@@ -40,7 +40,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `https://$app.fly.dev/
+          const output = `Visit your preview environment at https://${app}.fly.dev/
           *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
           github.rest.issues.createComment({

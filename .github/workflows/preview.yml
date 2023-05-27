@@ -43,7 +43,7 @@ jobs:
         script: |
           const appName = process.env.app
           const output = `Visit your preview environment at https://${appName}.fly.dev/
-          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+          *Pushed by: @${{ github.actor }} *`;
 
           github.rest.issues.createComment({
             issue_number: context.issue.number,

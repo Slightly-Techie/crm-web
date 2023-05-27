@@ -35,8 +35,7 @@ jobs:
 
     - name: Print output
       run: |
-        touch output.log
-        echo "${{steps.deploy.outputs}}" >> output.log
+        echo "${{ steps.deploy.outputs }}" | jq .
 
     # - name: Write PR with preview link
     #   uses: actions/github-script@v6

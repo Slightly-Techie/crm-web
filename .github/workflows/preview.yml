@@ -34,7 +34,12 @@ jobs:
         fi
 
     - name: Print output
-      run: echo `${{ steps.deploy.outputs }}`
+      run: |
+        for key in "${!steps.deploy.outputs[@]}"
+        do
+          value="${my_object[$key]}"
+          echo "Key: $key, Value: $value"
+        done
 
     # - name: Write PR with preview link
     #   uses: actions/github-script@v6

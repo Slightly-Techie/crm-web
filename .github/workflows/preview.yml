@@ -38,7 +38,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `${{ steps.deploy.outputs.stdout }}
+          const output = `${{ steps.deploy.outcome }}
           *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
           github.rest.issues.createComment({

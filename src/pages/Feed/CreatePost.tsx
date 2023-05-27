@@ -2,13 +2,9 @@ import React, { ChangeEvent } from "react";
 import { RiImageAddLine } from "react-icons/ri";
 import { RiCloseLine } from "react-icons/ri";
 import { PostDataTypes } from "../../types/type";
-import { id } from "../../utils";
 import { isNonWhitespace } from "../../utils";
 
-export type NewPostFields = Pick<
-  PostDataTypes,
-  "content" | "feed_pic_url" | "id"
->;
+export type NewPostFields = Pick<PostDataTypes, "content" | "feed_pic_url">;
 
 type CreatePostProp = {
   submitHandler: (data: NewPostFields) => void;
@@ -43,7 +39,6 @@ function CreatePost({ submitHandler }: CreatePostProp) {
     const data = {
       content: postText,
       feed_pic_url: "",
-      id: id.next().value,
     };
     submitHandler(data);
     setPostText("");

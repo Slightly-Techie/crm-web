@@ -1,5 +1,6 @@
 import React from "react";
 import { RiUserLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 function FeedNav() {
   return (
@@ -8,11 +9,14 @@ function FeedNav() {
         <p className=" text-st-gray200 dark:text-secondary ">ST</p>
       </section>
       <div className="flex gap-8 items-center px-4">
-        <section className="flex items-center gap-2 border-[1px] border-st-gray200 p-2 rounded-3xl ">
+        <Link
+          to={"/techies"}
+          className="flex items-center gap-2 border-[1px] border-st-gray200 p-2 rounded-3xl "
+        >
           <button>
             <RiUserLine className=" inline-block my-auto" /> Techies
           </button>
-        </section>
+        </Link>
         <section className="flex gap-4 items-center px-4 justify-center">
           <h3 className="hidden lg:block">Welcome, Bryan</h3>
           <div className=" w-12 aspect-square rounded-full overflow-hidden  ">

@@ -4,7 +4,7 @@ import Team from "../../components/Team";
 
 function UserList() {
   return (
-    <div className="flex px-5 gap-4 mt-8">
+    <div className="flex gap-4 w-full">
       <Recent />
       <Team />
     </div>

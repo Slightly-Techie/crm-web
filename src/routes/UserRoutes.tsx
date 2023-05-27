@@ -13,10 +13,10 @@ function UserRoutes() {
         <Route element={<PersistLogin />}>
           <Route element={<ProtectedRoute />}>
             <Route path="/*" element={<Dashboard />}>
-              <Route path="" element={<UserList />} />
+              <Route path="techies" element={<UserList />} />
               <Route path="profile" element={<UserProfile />} />
             </Route>
-            <Route path="/feed" element={<FeedPage />} />
+            <Route path="/" element={<FeedPage />} />
           </Route>
         </Route>
       </Routes>

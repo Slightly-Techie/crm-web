@@ -13,9 +13,8 @@ function AppRoutes() {
     <Routes>
       <Route path="/*" element={<UserRoutes />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<SignUp />} />
+      <Route path="/signup" element={<NewSignUp />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/new-signup" element={<NewSignUp />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

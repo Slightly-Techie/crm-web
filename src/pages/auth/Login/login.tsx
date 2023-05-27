@@ -151,31 +151,6 @@ function Login() {
                 onChange={() => setPersist(!persist)}
               />
             </div>
-
-            <div className="flex items-center mb-6 my-4 gap-1">
-              <hr className="w-[2.5rem] border-[#353535]" />
-              <p className="text-[#353535] text-[12px] font-semibold">
-                continue with social media
-              </p>
-              <hr className="w-[2.5rem] border-[#353535]" />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <button
-                className="bg-[#3D4450] text-[#F5F5F5] hover:bg-[#525b6c] dark:bg-[#3A3A3A] dark:hover:bg-black rounded-sm flex items-center justify-center text-[13px] w-[20rem] h-[48px] gap-2"
-                type="submit"
-              >
-                <img src={googleLogo} alt="Google logo png" />
-                <p>Continue with Google</p>
-              </button>
-              <button
-                className="bg-[#3D4450] text-[#F5F5F5] hover:bg-[#525b6c] dark:bg-[#3A3A3A] dark:hover:bg-black rounded-sm flex items-center justify-center text-[13px] h-[48px] w-[20rem] gap-2"
-                type="submit"
-              >
-                <img src={githubLogo} alt="Github logo png" />
-                <p>Continue with Github</p>
-              </button>
-            </div>
             <p className="my-7 text-[12px]">
               Not registered?{" "}
               <Link to="/signup">

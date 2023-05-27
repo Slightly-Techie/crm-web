@@ -34,7 +34,7 @@ jobs:
         fi
 
     - name: Print output
-      run: echo `${{ steps.deploy.outputs }}
+      run: echo `${{ steps.deploy.outputs }}`
 
     # - name: Write PR with preview link
     #   uses: actions/github-script@v6

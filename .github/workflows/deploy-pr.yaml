@@ -1,7 +1,6 @@
-
 name: fly deploy if app exists
 on:
-  workflow_call:
+  push
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 jobs:

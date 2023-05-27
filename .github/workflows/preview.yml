@@ -20,7 +20,7 @@ jobs:
     - name: Install flyctl
       uses: superfly/flyctl-actions/setup-flyctl@master
     
-    - name: Deploy
+    - name: Deploy app
       id: apply
       run: |
         echo "review-${GITHUB_HEAD_REF//[^[:alnum:]]/-}" > ./app

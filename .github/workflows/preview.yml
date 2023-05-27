@@ -35,9 +35,9 @@ jobs:
 
     - name: Print output
       run: |
-        for key in "${!steps.deploy.outputs[@]}"
-        do
-          value="${my_object[$key]}"
+        declare -n arr=`${{steps.deploy.outputs}}`
+        for key in "${!arr[@]}"; do
+          value="${arr[$key]}"
           echo "Key: $key, Value: $value"
         done
 

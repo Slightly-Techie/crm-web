@@ -80,11 +80,13 @@ function Team() {
             <Loading />
           </div>
         )}
-        <div className="grid mt-8 px-8 grid-cols-3 gap-4">
-          {techies.map((user) => (
-            <Member key={`${user.id}`} data={user} />
-          ))}
-        </div>
+        {techies.length > 0 && (
+          <div className="grid mt-8 px-8 grid-cols-3 gap-4">
+            {techies.map((user) => (
+              <Member key={`${user.id}`} data={user} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

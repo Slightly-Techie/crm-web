@@ -25,9 +25,13 @@ jobs:
       run: |
         echo "review-${GITHUB_HEAD_REF//[^[:alnum:]]/-}" > ./app
         echo "deploying to $(cat ./app)"
-        flyctl apps create -o personal $(cat ./app)
-        flyctl deploy -a $(cat ./app) --remote-only
-    
+        if flyctl status -a $(cat ./app); then 
+          exit 0
+        else
+          flyctl apps create -o personal $(cat ./app)
+          flyctl deploy -a $(cat ./app) --remote-only
+        fi
+        
     - name: Write PR with preview link
       uses: actions/github-script@v6
       env:

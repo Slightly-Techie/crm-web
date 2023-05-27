@@ -1,9 +1,9 @@
 
 name: create and deploy fly app
 on:
-  workflow_dispatch:
   pull_request:
     types: [opened, reopened, synchronize]
+
 permissions:
       contents: read
       pull-requests: write 

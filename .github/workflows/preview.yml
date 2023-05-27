@@ -11,7 +11,7 @@ env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 jobs:
   create-deploy:
-    name: Deploy app
+    name: Create app
     runs-on: ubuntu-latest
     steps:
     - name: Git Checkout
@@ -24,14 +24,15 @@ jobs:
       id: deploy
       run: |
         echo "review-${GITHUB_HEAD_REF//[^[:alnum:]]/-}" > ./app
-        echo "deploying to $(cat ./app)"
         if flyctl status -a $(cat ./app); then 
-          exit 0
+          echo "Deploying to $(cat ./app)"
+          flyctl deploy -a $(cat ./app) --remote-only
         else
+          echo "Creating $(cat ./app)"
           flyctl apps create -o personal $(cat ./app)
           flyctl deploy -a $(cat ./app) --remote-only
         fi
-        
+
     - name: Write PR with preview link
       uses: actions/github-script@v6
       env:

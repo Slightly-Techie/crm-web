@@ -33,20 +33,23 @@ jobs:
           flyctl deploy -a $(cat ./app) --remote-only
         fi
 
-    - name: Write PR with preview link
-      uses: actions/github-script@v6
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const output = `${{ steps.deploy.outcome }}
-          *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+    - name: Print output
+      run: echo `${{ steps.deploy.outputs }}
 
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: output
-          })
+    # - name: Write PR with preview link
+    #   uses: actions/github-script@v6
+    #   with:
+    #     github-token: ${{ secrets.GITHUB_TOKEN }}
+    #     script: |
+    #       const output = `${{ steps.deploy.outcome }}
+    #       *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+    #       github.rest.issues.createComment({
+    #         issue_number: context.issue.number,
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo,
+    #         body: output
+    #       })
 
 
 

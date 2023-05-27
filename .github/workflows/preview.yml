@@ -35,12 +35,10 @@ jobs:
 
     - name: Write PR with preview link
       uses: actions/github-script@v6
-      env:
-        PLAN: "terraform\n${{ steps.deploy.outputs.stdout }}"
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const output = `${{ steps.validate.outputs.stdout }}
+          const output = `${{ steps.deploy.outputs.stdout }}
           *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
           github.rest.issues.createComment({

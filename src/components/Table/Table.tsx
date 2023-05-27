@@ -34,11 +34,18 @@ function TableComponent(props: TableProps) {
 
   return (
     <>
-      <div className="table-wrapper">
+      <div
+        className="table-wrapper"
+        onClick={() => {
+          if (selected) {
+            setSelected((prev) => !prev);
+          }
+        }}
+      >
         {props.searchIncluded && (
           <div>
-            <DebouncedInput
-              // type="text"
+            <input
+              type="text"
               placeholder="Search Name"
               value={globalFilter ?? ""}
               onChange={(value) => {
@@ -106,7 +113,14 @@ export function PopupAction(props: PopupActionProps) {
         <img
           src={MenuIcon}
           alt="dropdown menu icon"
-          onClick={() => props.onSelected?.(props.rowId)}
+          onClick={() => {
+            if (props.selected === props.rowId) {
+              props.onSelected?.("");
+              console.log("abc");
+            }
+            props.onSelected?.(props.rowId);
+            console.log(props.rowId);
+          }}
         />
         {props.rowId === props.selectedId && (
           <>
@@ -117,12 +131,13 @@ export function PopupAction(props: PopupActionProps) {
                   return (
                     <p
                       key={key}
-                      onClick={() =>
+                      onClick={() => {
                         props.actionToPerform?.({
                           ...actions,
                           action: actionText,
-                        })
-                      }
+                        });
+                        props.onSelected?.("");
+                      }}
                     >
                       {action}
                     </p>
@@ -134,39 +149,6 @@ export function PopupAction(props: PopupActionProps) {
         )}
       </div>
     </>
-  );
-}
-
-export function DebouncedInput({
-  value: initialValue,
-  onChange,
-  debounce = 500,
-  ...props
-}: {
-  value: string | number;
-  onChange: (value: string | number) => void;
-  debounce?: number;
-} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">) {
-  const [value, setValue] = React.useState(initialValue);
-
-  React.useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
-  React.useEffect(() => {
-    const timeout = setTimeout(() => {
-      onChange(value);
-    }, debounce);
-
-    return () => clearTimeout(timeout);
-  }, [value]);
-
-  return (
-    <input
-      {...props}
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-    />
   );
 }
 

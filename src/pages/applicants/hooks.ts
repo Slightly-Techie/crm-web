@@ -29,7 +29,7 @@ export function useApplicantHooks() {
       setMessage("Activation successful");
       setTimeout(() => {
         setMessage("");
-      }, 600);
+      }, 1000);
     },
   });
 
@@ -54,5 +54,5 @@ export function useApplicantHooks() {
       }
     );
 
-  return { tableData, users, mutation, message };
+  return { tableData, users, mutation, message, query };
 }

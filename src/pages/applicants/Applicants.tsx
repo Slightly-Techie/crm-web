@@ -28,11 +28,12 @@ function Applicants() {
         </div>
       )}
       <div className="interviewee-wrapper bg-[white] w-[90%] p-[20px]">
-        <h1 className="text-[#3D4450] font-normal text-xl">Applicants</h1>
+        <h1 className="text-[#3D4450] font-normal text-xl mb-[20px]">
+          Applicants
+        </h1>
         <TableComponent
           columns={ApplicantsTableColumns}
           data={tableData}
-          searchIncluded
           dropdownActions={dropdownActions}
           actionsToPerform={actionToPerform}
           ids={tableData?.map((e) => e?.id)}

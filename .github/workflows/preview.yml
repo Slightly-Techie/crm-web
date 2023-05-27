@@ -36,7 +36,7 @@ jobs:
     - name: Print output
       run: |
         declare -n arr=${{steps.deploy.outputs}}
-        echo "${steps.deploy.outputs}"
+        echo "$steps.deploy.outputs"
         for key in "${!arr[@]}"; do
           value="${arr[$key]}"
           echo "Key: $key, Value: $value"

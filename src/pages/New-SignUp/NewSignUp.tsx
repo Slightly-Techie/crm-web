@@ -3,12 +3,11 @@ import rocket from "../../assets/icons/big-blue-flying-rocket.png";
 import useNavigateForms from "../../hooks/useNavigateForms";
 import { TNewUserFields } from "../../types/type";
 import SubmitStatus from "./SubmitStatus";
-import { useState } from "react";
-import useAxiosAuth from "../../hooks/useAxiosAuth";
+import usePostNewSignUp from "../../hooks/usePostNewSignUp";
 
 export type Status = "onsubmit" | "success" | "error" | "progress";
 
-export let NEW_USER_DATA: TNewUserFields = {
+export let NEW_USER_DATA: any = {
   first_name: "",
   last_name: "",
   password: "",
@@ -28,41 +27,26 @@ export let NEW_USER_DATA: TNewUserFields = {
 };
 
 function NewSignUp() {
-  const [status, setStatus] = useState<Status>("progress");
-  const authAxios = useAxiosAuth();
   const { handleSubmit, next, previous, currentForm, currentFormIndex } =
     useNavigateForms();
+  const { createNewUser, status, errMessage } = usePostNewSignUp();
 
   const onSubmit = (data: Partial<TNewUserFields>) => {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
     if (currentFormIndex === 3) {
-      const { years_of_experience, password, password_confirmation } =
-        NEW_USER_DATA;
-      if (password !== password_confirmation) return;
+      const { years_of_experience } = NEW_USER_DATA;
       NEW_USER_DATA = {
         ...NEW_USER_DATA,
         years_of_experience: Number(years_of_experience),
       };
-      setStatus("onsubmit");
-      authAxios
-        .post("/api/v1/users/register", NEW_USER_DATA)
-        .then((res) => {
-          setStatus("success");
-        })
-        .catch((err) => {
-          if (err.response.data.detail) {
-            alert(err.response.data.detail);
-            setStatus("progress");
-            return;
-          }
-        });
+      createNewUser(NEW_USER_DATA);
     }
     next();
   };
 
   return (
-    <div className="w-full  bg-white dark:bg-[#111111] overflow-x-hidden">
-      <div className="w-screen min-h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-[#111111] max-w-[1440px] mx-auto">
+    <div className="w-full bg-white dark:bg-[#111111] overflow-x-hidden">
+      <div className="w-screen h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-[#111111] max-w-[1440px] mx-auto">
         <div className="new-sign-upbg  lg:block  ">
           <div className="flex flex-col gap-4 justify-center p-0 lg:p-8 w-4/5 mx-auto  h-full">
             <img
@@ -82,9 +66,9 @@ function NewSignUp() {
           </div>
         </div>
         {status !== "progress" ? (
-          <SubmitStatus status={status} />
+          <SubmitStatus status={status} message={errMessage} />
         ) : (
-          <div className=" p-8 md:w-[30rem] lg:w-5/6 mx-auto my-auto flex flex-col gap-4 justify-center h-fit">
+          <div className=" p-8 w-full md:w-[30rem] lg:w-5/6 mx-auto my-auto flex flex-col gap-4 justify-center h-fit">
             <section className="flex text-[#000] dark:text-[#f1f3f7]  mx-auto text-[1.5rem] font-medium justify-between">
               <h3>{currentForm.category}</h3>
             </section>

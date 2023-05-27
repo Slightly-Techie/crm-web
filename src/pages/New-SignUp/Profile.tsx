@@ -33,6 +33,7 @@ function Profile({ register, errors }: ProfileFormType) {
           placeholder="Susana"
           {...register("first_name", {
             required: true,
+            min: 2,
           })}
         />
         {errors.first_name && <small>First name must be provided</small>}
@@ -45,6 +46,7 @@ function Profile({ register, errors }: ProfileFormType) {
           placeholder="Taibobo"
           {...register("last_name", {
             required: true,
+            min: 2,
           })}
         />
         {errors.last_name && <small>Last name must be provided</small>}

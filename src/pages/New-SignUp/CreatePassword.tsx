@@ -25,7 +25,7 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
     password_confirmation !== "";
   return (
     <>
-      <div className=" my-4">
+      <div className="my-4">
         <label className=" text-[#000] dark:text-[#f1f3f7]" htmlFor="">
           Password
         </label>
@@ -40,7 +40,7 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
           type="password"
         />
         {errors.password && (
-          <small className="">
+          <small className=" break-words">
             Password should be at least 8 characters and must contain an
             uppercase letter, lowercase letter and a number
           </small>
@@ -55,7 +55,7 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
             required: true,
             min: 8,
             max: 25,
-            pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+            pattern: new RegExp(`^${password}$`),
           })}
           style={{
             borderColor: errors.password_confirmation
@@ -67,7 +67,7 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
           className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
           type="password"
         />
-        {errors.password_confirmation && <small>Passwords should match</small>}
+        {errors.password_confirmation && <small>Passwords do not match</small>}
       </div>
     </>
   );

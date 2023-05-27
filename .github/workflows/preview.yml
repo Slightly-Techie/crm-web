@@ -1,0 +1,22 @@
+
+name: create and deploy fly app
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened, synchronize]
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+jobs:
+  create-deploy:
+      name: Deploy app
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - uses: superfly/flyctl-actions/setup-flyctl@master
+        # bash syntax to replace non-alnum with dashes
+        - run: echo "review-${GITHUB_HEAD_REF//[^[:alnum:]]/-}" > ./app
+        - run: echo "deploying to $(cat ./app)"
+        # - name: Setup tmate session # this lets you SSH into the container
+        #   uses: mxschmitt/action-tmate@v3
+        - run: flyctl apps create -o personal $(cat ./app)
+        - run: flyctl deploy -a $(cat ./app) --remote-only

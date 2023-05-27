@@ -1,5 +1,6 @@
 import axios from "../../lib/axios";
 import useAxiosAuth from "../../hooks/useAxiosAuth";
+import { ITechie } from "../../types/type";
 
 const useEndpoints = () => {
   const authAxios = useAxiosAuth();
@@ -11,7 +12,9 @@ const useEndpoints = () => {
   const updateUserProfile = (data: any) =>
     authAxios.put(`/api/v1/users/profile`, data);
 
-  return { getUserProfile, updateUserProfile, getAllUsers };
+  const getTechiesList = () => authAxios.get<ITechie[]>(`/api/v1/users/`);
+
+  return { getUserProfile, updateUserProfile, getTechiesList };
 };
 
 export const userLogin = (formData: globalThis.FormData) =>

@@ -17,8 +17,10 @@ jobs:
     - name: Git Checkout
       uses: actions/checkout@v2
     
-    - name: Deploy to fly
+    - name: Install flyctl
       uses: superfly/flyctl-actions/setup-flyctl@master
+    
+    - name: Deploy
       id: apply
       run: |
         echo "review-${GITHUB_HEAD_REF//[^[:alnum:]]/-}" > ./app

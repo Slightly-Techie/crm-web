@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 
 // routes
 import Login from "../pages/auth/Login/login";
-import SignUp from "../pages/auth/Signup/signup";
 import PageNotFound from "../pages/404";
 import ForgotPassword from "../pages/auth/ForgotPassword/forgot-password";
 import { UserRoutes } from "./UserRoutes";

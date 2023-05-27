@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 function Sidebar({ isOpen }: NavbarProps) {
   return (
     <>
-      <aside className="py-6 px-3 lg:px-5 sm:w-15 lg:w-20 border-r-[#DCDDE1] border-r bg-white hidden sm:block">
+      <aside className="py-6 px-3 lg:px-5 sm:w-15 lg:w-20 shrink-0 border-r-[#DCDDE1] border-r bg-white hidden sm:block">
         <Link to={"/"}>
           <button className="bg-secondary p-2 mx-auto rounded-sm text-white">
             <h1 className="font-bold text-xl">ST</h1>

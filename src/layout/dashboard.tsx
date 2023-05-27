@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import { Outlet } from "react-router-dom";
 
@@ -8,15 +7,12 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="flex relative h-screen">
-        <Sidebar isOpen={isOpen} />
-        <main className="w-full pb-8 bg-primary overflow-scroll">
-          <Navbar setIsOpen={setIsOpen} isOpen={isOpen} />
-          <div className="flex justify-center sm:justify-start px-5 gap-4 mt-8 w-[calc(100% - 48px)] max-w-[100%]">
-            <Outlet />
-          </div>
-        </main>
-      </div>
+      <main className="w-full pb-8 bg-primary dark:bg-[#111111] h-screen overflow-clip">
+        <Navbar setIsOpen={setIsOpen} isOpen={isOpen} />
+        <div className="flex justify-center sm:justify-start p-8 w-full h-[calc(100vh-80px)] overflow-y-scroll">
+          <Outlet />
+        </div>
+      </main>
     </>
   );
 };

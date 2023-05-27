@@ -2,8 +2,14 @@ import { useState } from "react";
 import { NEW_USER_DATA } from "./NewSignUp";
 import { FieldErrors, RegisterOptions } from "react-hook-form";
 import { TNewUserFields } from "../../types/type";
+import { REGEXVALIDATION } from "../../constants";
 
-type ProfileFields = "email" | "phone" | "portfolio";
+type ProfileFields =
+  | "email"
+  | "phone_number"
+  | "portfolio"
+  | "first_name"
+  | "last_name";
 
 type TProfileType = Pick<TNewUserFields, ProfileFields>;
 
@@ -19,6 +25,30 @@ function Profile({ register, errors }: ProfileFormType) {
     selectValue === "" || PORTFOLIOS.includes(selectValue) ? false : true;
   return (
     <>
+      <div className="my-4">
+        <label className="text-[#000] dark:text-[#f1f3f7]">First Name</label>
+        <input
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] "
+          type="text"
+          placeholder="Susana"
+          {...register("first_name", {
+            required: true,
+          })}
+        />
+        {errors.first_name && <small>First name must be provided</small>}
+      </div>
+      <div className=" my-4">
+        <label className="text-[#000] dark:text-[#f1f3f7]">Last Name</label>
+        <input
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] "
+          type="text"
+          placeholder="Taibobo"
+          {...register("last_name", {
+            required: true,
+          })}
+        />
+        {errors.last_name && <small>Last name must be provided</small>}
+      </div>
       <div className=" my-4">
         <label className="text-[#000] dark:text-[#f1f3f7]">Email</label>
         <input
@@ -27,7 +57,7 @@ function Profile({ register, errors }: ProfileFormType) {
           placeholder="kofi@example.com"
           {...register("email", {
             required: true,
-            pattern: /^\S+@\S+\.\S+$/i,
+            pattern: REGEXVALIDATION.email,
           })}
         />
         {errors.email && <small>Email must be valid</small>}
@@ -39,12 +69,13 @@ function Profile({ register, errors }: ProfileFormType) {
         <input
           className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
           type="text"
-          {...register("phone", {
+          {...register("phone_number", {
             required: "Provide your phone number(s)",
+            pattern: REGEXVALIDATION.phoneNumberMultiple,
           })}
           placeholder="0123456789/098765431"
         />
-        {errors.phone && <small>{errors.phone.message}</small>}
+        {errors.phone_number && <small>{errors.phone_number.message}</small>}
       </div>
       <div className="my-4">
         <label className="text-[#000] dark:text-[#f1f3f7]">

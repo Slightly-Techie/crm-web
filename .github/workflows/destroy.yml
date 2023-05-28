@@ -1,6 +1,5 @@
 
 name: destroy fly app
-# only trigger on pull request closed events
 on:
   push:
     branches:
@@ -8,12 +7,12 @@ on:
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 jobs:
-  close_job:
+  destroy:
     runs-on: ubuntu-latest
     steps:
     - name: Install flyctl
       uses: superfly/flyctl-actions/setup-flyctl@master
     - run: echo "review-${GITHUB_HEAD_REF//[^[:alnum:]]/-}" > ./app
-    - run: echo destroying app $(cat ./app) for PR #${{ github.event.number }}
+    - run: echo "destroying app $(cat ./app) for PR ${{ github.event.number }}"
     - name: destroy review app
       run: flyctl destroy --yes $(cat ./app)

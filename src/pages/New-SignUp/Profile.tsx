@@ -72,12 +72,12 @@ function Profile({ register, errors }: ProfileFormType) {
           className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
           type="text"
           {...register("phone_number", {
-            required: "Provide your phone number(s)",
+            required: true,
             pattern: REGEXVALIDATION.phoneNumberMultiple,
           })}
           placeholder="0123456789/098765431"
         />
-        {errors.phone_number && <small>{errors.phone_number.message}</small>}
+        {errors.phone_number && <small>Provide your Phone number(s)</small>}
       </div>
       <div className="my-4">
         <label className="text-[#000] dark:text-[#f1f3f7]">

@@ -7,7 +7,7 @@ import usePostNewSignUp from "../../hooks/usePostNewSignUp";
 
 export type Status = "onsubmit" | "success" | "error" | "progress";
 
-export let NEW_USER_DATA: any = {
+export let NEW_USER_DATA: TNewUserFields = {
   first_name: "",
   last_name: "",
   password: "",
@@ -27,9 +27,15 @@ export let NEW_USER_DATA: any = {
 };
 
 function NewSignUp() {
-  const { handleSubmit, next, previous, currentForm, currentFormIndex } =
-    useNavigateForms();
-  const { createNewUser, status, errMessage } = usePostNewSignUp();
+  const {
+    handleSubmit,
+    next,
+    previous,
+    resetForm,
+    currentForm,
+    currentFormIndex,
+  } = useNavigateForms();
+  const { createNewUser, status, setStatus, errMessage } = usePostNewSignUp();
 
   const onSubmit = (data: Partial<TNewUserFields>) => {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
@@ -45,8 +51,8 @@ function NewSignUp() {
   };
 
   return (
-    <div className="w-full bg-white dark:bg-[#111111] overflow-x-hidden">
-      <div className="w-screen h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-[#111111] max-w-[1440px] mx-auto">
+    <div className="w-full bg-[#F5F5F5] dark:bg-[#111111] overflow-x-hidden">
+      <div className="w-screen h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-[#111111] mx-auto">
         <div className="new-sign-upbg  lg:block  ">
           <div className="flex flex-col gap-4 justify-center p-0 lg:p-8 w-4/5 mx-auto  h-full">
             <img
@@ -65,8 +71,17 @@ function NewSignUp() {
             />
           </div>
         </div>
-        {status !== "progress" ? (
-          <SubmitStatus status={status} message={errMessage} />
+        {true ? (
+          <SubmitStatus
+            status={"success"}
+            message={
+              status === "success" ? NEW_USER_DATA.first_name : errMessage
+            }
+            resetForm={() => {
+              resetForm();
+              setStatus("progress");
+            }}
+          />
         ) : (
           <div className=" p-8 w-full md:w-[30rem] lg:w-5/6 mx-auto my-auto flex flex-col gap-4 justify-center h-fit">
             <section className="flex text-[#000] dark:text-[#f1f3f7]  mx-auto text-[1.5rem] font-medium justify-between">

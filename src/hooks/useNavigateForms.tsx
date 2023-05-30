@@ -45,7 +45,19 @@ function useNavigateForms() {
     if (currentFormIndex === 0) return;
     setCurrentFormIndex((prev) => prev - 1);
   };
-  return { next, previous, currentForm, handleSubmit, currentFormIndex };
+
+  const resetForm = () => {
+    setCurrentFormIndex(0);
+  };
+
+  return {
+    next,
+    previous,
+    resetForm,
+    currentForm,
+    handleSubmit,
+    currentFormIndex,
+  };
 }
 
 export default useNavigateForms;

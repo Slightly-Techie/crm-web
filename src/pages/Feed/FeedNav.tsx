@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { RiUserLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import useEndpoints from "../../services/api";

@@ -1,7 +1,6 @@
 import React from "react";
 import useAxiosAuth from "./useAxiosAuth";
-import { UseMutateFunction, useMutation } from "react-query";
-import { TNewUserFields } from "../types/type";
+import { useMutation } from "react-query";
 
 export type Status = "onsubmit" | "success" | "error" | "progress";
 

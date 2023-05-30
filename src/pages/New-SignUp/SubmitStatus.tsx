@@ -3,6 +3,7 @@ import { Status } from "./NewSignUp";
 import FeedLoader from "../Feed/FeedLoader";
 import CheckIcon from "../../assets/icons/check-icon.svg";
 import PendingIcon from "../../assets/icons/pending-icon.svg";
+import CrownGlyph from "../../assets/icons/crown-glyph.svg";
 import { formatDate } from "../../utils";
 
 type StatusProp = {
@@ -45,7 +46,10 @@ const Success = ({ name = "" }) => {
 
   return (
     <div className="w-full h-full flex items-center justify-center text-black dark:text-white p-8 md:w-[35rem] font-tt-hoves mx-auto">
-      <div className="w-full flex flex-col gap-20">
+      <div className="relative w-full flex flex-col gap-20">
+        <div className="absolute -top-16 right-0 hidden lg:block">
+          <img className="w-12 h-12" src={CrownGlyph} alt="crown-glyph" />
+        </div>
         <div className="flex flex-col gap-1 text-3xl md:text-4xl items-center text-center md:text-start md:items-start">
           <h3 className="text-black dark:text-white">
             You are the real MVP, {name}!

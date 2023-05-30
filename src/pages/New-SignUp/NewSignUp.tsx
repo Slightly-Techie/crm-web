@@ -71,9 +71,9 @@ function NewSignUp() {
             />
           </div>
         </div>
-        {status !== "progress" ? (
+        {true ? (
           <SubmitStatus
-            status={status}
+            status={"success"}
             message={
               status === "success" ? NEW_USER_DATA.first_name : errMessage
             }

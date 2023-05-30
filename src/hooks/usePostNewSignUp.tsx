@@ -21,7 +21,7 @@ function usePostNewSignUp() {
     }
   });
 
-  return { createNewUser, status, error, errMessage };
+  return { createNewUser, status, setStatus, error, errMessage };
 }
 
 export default usePostNewSignUp;

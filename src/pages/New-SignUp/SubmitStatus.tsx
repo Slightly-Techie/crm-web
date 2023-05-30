@@ -1,10 +1,10 @@
 import React from "react";
 import { Status } from "./NewSignUp";
-import Loading from "../loading";
-import { Link } from "react-router-dom";
+import FeedLoader from "../Feed/FeedLoader";
 
 type StatusProp = {
   status: Status;
+  message?: string;
 };
 
 const Error = ({ message }: { message?: string }) => {
@@ -14,15 +14,10 @@ const Error = ({ message }: { message?: string }) => {
         There was an <mark className="text-[#ff7676]">error</mark> submitting
         your request{" "}
       </h1>
-      {message ? (
-        <p>{message}</p>
-      ) : (
-        <Link
-          to="/new-signup"
-          className="text-[#333] dark:text-white text-center py-8 text-xl underline "
-        >
-          Please fill the form again here
-        </Link>
+      {message && (
+        <p className="text-[1.2rem] text-[#000] dark:text-[#f3f1f7] text-center ">
+          {message}
+        </p>
       )}
     </div>
   );
@@ -41,13 +36,13 @@ const Success = () => {
 const Loader = () => {
   return (
     <div className="w-full h-full grid place-content-center p-2 overflow-hidden">
-      <Loading />
+      <FeedLoader />
     </div>
   );
 };
 
-function SubmitStatus({ status }: StatusProp) {
-  if (status === "error") return <Error />;
+function SubmitStatus({ status, message }: StatusProp) {
+  if (status === "error") return <Error message={message} />;
   if (status === "onsubmit") return <Loader />;
   if (status === "success") return <Success />;
 

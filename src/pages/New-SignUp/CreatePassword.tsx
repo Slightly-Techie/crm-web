@@ -1,7 +1,7 @@
 import React from "react";
 import { TNewUserFields } from "../../types/type";
-import { RegisterOptions } from "react-hook-form";
-import { FieldErrors } from "react-hook-form";
+import { RegisterOptions, FieldErrors } from "react-hook-form";
+import { REGEXVALIDATION } from "../../constants";
 
 type PasswordFields = "password" | "password_confirmation";
 
@@ -19,10 +19,8 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
     "password_confirmation",
   ]);
 
-  const passwordMatch =
-    password === password_confirmation &&
-    password_confirmation !== undefined &&
-    password_confirmation !== "";
+  const passwordMatch = password && password === password_confirmation;
+
   return (
     <>
       <div className="my-4">
@@ -34,7 +32,7 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
             required: "This field must be specified",
             min: 8,
             max: 25,
-            pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
+            pattern: REGEXVALIDATION.password,
           })}
           className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
           type="password"
@@ -42,7 +40,7 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
         {errors.password && (
           <small className=" break-words">
             Password should be at least 8 characters and must contain an
-            uppercase letter, lowercase letter and a number
+            uppercase letter, lowercase letter, a number and a symbol
           </small>
         )}
       </div>
@@ -55,7 +53,11 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
             required: true,
             min: 8,
             max: 25,
-            pattern: new RegExp(`^${password}$`),
+            validate: (val: string) => {
+              if (watch("password") !== val) {
+                return "Your passwords do no match";
+              }
+            },
           })}
           style={{
             borderColor: errors.password_confirmation

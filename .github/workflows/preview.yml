@@ -23,7 +23,7 @@ jobs:
     - name: Create/Deploy app
       id: deploy
       run: |
-        echo "review-${GITHUB_HEAD_REF//[^[:alnum:]]/-}" > ./app
+        echo "review-${GITHUB_HEAD_REF,,//[^[:alnum:]]/-}" > ./app
         echo "::set-output name=app_name::$(cat ./app)"
         if flyctl status -a $(cat ./app); then 
           echo "Deploying to $(cat ./app)"

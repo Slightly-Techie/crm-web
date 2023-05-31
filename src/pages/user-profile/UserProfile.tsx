@@ -66,18 +66,18 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="flex bg-primary w-full justify-center">
+    <div className="flex w-full justify-center relative">
       <form
         onSubmit={onSubmit}
-        className="flex flex-col gap-12 w-full sm:w-[calc(100% - 48px)] sm:max-w-[1000px]"
+        className="flex flex-col gap-12 w-full sm:w-[calc(100% - 48px)] sm:max-w-[1000px] bg-[white] dark:bg-[#232323] dark:text-white p-[30px] absolute"
       >
-        <div>
+        <div className="dark:bg-[#232323] dark:text-white">
           {editMode && (
-            <div className="h-14 flex flex-row gap-4 items-center justify-end">
+            <div className="h-14 flex flex-row gap-4 items-center justify-end dark:bg-[#232323] dark:text-white">
               <button
                 type="button"
                 onClick={handleCancel}
-                className={`bg-white text-lg rounded-sm border border-black p-[5px] sm:p-[10px]`}
+                className={`bg-white text-lg rounded-sm border border-black p-[5px] sm:p-[10px] dark:text-[#000000]`}
               >
                 Cancel
               </button>
@@ -89,7 +89,7 @@ const UserProfile = () => {
               </button>
             </div>
           )}
-          <div className="lg:h-[26rem] bg-white border border-[#DCDDE1] p-[20px]">
+          <div className="lg:h-[26rem] bg-white border border-[#DCDDE1] p-[20px] dark:bg-[#232323] dark:text-white">
             <div className="h-14 flex flex-row items-center border-b border-[#DCDDE1]">
               <h1 className="text-xl font-medium">Profile</h1>
             </div>
@@ -112,7 +112,7 @@ const UserProfile = () => {
                   <button
                     type="button"
                     onClick={() => setEditMode(!editMode)}
-                    className={`bg-primary w-full text-slate-50 rounded-sm border border-[#DCDDE1] p-[5px] sm:p-[10px]`}
+                    className={`bg-primary w-full text-slate-50 rounded-sm border border-[#DCDDE1] p-[5px] sm:p-[10px] dark:bg-[#232323] dark:text-white`}
                   >
                     {!editMode ? "Edit Profile" : "Cancel"}
                   </button>
@@ -125,7 +125,7 @@ const UserProfile = () => {
                     <input
                       disabled={!editMode}
                       {...register("first_name", { required: true })}
-                      className=" rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px]"
+                      className=" rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white"
                     />
                   </div>
                   <div className="flex flex-col gap-1 w-full">
@@ -133,7 +133,7 @@ const UserProfile = () => {
                     <input
                       disabled={!editMode}
                       {...register("last_name", { required: true })}
-                      className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px]"
+                      className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white"
                     />
                   </div>
                 </div>
@@ -143,7 +143,7 @@ const UserProfile = () => {
                     disabled
                     readOnly
                     {...register("email", { required: true })}
-                    className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px]"
+                    className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white"
                   />
                 </div>
                 <div className="flex flex-col gap-1">
@@ -152,14 +152,14 @@ const UserProfile = () => {
                     disabled
                     readOnly
                     value={`@${user.first_name}${user.last_name}`}
-                    className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px]"
+                    className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white"
                   />
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="lg:h-[28.5rem] shrink-0 bg-white border border-[#DCDDE1] p-[20px]">
+        <div className="lg:h-[28.5rem] shrink-0 bg-white border border-[#DCDDE1] p-[20px] dark:bg-[#232323] dark:text-white">
           <div className="h-14flex flex-row items-center border-b border-[#DCDDE1]">
             <h1 className="text-xl font-medium">Socials</h1>
           </div>
@@ -172,7 +172,7 @@ const UserProfile = () => {
                   readOnly
                   rows={12}
                   value="I perform computer magic everyday for a living"
-                  className="rounded-md text-opacity-30 bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] lg:w-[450px] md:w-[350px]"
+                  className="rounded-md text-opacity-30 bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] lg:w-[450px] md:w-[350px] dark:bg-[#232323] dark:text-white"
                 />
               </div>
             </div>
@@ -182,7 +182,7 @@ const UserProfile = () => {
                 <input
                   disabled={!editMode}
                   {...register("github_profile")}
-                  className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] "
+                  className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white "
                 />
               </div>
               <div className="flex flex-col gap-0.5">
@@ -190,7 +190,7 @@ const UserProfile = () => {
                 <input
                   disabled={!editMode}
                   {...register("portfolio_url")}
-                  className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] "
+                  className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white "
                 />
               </div>
 
@@ -199,7 +199,7 @@ const UserProfile = () => {
                 <input
                   disabled={!editMode}
                   {...register("twitter_profile")}
-                  className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] "
+                  className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white "
                 />
               </div>
               <div className="flex flex-col gap-0.5">
@@ -207,7 +207,7 @@ const UserProfile = () => {
                 <input
                   disabled={!editMode}
                   {...register("linkedin_profile")}
-                  className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] "
+                  className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white "
                 />
               </div>
             </div>

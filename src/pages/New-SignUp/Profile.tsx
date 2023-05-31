@@ -21,8 +21,7 @@ type ProfileFormType = {
 function Profile({ register, errors }: ProfileFormType) {
   const [selectValue, setSelectValue] = useState(NEW_USER_DATA.portfolio);
   const PORTFOLIOS = ["Frontend", "Backend", "UI/UX", "Full Stack", "Mobile"];
-  const isOther =
-    selectValue === "" || PORTFOLIOS.includes(selectValue) ? false : true;
+  const isOther = !(selectValue === "" || PORTFOLIOS.includes(selectValue));
   return (
     <>
       <div className="my-4">

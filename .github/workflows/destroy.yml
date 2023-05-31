@@ -1,9 +1,9 @@
 
 name: destroy fly app
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types:
+      - closed
 env:
   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 jobs:
@@ -12,7 +12,11 @@ jobs:
     steps:
     - name: Install flyctl
       uses: superfly/flyctl-actions/setup-flyctl@master
-    - run: echo "review-${GITHUB_HEAD_REF//[^[:alnum:]]/-}" > ./app
-    - run: echo "destroying app $(cat ./app) for PR ${{ github.event.number }}"
-    - name: destroy review app
-      run: flyctl destroy --yes $(cat ./app)
+    
+    - name: Destroy app
+      run: |
+        lowercase_ref=$(echo "${{ github.head_ref }}" | tr '[:upper:]' '[:lower:]')
+        preview_app="preview-${lowercase_ref//[^[:alnum:]]/-}"
+        echo "$preview_app" > ./app
+        echo "destroying app $(cat ./app) for PR ${{ github.event.number }}"
+        flyctl destroy --yes $(cat ./app)

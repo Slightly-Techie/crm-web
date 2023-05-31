@@ -23,7 +23,9 @@ jobs:
     - name: Create/Deploy app
       id: deploy
       run: |
-        echo "preview-${GITHUB_HEAD_REF,,//[^[:alnum:]]/-}" > ./app
+        lowercase_ref=$(echo "${{ github.head_ref }}" | tr '[:upper:]' '[:lower:]')
+        preview_app="preview-${lowercase_ref//[^[:alnum:]]/-}"
+        echo "$preview_app" > ./app
         echo "::set-output name=app_name::$(cat ./app)"
         if flyctl status -a $(cat ./app); then 
           echo "Deploying $(cat ./app)"

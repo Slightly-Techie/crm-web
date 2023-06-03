@@ -6,6 +6,7 @@ import PageNotFound from "../pages/404";
 import ForgotPassword from "../pages/auth/ForgotPassword/forgot-password";
 import { UserRoutes } from "./UserRoutes";
 import NewSignUp from "../pages/New-SignUp/NewSignUp";
+import InactiveUser from "../pages/inactive-user/InactiveUser";
 import { AdminRoutes } from "./AdminRoutes";
 
 function AppRoutes() {
@@ -17,6 +18,7 @@ function AppRoutes() {
       <Route path="/signup" element={<NewSignUp />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="*" element={<PageNotFound />} />
+      <Route path="/inactive-user" element={<InactiveUser/>}/>
     </Routes>
   );
 }

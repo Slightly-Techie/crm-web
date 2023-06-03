@@ -21,7 +21,7 @@ const Error = ({
 }) => {
   return (
     <div className="w-full h-full flex text-black dark:text-white items-center justify-center p-8 md:w-[35rem] font-tt-hoves mx-auto">
-      <div className="w-96 flex flex-col border border-[#757575] p-8">
+      <div className="w-full md:w-96 flex flex-col border border-[#757575] p-8">
         <h1 className="text-lg text-[#000] dark:text-[#f3f1f7] text-center font-medium">
           There was an <mark className="text-[#ff7676]">error</mark> submitting
           your request{" "}

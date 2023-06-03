@@ -33,10 +33,7 @@ function SignUp() {
     "password_confirmation",
   ]);
 
-  const passwordMatch =
-    password === password_confirmation &&
-    password_confirmation !== undefined &&
-    password_confirmation !== "";
+  const passwordMatch = password && password === password_confirmation;
 
   const onSubmit = handleSubmit((data) => {
     userRegister({
@@ -163,8 +160,8 @@ function SignUp() {
               />
               {errors.password && (
                 <p className="text-[#b92828] text-[12px] text-center">
-                  Password must be at least 8 characters, can contain at least
-                  one uppercase, lowercase, a number and a special character
+                  Password should be at least 8 characters and must contain an
+                  uppercase letter, lowercase letter, a number and a symbol
                 </p>
               )}
             </div>
@@ -191,8 +188,7 @@ function SignUp() {
               {/* {errors.password_confirm && <p className='text-[#b92828] text-[12px]'>Password must be at least 8 characters, can contain at least one uppercase, lowercase, a number and a special character</p>} */}
               {errors.password_confirmation && (
                 <p className="text-[#b92828] text-[12px] text-center">
-                  Password must be at least 8 characters, can contain at least
-                  one uppercase, lowercase, a number and a special character
+                  Passwords do not match
                 </p>
               )}
             </div>

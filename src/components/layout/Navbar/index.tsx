@@ -44,7 +44,7 @@ function Navbar() {
                   items={[
                     {
                       type: "link",
-                      link: "/profile",
+                      link: "/techie/me",
                       value: "Profile",
                     },
                     {

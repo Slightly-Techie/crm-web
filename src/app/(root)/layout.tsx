@@ -13,9 +13,9 @@ export default async function RootLayout({
     redirect("/login");
   }
   return (
-    <main className="font-tt-hoves bg-black overflow-clip">
+    <main className="font-tt-hoves bg-black overflow-clip h-screen">
       <Navbar />
-      {children}
+      <div className="p-8 overflow-y-scroll h-full">{children}</div>
     </main>
   );
 }

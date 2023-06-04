@@ -1,5 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
 
+export type WithoutNullableKeys<Type> = {
+  [Key in keyof Type]-?: WithoutNullableKeys<NonNullable<Type[Key]>>;
+};
+
 export type Status = "onsubmit" | "success" | "error" | "progress";
 
 export interface ITechie {
@@ -10,11 +14,11 @@ export interface ITechie {
   years_of_experience: number;
   bio: string;
   phone_number: string;
-  github_profile: string;
-  twitter_profile: string;
-  linkedin_profile: string;
-  portfolio_url: string;
-  profile_pic_url: string;
+  github_profile: string | null;
+  twitter_profile: string | null;
+  linkedin_profile: string | null;
+  portfolio_url: string | null;
+  profile_pic_url: string | null;
   skills: ISkill[];
   tags: ITag[];
   created_at: string;

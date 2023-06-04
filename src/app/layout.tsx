@@ -14,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${FONTS.ttHoves.variable} ${FONTS.monalisa.variable}`}>
+      <body
+        suppressHydrationWarning={true}
+        className={`${FONTS.ttHoves.variable} ${FONTS.monalisa.variable}`}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

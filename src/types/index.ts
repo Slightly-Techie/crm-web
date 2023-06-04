@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export type Status = "onsubmit" | "success" | "error" | "progress";
 
 export interface ITechie {
@@ -26,6 +28,11 @@ export interface ISkill {
 
 export interface ITag extends ISkill {}
 
+export interface NavbarProps {
+  isOpen: boolean;
+  setIsOpen?: Dispatch<SetStateAction<boolean>>;
+}
+
 export type NewUserFields = {
   email: string;
   first_name: string;
@@ -45,3 +52,16 @@ export type NewUserFields = {
   is_active: boolean;
   role_id?: number;
 };
+
+export interface IPost {
+  content: string;
+  feed_pic_url: string;
+  id: string;
+  created_at?: string;
+  user: {
+    first_name: string;
+    last_name: string;
+    profile_pic_url: string;
+    id?: string;
+  };
+}

@@ -1,17 +1,16 @@
 import { useEffect } from "react";
-import { useAuthContext } from "../services/AuthProvider";
-import useRefreshToken from "./useRefreshToken";
-import axiosAuth from "../lib/axios";
+import { axiosAuth } from "@/lib/axios";
+import { useSession } from "next-auth/react";
 
 const useAxiosAuth = () => {
-  const refresh = useRefreshToken();
-  const { auth } = useAuthContext();
+  // const refresh = useRefreshToken();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const requestIntercept = axiosAuth.interceptors.request.use(
       (config) => {
-        if (!config.headers?.Authorization) {
-          config.headers!.Authorization = `Bearer ${auth.accessToken}`;
+        if (!config.headers.Authorization) {
+          config.headers.Authorization = `Bearer ${session?.user?.access_token}`;
         }
         return config;
       },
@@ -24,8 +23,9 @@ const useAxiosAuth = () => {
         const prevRequest = error?.config;
         if (error?.response?.status === 401 && !prevRequest?.sent) {
           prevRequest.sent = true;
-          const newAccessToken = await refresh();
-          prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          // signOut();
+          // const newAccessToken = await refresh();
+          // prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
           return axiosAuth(prevRequest);
         }
         return Promise.reject(error);
@@ -36,7 +36,7 @@ const useAxiosAuth = () => {
       axiosAuth.interceptors.request.eject(requestIntercept);
       axiosAuth.interceptors.response.eject(responseIntercept);
     };
-  }, [auth, refresh]);
+  }, [session?.user?.access_token]);
 
   return axiosAuth;
 };

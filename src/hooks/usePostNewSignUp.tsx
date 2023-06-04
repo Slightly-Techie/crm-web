@@ -1,8 +1,7 @@
 import React from "react";
 import useAxiosAuth from "./useAxiosAuth";
 import { useMutation } from "react-query";
-
-export type Status = "onsubmit" | "success" | "error" | "progress";
+import { Status } from "@/types";
 
 function usePostNewSignUp() {
   const [status, setStatus] = React.useState<Status>("progress");

@@ -1,13 +1,6 @@
-export const Colors = {
-  background: "#111111",
-  Gray: {
-    100: "#3A3A3A",
-    200: "#282828",
-    300: "#111111",
-  },
-};
+import { NewUserFields } from "@/types";
 
-export const API_URL = process.env.REACT_APP_API_URL;
+export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const REGEXVALIDATION = {
   name: /^[a-zA-Z]+$/,
@@ -21,4 +14,23 @@ export const REGEXVALIDATION = {
   linkedIn:
     /^(https?:\/\/)?([a-z]{2,3}\.)?linkedin\.com\/(in|pub|company)\/[\w-]+\/?$/,
   shouldNotBeEmptyString: /^\s*\S.*\S\s*$/,
+};
+
+export let NEW_USER_DATA: NewUserFields = {
+  first_name: "",
+  last_name: "",
+  password: "",
+  password_confirmation: "",
+  email: "",
+  phone_number: "",
+  portfolio: "",
+  stack: "",
+  years_of_experience: null,
+  bio: "",
+  twitter_profile: "",
+  linkedin_profile: "",
+  github_profile: "",
+  portfolio_url: "",
+  is_active: false,
+  profile_pic_url: "",
 };

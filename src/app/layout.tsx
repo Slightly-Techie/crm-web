@@ -1,8 +1,6 @@
+import FONTS from "@/assets/fonts";
 import "./globals.css";
-import { Inter } from "next/font/google";
 import { Providers } from "./providers";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Slightly Techie Network",
@@ -16,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${FONTS.ttHoves.variable} ${FONTS.monalisa.variable}`}>
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -49,7 +49,7 @@ export default function Login() {
   });
 
   return (
-    <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] min-h-screen">
+    <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] min-h-screen font-tt-hoves">
       <div className="hidden lg:flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
         <div className="">
           <Image className="mb-5" src={Stars} alt="" />
@@ -127,7 +127,7 @@ export default function Login() {
             </p>
 
             <button
-              className="bg-[#3D4450] dark:bg-white text-[#F5F5F5] text-sm dark:text-black hover:bg-[#525b6c] rounded-sm flex items-center justify-center w-full h-[48px]"
+              className="bg-[#3D4450] font-monalisa dark:bg-white text-[#F5F5F5] text-sm dark:text-black hover:bg-[#525b6c] rounded-sm flex items-center justify-center w-full h-[48px]"
               id="btn"
               type="submit"
               disabled={isRequestSent}

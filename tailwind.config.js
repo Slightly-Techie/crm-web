@@ -17,6 +17,10 @@ module.exports = {
           gray200: "#DCDDE1",
         },
       },
+      fontFamily: {
+        "tt-hoves": ["var(--font-tthoves)", "TT Hoves", "sans-serif"],
+        monalisa: ["var(--font-monalisa)", "Monalisa", "sans-serif"],
+      },
     },
   },
   plugins: [],

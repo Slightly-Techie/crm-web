@@ -2,11 +2,15 @@ import useAxiosAuth from "../../hooks/useAxiosAuth";
 import { useMutation, useQueryClient, useQuery } from "react-query";
 import { IPost } from "@/types";
 
-export function useFetchFeeds() {
+export function useFetchFeeds(): {
+  isFetching: boolean;
+  isFetchingError: boolean;
+  FeedPosts: IPost[] | undefined;
+} {
   const authAxios = useAxiosAuth();
   const {
     isLoading: isFetching,
-    error: isFetchingError,
+    isError: isFetchingError,
     data: FeedPosts,
   } = useQuery(
     "feed-data",
@@ -23,7 +27,11 @@ export function useFetchFeeds() {
 export function usePostFeeds() {
   const axiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
-  const { mutate: createNewPost } = useMutation(
+  const { mutate: createNewPost } = useMutation<
+    Pick<IPost, "content" | "feed_pic_url">,
+    any,
+    Pick<IPost, "content" | "feed_pic_url">
+  >(
     async (data) => {
       const res = await axiosAuth.post("/api/v1/feed/", data);
       return res.data;

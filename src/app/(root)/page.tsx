@@ -1,58 +1,57 @@
 "use client";
-import React from "react";
-import { RiContactsLine } from "react-icons/ri";
-import { FiBell } from "react-icons/fi";
-import Leaderboard from "@/components/Feed/Leaderboard";
-import Posts from "@/components/Feed/Posts";
-import Announcements from "@/components/Feed/Announcements";
-
-type ActiveStates = "Announcement" | "Scoreboard" | null;
+import CreatePost from "@/components/Feed/CreatePost";
+import { useFetchFeeds, usePostFeeds } from "@/components/Feed/FeedServices";
+import UserPost from "@/components/Feed/UserPost";
+import Announcements from "@/components/Feed/new/Announcements";
+import TechieLeaderboard from "@/components/Feed/new/techieLeaderboard";
+import { IPost } from "@/types";
 
 export default function FeedPage() {
-  const [isActive, setIsActive] = React.useState<ActiveStates>(null);
+  const { isFetching, isFetchingError, FeedPosts } = useFetchFeeds();
+  const { createNewPost } = usePostFeeds();
 
-  function toggleScoreAndAnnouncement(target: ActiveStates) {
-    switch (target) {
-      case "Announcement":
-      case "Scoreboard":
-        setIsActive(target);
-        return;
-      default:
-        setIsActive(null);
-    }
+  function handlePostSubmit(
+    userPostData: Pick<IPost, "content" | "feed_pic_url">
+  ) {
+    const PostData = {
+      ...userPostData,
+      title: "",
+    };
+    createNewPost(PostData);
   }
 
   return (
-    <div className="max-w-screen bg-[#fafafa] min-h-screen dark:bg-[#020202]">
-      <div className="max-w-[1360px] lg:mx-auto ">
-        <div className=" sticky lg:hidden p-4 top-0 w-full flex justify-between bg-[#ffffff53] dark:bg-[#0202022f] backdrop-saturate-200 dark:text-st-gray200 z-10  backdrop-blur-sm border-b-solid border-b-[#cecece73] border-b-[1px]">
-          <button
-            onClick={() => toggleScoreAndAnnouncement("Scoreboard")}
-            className=""
-          >
-            {" "}
-            <RiContactsLine color="inherit" size={24} />{" "}
-          </button>
-          <button
-            onClick={() => toggleScoreAndAnnouncement("Announcement")}
-            className=""
-          >
-            {" "}
-            <FiBell color="inherit" size={24} />{" "}
-          </button>
+    <div className="flex flex-row justify-center w-full h-full px-4 font-tt-hoves">
+      <section className="hidden lg:flex p-8">
+        <TechieLeaderboard />
+      </section>
+      <section className="w-full xl:w-[652px] h-[calc(100vh-80px)] overflow-y-scroll flex flex-col border-l border-r border-[#E8E8E8] dark:border-[#c7c7c73b]">
+        <div className="h-14 shrink-0 flex-row px-2 flex items-center border-b border-[#E8E8E8] dark:border-[#c7c7c73b]">
+          <h3 className="text-secondary text-4xl font-tt-hoves font-semibold tracking-wider">
+            Feed
+          </h3>
         </div>
-        <div className="feed lg:mx-auto grid  lg:grid-cols-feed ">
-          <Leaderboard
-            show={isActive}
-            toggleScoreboard={toggleScoreAndAnnouncement}
-          />
-          <Posts />
-          <Announcements
-            show={isActive}
-            toggleAnnouncement={toggleScoreAndAnnouncement}
-          />
+        <CreatePost submitHandler={handlePostSubmit} />
+        <div className="h-full w-full flex-col">
+          {isFetching && (
+            <div className="h-full w-full flex flex-col items-center justify-center">
+              Loading...
+            </div>
+          )}
+          {isFetchingError && (
+            <h1 className="h-full w-full flex flex-col items-center justify-center">
+              There is an error fetching posts
+            </h1>
+          )}
+          {FeedPosts &&
+            FeedPosts.map((data: any) => (
+              <UserPost key={data.id} post={data} />
+            ))}
         </div>
-      </div>
+      </section>
+      <section className="hidden lg:flex p-8">
+        <Announcements />
+      </section>
     </div>
   );
 }

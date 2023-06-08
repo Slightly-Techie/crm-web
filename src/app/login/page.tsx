@@ -49,7 +49,7 @@ export default function Login() {
   });
 
   return (
-    <div className="flex bg-[#F5F5F5] dark:bg-[#111111] dark:text-white text-[#3D4450] min-h-screen font-tt-hoves">
+    <div className="flex bg-st-bg dark:bg-[#111111] dark:text-white text-[#3D4450] min-h-screen font-tt-hoves">
       <div className="hidden lg:flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
         <div className="">
           <Image className="mb-5" src={Stars} alt="" />
@@ -119,7 +119,7 @@ export default function Login() {
             <p className="my-2 text-[#353535] text-[11px] font-bold">
               Forgot your{" "}
               <Link
-                className="font-bold hover:text-gray-400"
+                className="font-bold hover:text-st-gray-400"
                 href="/forgot-password"
               >
                 <u>password?</u>
@@ -127,7 +127,7 @@ export default function Login() {
             </p>
 
             <button
-              className="bg-[#3D4450] font-monalisa dark:bg-white text-[#F5F5F5] text-sm dark:text-black hover:bg-[#525b6c] rounded-sm flex items-center justify-center w-full h-[48px]"
+              className="bg-[#3D4450] font-monalisa dark:bg-white text-st-bg text-sm dark:text-black hover:bg-[#525b6c] rounded-sm flex items-center justify-center w-full h-[48px]"
               id="btn"
               type="submit"
               disabled={isRequestSent}
@@ -150,7 +150,9 @@ export default function Login() {
             <p className="my-7 text-[12px]">
               Not registered?{" "}
               <Link href="/signup">
-                <u className="font-bold hover:text-gray-400">create account</u>
+                <u className="font-bold hover:text-st-gray-400">
+                  create account
+                </u>
               </Link>
             </p>
           </form>

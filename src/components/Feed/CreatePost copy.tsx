@@ -49,7 +49,7 @@ function CreatePost({ submitHandler }: CreatePostProp) {
   return (
     <form onSubmit={(e) => onSubmit(e)} className="w-full">
       <textarea
-        className="w-full min-h-20 resize-none p-4 border-[#c7c7c73b] bg-[transparent] border-[1px] rounded-md focus:outline-[1px] focus:outline-[#33333378] "
+        className="w-full min-h-20 resize-none p-4 border-st-grayDark bg-[transparent] border-[1px] rounded-md focus:outline-[1px] focus:outline-[#33333378] "
         placeholder="What's on your mind?"
         value={postText}
         onChange={(e) => setPostText(e.target.value)}
@@ -74,7 +74,7 @@ function CreatePost({ submitHandler }: CreatePostProp) {
             />
           </div>
         )} */}
-        <div className="py-2 border-b-[#c7c7c73b] border-b-[1px] flex justify-between items-center">
+        <div className="py-2 border-b-st-grayDark border-b-[1px] flex justify-between items-center">
           <div>
             <label htmlFor="imageUpload" className="w-fit block mr-0">
               <RiImageAddLine size={24} />

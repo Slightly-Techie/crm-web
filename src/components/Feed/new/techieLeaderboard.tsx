@@ -2,11 +2,11 @@ import React from "react";
 
 const TechieLeaderboard = () => {
   return (
-    <div className="w-[280px] h-min flex flex-col rounded-[4px] border border-[#E8E8E8] dark:border-[#c7c7c73b] bg-white dark:bg-transparent">
-      <h5 className="font-bold text-xl p-3 text-secondary border-b border-[#E8E8E8] dark:border-[#c7c7c73b]">
+    <div className="w-[280px] h-min flex flex-col rounded-[4px] border border-st-gray dark:border-st-grayDark bg-white dark:bg-transparent">
+      <h5 className="font-bold text-xl p-3 text-secondary border-b border-st-gray dark:border-st-grayDark">
         Techie Leaderboard
       </h5>
-      <div className="p-3 flex flex-col border-b border-[#E8E8E8] dark:border-[#c7c7c73b]">
+      <div className="p-3 flex flex-col border-b border-st-gray dark:border-st-grayDark">
         <h6 className="text-[#575F70] font-semibold">
           Techie Academy 🎉 🎉 🎉
         </h6>
@@ -17,7 +17,7 @@ const TechieLeaderboard = () => {
           <span className="text-[#1976D2]">Learn More</span>
         </p>
       </div>
-      <div className="p-3 flex flex-col border-b border-[#E8E8E8] dark:border-[#c7c7c73b]">
+      <div className="p-3 flex flex-col border-b border-st-gray dark:border-st-grayDark">
         <h6 className="text-[#575F70] font-semibold">
           New Champion Techie for May
         </h6>
@@ -27,7 +27,7 @@ const TechieLeaderboard = () => {
           the month’s new techie.
         </p>
       </div>
-      <div className="p-3 flex flex-col border-b border-[#E8E8E8] dark:border-[#c7c7c73b]">
+      <div className="p-3 flex flex-col border-b border-st-gray dark:border-st-grayDark">
         <h6 className="text-[#575F70] font-semibold">
           Talk on scalable Rust code
         </h6>

@@ -9,7 +9,7 @@ type UserPostProps = {
 
 function UserPost({ post }: UserPostProps) {
   return (
-    <div className="flex flex-col gap-3 w-full p-3 border-b border-[#E8E8E8] dark:border-[#c7c7c73b]">
+    <div className="flex flex-col gap-3 w-full p-3 border-b border-st-gray dark:border-st-grayDark">
       <div className="flex flex-row items-center gap-3">
         <div>
           <Image
@@ -44,7 +44,7 @@ function UserPost({ post }: UserPostProps) {
     </div>
   );
   // return (
-  //   <div className="border-b-[#c7c7c73b] border-b-[1px] pb-4">
+  //   <div className="border-b-st-grayDark border-b-[1px] pb-4">
   //     <section className="flex gap-4 p-4">
   //       <div className="w-12 aspect-square rounded-full overflow-hidden ">
   //         <Image

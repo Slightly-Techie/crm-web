@@ -14,6 +14,10 @@ module.exports = {
         primary: "#F5F5F5",
         secondary: "#3D4450",
         st: {
+          bg: "#F5F5F5",
+          bgDark: "#000",
+          gray: "#E8E8E8",
+          grayDark: "#c7c7c73b",
           gray200: "#DCDDE1",
         },
       },

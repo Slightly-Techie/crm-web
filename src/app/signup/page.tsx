@@ -37,7 +37,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="w-full bg-[#F5F5F5] dark:bg-[#111111] overflow-x-hidden font-tt-hoves">
+    <div className="w-full bg-st-bg dark:bg-[#111111] overflow-x-hidden font-tt-hoves">
       <div className="w-screen h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-[#111111] mx-auto">
         <div className="new-sign-upbg  lg:block  ">
           <div className="flex flex-col gap-4 justify-center p-0 lg:p-8 w-4/5 mx-auto  h-full">

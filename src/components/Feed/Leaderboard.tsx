@@ -20,12 +20,12 @@ function Leaderboard({ show, toggleScoreboard }: LeaderboardProps) {
       >
         <RiCloseLine color=" inherit" size={24} />
       </button>
-      <div className="bg-[#fff] lg:relative  dark:bg-[#010101] rounded-lg border-solid border-[1px] dark:border-none border-[#c7c7c73b] p-4 ">
+      <div className="bg-[#fff] lg:relative  dark:bg-[#010101] rounded-lg border-solid border-[1px] dark:border-none border-st-grayDark p-4 ">
         <h1 className=" text-2xl font-semibold text-center dark:text-st-gray200 ">
           Techie Leaderboard
         </h1>
         <ul className="w-full">
-          <li className="p-4 border-[1px] bg-[#fafafaf4] dark:bg-[#272727b5] dark:text-st-gray200 border-[#c7c7c73b] rounded-md mt-4 flex justify-around items-center ">
+          <li className="p-4 border-[1px] bg-[#fafafaf4] dark:bg-[#272727b5] dark:text-st-gray200 border-st-grayDark rounded-md mt-4 flex justify-around items-center ">
             <div className="w-24 aspect-square overflow-x-hidden rounded-full">
               <img
                 className="h-full w-full object-cover"
@@ -38,7 +38,7 @@ function Leaderboard({ show, toggleScoreboard }: LeaderboardProps) {
               <p className="text-[#b4b4b4dc]">@briannewton</p>
             </div>
           </li>
-          <li className="px-4 py-1 flex justify-between  border-solid border-[1px] dark:bg-[#272727b5] dark:text-st-gray200 border-[#c7c7c73b] bg-[#fafafaf4] items-center rounded-md mt-4">
+          <li className="px-4 py-1 flex justify-between  border-solid border-[1px] dark:bg-[#272727b5] dark:text-st-gray200 border-st-grayDark bg-[#fafafaf4] items-center rounded-md mt-4">
             <div className="w-12 aspect-square overflow-x-hidden rounded-full">
               <img
                 className="h-full w-full object-cover"
@@ -51,7 +51,7 @@ function Leaderboard({ show, toggleScoreboard }: LeaderboardProps) {
               2ND
             </span>
           </li>
-          <li className="px-4 py-1 flex   border-solid border-[1px] dark:bg-[#272727b5] dark:text-st-gray200 border-[#c7c7c73b] justify-between bg-[#fafafaf4] items-center rounded-md mt-4">
+          <li className="px-4 py-1 flex   border-solid border-[1px] dark:bg-[#272727b5] dark:text-st-gray200 border-st-grayDark justify-between bg-[#fafafaf4] items-center rounded-md mt-4">
             <div className="w-12 aspect-square overflow-x-hidden rounded-full">
               <img
                 className="h-full w-full object-cover"
@@ -64,7 +64,7 @@ function Leaderboard({ show, toggleScoreboard }: LeaderboardProps) {
               3RD
             </span>
           </li>
-          <li className="px-4 py-1 flex   border-solid border-[1px] dark:bg-[#272727b5] dark:text-st-gray200 border-[#c7c7c73b] justify-between bg-[#fafafaf4] items-center rounded-md mt-4">
+          <li className="px-4 py-1 flex   border-solid border-[1px] dark:bg-[#272727b5] dark:text-st-gray200 border-st-grayDark justify-between bg-[#fafafaf4] items-center rounded-md mt-4">
             <div className="w-12 aspect-square overflow-x-hidden rounded-full">
               <img
                 className="h-full w-full object-cover"
@@ -73,11 +73,11 @@ function Leaderboard({ show, toggleScoreboard }: LeaderboardProps) {
               />
             </div>
             <span>Emmanuel Sane</span>
-            <span className=" py-1 px-3 rounded-sm border-solid border-[1px] border-[#c7c7c73b] text-sm">
+            <span className=" py-1 px-3 rounded-sm border-solid border-[1px] border-st-grayDark text-sm">
               4TH
             </span>
           </li>
-          <li className="px-4 py-1 flex  border-solid border-[1px] dark:bg-[#272727b5] dark:text-st-gray200 border-[#c7c7c73b] justify-between  bg-[#fafafaf4] items-center rounded-md mt-4">
+          <li className="px-4 py-1 flex  border-solid border-[1px] dark:bg-[#272727b5] dark:text-st-gray200 border-st-grayDark justify-between  bg-[#fafafaf4] items-center rounded-md mt-4">
             <div className="w-12 aspect-square overflow-x-hidden rounded-full">
               <img
                 className="h-full w-full object-cover"
@@ -86,7 +86,7 @@ function Leaderboard({ show, toggleScoreboard }: LeaderboardProps) {
               />
             </div>
             <span>Jerry Elikem</span>
-            <span className=" py-1 px-3 border-solid border-[1px] border-[#c7c7c73b]  rounded-sm  text-sm">
+            <span className=" py-1 px-3 border-solid border-[1px] border-st-grayDark  rounded-sm  text-sm">
               5TH
             </span>
           </li>

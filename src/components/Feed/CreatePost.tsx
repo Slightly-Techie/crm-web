@@ -52,7 +52,7 @@ function CreatePost({ submitHandler }: CreatePostProp) {
   return (
     <form
       onSubmit={(e) => onSubmit(e)}
-      className="w-full gap-3 flex flex-col p-4 border-b border-[#E8E8E8] dark:border-[#c7c7c73b]"
+      className="w-full gap-3 flex flex-col p-4 border-b border-st-gray dark:border-st-grayDark"
     >
       <div className="w-full gap-4 flex flex-row">
         <div className="w-12 shrink-0 flex flex-col items-center">
@@ -74,7 +74,7 @@ function CreatePost({ submitHandler }: CreatePostProp) {
           )}
         </div>
         <textarea
-          className="w-full min-h-20 resize-none text-black dark:text-white p-4 border-[#c7c7c73b] dark:border-[#c7c7c73b] focus:border-2 bg-transparent border rounded-md outline-none"
+          className="w-full min-h-20 resize-none text-black dark:text-white p-4 border-st-grayDark dark:border-st-grayDark focus:border-2 bg-transparent border rounded-md outline-none"
           placeholder="What's on your mind?"
           value={postText}
           onChange={(e) => setPostText(e.target.value)}

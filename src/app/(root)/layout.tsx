@@ -14,7 +14,7 @@ export default async function RootLayout({
   }
 
   return (
-    <main className="font-tt-hoves bg-[#F5F5F5] dark:bg-black overflow-clip h-screen">
+    <main className="font-tt-hoves bg-st-bg dark:bg-black overflow-clip h-screen">
       <Navbar />
       <div className="overflow-y-scroll min-h-[720px] h-[calc(100vh-80px)]">
         {children}

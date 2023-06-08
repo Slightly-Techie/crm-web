@@ -56,7 +56,7 @@ function Team() {
             <img src={Search.src} alt="search icon" />
             <input
               type="text"
-              className="w-full dark:bg-[#444444] border-none placeholder-gray-500 text-black focus:outline-none"
+              className="w-full dark:bg-[#444444] border-none placeholder-st-gray-500 text-black focus:outline-none"
               placeholder="Search by keyword"
             />
           </div>

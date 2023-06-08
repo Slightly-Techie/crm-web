@@ -75,7 +75,7 @@ export default function Techie() {
   };
 
   return (
-    <div className="flex w-full justify-center relative">
+    <div className="flex w-full justify-center relative p-8">
       <form
         onSubmit={onSubmit}
         className="flex flex-col gap-12 w-full sm:w-[calc(100% - 48px)] sm:max-w-[1000px] bg-[white] dark:bg-[#232323] dark:text-white p-[30px] absolute"

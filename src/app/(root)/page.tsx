@@ -2,7 +2,7 @@
 import CreatePost from "@/components/Feed/CreatePost";
 import { useFetchFeeds, usePostFeeds } from "@/components/Feed/FeedServices";
 import UserPost from "@/components/Feed/UserPost";
-import Announcements from "@/components/Feed/new/Announcements";
+import Announcements from "@/components/Feed/new/announcements";
 import TechieLeaderboard from "@/components/Feed/new/techieLeaderboard";
 import { IPost } from "@/types";
 
@@ -22,10 +22,10 @@ export default function FeedPage() {
 
   return (
     <div className="flex flex-row justify-center w-full h-full px-4 font-tt-hoves">
-      <section className="hidden lg:flex p-8">
+      <section className="hidden xl:flex p-8">
         <TechieLeaderboard />
       </section>
-      <section className="w-full xl:w-[652px] h-[calc(100vh-80px)] overflow-y-scroll flex flex-col border-l border-r border-[#E8E8E8] dark:border-[#c7c7c73b]">
+      <section className="w-full lg:w-[652px] h-[calc(100vh-80px)] overflow-y-scroll flex flex-col border-l border-r border-[#E8E8E8] dark:border-[#c7c7c73b]">
         <div className="h-14 shrink-0 flex-row px-2 flex items-center border-b border-[#E8E8E8] dark:border-[#c7c7c73b]">
           <h3 className="text-secondary text-4xl font-tt-hoves font-semibold tracking-wider">
             Feed
@@ -49,7 +49,7 @@ export default function FeedPage() {
             ))}
         </div>
       </section>
-      <section className="hidden lg:flex p-8">
+      <section className="hidden xl:flex p-8">
         <Announcements />
       </section>
     </div>

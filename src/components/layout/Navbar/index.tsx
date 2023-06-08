@@ -25,7 +25,7 @@ function Navbar() {
   });
 
   return (
-    <div className="w-full bg-[#F5F5F5] dark:bg-[#0202022f] backdrop-saturate-200 dark:text-st-gray200 lg:sticky z-50 top-0 h-20 backdrop-blur-sm px-48 py-4 flex justify-between items-start border-b-solid border-b-[#cecece73] border-b-[1px]">
+    <div className="w-full bg-[#F5F5F5] dark:bg-[#0202022f] backdrop-saturate-200 dark:text-st-gray200 lg:sticky z-50 top-0 h-20 backdrop-blur-sm px-8 md:px-16 lg:px-24 xl:px-48 py-4 flex justify-between items-start border-b-solid border-b-[#cecece73] border-b-[1px]">
       <Link href={"/"}>
         <button className="bg-secondary p-2 mx-auto rounded-sm text-white">
           <h1 className="font-bold text-xl">ST</h1>

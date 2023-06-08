@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { axiosAuth } from "@/lib/axios";
+import axiosAuth from "@/lib/axios";
 import { useSession } from "next-auth/react";
 
 const useAxiosAuth = () => {

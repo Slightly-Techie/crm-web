@@ -182,7 +182,7 @@ export default function Techie() {
                   disabled={!editMode}
                   readOnly
                   rows={12}
-                  value="I perform computer magic everyday for a living"
+                  value={user.bio}
                   className="rounded-md text-opacity-30 bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] lg:w-[450px] md:w-[350px] dark:bg-[#232323] dark:text-white"
                 />
               </div>

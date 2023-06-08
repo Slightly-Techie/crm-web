@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import Circle from "@/assets/icons/circle.png";
 import { ITechie } from "@/types";
@@ -20,6 +21,7 @@ const Member = ({ data }: MemberProps) => {
               ? data?.profile_pic_url
               : `https://avatars.dicebear.com/api/initials/${data?.first_name} ${data?.last_name}.svg`
           }
+          priority
           alt="profile"
         />
 
@@ -35,7 +37,7 @@ const Member = ({ data }: MemberProps) => {
 
       <div>
         <p className="mb-2 inline-flex items-center gap-1 rounded-sm bg-[#F1F6F7] dark:bg-[#444444] p-2 font-medium text-[#5D6675] dark:text-[#cacbcf] text-sm">
-          <Image src={Circle} alt="circle" />
+          <img width={16} src={Circle.src} alt="circle" />
           Visit Website
         </p>
       </div>

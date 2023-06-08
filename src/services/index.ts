@@ -5,7 +5,7 @@ import { ITechie } from "@/types";
 const useEndpoints = () => {
   const authAxios = useAxiosAuth();
 
-  const getUserProfile = () => authAxios.get(`/api/v1/users/me`);
+  const getUserProfile = () => authAxios.get<ITechie>(`/api/v1/users/me`);
 
   const updateUserProfile = (data: any) =>
     authAxios.put(`/api/v1/users/profile`, data);

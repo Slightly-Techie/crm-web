@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 import Search from "@/assets/icons/search.png";
 import Member from "./Member";
@@ -5,7 +6,6 @@ import { ITechie } from "@/types";
 import { useQuery } from "react-query";
 import useEndpoints from "@/services";
 import LoadingSpinner from "../loadingSpinner";
-import Image from "next/image";
 
 function Team() {
   const [techies, setTechies] = useState<ITechie[]>([]);
@@ -29,7 +29,7 @@ function Team() {
         <h3 className="font-medium text-secondary dark:text-[#F1F3F7] flex gap-1 items-center text-base">
           Team Memebers
           <span className="text-[9px] px-3 font-medium bg-[#F1F3F7] dark:bg-[#444444] rounded-3xl">
-            65 techies
+            {techies.length} techies
           </span>
         </h3>
         <h3 className="font-medium text-secondary dark:text-[#F1F3F7] flex gap-1 items-center text-base">
@@ -53,7 +53,7 @@ function Team() {
           className="bg-white dark:bg-[#444444] w-full border flex justify-between p-2 dark:border-[#353535] border-[#DCDDE1] rounded"
         >
           <div className="w-full flex items-center py-2 px-3 gap-2">
-            <Image src={Search} alt="search icon" />
+            <img src={Search.src} alt="search icon" />
             <input
               type="text"
               className="w-full dark:bg-[#444444] border-none placeholder-gray-500 text-black focus:outline-none"

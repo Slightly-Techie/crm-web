@@ -37,6 +37,9 @@ const AccountMenu = ({ items }: AccountMenuProps) => {
               : `https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`
           }
           alt="profile"
+          placeholder="blur"
+          blurDataURL={`https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`}
+          priority={true}
         />
       </button>
       {isMenuOpen && (

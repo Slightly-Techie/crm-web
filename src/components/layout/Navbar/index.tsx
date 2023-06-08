@@ -17,6 +17,7 @@ function Navbar() {
     onSuccess(res) {
       setUser(res.data);
     },
+    refetchOnWindowFocus: false,
   });
 
   return (
@@ -31,7 +32,8 @@ function Navbar() {
           href={"/techies"}
           className="flex items-center gap-2 border-[1px] border-st-gray200 p-2 rounded-3xl "
         >
-          <RiUserLine className=" inline-block my-auto" /> Techies
+          <RiUserLine className=" inline-block my-auto" />
+          Techies
         </Link>
         <section className="flex gap-4 items-center justify-center">
           <div className="flex items-center justify-end gap-2 sm:gap-4 lg:w-[300px]">

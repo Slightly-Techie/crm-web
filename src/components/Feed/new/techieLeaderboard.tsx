@@ -3,7 +3,7 @@ import React from "react";
 const TechieLeaderboard = () => {
   return (
     <div className="w-[280px] h-min flex flex-col rounded-[4px] border border-st-gray dark:border-st-grayDark bg-white dark:bg-transparent">
-      <h5 className="font-bold text-xl p-3 text-secondary border-b border-st-gray dark:border-st-grayDark">
+      <h5 className="font-bold text-xl p-3 text-secondary dark:text-st-textDark border-b border-st-gray dark:border-st-grayDark">
         Techie Leaderboard
       </h5>
       <div className="p-3 flex flex-col border-b border-st-gray dark:border-st-grayDark">
@@ -38,7 +38,9 @@ const TechieLeaderboard = () => {
         </p>
       </div>
       <div className="w-full flex items-center justify-center p-3">
-        <p className="text-sm text-secondary">Show More</p>
+        <p className="text-sm text-secondary dark:text-st-textDark">
+          Show More
+        </p>
       </div>
     </div>
   );

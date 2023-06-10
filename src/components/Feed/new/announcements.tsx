@@ -3,7 +3,7 @@ import React from "react";
 const Announcements = () => {
   return (
     <div className="w-[280px] h-min flex flex-col rounded-[4px] border border-st-gray dark:border-st-grayDark bg-white dark:bg-transparent">
-      <h5 className="font-bold text-xl p-3 text-secondary border-b border-st-gray dark:border-st-grayDark">
+      <h5 className="font-bold text-xl p-3 text-secondary dark:text-st-textDark border-b border-st-gray dark:border-st-grayDark">
         Announcements
       </h5>
       <div className="p-3 flex flex-col border-b border-st-gray dark:border-st-grayDark">
@@ -27,7 +27,7 @@ const Announcements = () => {
           the month’s new techie.
         </p>
       </div>
-      <div className="p-3 flex flex-col border-b border-st-gray dark:border-st-grayDark">
+      <div className="p-3 flex flex-col border-b border-st-gray dark:border-st-grayDark hover:bg-st-text/30 duration-100">
         <h6 className="text-[#575F70] font-semibold">
           Talk on scalable Rust code
         </h6>
@@ -37,9 +37,11 @@ const Announcements = () => {
           Rust.
         </p>
       </div>
-      <div className="w-full flex items-center justify-center p-3">
-        <p className="text-sm text-secondary">Show More</p>
-      </div>
+      <button className="w-full flex items-center justify-center p-3 hover:bg-st-text/30 duration-100">
+        <p className="text-sm text-secondary dark:text-st-textDark">
+          Show More
+        </p>
+      </button>
     </div>
   );
 };

@@ -1,14 +1,15 @@
 "use client";
 import { useState } from "react";
+import { useQuery } from "react-query";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
+import Image from "next/image";
 import useEndpoints from "@/services";
 import { ITechie } from "@/types";
-import { useQuery } from "react-query";
-import { RiUserLine } from "react-icons/ri";
-import AccountMenu from "./account-menu";
-import Link from "next/link";
-import { signOut } from "next-auth/react";
-import { useAppDispatch } from "@/hooks";
 import { action } from "@/redux";
+import { useAppDispatch } from "@/hooks";
+import AccountMenu from "./account-menu";
+import PersonIcon from "@/assets/icons/person-icon.svg";
 
 function Navbar() {
   const { getUserProfile } = useEndpoints();
@@ -34,9 +35,9 @@ function Navbar() {
       <div className="flex gap-8 items-center">
         <Link
           href={"/techies"}
-          className="flex items-center gap-2 bg-white dark:bg-transparent border-[1px] border-st-gray200 p-2 rounded-3xl "
+          className="flex items-center gap-2 bg-white italic font-light dark:bg-transparent border-[1px] border-st-gray dark:border-st-grayDark hover:border-st-gray p-2 px-4 rounded-3xl duration-150"
         >
-          <RiUserLine className=" inline-block my-auto" />
+          <Image src={PersonIcon} alt="person" />
           Techies
         </Link>
         <section className="flex gap-4 items-center justify-center">

@@ -1,20 +1,29 @@
+"use client";
 import React, { ChangeEvent } from "react";
 import { IPost } from "@/types";
 import { isNonWhitespace } from "@/utils";
 import PictureGlyph from "@/assets/icons/picture-glyph.svg";
 import Image from "next/image";
 import { useAppSelector } from "@/hooks";
+import { usePostFeeds } from "./FeedServices";
 
 export type NewPostFields = Pick<IPost, "content" | "feed_pic_url">;
 
-type CreatePostProp = {
-  submitHandler: (data: NewPostFields) => void;
-};
-
-function CreatePost({ submitHandler }: CreatePostProp) {
+function CreatePost() {
+  const { createNewPost } = usePostFeeds();
   const [postText, setPostText] = React.useState("");
   const [selectedFile, setSelectedFile] = React.useState<File | null>();
   const [preview, setPreview] = React.useState<string>("");
+
+  function submitHandler(
+    userPostData: Pick<IPost, "content" | "feed_pic_url">
+  ) {
+    const PostData = {
+      ...userPostData,
+      title: "",
+    };
+    createNewPost(PostData);
+  }
 
   function onSelectFile(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files || e.target.files.length === 0) {
@@ -56,7 +65,7 @@ function CreatePost({ submitHandler }: CreatePostProp) {
     >
       <div className="w-full gap-4 flex flex-row">
         <div className="w-12 shrink-0 flex flex-col items-center">
-          {user !== null && (
+          {user !== undefined && (
             <Image
               className="w-12 h-12 aspect-square shrink-0 rounded-full"
               width={48}
@@ -93,16 +102,16 @@ function CreatePost({ submitHandler }: CreatePostProp) {
             />
           </div>
           <p>Media</p>
-          <input
-            type="file"
-            id="imageUpload"
-            className="hidden relative h-[0.1px] -z-50"
-            accept="image/*"
-            onChange={(e) => onSelectFile(e)}
-            disabled
-            key={selectedFile?.name} // Add a unique key to the input element
-          />
         </label>
+        <input
+          type="file"
+          id="imageUpload"
+          className="hidden relative h-[0.1px] -z-50"
+          accept="image/*"
+          onChange={(e) => onSelectFile(e)}
+          disabled
+          key={selectedFile?.name} // Add a unique key to the input element
+        />
         <button
           className="h-9 w-20 flex items-center justify-center bg-secondary text-white font-tt-hoves font-semibold rounded-[4px]"
           type="submit"

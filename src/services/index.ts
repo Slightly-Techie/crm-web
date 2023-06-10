@@ -1,6 +1,6 @@
 import axios from "@/lib/axios";
 import useAxiosAuth from "@/hooks/useAxiosAuth";
-import { ITechie } from "@/types";
+import { IGetFeedsResponse, ITechie } from "@/types";
 
 const useEndpoints = () => {
   const authAxios = useAxiosAuth();
@@ -12,7 +12,9 @@ const useEndpoints = () => {
 
   const getTechiesList = () => authAxios.get<ITechie[]>(`/api/v1/users/`);
 
-  return { getUserProfile, updateUserProfile, getTechiesList };
+  const getFeedPosts = () => authAxios.get<IGetFeedsResponse>(`api/v1/feed/`);
+
+  return { getUserProfile, updateUserProfile, getTechiesList, getFeedPosts };
 };
 
 export const userLogin = (formData: globalThis.FormData) =>

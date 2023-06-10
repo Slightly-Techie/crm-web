@@ -12,7 +12,7 @@ function Team() {
   const { getTechiesList } = useEndpoints();
 
   const { isLoading, isError } = useQuery({
-    queryKey: "techies",
+    queryKey: ["techies"],
     queryFn: getTechiesList,
     onSuccess: ({ data }) => {
       setTechies(data);

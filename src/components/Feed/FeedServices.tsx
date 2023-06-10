@@ -1,25 +1,23 @@
 import useAxiosAuth from "../../hooks/useAxiosAuth";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { IPost } from "@/types";
+import useEndpoints from "@/services";
 
 export function useFetchFeeds(): {
   isFetching: boolean;
   isFetchingError: boolean;
   FeedPosts: IPost[] | undefined;
 } {
-  const authAxios = useAxiosAuth();
+  const { getFeedPosts } = useEndpoints();
   const {
     isLoading: isFetching,
     isError: isFetchingError,
     data: FeedPosts,
-  } = useQuery(
-    "feed-data",
-    async (): Promise<IPost[]> => {
-      const res = await authAxios.get(`api/v1/feed/`);
-      return res.data.feeds;
-    },
-    { refetchOnWindowFocus: false }
-  );
+  } = useQuery({
+    queryKey: ["feed-data"],
+    queryFn: () => getFeedPosts().then(({ data }) => data.feeds),
+    refetchOnWindowFocus: false,
+  });
 
   return { isFetching, isFetchingError, FeedPosts };
 }

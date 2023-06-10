@@ -69,3 +69,11 @@ export interface IPost {
     id?: string;
   };
 }
+
+export interface IGetFeedsResponse {
+  feeds: IPost[];
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
+}

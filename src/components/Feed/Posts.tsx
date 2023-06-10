@@ -3,7 +3,6 @@ import React from "react";
 import UserPost from "./UserPost";
 import { useFetchFeeds } from "./FeedServices";
 import LoadingSpinner from "../loadingSpinner";
-import { IPost } from "@/types";
 
 function Posts() {
   const { isFetching, isFetchingError, FeedPosts } = useFetchFeeds();

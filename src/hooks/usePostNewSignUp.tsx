@@ -1,7 +1,7 @@
 import React from "react";
 import useAxiosAuth from "./useAxiosAuth";
 import { useMutation } from "@tanstack/react-query";
-import { Status } from "@/types";
+import { NewUserFields, Status } from "@/types";
 import { AxiosError } from "axios";
 
 function usePostNewSignUp() {
@@ -9,7 +9,11 @@ function usePostNewSignUp() {
   const [errMessage, setErrMessage] = React.useState("");
   const axiosAuth = useAxiosAuth();
 
-  const { mutate: createNewUser, error } = useMutation(async (data) => {
+  const { mutate: createNewUser, error } = useMutation<
+    void,
+    any,
+    Partial<NewUserFields>
+  >(async (data) => {
     setStatus("onsubmit");
     try {
       const res = await axiosAuth.post("/api/v1/users/register", data);

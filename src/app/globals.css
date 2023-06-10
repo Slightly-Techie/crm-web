@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+#text-animate {
+  white-space: pre;
+}
+/* CSS - login button */
+/* bg-white border-[#3A3A3A] border-[1.8px] text-black w-[20rem] text-center p-3 rounded-sm font-bold */
+#btn {
+  align-items: center;
+  appearance: none;
+  background-color: #fcfcfd;
+  border-radius: 2.5px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: black;
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 600;
+  width: 20rem;
+  height: 48px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow 0.15s, transform 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: 15px;
+}
+
+#btn:focus {
+  box-shadow: #d6d6e7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+}
+
+#btn:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+#btn:active {
+  box-shadow: #d6d6e7 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
+@layer components {
+  .nav-btn {
+    @apply bg-white rounded-3xl py-2 px-4 border border-st-edge font-semibold text-lg text-secondary;
+  }
+}
+
+.new-sign-upbg {
+  background-image: url("../assets/images/magic-pattern.jpg");
+  background-size: cover;
+}
+
+.input__transparent {
+  background: transparent;
+}
+
+/* invalid form inputs */
+small {
+  color: rgb(255, 85, 85);
+}
+
+.announcement {
+  height: calc(100vh - 5rem);
+  overflow-y: scroll;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 0.4rem;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(190, 190, 190, 0.164);
+  border-radius: 2rem;
+  display: none;
+}
+
+.scrollbar:hover::-webkit-scrollbar-thumb {
+  display: block;
+}

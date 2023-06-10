@@ -1,22 +1,35 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,js,jsx,ts,tsx}"],
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
     extend: {
       gridTemplateColumns: {
         feed: "auto 1fr auto",
       },
-      fontFamily: {
-        "tt-hoves": ["TT Hoves", "sans-serif"],
+      colors: {
+        primary: "#F5F5F5",
+        secondary: "#3D4450",
+        st: {
+          bg: "#F5F5F5",
+          bgDark: "#000",
+          gray: "#E8E8E8",
+          grayDark: "#c7c7c73b",
+          text: "#3D4450",
+          textDark: "#5b677b",
+          subTextDark: "#d0d5dc",
+          surface: "#fff",
+          surfaceDark: "#232323",
+          edge: "#DCDDE1",
+          edgeDark: "#353535",
+        },
       },
-    },
-    colors: {
-      primary: "#F5F5F5",
-      white: "#ffffff",
-      black: "#000000",
-      secondary: "#3D4450",
-      st: {
-        gray200: "#DCDDE1",
+      fontFamily: {
+        "tt-hoves": ["var(--font-tthoves)", "TT Hoves", "sans-serif"],
+        monalisa: ["var(--font-monalisa)", "Monalisa", "sans-serif"],
       },
     },
   },

@@ -43,3 +43,27 @@ export const formatDate = (date: Date) => {
   const formattedDate = `${weekday} ${month} ${day}${suffix}, ${year}`;
   return formattedDate;
 };
+
+export function getTimeElapsedOrDate(dateString: string): string {
+  const now: Date = new Date();
+  const date: Date = new Date(dateString);
+
+  const timeDiff: number = now.getTime() - date.getTime();
+  const secondsDiff: number = Math.floor(timeDiff / 1000);
+  const minutesDiff: number = Math.floor(timeDiff / (1000 * 60));
+  const hoursDiff: number = Math.floor(timeDiff / (1000 * 60 * 60));
+
+  if (secondsDiff < 60) {
+    return `${secondsDiff}s`;
+  } else if (minutesDiff < 60) {
+    return `${minutesDiff}m`;
+  } else if (hoursDiff < 24) {
+    return `${hoursDiff}h`;
+  } else {
+    const options: Intl.DateTimeFormatOptions = {
+      month: "short",
+      day: "numeric",
+    };
+    return date.toLocaleDateString("en-US", options);
+  }
+}

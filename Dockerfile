@@ -1,19 +1,18 @@
-
 FROM node:16-alpine
 
 WORKDIR /app
 
 COPY ./package*.json .
 
-RUN npm i
+RUN yarn install
 
 ENV NODE_ENV=production \
-    REACT_APP_API_URL=https://crm-api.fly.dev
+    NEXT_PUBLIC_API_URL=https://crm-api.fly.dev \ 
+    NEXTAUTH_URL=http://localhost:3000 \ 
+    NEXTAUTH_SECRET=yfYO7uOqGBEO6a871cgNuKwuqjbFe9lc859HMS6Z
 
 COPY . .
 
-RUN npm run build
+RUN yarn build
 
-RUN npm install -g serve
-
-CMD ["serve", "-s", "build", "-l", "8080"]
+CMD ["yarn", "start"]

@@ -3,6 +3,7 @@ import React from "react";
 import UserPost from "./UserPost";
 import { useFetchFeeds } from "./FeedServices";
 import LoadingSpinner from "../loadingSpinner";
+import { IPost } from "@/types";
 
 function Posts() {
   const { isFetching, isFetchingError, FeedPosts } = useFetchFeeds();
@@ -21,7 +22,7 @@ function Posts() {
           </h1>
         )}
         {FeedPosts &&
-          FeedPosts.map((data: any) => <UserPost key={data.id} post={data} />)}
+          FeedPosts.map((data) => <UserPost key={data.id} post={data} />)}
       </div>
     </>
   );

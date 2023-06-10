@@ -13,17 +13,21 @@ export default function Applicants() {
     email: "Send Email",
   };
 
-  function actionToPerform(payload: any) {
+  function actionToPerform(payload: {
+    action?: string;
+    id?: number;
+    email?: string;
+  }) {
     switch (payload?.action) {
       case "activate-applicant":
-        mutation.mutate(payload?.id);
+        mutation.mutate(payload?.id!);
         break;
       case "send-email":
         (window as Window).location = `mailto:${payload?.email}`;
     }
   }
 
-  function onChange(event: any) {
+  function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     setFilter(event.target.value);
   }
 

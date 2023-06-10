@@ -9,9 +9,9 @@ export interface TableProps {
   dropdownActions?: { [key: string]: string };
   emails?: string[];
   ids?: number[];
-  actionsToPerform?: (par: { action?: string; id?: number }) => void;
+  actionsToPerform?: (payload: { action?: string; id?: number }) => void;
   value?: string;
-  onChange?: (e: any) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export interface PopupActionProps {

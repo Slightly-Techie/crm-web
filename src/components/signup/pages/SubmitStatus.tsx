@@ -64,8 +64,8 @@ const Success = ({ name = "" }) => {
           <p className="text-black dark:text-white text-sm mt-1">
             We are currently reviewing your account information and will get in
             touch with you shortly. In the meantime, keep an eye on your email
-            inbox. We&apos;ll be sending you an email with the next steps to join the
-            network.
+            inbox. We&apos;ll be sending you an email with the next steps to
+            join the network.
           </p>
           <div className="w-full h-28 flex flex-row border-y border-black/80 dark:border-[#D4D1D180] mt-3 border-dashed py-4">
             <div className="w-10 h-full">

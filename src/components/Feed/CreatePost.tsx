@@ -102,6 +102,7 @@ function CreatePost() {
             />
           </div>
           <p>Media</p>
+          <div className="hidden">{preview}</div>
         </label>
         <input
           type="file"

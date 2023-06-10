@@ -24,7 +24,7 @@ export default function Login() {
   const [isRequestSent, setIsRequestSent] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callback = searchParams.get("callbackUrl");
+  const callback = searchParams?.get("callbackUrl");
   const callbackUrl = callback ?? "/";
 
   const onSubmit = handleSubmit(async (data: FormInputs) => {

@@ -15,9 +15,6 @@ export default function Applicants() {
 
   function actionToPerform(payload: any) {
     switch (payload?.action) {
-      // case "view-applicant":
-      //   console.log("viewing", payload?.id);
-      //   break;
       case "activate-applicant":
         mutation.mutate(payload?.id);
         break;

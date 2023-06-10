@@ -127,12 +127,12 @@ export function PopupAction(props: PopupActionProps) {
         {props.rowId === props.selectedId && (
           <>
             {props.selected && (
-              <div className="menu-list dark:bg-[#232323] dark:border-[#353535] dark:text-white bg-white">
+              <div className="menu-list dark:bg-[#232323] dark:border-st-edgeDark dark:text-white bg-white">
                 {Object.entries(props.dropdownActions).map(([key, action]) => {
                   const actionText = action.replace(/\s+/g, "-").toLowerCase();
                   return (
                     <p
-                      className="dark:bg-[#232323] dark:border-[#353535] dark:text-white dark:hover:bg-secondary hover:bg-[#e2e8f0]"
+                      className="dark:bg-[#232323] dark:border-st-edgeDark dark:text-white dark:hover:bg-secondary hover:bg-[#e2e8f0]"
                       key={key}
                       onClick={() => {
                         props.actionToPerform?.({

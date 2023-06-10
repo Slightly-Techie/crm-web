@@ -15,8 +15,6 @@ function Team() {
     queryKey: "techies",
     queryFn: getTechiesList,
     onSuccess: ({ data }) => {
-      console.log(data);
-
       setTechies(data);
     },
     refetchOnWindowFocus: false,
@@ -24,8 +22,8 @@ function Team() {
   });
 
   return (
-    <section className="w-4/5 py-4 bg-white dark:bg-[#232323] rounded-sm border border-[#DCDDE1] dark:border-[#353535]">
-      <div className="flex items-center gap-4 pb-4 px-8 border-b border-b-[#DCDDE1] dark:border-[#353535]">
+    <section className="w-4/5 py-4 bg-white dark:bg-[#232323] rounded-sm border border-st-edge dark:border-st-edgeDark">
+      <div className="flex items-center gap-4 pb-4 px-8 border-b border-b-st-edge dark:border-st-edgeDark">
         <h3 className="font-medium text-secondary dark:text-[#F1F3F7] flex gap-1 items-center text-base">
           Team Memebers
           <span className="text-[9px] px-3 font-medium bg-[#F1F3F7] dark:bg-[#444444] rounded-3xl">
@@ -47,10 +45,10 @@ function Team() {
       </div>
 
       {/* Form Section */}
-      <div className=" border-b-[#DCDDE1] dark:border-[#353535] border-b py-4 px-8">
+      <div className=" border-b-st-edge dark:border-st-edgeDark border-b py-4 px-8">
         <form
           action=""
-          className="bg-white dark:bg-[#444444] w-full border flex justify-between p-2 dark:border-[#353535] border-[#DCDDE1] rounded"
+          className="bg-white dark:bg-[#444444] w-full border flex justify-between p-2 dark:border-st-edgeDark border-st-edge rounded"
         >
           <div className="w-full flex items-center py-2 px-3 gap-2">
             <img src={Search.src} alt="search icon" />
@@ -61,7 +59,7 @@ function Team() {
             />
           </div>
 
-          <button className="bg-[#3D4450] dark:bg-[#353535] text-white py-2 px-6 rounded-sm">
+          <button className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm">
             Search
           </button>
         </form>

@@ -10,7 +10,7 @@ interface MemberProps {
 
 const Member = ({ data }: MemberProps) => {
   return (
-    <div className="border-[#DCDDE1] dark:border-[#353535] dark:text-[#F1F3F7] border rounded-md p-4">
+    <div className="border-st-edge dark:border-st-edgeDark dark:text-[#F1F3F7] border rounded-md p-4">
       <div className="flex items-center gap-4 mb-2">
         <Image
           className="w-12 h-12 aspect-square shrink-0 rounded-full"

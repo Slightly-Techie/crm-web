@@ -43,14 +43,14 @@ const AccountMenu = ({ items }: AccountMenuProps) => {
         />
       </button>
       {isMenuOpen && (
-        <ul className="absolute botton-0 right-0 bg-white dark:bg-[#111111] border border-st-gray200 dark:border-[#353535] w-[160px]">
+        <ul className="absolute botton-0 right-0 bg-white dark:bg-[#111111] border border-st-edge dark:border-st-edgeDark w-[160px]">
           {items.map((item, i) => {
             if (item.type === "link") {
               return (
                 <Link key={`menu-item-${i}`} href={item.link!}>
                   <li
                     onClick={() => setIsMenuOpen(false)}
-                    className="p-2 pl-3 border-b border-st-gray200 dark:border-[#353535] hover:bg-primary/40 dark:hover:bg-[#353535]"
+                    className="p-2 pl-3 border-b border-st-edge dark:border-st-edgeDark hover:bg-primary/40 dark:hover:bg-st-edgeDark"
                   >
                     {item.value}
                   </li>
@@ -68,7 +68,7 @@ const AccountMenu = ({ items }: AccountMenuProps) => {
                 >
                   <li
                     key={`menu-item-${i}`}
-                    className="flex p-2 pl-3 border-b border-st-gray200 dark:border-[#353535] hover:bg-primary/40 dark:hover:bg-[#353535]"
+                    className="flex p-2 pl-3 border-b border-st-edge dark:border-st-edgeDark hover:bg-primary/40 dark:hover:bg-st-edgeDark"
                   >
                     {item.value}
                   </li>

@@ -98,8 +98,8 @@ export default function Techie() {
               </button>
             </div>
           )}
-          <div className="lg:h-[26rem] bg-white border border-[#DCDDE1] p-[20px] dark:bg-[#232323] dark:text-white">
-            <div className="h-14 flex flex-row items-center border-b border-[#DCDDE1]">
+          <div className="lg:h-[26rem] bg-white border border-st-edge p-[20px] dark:bg-[#232323] dark:text-white">
+            <div className="h-14 flex flex-row items-center border-b border-st-edge">
               <h1 className="text-xl font-medium">Profile</h1>
             </div>
             <div className="flex flex-col md:flex-row md:h-[calc(100%-3.5rem)] md:gap-[25px] sm:gap-[20px] mt-[10px]">
@@ -123,7 +123,7 @@ export default function Techie() {
                   <button
                     type="button"
                     onClick={() => setEditMode(!editMode)}
-                    className={`bg-primary w-full text-slate-50 rounded-sm border border-[#DCDDE1] p-[5px] sm:p-[10px] dark:bg-[#232323] dark:text-white`}
+                    className={`bg-primary w-full text-slate-50 rounded-sm border border-st-edge p-[5px] sm:p-[10px] dark:bg-[#232323] dark:text-white`}
                   >
                     {!editMode ? "Edit Profile" : "Cancel"}
                   </button>
@@ -136,7 +136,7 @@ export default function Techie() {
                     <input
                       disabled={!editMode}
                       {...register("first_name", { required: true })}
-                      className=" rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white"
+                      className=" rounded-md bg-[#f1f3f755] border-2 border-st-edge p-[10px] dark:bg-[#232323] dark:text-white"
                     />
                   </div>
                   <div className="flex flex-col gap-1 w-full">
@@ -144,7 +144,7 @@ export default function Techie() {
                     <input
                       disabled={!editMode}
                       {...register("last_name", { required: true })}
-                      className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white"
+                      className="rounded-md bg-[#f1f3f755] border-2 border-st-edge p-[10px] dark:bg-[#232323] dark:text-white"
                     />
                   </div>
                 </div>
@@ -154,7 +154,7 @@ export default function Techie() {
                     disabled
                     readOnly
                     {...register("email", { required: true })}
-                    className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white"
+                    className="rounded-md bg-[#f1f3f755] border-2 border-st-edge p-[10px] dark:bg-[#232323] dark:text-white"
                   />
                 </div>
                 <div className="flex flex-col gap-1">
@@ -163,15 +163,15 @@ export default function Techie() {
                     disabled
                     readOnly
                     value={`@${user.first_name}${user.last_name}`}
-                    className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white"
+                    className="rounded-md bg-[#f1f3f755] border-2 border-st-edge p-[10px] dark:bg-[#232323] dark:text-white"
                   />
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="lg:h-[28.5rem] shrink-0 bg-white border border-[#DCDDE1] p-[20px] dark:bg-[#232323] dark:text-white">
-          <div className="h-14flex flex-row items-center border-b border-[#DCDDE1]">
+        <div className="lg:h-[28.5rem] shrink-0 bg-white border border-st-edge p-[20px] dark:bg-[#232323] dark:text-white">
+          <div className="h-14flex flex-row items-center border-b border-st-edge">
             <h1 className="text-xl font-medium">Socials</h1>
           </div>
           <div className="flex flex-col md:flex-row gap-8 mt-[10px]">
@@ -183,7 +183,7 @@ export default function Techie() {
                   readOnly
                   rows={12}
                   value={user.bio}
-                  className="rounded-md text-opacity-30 bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] lg:w-[450px] md:w-[350px] dark:bg-[#232323] dark:text-white"
+                  className="rounded-md text-opacity-30 bg-[#f1f3f755] border-2 border-st-edge p-[10px] lg:w-[450px] md:w-[350px] dark:bg-[#232323] dark:text-white"
                 />
               </div>
             </div>
@@ -193,7 +193,7 @@ export default function Techie() {
                 <input
                   disabled={!editMode}
                   {...register("github_profile")}
-                  className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white "
+                  className="rounded-md bg-[#f1f3f755] border-2 border-st-edge p-[10px] dark:bg-[#232323] dark:text-white "
                 />
               </div>
               <div className="flex flex-col gap-0.5">
@@ -201,7 +201,7 @@ export default function Techie() {
                 <input
                   disabled={!editMode}
                   {...register("portfolio_url")}
-                  className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white "
+                  className="rounded-md bg-[#f1f3f755] border-2 border-st-edge p-[10px] dark:bg-[#232323] dark:text-white "
                 />
               </div>
 
@@ -210,7 +210,7 @@ export default function Techie() {
                 <input
                   disabled={!editMode}
                   {...register("twitter_profile")}
-                  className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white "
+                  className="rounded-md bg-[#f1f3f755] border-2 border-st-edge p-[10px] dark:bg-[#232323] dark:text-white "
                 />
               </div>
               <div className="flex flex-col gap-0.5">
@@ -218,7 +218,7 @@ export default function Techie() {
                 <input
                   disabled={!editMode}
                   {...register("linkedin_profile")}
-                  className="rounded-md bg-[#f1f3f755] border-2 border-[#DCDDE1] p-[10px] dark:bg-[#232323] dark:text-white "
+                  className="rounded-md bg-[#f1f3f755] border-2 border-st-edge p-[10px] dark:bg-[#232323] dark:text-white "
                 />
               </div>
             </div>

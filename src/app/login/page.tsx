@@ -50,7 +50,7 @@ export default function Login() {
 
   return (
     <div className="flex bg-st-bg dark:bg-[#111111] dark:text-white text-[#3D4450] min-h-screen font-tt-hoves">
-      <div className="hidden lg:flex justify-center items-center w-1/2 border-solid border-r-[1px] border-[#DCDDE1] dark:border-[#353535] left">
+      <div className="hidden lg:flex justify-center items-center w-1/2 border-solid border-r-[1px] border-st-edge dark:border-st-edgeDark left">
         <div className="">
           <Image className="mb-5" src={Stars} alt="" />
           <div className="w-[440px] ">
@@ -80,7 +80,7 @@ export default function Login() {
                   pattern: REGEXVALIDATION.email,
                 })}
                 style={{ borderColor: errors.email ? "#b92828" : "" }}
-                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
+                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-st-edge dark:border-st-edgeDark rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
                 type="email"
                 name="email"
                 placeholder="Johndoe@slightytechie.io"
@@ -99,7 +99,7 @@ export default function Login() {
                   max: 25,
                 })}
                 style={{ borderColor: errors.password ? "#b92828" : "" }}
-                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-[#DCDDE1] dark:border-[#353535] rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-[#353535] placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
+                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-st-edge dark:border-st-edgeDark rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
                 type="password"
                 name="password"
                 placeholder="Enter your password"
@@ -116,7 +116,7 @@ export default function Login() {
                 </p>
               )}
             </div>
-            <p className="my-2 text-[#353535] text-[11px] font-bold">
+            <p className="my-2 text-st-edgeDark text-[11px] font-bold">
               Forgot your{" "}
               <Link
                 className="font-bold hover:text-st-gray-400"

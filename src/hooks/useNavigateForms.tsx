@@ -1,9 +1,19 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import Skills from "@/components/signup/pages/Skills";
-import Social from "@/components/signup/pages/Social";
-import CreatePassword from "@/components/signup/pages/CreatePassword";
-import Profile from "@/components/signup/pages/Profile";
+import dynamic from "next/dynamic";
+const Skills = dynamic(() => import("@/components/signup/pages/Skills"), {
+  ssr: false,
+});
+const Social = dynamic(() => import("@/components/signup/pages/Social"), {
+  ssr: false,
+});
+const CreatePassword = dynamic(
+  () => import("@/components/signup/pages/CreatePassword"),
+  { ssr: false }
+);
+const Profile = dynamic(() => import("@/components/signup/pages/Profile"), {
+  ssr: false,
+});
 
 function useNavigateForms() {
   const {

@@ -1,6 +1,7 @@
 import { NextAuthOptions, Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "./axios";
+import jwtDecode from "jwt-decode";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -41,7 +42,17 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user, account }) {
-      return { ...token, ...user };
+      if (user && account) {
+        return { ...token, ...user };
+      }
+      const tokenParts: {
+        exp: number;
+        sub: string;
+      } = jwtDecode(token.token as string);
+      if (Date.now() < tokenParts.exp * 1000) {
+        return token;
+      }
+      return { ...token, error: "token-expired" };
     },
     async session({ session, token }) {
       session.user = token as Session["user"];

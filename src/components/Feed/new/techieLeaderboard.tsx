@@ -1,4 +1,7 @@
+import Image from "next/image";
 import React from "react";
+import SvgCurve1 from "@/assets/icons/svgcurve1.svg";
+import SvgCurve1Dark from "@/assets/icons/svgcurve1Dark.svg";
 
 const TechieLeaderboard = () => {
   return (
@@ -6,27 +9,55 @@ const TechieLeaderboard = () => {
       <h5 className="font-bold text-xl p-3 text-secondary dark:text-primary border-b border-st-gray dark:border-st-grayDark">
         Techie Leaderboard
       </h5>
-      <div className="p-3 flex flex-col border-b border-st-gray dark:border-st-grayDark">
-        <h6 className="text-[#575F70] dark:text-primary font-semibold">
-          Techie Academy 🎉 🎉 🎉
-        </h6>
-        <p className="text-xs text-[#626979] dark:text-st-subTextDark">
-          Yes!!! That’s right. Techie Academy is now accepting students. Come
-          and Learn from industry experts and get the solid foundation you need
-          to start your career...{" "}
-          <span className="text-[#1976D2]">Learn More</span>
-        </p>
+      <div className="relative px-4 py-5 h-32 flex flex-row items-center justify-center border-b border-st-gray dark:border-st-grayDark">
+        <div className="absolute w-full top-0 left-0 z-0">
+          <Image
+            className="block dark:hidden"
+            src={SvgCurve1}
+            alt="svg curve"
+          />
+          <Image
+            className="hidden dark:block"
+            src={SvgCurve1Dark}
+            alt="svg curve"
+          />
+        </div>
+        <div className="flex flex-row items-center gap-5 z-10 w-full">
+          <div className="w-[90px] h-[90px] rounded-full bg-st-edge dark:bg-st-edgeDark p-0.5"></div>
+          <div className="flex flex-col justify-center">
+            <p className="text-xl leading-5 text-black dark:text-primary">
+              Brian Newton
+            </p>
+            <p className="text-xs leading-4 text-black/40 dark:text-st-subTextDark">
+              @briannewton
+            </p>
+          </div>
+        </div>
       </div>
-      <div className="p-3 flex flex-col border-b border-st-gray dark:border-st-grayDark">
-        <h6 className="text-[#575F70] dark:text-primary font-semibold">
-          New Champion Techie for May
-        </h6>
+      <div className="px-4 py-2 flex gap-3 flex-row items-center border-b border-st-gray dark:border-st-grayDark">
+        <div className="w-7 h-4 rounded-[4px] bg-[#808080] dark:bg-[#636363] flex items-center justify-center">
+          <p className="text-[8px] font-medium font-tt-hoves text-white">2ND</p>
+        </div>
+        <div className="w-6 h-6 rounded-full bg-st-edge"></div>
+        <p className="text-xs font-light dark:text-primary">Greatness Mensah</p>
       </div>
-      <div className="p-3 flex flex-col border-b border-st-gray dark:border-st-grayDark hover:bg-st-text/30 duration-100">
-        <h6 className="text-[#575F70] dark:text-primary font-semibold">
-          Talk on scalable Rust code
-        </h6>
+      <div className="px-4 py-2 flex gap-3 flex-row items-center border-b border-st-gray dark:border-st-grayDark">
+        <div className="w-7 h-4 rounded-[4px] bg-[#CD7F31] dark:bg-[#945c24] flex items-center justify-center">
+          <p className="text-[8px] font-medium font-tt-hoves text-white">3RD</p>
+        </div>
+        <div className="w-6 h-6 rounded-full bg-st-edge"></div>
+        <p className="text-xs font-light dark:text-primary">Addo Diabene</p>
       </div>
+      <div className="px-4 py-2 flex gap-3 flex-row items-center border-b border-st-gray dark:border-st-grayDark">
+        <div className="w-7 h-4 rounded-[4px] border border-[#575F70] dark:border-st-textDark flex items-center justify-center">
+          <p className="text-[8px] font-medium font-tt-hoves text-[#575F70]">
+            4TH
+          </p>
+        </div>
+        <div className="w-6 h-6 rounded-full bg-st-edge"></div>
+        <p className="text-xs font-light dark:text-primary">Essilfie Quansah</p>
+      </div>
+
       <button className="w-full flex items-center justify-center p-3 hover:bg-st-text/30 duration-100">
         <p className="text-sm text-secondary dark:text-primary">Show More</p>
       </button>

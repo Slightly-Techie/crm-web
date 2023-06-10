@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useEndpoints from "@/services";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ITechie } from "@/types";
 import useAxiosAuth from "./useAxiosAuth";
 

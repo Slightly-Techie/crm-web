@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Search from "@/assets/icons/search.png";
 import Member from "./Member";
 import { ITechie } from "@/types";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import useEndpoints from "@/services";
 import LoadingSpinner from "../loadingSpinner";
 

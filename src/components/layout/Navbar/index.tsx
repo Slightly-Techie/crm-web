@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";

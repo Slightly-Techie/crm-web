@@ -1,6 +1,6 @@
 import React from "react";
 import useAxiosAuth from "./useAxiosAuth";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Status } from "@/types";
 import { AxiosError } from "axios";
 

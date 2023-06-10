@@ -1,5 +1,5 @@
 import useAxiosAuth from "../../hooks/useAxiosAuth";
-import { useMutation, useQueryClient, useQuery } from "react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { IPost } from "@/types";
 
 export function useFetchFeeds(): {

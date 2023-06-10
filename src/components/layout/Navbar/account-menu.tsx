@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import React, { useRef, useState } from "react";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import useMouseOverCallback from "@/hooks/useMouseOverCallback";
 import Link from "next/link";
 import Image from "next/image";

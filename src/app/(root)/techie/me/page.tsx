@@ -5,7 +5,7 @@ import { logToConsole } from "@/utils";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 type inputeField = WithoutNullableKeys<Omit<ITechie, "id">>;
 

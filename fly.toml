@@ -10,9 +10,6 @@ processes = []
 
 [env]
   PORT = "3000"
-  NEXT_PUBLIC_API_URL = "https://crm-api.fly.dev"
-  NEXTAUTH_URL = "https://app.slightlytechie.com"
-  NEXTAUTH_SECRET = "yfYO7uOqGBEO6a871cgNuKwuqjbFe9lc859HMS6Z"
 
 [experimental]
   allowed_public_ports = []

@@ -6,10 +6,7 @@ COPY ./package*.json .
 
 RUN yarn install
 
-ENV NODE_ENV=production \
-    NEXT_PUBLIC_API_URL=https://crm-api.fly.dev \ 
-    NEXTAUTH_URL=http://localhost:3000 \ 
-    NEXTAUTH_SECRET=yfYO7uOqGBEO6a871cgNuKwuqjbFe9lc859HMS6Z
+ENV NODE_ENV=production
 
 COPY . .
 

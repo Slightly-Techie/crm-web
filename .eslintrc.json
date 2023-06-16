@@ -1,3 +1,15 @@
 {
-  "extends": ["next/core-web-vitals", "react-app", "plugin:prettier/recommended"]
+  "extends": [
+    "next/core-web-vitals",
+    "react-app",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
+  }
 }

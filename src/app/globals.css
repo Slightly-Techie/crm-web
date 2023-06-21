@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 #text-animate {
   white-space: pre;
 }
@@ -99,3 +98,7 @@ small {
 .scrollbar:hover::-webkit-scrollbar-thumb {
   display: block;
 }
+/* 
+* {
+  outline: 1px solid limegreen;
+} */

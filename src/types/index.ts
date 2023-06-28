@@ -21,7 +21,7 @@ export interface ITechie {
   profile_pic_url: string | null;
   skills: ISkill[];
   tags: ITag[];
-  stack: IStack;
+  stack: IStack | null;
   created_at: string;
   is_active: boolean;
 }

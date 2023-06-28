@@ -29,8 +29,12 @@ export default function Signup() {
       const { years_of_experience } = NEW_USER_DATA;
       NEW_USER_DATA = {
         ...NEW_USER_DATA,
+        stack_id:
+          Number(NEW_USER_DATA.stack_id) === -1 ? 1 : NEW_USER_DATA.stack_id,
         years_of_experience: Number(years_of_experience),
       };
+      console.log(NEW_USER_DATA);
+
       createNewUser(NEW_USER_DATA);
     }
     next();

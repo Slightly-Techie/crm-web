@@ -21,6 +21,7 @@ export interface ITechie {
   profile_pic_url: string | null;
   skills: ISkill[];
   tags: ITag[];
+  stack: IStack | null;
   created_at: string;
   is_active: boolean;
 }
@@ -43,7 +44,6 @@ export type NewUserFields = {
   last_name: string;
   password: string;
   password_confirmation: string;
-  portfolio: string;
   bio: string;
   phone_number: string;
   years_of_experience: number | null;
@@ -51,6 +51,7 @@ export type NewUserFields = {
   twitter_profile: string;
   linkedin_profile: string;
   portfolio_url: string;
+  stack_id: number;
   stack: string;
   profile_pic_url: string;
   is_active: boolean;
@@ -76,4 +77,11 @@ export interface IGetFeedsResponse {
   page: number;
   size: number;
   pages: number;
+}
+
+export interface IStack {
+  id: number;
+  name: string;
+  created_at: string;
+  updated_at: string;
 }

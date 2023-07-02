@@ -1,9 +1,9 @@
 import { RiDeleteBin4Line } from "react-icons/ri";
-import { AnnouncementData } from "@/app/(admin)/admin/announcements/page";
+import { AnnouncementDataResponse } from "@/types";
 
-type ViewAnnouncementProps = AnnouncementData & {
-  handleDelete: (id: string) => void;
-  handleEdit: (id: string) => void;
+type ViewAnnouncementProps = AnnouncementDataResponse & {
+  handleDelete: (id: number) => void;
+  handleEdit: (id: number) => void;
 };
 export default function ViewAnnouncement({
   title,

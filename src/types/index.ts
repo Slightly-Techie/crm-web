@@ -77,3 +77,14 @@ export interface IGetFeedsResponse {
   size: number;
   pages: number;
 }
+
+export type AnnouncementData = {
+  title: string;
+  content: string;
+  edited?: boolean;
+  image_url?: string;
+};
+
+export type AnnouncementDataResponse = AnnouncementData & {
+  id: number;
+};

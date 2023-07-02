@@ -14,7 +14,15 @@ const useEndpoints = () => {
 
   const getFeedPosts = () => authAxios.get<IGetFeedsResponse>(`api/v1/feed/`);
 
-  return { getUserProfile, updateUserProfile, getTechiesList, getFeedPosts };
+  const getAnnouncements = () => authAxios.get(`api/v1/announcements/`);
+
+  return {
+    getUserProfile,
+    updateUserProfile,
+    getTechiesList,
+    getFeedPosts,
+    getAnnouncements,
+  };
 };
 
 export const userLogin = (formData: globalThis.FormData) =>

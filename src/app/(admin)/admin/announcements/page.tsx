@@ -3,88 +3,68 @@
 import CreateAnnouncement from "@/components/admin/announcement/CreateAnnouncement";
 import ViewAnnouncement from "@/components/admin/announcement/ViewAnnouncement";
 import { useState } from "react";
-
-export type AnnouncementFields = "id" | "title" | "content";
-
-export type AnnouncementData = {
-  id: string | null;
-  title: string;
-  content: string;
-  edited?: boolean;
-};
-const dummyData: AnnouncementData[] = [
-  {
-    id: "0",
-    title: "Dev Congress",
-    content:
-      "I know what it feels like to lose, you feel so desperate that you are right yet you fail nonetheless. But I ask you to what end? Dread it, run from it destiny arrives all the same and now it is here.",
-  },
-  {
-    id: "1",
-    title: "Champion Techie",
-    content:
-      "I know what it feels like to lose, you feel so desperate that you are right yet you fail nonetheless. But I ask you to what end? Dread it, run from it destiny arrives all the same and now it is here.",
-  },
-];
+import { useFetchAnnouncements } from "./AnnouncementServices";
+import { usePostAnnouncment } from "./AnnouncementServices";
+import { AnnouncementDataResponse } from "@/types";
+import LoadingSpinner from "@/components/loadingSpinner";
 
 export default function Announcement() {
-  const [announcement, setAnnouncement] = useState(dummyData);
-  const [currentPost, setCurrentPost] = useState<AnnouncementData | null>(null);
+  const [currentPost, setCurrentPost] =
+    useState<AnnouncementDataResponse | null>(null);
+  const { isFetching, isFetchingError, Announcements } =
+    useFetchAnnouncements();
+  const { createNewAnnouncement, DeleteAnnouncement } = usePostAnnouncment();
 
-  function handleNewAnnouncement(obj: AnnouncementData) {
-    let newArray;
-    if (obj.edited) {
-      const updated = announcement.map((item) => {
-        if (item.id === obj.id) {
-          return { ...obj, id: item.id };
-        } else return item;
-      });
-      newArray = updated;
-    } else {
-      const updatedObj = {
-        ...obj,
-        id: new Date().getMilliseconds().toString(),
-      };
-      newArray = [updatedObj].concat(...announcement);
-    }
-    setAnnouncement(newArray);
+  function handleNewAnnouncement(obj: Partial<AnnouncementDataResponse>) {
+    createNewAnnouncement(obj);
     setCurrentPost(null);
   }
 
-  function editAnnouncement(id: string) {
-    const item = announcement.find((item) => item.id === id);
+  function editAnnouncement(id: number) {
+    const item = Announcements?.find((item) => item.id === id);
     if (item) {
       setCurrentPost(item);
     }
   }
 
-  function deleteAnnouncement(id: string) {
+  function deleteAnnouncement(id: number) {
     if (currentPost && currentPost.id === id) return;
-    const filteredArr = announcement.filter((item) => item.id !== id);
-    setAnnouncement(filteredArr);
+    DeleteAnnouncement(id);
   }
   return (
-    <div className="w-full grid gap-4 place-content-center lg:grid-cols-announcement">
+    <div className="w-full grid gap-4 h-full lg:grid-cols-announcement">
       <CreateAnnouncement
         existingPost={currentPost}
         submitHandler={handleNewAnnouncement}
       />
-      <div className="w-4/5 mx-auto ">
-        {announcement.length && (
-          <h3 className="text-white text-center">
-            All Announcements ({announcement.length})
-          </h3>
+      <div className=" w-full lg:w-4/5 mx-auto ">
+        {isFetching && (
+          <div className="h-full w-full flex flex-col items-center justify-center">
+            <LoadingSpinner />
+          </div>
         )}
-        {announcement.map((item) => {
-          return (
-            <ViewAnnouncement
-              handleDelete={deleteAnnouncement}
-              handleEdit={editAnnouncement}
-              key={item.id}
-              {...item}
-            />
-          );
-        })}
+        {isFetchingError && (
+          <h1 className="h-full w-full flex flex-col items-center justify-center">
+            There is an error fetching posts
+          </h1>
+        )}
+        {Announcements && (
+          <div className="min-h-screen">
+            <h3 className="text-white text-center">
+              All Announcements ({Announcements.length})
+            </h3>
+            {Announcements.map((item) => {
+              return (
+                <ViewAnnouncement
+                  handleDelete={deleteAnnouncement}
+                  handleEdit={editAnnouncement}
+                  key={item.id}
+                  {...item}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

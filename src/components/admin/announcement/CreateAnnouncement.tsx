@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { AnnouncementData } from "@/app/(admin)/admin/announcements/page";
 import { isNonWhitespace } from "@/utils";
+import { AnnouncementData } from "@/types";
 
 type CreateAnnouncementProps = {
   existingPost: AnnouncementData | null;
@@ -25,10 +25,11 @@ export default function CreateAnnouncement({
   function onSubmit() {
     if (!isNonWhitespace(formTitle) || !isNonWhitespace(formContent)) return;
     const data = {
+      ...existingPost,
       title: formTitle,
       content: formContent,
+      image_url: "",
       edited: existingPost ? true : false,
-      id: existingPost ? existingPost.id : null,
     };
     try {
       submitHandler(data);
@@ -45,7 +46,7 @@ export default function CreateAnnouncement({
         e.preventDefault();
         onSubmit();
       }}
-      className="w-4/5 mx-auto lg:sticky lg:top-0 self-start "
+      className=" w-full h-fit lg:w-4/5 lg:mx-auto lg:sticky lg:top-[80px] self-start "
     >
       <h1 className=" text-center text-slate-300 font-semibold text-[1.2rem] py-4">
         Create Announcement
@@ -73,7 +74,7 @@ export default function CreateAnnouncement({
           />
         </div>
         <button className="h-9 w-full flex items-center justify-center bg-secondary text-white font-tt-hoves font-semibold rounded-[4px]">
-          Post Announcement
+          {existingPost ? "Save Announcement" : "Post Announcement"}
         </button>
       </div>
     </form>

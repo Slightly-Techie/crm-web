@@ -1,26 +1,42 @@
 import { useState } from "react";
-import { FieldErrors, RegisterOptions } from "react-hook-form";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { NEW_USER_DATA, REGEXVALIDATION } from "@/constants";
 import { NewUserFields } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import { getStacks } from "@/services";
+import { Oval } from "react-loader-spinner";
 
 type ProfileFields =
   | "email"
   | "phone_number"
-  | "portfolio"
+  | "stack_id"
   | "first_name"
   | "last_name";
 
 type TProfileType = Pick<NewUserFields, ProfileFields>;
 
 type ProfileFormType = {
-  register: (name: ProfileFields, options?: RegisterOptions) => {};
+  register: UseFormRegister<NewUserFields>;
   errors: FieldErrors<TProfileType>;
 };
 
 function Profile({ register, errors }: ProfileFormType) {
-  const [selectValue, setSelectValue] = useState(NEW_USER_DATA.portfolio);
-  const PORTFOLIOS = ["Frontend", "Backend", "UI/UX", "Full Stack", "Mobile"];
-  const isOther = !(selectValue === "" || PORTFOLIOS.includes(selectValue));
+  const [selectValue, setSelectValue] = useState(NEW_USER_DATA.stack_id);
+
+  const {
+    data: STACKS,
+    isSuccess: stackSuccess,
+    isLoading: stackLoading,
+  } = useQuery({
+    queryKey: ["stacks"],
+    queryFn: getStacks,
+    refetchOnWindowFocus: false,
+    retry: 3,
+    onSuccess({ data }) {
+      setSelectValue(data[0].id);
+    },
+  });
+
   return (
     <>
       <div className="my-4">
@@ -81,26 +97,39 @@ function Profile({ register, errors }: ProfileFormType) {
         <label className="text-[#000] dark:text-[#f1f3f7]">
           What type of techie are you?
         </label>
-        <select
-          {...register("portfolio")}
-          onChange={(e) => setSelectValue(e.target.value)}
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
-        >
-          {PORTFOLIOS.map((portfolio) => (
-            <option className=" text-[#000] " key={portfolio} value={portfolio}>
-              {portfolio}
+        {stackLoading ? (
+          <Oval
+            width={20}
+            height={20}
+            color="#fff"
+            secondaryColor="whatever"
+            strokeWidth={4}
+          />
+        ) : (
+          <select
+            {...register("stack_id")}
+            onChange={(e) => setSelectValue(parseInt(e.target.value))}
+            className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
+          >
+            {stackSuccess &&
+              STACKS?.data.map((stack) => (
+                <option className="text-[#000]" key={stack.id} value={stack.id}>
+                  {stack.name}
+                </option>
+              ))}
+            <option className="text-[#000]" value={-1}>
+              Other
             </option>
-          ))}
-          <option className="text-[#000]">Other</option>
-        </select>
+          </select>
+        )}
       </div>
-      {isOther && (
+      {selectValue === -1 && (
         <div className="my-4">
           <label className="text-[#000] dark:text-white">
             If &apos;Other&apos;, please specify
           </label>
           <input
-            {...register("portfolio")}
+            {...register("stack")}
             className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-white border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
             type="text"
           />

@@ -1,6 +1,6 @@
 import axios from "@/lib/axios";
 import useAxiosAuth from "@/hooks/useAxiosAuth";
-import { IGetFeedsResponse, ITechie } from "@/types";
+import { IGetFeedsResponse, IStack, ITechie } from "@/types";
 
 const useEndpoints = () => {
   const authAxios = useAxiosAuth();
@@ -30,5 +30,7 @@ export const userLogin = (formData: globalThis.FormData) =>
 
 export const userRegister = (data: any) =>
   axios.post(`/api/v1/users/register`, data);
+
+export const getStacks = () => axios.get<IStack[]>(`/api/v1/stacks/`);
 
 export default useEndpoints;

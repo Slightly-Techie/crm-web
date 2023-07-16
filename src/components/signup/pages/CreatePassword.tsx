@@ -1,11 +1,6 @@
 import React from "react";
 import { NewUserFields } from "@/types";
-import {
-  RegisterOptions,
-  FieldErrors,
-  UseFormWatch,
-  FieldValues,
-} from "react-hook-form";
+import { RegisterOptions, FieldErrors, UseFormWatch } from "react-hook-form";
 import { REGEXVALIDATION } from "@/constants";
 
 type PasswordFields = "password" | "password_confirmation";
@@ -15,7 +10,7 @@ type TPasswordType = Pick<NewUserFields, PasswordFields>;
 type PasswordFormType = {
   register: (name: PasswordFields, options?: RegisterOptions) => {};
   errors: FieldErrors<TPasswordType>;
-  watch: UseFormWatch<FieldValues>;
+  watch: UseFormWatch<NewUserFields>;
 };
 
 function CreatePassword({ register, errors, watch }: PasswordFormType) {

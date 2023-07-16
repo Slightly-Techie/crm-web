@@ -25,6 +25,7 @@ const initialUserField: ITechie = {
   phone_number: "",
   skills: [],
   tags: [],
+  stack: null,
   years_of_experience: 0,
   id: 0,
 };

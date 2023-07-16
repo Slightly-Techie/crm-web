@@ -12,7 +12,7 @@ export default function Announcement() {
   const [currentPost, setCurrentPost] =
     useState<AnnouncementDataResponse | null>(null);
   const { isFetching, isFetchingError, Announcements } =
-    useFetchAnnouncements();
+    useFetchAnnouncements(10);
   const { createNewAnnouncement, DeleteAnnouncement } = usePostAnnouncment();
 
   function handleNewAnnouncement(obj: Partial<AnnouncementDataResponse>) {
@@ -50,7 +50,7 @@ export default function Announcement() {
         )}
         {Announcements && (
           <div className="min-h-screen">
-            <h3 className="text-white text-center">
+            <h3 className="text-st-textDark dark:text-st-subTextDark text-center">
               All Announcements ({Announcements.length})
             </h3>
             {Announcements.map((item) => {

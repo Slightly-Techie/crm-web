@@ -5,7 +5,7 @@ import { AnnouncementDataResponse } from "@/types";
 import useEndpoints from "@/services";
 import { useQuery } from "@tanstack/react-query";
 
-export function useFetchAnnouncements(): {
+export function useFetchAnnouncements(limit?: number): {
   isFetching: boolean;
   isFetchingError: boolean;
   Announcements: AnnouncementDataResponse[];
@@ -17,7 +17,7 @@ export function useFetchAnnouncements(): {
     data: Announcements,
   } = useQuery({
     queryKey: ["announcements"],
-    queryFn: () => getAnnouncements().then(({ data }) => data.items),
+    queryFn: () => getAnnouncements(limit).then(({ data }) => data.items),
     refetchOnWindowFocus: false,
   });
 

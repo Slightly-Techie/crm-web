@@ -98,7 +98,3 @@ small {
 .scrollbar:hover::-webkit-scrollbar-thumb {
   display: block;
 }
-/* 
-* {
-  outline: 1px solid limegreen;
-} */

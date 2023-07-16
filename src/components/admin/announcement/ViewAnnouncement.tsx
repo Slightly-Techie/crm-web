@@ -15,8 +15,10 @@ export default function ViewAnnouncement({
   return (
     <div className="w-full py-4 border-b-[1px] border-b-slate-700">
       <section>
-        <h2 className="text-slate-200 text-[1.2rem] font-semibold ">{title}</h2>
-        <p className="text-slate-300">{content}</p>
+        <h2 className=" text-st-text dark:text-slate-200 text-[1.2rem] font-semibold ">
+          {title}
+        </h2>
+        <p className="  text-st-text dark:text-slate-300">{content}</p>
       </section>
       <section className="w-full mx-auto my-2 flex gap-4 flex-row-reverse ">
         <button

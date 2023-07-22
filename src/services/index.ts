@@ -14,7 +14,16 @@ const useEndpoints = () => {
 
   const getFeedPosts = () => authAxios.get<IGetFeedsResponse>(`api/v1/feed/`);
 
-  return { getUserProfile, updateUserProfile, getTechiesList, getFeedPosts };
+  const getSpecificUser = (user_id: any) =>
+    authAxios.get<ITechie>(`api/v1/users/profile/${user_id}`);
+
+  return {
+    getUserProfile,
+    updateUserProfile,
+    getTechiesList,
+    getFeedPosts,
+    getSpecificUser,
+  };
 };
 
 export const userLogin = (formData: globalThis.FormData) =>

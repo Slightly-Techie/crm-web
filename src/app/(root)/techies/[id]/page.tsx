@@ -3,6 +3,7 @@ import { useFetchFeeds } from "@/components/Feed/FeedServices";
 import UserPost from "@/components/Feed/UserPost";
 import LoadingSpinner from "@/components/loadingSpinner";
 import useEndpoints from "@/services";
+import { getSubdomainFromURL, getAccountUserName } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -34,31 +35,6 @@ function Page() {
   const currentUserPosts = FeedPosts?.filter(
     (item) => item.user.id === UserProfile?.id
   );
-
-  function getAccountUserName(link: string | null | undefined): string | null {
-    if (typeof link === "string") {
-      const url = new URL(link);
-      const pathParts = url.pathname.split("/");
-      if (pathParts.length > 1) {
-        return pathParts[1];
-      }
-    }
-    return null;
-  }
-
-  function getSubdomainFromURL(url: string): string | null {
-    try {
-      const parsedURL = new URL(url);
-      const hostnameParts = parsedURL.hostname.split(".");
-      if (hostnameParts.length >= 3) {
-        return hostnameParts.slice(1).join(".");
-      }
-      return parsedURL.hostname;
-    } catch (error) {
-      console.error("Invalid URL:", error);
-      return null;
-    }
-  }
 
   return (
     <div className="pt-2 lg:pt-4 text-white">

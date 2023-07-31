@@ -8,6 +8,7 @@ import Image from "next/image";
 import { REGEXVALIDATION } from "@/constants";
 import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 interface FormInputs {
   email: String;
@@ -20,6 +21,7 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>({ mode: "onSubmit" });
+  const [showPassword, setShowPassword] = useState<boolean>();
   const [responseError, setResponseError] = useState<string | undefined>();
   const [isRequestSent, setIsRequestSent] = useState(false);
   const router = useRouter();
@@ -91,19 +93,34 @@ export default function Login() {
                 </p>
               )}
             </div>
-            <div className="">
-              <input
-                {...register("password", {
-                  required: true,
-                  min: 8,
-                  max: 25,
-                })}
-                style={{ borderColor: errors.password ? "#b92828" : "" }}
-                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-st-edge dark:border-st-edgeDark rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
-                type="password"
-                name="password"
-                placeholder="Enter your password"
-              />
+            <>
+              <div className="flex items-center justify-between bg-[#F1F3F7] dark:bg-[#1E1E1E] border-st-edge dark:border-st-edgeDark rounded-sm border-[1.8px] h-[40px] w-[20rem] pl-4 ">
+                <input
+                  {...register("password", {
+                    required: true,
+                    min: 8,
+                    max: 25,
+                  })}
+                  style={{ borderColor: errors.password ? "#b92828" : "" }}
+                  className="bg-[#F1F3F7] dark:bg-[#1E1E1E] placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] w-[85%] focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Enter your password"
+                />
+                <div className="w-[10%]">
+                  {showPassword ? (
+                    <AiOutlineEyeInvisible
+                      className="cursor-pointer ease duration-500"
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  ) : (
+                    <AiOutlineEye
+                      className="cursor-pointer ease duration-500"
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  )}
+                </div>
+              </div>
               {errors.password && (
                 <p className="text-[#b92828] text-[12px] text-center">
                   Password must be at least 8 characters, can contain at least
@@ -115,7 +132,7 @@ export default function Login() {
                   {responseError}
                 </p>
               )}
-            </div>
+            </>
             <p className="my-2 text-st-edgeDark text-[11px] font-bold">
               Forgot your{" "}
               <Link

@@ -67,3 +67,30 @@ export function getTimeElapsedOrDate(dateString: string): string {
     return date.toLocaleDateString("en-US", options);
   }
 }
+
+export function getAccountUserName(
+  link: string | null | undefined
+): string | null {
+  if (typeof link === "string") {
+    const url = new URL(link);
+    const pathParts = url.pathname.split("/");
+    if (pathParts.length > 1) {
+      return pathParts[1];
+    }
+  }
+  return null;
+}
+
+export function getSubdomainFromURL(url: string): string | null {
+  try {
+    const parsedURL = new URL(url);
+    const hostnameParts = parsedURL.hostname.split(".");
+    if (hostnameParts.length >= 3) {
+      return hostnameParts.slice(1).join(".");
+    }
+    return parsedURL.hostname;
+  } catch (error) {
+    console.error("Invalid URL:", error);
+    return null;
+  }
+}

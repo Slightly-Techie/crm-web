@@ -21,6 +21,8 @@ const useEndpoints = () => {
       return authAxios.get(`api/v1/announcements/`);
     }
   };
+  const getSpecificUser = (user_id: any) =>
+    authAxios.get<ITechie>(`api/v1/users/profile/${user_id}`);
 
   return {
     getUserProfile,
@@ -28,6 +30,7 @@ const useEndpoints = () => {
     getTechiesList,
     getFeedPosts,
     getAnnouncements,
+    getSpecificUser,
   };
 };
 

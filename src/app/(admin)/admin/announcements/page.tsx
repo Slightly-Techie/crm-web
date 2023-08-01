@@ -3,8 +3,8 @@
 import CreateAnnouncement from "@/components/admin/announcement/CreateAnnouncement";
 import ViewAnnouncement from "@/components/admin/announcement/ViewAnnouncement";
 import { useState } from "react";
-import { useFetchAnnouncements } from "./AnnouncementServices";
-import { usePostAnnouncment } from "./AnnouncementServices";
+import { useFetchAnnouncements } from "../../../../services/AnnouncementServices";
+import { usePostAnnouncment } from "../../../../services/AnnouncementServices";
 import { AnnouncementDataResponse } from "@/types";
 import LoadingSpinner from "@/components/loadingSpinner";
 

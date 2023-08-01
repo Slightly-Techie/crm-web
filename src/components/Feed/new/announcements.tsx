@@ -1,6 +1,6 @@
 "use client";
 
-import { useFetchAnnouncements } from "@/app/(admin)/admin/announcements/AnnouncementServices";
+import { useFetchAnnouncements } from "@/services/AnnouncementServices";
 import React, { useState } from "react";
 import LoadingSpinner from "@/components/loadingSpinner";
 
@@ -35,7 +35,10 @@ const Announcements = () => {
             Announcements
           </h5>
 
-          {paginatedData.length &&
+          {paginatedData.length === 0 ? (
+            <h1>No Announcements</h1>
+          ) : (
+            paginatedData.length &&
             paginatedData.map((item) => {
               return (
                 <div
@@ -50,17 +53,20 @@ const Announcements = () => {
                   </p>
                 </div>
               );
-            })}
-          <button
-            onClick={showMore}
-            className="w-full flex items-center justify-center p-3 hover:bg-st-text/30 duration-100"
-          >
-            <p className="text-sm text-secondary dark:text-primary">
-              {paginatedData.length === Announcements.length
-                ? "Show Less"
-                : "Show More"}
-            </p>
-          </button>
+            })
+          )}
+          {Announcements.length > 3 && (
+            <button
+              onClick={showMore}
+              className="w-full flex items-center justify-center p-3 hover:bg-st-text/30 duration-100"
+            >
+              <p className="text-sm text-secondary dark:text-primary">
+                {paginatedData.length === Announcements.length
+                  ? "Show Less"
+                  : "Show More"}
+              </p>
+            </button>
+          )}
         </div>
       )}
     </div>

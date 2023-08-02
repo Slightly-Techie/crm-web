@@ -14,9 +14,9 @@ export default async function RootLayout({
   }
 
   return (
-    <main className="font-tt-hoves bg-black overflow-clip h-screen">
+    <main className="font-tt-hoves bg-st-bg dark:bg-st-bgDark ">
       <Navbar />
-      <div className="p-8 overflow-y-scroll min-h-[720px] h-[calc(100vh-80px)]">
+      <div className="p-8 min-h-screen max-w-screen-2xl mx-auto  ">
         {children}
       </div>
     </main>

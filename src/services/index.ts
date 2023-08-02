@@ -14,6 +14,13 @@ const useEndpoints = () => {
 
   const getFeedPosts = () => authAxios.get<IGetFeedsResponse>(`api/v1/feed/`);
 
+  const getAnnouncements = (limit?: number) => {
+    if (limit) {
+      return authAxios.get(`api/v1/announcements/?limit=${limit}&page=1`);
+    } else {
+      return authAxios.get(`api/v1/announcements/`);
+    }
+  };
   const getSpecificUser = (user_id: any) =>
     authAxios.get<ITechie>(`api/v1/users/profile/${user_id}`);
 
@@ -22,6 +29,7 @@ const useEndpoints = () => {
     updateUserProfile,
     getTechiesList,
     getFeedPosts,
+    getAnnouncements,
     getSpecificUser,
   };
 };

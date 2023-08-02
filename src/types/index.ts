@@ -85,3 +85,20 @@ export interface IStack {
   created_at: string;
   updated_at: string;
 }
+export type AnnouncementData = {
+  title: string;
+  content: string;
+  edited?: boolean;
+  image_url?: string;
+};
+
+export type AnnouncementDataResponse = AnnouncementData & {
+  id: number;
+};
+
+export interface IStack {
+  id: number;
+  name: string;
+  created_at: string;
+  updated_at: string;
+}

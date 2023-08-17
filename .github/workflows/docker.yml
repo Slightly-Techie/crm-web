@@ -18,7 +18,4 @@ jobs:
           docker buildx create --use
           docker buildx inspect --bootstrap
           docker buildx build -t crm:latest .
-      
-      - name: Display image size
-        run: |
-          docker image inspect crm:latest --format='{{.Size}}'
+          docker buildx image inspect crm:latest --format='{{.Size}}'

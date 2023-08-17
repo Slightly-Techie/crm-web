@@ -22,5 +22,5 @@ jobs:
       - name: Display image size
         run: |
           IMAGE_ID=$(docker images -q your-image-name:latest)
-          IMAGE_SIZE=$(docker inspect --format='{{.Size}}' $IMAGE_ID)
+          IMAGE_SIZE=$(docker image inspect --format='{{.Size}}' $IMAGE_ID)
           echo "Docker image size: $IMAGE_SIZE"

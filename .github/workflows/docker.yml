@@ -17,10 +17,8 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx inspect --bootstrap
-          docker buildx build -t your-image-name:latest .
+          docker buildx build -t crm:latest .
       
       - name: Display image size
         run: |
-          IMAGE_ID=$(docker images -q your-image-name:latest)
-          IMAGE_SIZE=$(docker image inspect $IMAGE_ID)
-          echo "Docker image size: $IMAGE_SIZE"
+          docker image inspect crm:latest --format='{{.Size}}'

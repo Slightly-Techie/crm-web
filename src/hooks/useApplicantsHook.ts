@@ -1,25 +1,38 @@
 import { useEffect, useState } from "react";
-import useEndpoints from "@/services";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ITechie } from "@/types";
 import useAxiosAuth from "./useAxiosAuth";
 
+interface AllUsersResponse {
+  users: ITechie[];
+  total: number;
+  size: number;
+  page: number;
+  pages: number;
+}
+
 export function useApplicantHooks() {
-  const { getTechiesList } = useEndpoints();
   const [users, setUsers] = useState<undefined | ITechie[]>();
   const [message, setMessage] = useState("");
   const [filter, setFilter] = useState("");
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(0);
   const [debouncedInputValue, setDebouncedInputValue] = useState("");
   const [newData, setNewData] = useState<undefined | ITechie[]>();
   const authAxios = useAxiosAuth();
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ["allUsers"],
-    queryFn: getTechiesList,
+    queryFn: () =>
+      authAxios.get<AllUsersResponse>(`/api/v1/users/?limit=10&page=${page}`),
     onSuccess(res) {
-      setUsers(res.data);
+      setUsers(res.data?.users);
+      setPages(res?.data?.pages);
     },
   });
+
+  // const isLoading = query.fetchStatus === "fetching";
+  const isLoading = query.isLoading;
 
   const mutation = useMutation({
     mutationFn: (userId: number) => {
@@ -42,6 +55,10 @@ export function useApplicantHooks() {
     }, 500);
     return () => clearTimeout(delayInputTimeoutId);
   }, [filter]);
+
+  useEffect(() => {
+    query.refetch();
+  }, [page, query]);
 
   useEffect(() => {
     if (debouncedInputValue) {
@@ -93,5 +110,9 @@ export function useApplicantHooks() {
     filter,
     setFilter,
     newData,
+    setPage,
+    page,
+    pages,
+    isLoading,
   };
 }

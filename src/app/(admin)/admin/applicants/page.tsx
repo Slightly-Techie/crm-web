@@ -3,10 +3,20 @@
 import { ApplicantsTableColumns } from "@/components/admin/applicants/ApplicantsTableCols";
 import TableComponent from "@/components/admin/applicants/Table";
 import { useApplicantHooks } from "@/hooks/useApplicantsHook";
+import Loading from "../../loading";
 
 export default function Applicants() {
-  const { tableData, mutation, message, filter, setFilter } =
-    useApplicantHooks();
+  const {
+    tableData,
+    mutation,
+    message,
+    filter,
+    setFilter,
+    page,
+    setPage,
+    isLoading,
+    pages,
+  } = useApplicantHooks();
   const dropdownActions = {
     view: "View Applicant",
     activate: "Activate Applicant",
@@ -38,27 +48,75 @@ export default function Applicants() {
           <p className="text-[white]">{message}</p>
         </div>
       )}
-      <div className="interviewee-wrapper bg-[white] w-[90%] p-[20px] dark:bg-[#232323] dark:text-white relative bottom-0 top-0">
-        <h1 className="text-[#3D4450] font-normal text-xl mb-[20px] dark:text-white">
-          Applicants
-        </h1>
-        <TableComponent
-          columns={ApplicantsTableColumns}
-          data={tableData}
-          dropdownActions={dropdownActions}
-          actionsToPerform={actionToPerform}
-          ids={tableData?.map((e) => e?.id)}
-          emails={tableData?.map((e) => e?.email)}
-          searchIncluded
-          value={filter}
-          onChange={onChange}
-        />
-        {tableData?.length === 0 && (
-          <div className="flex justify-center items-center h-[400px]">
-            <p>No data found</p>
-          </div>
-        )}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="interviewee-wrapper bg-[white] w-[90%] p-[20px] dark:bg-[#232323] dark:text-white relative bottom-0 top-0">
+          <h1 className="text-[#3D4450] font-normal text-xl mb-[20px] dark:text-white">
+            Applicants
+          </h1>
+          <TableComponent
+            columns={ApplicantsTableColumns}
+            data={tableData}
+            dropdownActions={dropdownActions}
+            actionsToPerform={actionToPerform}
+            ids={tableData?.map((e) => e?.id)}
+            emails={tableData?.map((e) => e?.email)}
+            searchIncluded
+            value={filter}
+            onChange={onChange}
+          />
+          {tableData?.length === 0 && (
+            <div className="flex justify-center items-center h-[400px]">
+              <p>No data found</p>
+            </div>
+          )}
+          {typeof tableData?.length !== "undefined" &&
+            tableData?.length > 0 && (
+              <div>
+                <PaginationComponent
+                  page={page}
+                  pages={pages}
+                  setPage={setPage}
+                />
+              </div>
+            )}
+        </div>
+      )}
+    </>
+  );
+}
+
+function PaginationComponent(props: PaginationProps) {
+  return (
+    <>
+      <div className="my-3 flex justify-between">
+        <p>
+          Showing {props.page} of {props.pages}
+        </p>
+        <div className="flex gap-5">
+          <button
+            disabled={typeof props.pages !== "undefined" && props.page <= 1}
+            onClick={() => props.setPage?.(props.page - 1)}
+          >
+            prev
+          </button>
+          <button
+            disabled={
+              typeof props.pages !== "undefined" && props.page >= props.pages
+            }
+            onClick={() => props.setPage?.(props.page + 1)}
+          >
+            next
+          </button>
+        </div>
       </div>
     </>
   );
+}
+
+interface PaginationProps {
+  page: number;
+  pages?: number | undefined;
+  setPage?: (e: number) => void;
 }

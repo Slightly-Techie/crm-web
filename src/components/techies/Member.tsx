@@ -16,11 +16,7 @@ const Member = ({ data }: MemberProps) => {
           className="w-12 h-12 aspect-square shrink-0 rounded-full"
           width={48}
           height={48}
-          src={
-            data?.profile_pic_url
-              ? data?.profile_pic_url
-              : `https://avatars.dicebear.com/api/initials/${data?.first_name} ${data?.last_name}.svg`
-          }
+          src={`https://avatars.dicebear.com/api/initials/${data?.first_name} ${data?.last_name}.svg`}
           priority
           alt="profile"
         />

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+import React, { useState } from "react";
 import Search from "@/assets/icons/search.png";
 import Member from "./Member";
 import { useQuery } from "@tanstack/react-query";
@@ -7,16 +7,33 @@ import useEndpoints from "@/services";
 import LoadingSpinner from "../loadingSpinner";
 
 function Team() {
-  // const [techies, setTechies] = useState<ITechie[]>([]);
   const { getTechiesList } = useEndpoints();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginatioinDetails, setPaginatioinDetails] = useState({
+    total: 0,
+    size: 0,
+    pages: 0,
+    page: 0,
+  });
 
   const {
     data: TechiesData,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["techies"],
-    queryFn: getTechiesList,
+    queryKey: ["techies", currentPage],
+    queryFn: () =>
+      getTechiesList({
+        page: currentPage,
+      }),
+    onSuccess: (data) => {
+      setPaginatioinDetails({
+        total: data.total,
+        size: data.size,
+        pages: data.pages,
+        page: data.page,
+      });
+    },
     refetchOnWindowFocus: false,
     retry: 3,
   });
@@ -29,7 +46,7 @@ function Team() {
         <h3 className="font-medium text-secondary dark:text-[#F1F3F7] flex gap-1 items-center text-base">
           Team Memebers
           <span className="text-[9px] px-3 font-medium bg-[#F1F3F7] dark:bg-[#444444] rounded-3xl">
-            {techies ? techies.length : 0} techies
+            {TechiesData ? TechiesData.total : 0} techies
           </span>
         </h3>
         <h3 className="font-medium text-secondary dark:text-[#F1F3F7] flex gap-1 items-center text-base">
@@ -68,7 +85,7 @@ function Team() {
       </div>
 
       {/* User Info */}
-      <div className="w-full h-[calc(100%-148px)] overflow-y-scroll">
+      <div className="w-full h-[calc(100%-196px)] overflow-y-scroll">
         {isError && (
           <div className="flex items-center justify-center w-full h-full">
             <h1 className="text-2xl font-medium text-center text-secondary dark:text-[#F1F3F7]">
@@ -88,6 +105,43 @@ function Team() {
             ))}
           </div>
         )}
+      </div>
+      <div className="w-full h-10 mt-2 px-8">
+        <div className="flex items-center justify-between h-full">
+          <p className="text-sm text-slate-700 dark:text-[#F1F3F7]">
+            Showing{" "}
+            {1 + (paginatioinDetails.page - 1) * paginatioinDetails.size} to{" "}
+            {paginatioinDetails.page === paginatioinDetails.pages
+              ? paginatioinDetails.total
+              : paginatioinDetails.size * paginatioinDetails.page}{" "}
+            of {paginatioinDetails.total} entries
+          </p>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                if (currentPage > 1) {
+                  setCurrentPage(currentPage - 1);
+                }
+              }}
+              disabled={currentPage === 1}
+              className="text-sm text-slate-700 dark:text-[#F1F3F7]"
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => {
+                if (currentPage < paginatioinDetails.pages) {
+                  setCurrentPage(currentPage + 1);
+                }
+              }}
+              disabled={currentPage === paginatioinDetails.pages}
+              className="text-sm text-slate-700 dark:text-[#F1F3F7]"
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );

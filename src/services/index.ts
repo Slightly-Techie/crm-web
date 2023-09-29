@@ -15,9 +15,9 @@ const useEndpoints = () => {
   const updateUserProfile = (data: any) =>
     authAxios.put(`/api/v1/users/profile`, data);
 
-  const getTechiesList = async () => {
+  const getTechiesList = async ({ page = 1 }: { page: number }) => {
     const { data } = await authAxios.get<IGetAllTechiesResponse>(
-      `/api/v1/users/`
+      `/api/v1/users/?page=${page}`
     );
     return data;
   };

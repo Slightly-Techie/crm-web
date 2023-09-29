@@ -15,6 +15,7 @@ function Team() {
     pages: 0,
     page: 0,
   });
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   const {
     data: TechiesData,
@@ -39,6 +40,16 @@ function Team() {
   });
 
   const techies = TechiesData?.users;
+
+  const filteredTechies = techies?.filter((user) => {
+    if (searchKeyword === "") {
+      return user;
+    }
+    return (
+      user.first_name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      user.last_name.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
+  });
 
   return (
     <section className="w-4/5 py-4 bg-white dark:bg-[#232323] rounded-sm border border-st-edge dark:border-st-edgeDark">
@@ -73,7 +84,9 @@ function Team() {
             <img src={Search.src} alt="search icon" />
             <input
               type="text"
-              className="w-full dark:bg-[#444444] border-none placeholder-st-gray-500 text-black focus:outline-none"
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+              className="w-full dark:bg-[#444444] border-none placeholder-st-gray-500 text-black dark:text-white focus:outline-none"
               placeholder="Search by keyword"
             />
           </div>
@@ -98,9 +111,9 @@ function Team() {
             <LoadingSpinner />
           </div>
         )}
-        {techies && (
+        {filteredTechies && (
           <div className="grid mt-8 px-8 grid-cols-3 gap-4">
-            {techies.map((user) => (
+            {filteredTechies.map((user) => (
               <Member key={`${user.id}`} data={user} />
             ))}
           </div>
@@ -125,7 +138,7 @@ function Team() {
                 }
               }}
               disabled={currentPage === 1}
-              className="text-sm text-slate-700 dark:text-[#F1F3F7]"
+              className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm disabled:opacity-70"
             >
               Previous
             </button>
@@ -136,7 +149,7 @@ function Team() {
                 }
               }}
               disabled={currentPage === paginatioinDetails.pages}
-              className="text-sm text-slate-700 dark:text-[#F1F3F7]"
+              className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm disabled:opacity-70"
             >
               Next
             </button>

@@ -8,18 +8,21 @@ import useEndpoints from "@/services";
 import LoadingSpinner from "../loadingSpinner";
 
 function Team() {
-  const [techies, setTechies] = useState<ITechie[]>([]);
+  // const [techies, setTechies] = useState<ITechie[]>([]);
   const { getTechiesList } = useEndpoints();
 
-  const { isLoading, isError } = useQuery({
+  const {
+    data: TechiesData,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["techies"],
     queryFn: getTechiesList,
-    onSuccess: ({ data }) => {
-      setTechies(data);
-    },
     refetchOnWindowFocus: false,
     retry: 3,
   });
+
+  const techies = TechiesData?.users;
 
   return (
     <section className="w-4/5 py-4 bg-white dark:bg-[#232323] rounded-sm border border-st-edge dark:border-st-edgeDark">
@@ -27,7 +30,7 @@ function Team() {
         <h3 className="font-medium text-secondary dark:text-[#F1F3F7] flex gap-1 items-center text-base">
           Team Memebers
           <span className="text-[9px] px-3 font-medium bg-[#F1F3F7] dark:bg-[#444444] rounded-3xl">
-            {techies.length} techies
+            {techies ? techies.length : 0} techies
           </span>
         </h3>
         <h3 className="font-medium text-secondary dark:text-[#F1F3F7] flex gap-1 items-center text-base">
@@ -79,7 +82,7 @@ function Team() {
             <LoadingSpinner />
           </div>
         )}
-        {techies.length > 0 && (
+        {techies && (
           <div className="grid mt-8 px-8 grid-cols-3 gap-4">
             {techies.map((user) => (
               <Member key={`${user.id}`} data={user} />

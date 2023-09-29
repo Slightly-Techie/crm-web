@@ -6,6 +6,77 @@ export type WithoutNullableKeys<Type> = {
 
 export type Status = "onsubmit" | "success" | "error" | "progress";
 
+// {
+//   "users": [
+//       {
+//           "email": "jefferykyeigenesis@gmail.com",
+//           "first_name": "Ransford",
+//           "last_name": "Genesis",
+//           "years_of_experience": 1,
+//           "bio": "",
+//           "phone_number": "0547490393",
+//           "github_profile": "",
+//           "twitter_profile": "",
+//           "linkedin_profile": "",
+//           "portfolio_url": "",
+//           "profile_pic_url": "",
+//           "stack_id": 2,
+//           "id": 305,
+//           "skills": [],
+//           "tags": [],
+//           "stack": {
+//               "id": "2",
+//               "name": "Backend",
+//               "created_at": "2023-06-28T21:24:17.874429+00:00",
+//               "updated_at": "2023-06-28T21:24:17.874429+00:00"
+//           },
+//           "created_at": "2023-09-19T11:53:12.460476+00:00",
+//           "is_active": true,
+//           "status": "ACCEPTED"
+//       }
+//   ],
+//   "total": 306,
+//   "page": 2,
+//   "size": 1,
+//   "pages": 306,
+//   "links": {
+//       "first": "/api/v1/users/?limit=1&page=1",
+//       "last": "/api/v1/users/?limit=1&page=306",
+//       "self": "/api/v1/users/?limit=1&page=2",
+//       "next": "/api/v1/users/?limit=1&page=3",
+//       "prev": "/api/v1/users/?limit=1&page=1"
+//   }
+// }
+
+export interface TGetPaginatedResponse {
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
+  links: {
+    first: string;
+    last: string;
+    self: string;
+    next: string;
+    prev: string;
+  };
+}
+
+export interface IGetAllTechiesResponse extends TGetPaginatedResponse {
+  users: ITechie[];
+}
+
+export enum UserStatusEnum {
+  TO_CONTACT = "TO CONTACT",
+  IN_REVIEW = "IN REVIEW",
+  INTERVIEWED = "INTERVIEWED",
+  ACCEPTED = "ACCEPTED",
+  NO_SHOW = "NO SHOW",
+  REJECTED = "REJECTED",
+  TO_BE_ONBOARDED = "TO BE ONBOARDED",
+  CONTACTED = "CONTACTED",
+}
+
 export interface ITechie {
   id: number;
   email: string;
@@ -24,6 +95,7 @@ export interface ITechie {
   stack: IStack | null;
   created_at: string;
   is_active: boolean;
+  status: keyof typeof UserStatusEnum;
 }
 
 export interface ISkill {

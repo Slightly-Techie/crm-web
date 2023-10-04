@@ -53,7 +53,7 @@ export interface ITechie {
   stack: IStack | null;
   created_at: string;
   is_active: boolean;
-  status: keyof typeof UserStatusEnum;
+  status?: keyof typeof UserStatusEnum;
 }
 
 export interface ISkill {

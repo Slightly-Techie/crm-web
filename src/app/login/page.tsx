@@ -9,6 +9,7 @@ import { REGEXVALIDATION } from "@/constants";
 import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import LoadingSpinner from "@/components/loadingSpinner";
 
 interface FormInputs {
   email: String;
@@ -38,8 +39,8 @@ export default function Login() {
         callbackUrl: callbackUrl,
         redirect: false,
       });
-      setIsRequestSent(false);
       if (result?.ok && !result?.error) {
+        setIsRequestSent(false);
         router.push(callbackUrl);
       } else {
         if (result?.error) setResponseError(result?.error);
@@ -65,115 +66,121 @@ export default function Login() {
         </div>
       </div>
       <div className="w-full lg:w-1/2">
-        <div className="flex justify-center items-center h-full">
-          <form
-            className="flex flex-col justify-center items-center w-[20rem] py-8"
-            onSubmit={onSubmit}
-          >
-            <div className="w-full">
-              <h3 className="text-[20px] font-bold ">Login To Your Account</h3>
-            </div>
-            <div className="mt-8 mb-5">
-              <input
-                {...register("email", {
-                  required: true,
-                  min: 2,
-                  max: 25,
-                  pattern: REGEXVALIDATION.email,
-                })}
-                style={{ borderColor: errors.email ? "#b92828" : "" }}
-                className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-st-edge dark:border-st-edgeDark rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
-                type="email"
-                name="email"
-                placeholder="Johndoe@slightytechie.io"
-              />
-              {errors.email && (
-                <p className="text-[#b92828] text-[12px]">
-                  Email must be valid
-                </p>
-              )}
-            </div>
-            <>
-              <div className="flex items-center justify-between bg-[#F1F3F7] dark:bg-[#1E1E1E] border-st-edge dark:border-st-edgeDark rounded-sm border-[1.8px] h-[40px] w-[20rem] pl-4 ">
-                <input
-                  {...register("password", {
-                    required: true,
-                    min: 8,
-                    max: 25,
-                  })}
-                  style={{ borderColor: errors.password ? "#b92828" : "" }}
-                  className="bg-[#F1F3F7] dark:bg-[#1E1E1E] placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] w-[85%] focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Enter your password"
-                />
-                <div className="w-[10%]">
-                  {showPassword ? (
-                    <AiOutlineEyeInvisible
-                      className="cursor-pointer ease duration-500"
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  ) : (
-                    <AiOutlineEye
-                      className="cursor-pointer ease duration-500"
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  )}
-                </div>
-              </div>
-              {errors.password && (
-                <p className="text-[#b92828] text-[12px] text-center">
-                  Password must be at least 8 characters, can contain at least
-                  one uppercase, lowercase, a number and a special character
-                </p>
-              )}
-              {responseError && (
-                <p className="text-[#b92828] text-[12px] pt-1">
-                  {responseError}
-                </p>
-              )}
-            </>
-            <p className="my-2 text-st-edgeDark text-[11px] font-bold">
-              Forgot your{" "}
-              <Link
-                className="font-bold hover:text-st-gray-400"
-                href="/forgot-password"
-              >
-                <u>password?</u>
-              </Link>
-            </p>
-
-            <button
-              className="bg-[#3D4450] font-monalisa dark:bg-white text-st-bg text-sm dark:text-black hover:bg-[#525b6c] rounded-sm flex items-center justify-center w-full h-[48px]"
-              id="btn"
-              type="submit"
-              disabled={isRequestSent}
+        {isRequestSent ? (
+          <LoadingSpinner />
+        ) : (
+          <div className="flex justify-center items-center h-full">
+            <form
+              className="flex flex-col justify-center items-center w-[20rem] py-8"
+              onSubmit={onSubmit}
             >
-              Login to your account
-            </button>
+              <div className="w-full">
+                <h3 className="text-[20px] font-bold ">
+                  Login To Your Account
+                </h3>
+              </div>
+              <div className="mt-8 mb-5">
+                <input
+                  {...register("email", {
+                    required: true,
+                    min: 2,
+                    max: 25,
+                    pattern: REGEXVALIDATION.email,
+                  })}
+                  style={{ borderColor: errors.email ? "#b92828" : "" }}
+                  className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-st-edge dark:border-st-edgeDark rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
+                  type="email"
+                  name="email"
+                  placeholder="Johndoe@slightytechie.io"
+                />
+                {errors.email && (
+                  <p className="text-[#b92828] text-[12px]">
+                    Email must be valid
+                  </p>
+                )}
+              </div>
+              <>
+                <div className="flex items-center justify-between bg-[#F1F3F7] dark:bg-[#1E1E1E] border-st-edge dark:border-st-edgeDark rounded-sm border-[1.8px] h-[40px] w-[20rem] pl-4 ">
+                  <input
+                    {...register("password", {
+                      required: true,
+                      min: 8,
+                      max: 25,
+                    })}
+                    style={{ borderColor: errors.password ? "#b92828" : "" }}
+                    className="bg-[#F1F3F7] dark:bg-[#1E1E1E] placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] w-[85%] focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Enter your password"
+                  />
+                  <div className="w-[10%]">
+                    {showPassword ? (
+                      <AiOutlineEyeInvisible
+                        className="cursor-pointer ease duration-500"
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    ) : (
+                      <AiOutlineEye
+                        className="cursor-pointer ease duration-500"
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    )}
+                  </div>
+                </div>
+                {errors.password && (
+                  <p className="text-[#b92828] text-[12px] text-center">
+                    Password must be at least 8 characters, can contain at least
+                    one uppercase, lowercase, a number and a special character
+                  </p>
+                )}
+                {responseError && (
+                  <p className="text-[#b92828] text-[12px] pt-1">
+                    {responseError}
+                  </p>
+                )}
+              </>
+              <p className="my-2 text-st-edgeDark text-[11px] font-bold">
+                Forgot your{" "}
+                <Link
+                  className="font-bold hover:text-st-gray-400"
+                  href="/forgot-password"
+                >
+                  <u>password?</u>
+                </Link>
+              </p>
 
-            <div className="w-full pt-4">
-              <label htmlFor="remember-checkbox" className="text-sm">
-                Remember me
-              </label>
-              <input
-                type="checkbox"
-                id="remember-checkbox"
-                className="ml-2"
-                // checked={persist}
-                // onChange={() => setPersist(!persist)}
-              />
-            </div>
-            <p className="my-7 text-[12px]">
-              Not registered?{" "}
-              <Link href="/signup">
-                <u className="font-bold hover:text-st-gray-400">
-                  create account
-                </u>
-              </Link>
-            </p>
-          </form>
-        </div>
+              <button
+                className="bg-[#3D4450] font-monalisa dark:bg-white text-st-bg text-sm dark:text-black hover:bg-[#525b6c] rounded-sm flex items-center justify-center w-full h-[48px]"
+                id="btn"
+                type="submit"
+                disabled={isRequestSent}
+              >
+                Login to your account
+              </button>
+
+              <div className="w-full pt-4">
+                <label htmlFor="remember-checkbox" className="text-sm">
+                  Remember me
+                </label>
+                <input
+                  type="checkbox"
+                  id="remember-checkbox"
+                  className="ml-2"
+                  // checked={persist}
+                  // onChange={() => setPersist(!persist)}
+                />
+              </div>
+              <p className="my-7 text-[12px]">
+                Not registered?{" "}
+                <Link href="/signup">
+                  <u className="font-bold hover:text-st-gray-400">
+                    create account
+                  </u>
+                </Link>
+              </p>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );

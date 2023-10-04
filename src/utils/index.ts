@@ -71,14 +71,18 @@ export function getTimeElapsedOrDate(dateString: string): string {
 export function getAccountUserName(
   link: string | null | undefined
 ): string | null {
-  if (typeof link === "string") {
-    const url = new URL(link);
-    const pathParts = url.pathname.split("/");
-    if (pathParts.length > 1) {
-      return pathParts[1];
+  try {
+    if (typeof link === "string") {
+      const url = new URL(link);
+      const pathParts = url.pathname.split("/");
+      if (pathParts.length > 1) {
+        return pathParts[1];
+      }
     }
+    return null;
+  } catch (error) {
+    return null;
   }
-  return null;
 }
 
 export function getSubdomainFromURL(url: string): string | null {

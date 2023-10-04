@@ -6,6 +6,35 @@ export type WithoutNullableKeys<Type> = {
 
 export type Status = "onsubmit" | "success" | "error" | "progress";
 
+export interface TGetPaginatedResponse {
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
+  links: {
+    first: string;
+    last: string;
+    self: string;
+    next: string;
+    prev: string;
+  };
+}
+
+export interface IGetAllTechiesResponse extends TGetPaginatedResponse {
+  users: ITechie[];
+}
+
+export enum UserStatusEnum {
+  TO_CONTACT = "TO CONTACT",
+  IN_REVIEW = "IN REVIEW",
+  INTERVIEWED = "INTERVIEWED",
+  ACCEPTED = "ACCEPTED",
+  NO_SHOW = "NO SHOW",
+  REJECTED = "REJECTED",
+  TO_BE_ONBOARDED = "TO BE ONBOARDED",
+  CONTACTED = "CONTACTED",
+}
+
 export interface ITechie {
   id: number;
   email: string;
@@ -24,6 +53,7 @@ export interface ITechie {
   stack: IStack | null;
   created_at: string;
   is_active: boolean;
+  status: keyof typeof UserStatusEnum;
 }
 
 export interface ISkill {

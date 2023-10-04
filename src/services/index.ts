@@ -1,6 +1,11 @@
 import axios from "@/lib/axios";
 import useAxiosAuth from "@/hooks/useAxiosAuth";
-import { IGetFeedsResponse, IStack, ITechie } from "@/types";
+import {
+  IGetAllTechiesResponse,
+  IGetFeedsResponse,
+  IStack,
+  ITechie,
+} from "@/types";
 
 const useEndpoints = () => {
   const authAxios = useAxiosAuth();
@@ -10,7 +15,12 @@ const useEndpoints = () => {
   const updateUserProfile = (data: any) =>
     authAxios.put(`/api/v1/users/profile`, data);
 
-  const getTechiesList = () => authAxios.get<ITechie[]>(`/api/v1/users/`);
+  const getTechiesList = async ({ page = 1 }: { page: number }) => {
+    const { data } = await authAxios.get<IGetAllTechiesResponse>(
+      `/api/v1/users/?page=${page}`
+    );
+    return data;
+  };
 
   const getFeedPosts = () => authAxios.get<IGetFeedsResponse>(`api/v1/feed/`);
 

@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import axiosAuth from "@/lib/axios";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import useRefreshToken from "./useRefreshToken";
 
 const useAxiosAuth = () => {
-  // const refresh = useRefreshToken();
+  const refresh = useRefreshToken();
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -23,10 +24,11 @@ const useAxiosAuth = () => {
         const prevRequest = error?.config;
         if (error?.response?.status === 401 && !prevRequest?.sent) {
           prevRequest.sent = true;
-          // signOut();
-          // const newAccessToken = await refresh();
-          // prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          const newAccessToken = await refresh();
+          prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
           return axiosAuth(prevRequest);
+        } else if (error?.response?.status === 401 && prevRequest?.sent) {
+          signOut();
         }
         return Promise.reject(error);
       }
@@ -36,7 +38,7 @@ const useAxiosAuth = () => {
       axiosAuth.interceptors.request.eject(requestIntercept);
       axiosAuth.interceptors.response.eject(responseIntercept);
     };
-  }, [session?.user?.token]);
+  }, [session?.user?.token, refresh]);
 
   return axiosAuth;
 };

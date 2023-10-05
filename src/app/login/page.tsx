@@ -9,6 +9,7 @@ import { REGEXVALIDATION } from "@/constants";
 import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import ThemeSwitcher from "../theme/theme";
 
 interface FormInputs {
   email: String;
@@ -65,7 +66,7 @@ export default function Login() {
         </div>
       </div>
       <div className="w-full lg:w-1/2">
-        <div className="flex justify-center items-center h-full">
+        <div className="flex flex-col justify-center items-center h-full">
           <form
             className="flex flex-col justify-center items-center w-[20rem] py-8"
             onSubmit={onSubmit}
@@ -173,6 +174,9 @@ export default function Login() {
               </Link>
             </p>
           </form>
+          <div className="mt-12">
+            <ThemeSwitcher />
+          </div>
         </div>
       </div>
     </div>

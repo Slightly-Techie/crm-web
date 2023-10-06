@@ -25,7 +25,7 @@ export default function ThemeSwitcher() {
     if (dark) {
       document.documentElement.classList.add("dark");
     }
-  }, []);
+  }, [dark]);
   const modifySetDark = (value: any) => {
     setDark(value);
     localStorage.setItem("theme", JSON.stringify(value));

@@ -1,8 +1,8 @@
-import { test, expect } from "vitest";
+import { test, expect } from "@playwright/test";
 import { getSkillsArray } from "../utils/index";
 import { REGEXVALIDATION } from "../constants/index";
 
-test("skills regexp", () => {
+test("skills regexp", async () => {
   expect(
     REGEXVALIDATION.listSeparatedByComma.test("nodejs, c#, java, flutter")
   ).toBe(true);
@@ -17,7 +17,7 @@ test("skills regexp", () => {
   expect(REGEXVALIDATION.listSeparatedByComma.test("")).toBe(false);
 });
 
-test("utility function", () => {
+test("utility function", async ({}) => {
   expect(getSkillsArray("javascript, ruby, python,django")).toStrictEqual([
     "javascript",
     "ruby",

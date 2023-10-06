@@ -85,9 +85,7 @@ function Page() {
                       rel="noreferrer"
                       className="text-sm text-gray-400"
                     >
-                      {getSubdomainFromURL(
-                        UserProfile.portfolio_url as string
-                      ) || "userportfolio.com"}
+                      {getSubdomainFromURL(UserProfile.portfolio_url)}
                     </a>
                   </div>
                 </section>

@@ -10,6 +10,7 @@ import { action } from "@/redux";
 import { useAppDispatch } from "@/hooks";
 import AccountMenu from "./account-menu";
 import PersonIcon from "@/assets/icons/person-icon.svg";
+import ThemeSwitcher from "@/app/theme/theme";
 
 function Navbar() {
   const { getUserProfile } = useEndpoints();
@@ -67,6 +68,7 @@ function Navbar() {
             )}
           </div>
         </section>
+        <ThemeSwitcher />
       </div>
     </div>
   );

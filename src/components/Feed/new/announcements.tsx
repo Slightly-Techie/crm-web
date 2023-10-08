@@ -36,7 +36,9 @@ const Announcements = () => {
           </h5>
 
           {paginatedData.length === 0 ? (
-            <h1>No Announcements</h1>
+            <h1 className="text-[#575F70] dark:text-primary font-semibold text-center">
+              No Announcements
+            </h1>
           ) : (
             paginatedData.length &&
             paginatedData.map((item) => {

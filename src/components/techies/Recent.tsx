@@ -2,7 +2,7 @@ import React from "react";
 
 function Recent() {
   return (
-    <div className="bg-blue-200 w-96 bg-white dark:bg-[#232323] border border-st-edge dark:border-st-edgeDark rounded-sm">
+    <div className=" w-96 bg-white dark:bg-[#232323] border border-st-edge dark:border-st-edgeDark rounded-sm">
       <div className="border-b border-st-edge dark:border-st-edgeDark pt-4 pb-4">
         <div className="flex justify-between px-3 ">
           <h2 className="dark:text-primary">Leaderboard</h2>

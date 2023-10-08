@@ -23,7 +23,7 @@ const ClosedSignup = () => {
             Right now, applications are taking little break
           </p>
           <p className="text-[#777] dark:font-medium text-lg">
-            Don't worry though, we're constantly cooking up exciting
+            Don&apos;t worry though, we&apos;re constantly cooking up exciting
             opportunities! Keep an eye on our{" "}
             <a
               href="https://twitter.com/_slightlyTechie"
@@ -38,8 +38,8 @@ const ClosedSignup = () => {
             >
               official website{" "}
             </a>
-            for updates on when applications will swing back open. We can't wait
-            to welcome you aboard.
+            for updates on when applications will swing back open. We can&apos;t
+            wait to welcome you aboard.
           </p>
           <div className="mt-3">
             <Image src={LinePng} alt="line-png" />

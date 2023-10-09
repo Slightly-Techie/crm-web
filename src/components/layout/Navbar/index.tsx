@@ -33,13 +33,23 @@ function Navbar() {
         </button>
       </Link>
       <div className="flex gap-8 items-center">
-        <Link
-          href={"/techies"}
-          className="flex items-center gap-2 bg-white italic font-light dark:bg-transparent border-[1px] border-st-gray dark:border-st-grayDark hover:border-st-gray p-2 px-4 rounded-3xl duration-150"
-        >
-          <Image src={PersonIcon} alt="person" />
-          Techies
-        </Link>
+        <div className="flex gap-5 items-center">
+          <Link
+            href={"/techies"}
+            className="flex items-center gap-2 bg-white italic font-light dark:bg-transparent border-[1px] border-st-gray dark:border-st-grayDark hover:border-st-gray p-2 px-4 rounded-3xl duration-150"
+          >
+            <Image src={PersonIcon} alt="person" />
+            Techies
+          </Link>
+          <Link
+            href={"/projects"}
+            className="flex items-center gap-2 bg-white italic font-light dark:bg-transparent border-[1px] border-st-gray dark:border-st-grayDark hover:border-st-gray p-2 px-4 rounded-3xl duration-150"
+          >
+            <Image src={PersonIcon} alt="person" />
+            Projects
+          </Link>
+        </div>
+
         <section className="flex gap-4 items-center justify-center">
           <div className="flex items-center justify-end gap-2 sm:gap-4 lg:w-[300px]">
             {query.isSuccess && (

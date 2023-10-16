@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         suppressHydrationWarning={true}
-        className={`${FONTS.ttHoves.variable} ${FONTS.monalisa.variable}`}
+        className={`${FONTS.mona_sans.variable} font-mona-sans`}
       >
         <Providers>{children}</Providers>
       </body>

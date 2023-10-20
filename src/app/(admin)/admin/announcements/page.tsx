@@ -50,8 +50,8 @@ export default function Announcement() {
         )}
         {Announcements && (
           <div className="min-h-screen">
-            <h3 className="text-st-textDark dark:text-st-subTextDark text-center">
-              All Announcements ({Announcements.length})
+            <h3 className="text-black dark:text-st-subTextDark text-center text-xl font-medium">
+              {Announcements.length} New Announcements
             </h3>
             {Announcements.map((item) => {
               return (

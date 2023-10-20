@@ -1,16 +1,13 @@
 "use client";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { signOut } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 import useEndpoints from "@/services";
 import { ITechie } from "@/types";
 import { action } from "@/redux";
 import { useAppDispatch } from "@/hooks";
-import AccountMenu from "./account-menu";
-import PersonIcon from "@/assets/icons/person-icon.svg";
-import ThemeSwitcher from "@/app/theme/theme";
+// import ThemeSwitcher from "@/app/theme/theme";
 import {
   AiOutlineUser,
   AiOutlineSetting,
@@ -171,7 +168,7 @@ function Navbar() {
             <p className="font-bold text-sm">Log Out</p>
           </section>
         </section>
-        <ThemeSwitcher />
+        {/* <ThemeSwitcher /> */}
       </section>
     </nav>
   );

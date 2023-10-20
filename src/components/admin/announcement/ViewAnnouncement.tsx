@@ -21,7 +21,7 @@ export default function ViewAnnouncement({
         <h2 className=" text-st-text dark:text-slate-200 text-xl font-medium ">
           {title}
         </h2>
-        <div className="text-[#777777]">2 hours ago.</div>
+        <div className="text-[#777777]">2h ago.</div>
       </div>
       <div className="  text-st-text dark:text-slate-300">{content}</div>
       <div className="w-full mx-auto my-2 flex gap-4 justify-between">
@@ -35,12 +35,12 @@ export default function ViewAnnouncement({
           />
           <div className="text-lg font-medium">Ayebea Korantema</div>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <button onClick={() => handleEdit(id)}>
-            <Image src={EditIcon} alt="edit-icon" width={30} height={30} />
+            <Image src={EditIcon} alt="edit-icon" width={20} height={20} />
           </button>
           <button onClick={() => handleDelete(id)}>
-            <Image src={TrashIcon} alt="delete-icon" width={30} height={30} />
+            <Image src={TrashIcon} alt="delete-icon" width={20} height={20} />
           </button>
         </div>
       </div>

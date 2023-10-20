@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import "./index.css";
 import moon from "@/assets/icons/dark-mode-black.png";
@@ -12,14 +14,11 @@ export default function ThemeSwitcher() {
     ).matches;
 
     if (prefersDarkMode) {
-      console.log("hmm");
       document.documentElement.classList.add("dark");
     }
 
     return prefersDarkMode;
   });
-
-  console.log("theme", dark);
 
   React.useEffect(() => {
     if (dark) {

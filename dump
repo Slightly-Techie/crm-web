@@ -1,0 +1,140 @@
+  <section className="w-full py-4 bg-white dark:bg-[#232323] rounded-sm border border-st-edge dark:border-st-edgeDark">
+      <section className="flex items-center gap-4 pb-4 px-8 border-b border-b-st-edge dark:border-st-edgeDark">
+        Techies
+      </section>
+
+      {/* Form Section */}
+      <div className=" border-b-st-edge dark:border-st-edgeDark border-b py-4 px-8">
+        <form
+          action=""
+          className="bg-white dark:bg-[#444444] w-full border flex justify-between p-2 dark:border-st-edgeDark border-st-edge rounded"
+        >
+          <div className="w-full flex items-center py-2 px-3 gap-2">
+            <img src={Search.src} alt="search icon" />
+            <input
+              type="text"
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+              className="w-full dark:bg-[#444444] border-none placeholder-st-gray-500 text-black dark:text-white focus:outline-none"
+              placeholder="Search by keyword"
+            />
+          </div>
+
+          <button className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm">
+            Search
+          </button>
+        </form>
+      </div>
+
+      {/* User Info */}
+      <div className="w-full h-[calc(100%-196px)] overflow-y-scroll">
+        {isError && (
+          <div className="flex items-center justify-center w-full h-full">
+            <h1 className="text-2xl font-medium text-center text-secondary dark:text-[#F1F3F7]">
+              Something went wrong
+            </h1>
+          </div>
+        )}
+        {isLoading && (
+          <div className="flex items-center justify-center w-full h-full">
+            <LoadingSpinner />
+          </div>
+        )}
+        {filteredTechies && (
+          <div className="grid mt-8 px-8 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {filteredTechies.map((user) => (
+              <Member key={`${user.id}`} data={user} />
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="w-full h-10 mt-2 px-8">
+        <div className="flex items-center justify-between h-full">
+          <p className="text-sm text-slate-700 dark:text-[#F1F3F7]">
+            Showing{" "}
+            {1 + (paginatioinDetails.page - 1) * paginatioinDetails.size} to{" "}
+            {paginatioinDetails.page === paginatioinDetails.pages
+              ? paginatioinDetails.total
+              : paginatioinDetails.size * paginatioinDetails.page}{" "}
+            of {paginatioinDetails.total} entries
+          </p>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                if (currentPage > 1) {
+                  setCurrentPage(currentPage - 1);
+                }
+              }}
+              disabled={currentPage === 1}
+              className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm disabled:opacity-70"
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => {
+                if (currentPage < paginatioinDetails.pages) {
+                  setCurrentPage(currentPage + 1);
+                }
+              }}
+              disabled={currentPage === paginatioinDetails.pages}
+              className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm disabled:opacity-70"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <Link
+    href={"/techies"}
+    className="flex items-center gap-2 bg-white italic font-light dark:bg-transparent border-[1px] border-st-gray dark:border-st-grayDark hover:border-st-gray p-2 px-4 rounded-3xl duration-150"
+  >
+    <Image src={PersonIcon} alt="person" />
+    Techies
+  </Link>
+  <section className="flex gap-4 items-center justify-center">
+    <div className="flex items-center justify-end gap-2 sm:gap-4 lg:w-[300px]">
+      {query.isSuccess && (
+        <>
+          <h2 className="flex justify-end shrink-0 dark:text-primary font-bold text-lg w-[100px] lg:w-[220px] sm:text-xl text-secondary">
+            Welcome {user && user.first_name}!
+          </h2>
+          <AccountMenu
+            items={[
+              {
+                type: "link",
+                link: "/techie/me",
+                value: "Profile",
+              },
+              {
+                type: "button",
+                value: "Logout",
+                onClick() {
+                  signOut();
+                },
+              },
+            ]}
+          />
+        </>
+      )}
+    </div>
+  </section>
+  <AccountMenu
+  items={[
+    {
+      type: "link",
+      link: "/techie/me",
+      value: "Profile",
+    },
+    {
+      type: "button",
+      value: "Logout",
+      onClick() {
+        signOut();
+      },
+    },
+  ]}
+/>

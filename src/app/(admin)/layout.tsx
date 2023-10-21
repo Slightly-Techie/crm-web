@@ -14,9 +14,9 @@ export default async function RootLayout({
   }
 
   return (
-    <main className="font-tt-hoves bg-st-bg text-primary-dark dark:text-primary-light dark:bg-st-bgDark ">
+    <main className="font-tt-hoves bg-primary-light dark:bg-[#141414] text-primary-dark dark:text-primary-light ">
       <Navbar />
-      <div className="p-8 min-h-screen lg:pl-[25vw] xl:pl-[20vw]  w-full max-w-screen-2xl mx-auto  ">
+      <div className=" min-h-screen lg:pl-[25vw] xl:pl-[20vw]  w-full max-w-screen-2xl  ">
         {children}
       </div>
     </main>

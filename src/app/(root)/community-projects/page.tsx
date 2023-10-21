@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Search from "@/assets/icons/search.png";
 import StatusCheck from "@/components/projects/StatusCheck";
+import Link from "next/link";
 
 const projects = [
   {
@@ -62,9 +63,12 @@ function Page() {
           <img src={Search.src} alt="search icon" />
         </section>
         {isAdmin && (
-          <button className="bg-[#090909] px-4 py-2 rounded text-sm">
+          <Link
+            href={"/admin/add-project"}
+            className="bg-[#090909] px-4 py-2 rounded text-sm"
+          >
             Add Project
-          </button>
+          </Link>
         )}
       </section>
       <section className="p-5">

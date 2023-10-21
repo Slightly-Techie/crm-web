@@ -18,9 +18,9 @@ const Announcements = () => {
   };
 
   return (
-    <div className="w-full h-fit flex flex-col rounded-[4px] border border-st-gray dark:border-st-edgeDark bg-white dark:bg-st-surfaceDark">
+    <div className="w-full h-fit flex flex-col ">
       {isFetching && (
-        <div className="h-full w-full flex flex-col items-center justify-center">
+        <div className="h-full w-full flex p-4 flex-col items-center justify-center">
           <LoadingSpinner />
         </div>
       )}
@@ -30,9 +30,12 @@ const Announcements = () => {
         </h1>
       )}
       {paginatedData && (
-        <div>
-          <h5 className="font-bold text-xl p-3 text-secondary dark:text-primary border-b border-st-gray dark:border-st-grayDark">
-            Announcements
+        <div className=" flex gap-3 flex-col">
+          <h5 className="font-bold text-2xl pb-4 text-secondary dark:text-primary ">
+            Announcements{" "}
+            <small className=" text-status-check-success">
+              + {Announcements.length}
+            </small>
           </h5>
 
           {paginatedData.length === 0 ? (
@@ -45,12 +48,13 @@ const Announcements = () => {
               return (
                 <div
                   key={item.id}
-                  className="p-3 flex flex-col border-b border-st-gray dark:border-st-grayDark"
+                  className="p-3 flex flex-col bg-white rounded-md dark:bg-st-surfaceDark border-st-gray dark:border-st-grayDark"
                 >
-                  <h6 className="text-[#575F70] dark:text-primary font-semibold">
+                  <h6 className="text-[#575F70] text-lg pb-4 dark:text-st-gray font-semibold">
                     {item.title}
                   </h6>
-                  <p className="text-md text-[#626979] dark:text-st-subTextDark">
+
+                  <p className=" text-[#626979] dark:text-st-subTextDark">
                     {item.content}
                   </p>
                 </div>

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write --ignore-path .gitignore ."
+    "format": "prettier --write --ignore-path .gitignore .",
+    "test": "vitest"
   },
   "eslintConfig": {
     "extends": [
@@ -21,8 +22,9 @@
     "@tanstack/react-table": "^8.9.1",
     "axios": "^1.4.0",
     "jwt-decode": "^3.1.2",
-    "next": "13.4.4",
+    "next": "^13.5.2",
     "next-auth": "^4.22.1",
+    "playwright": "^1.38.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.44.3",
@@ -32,19 +34,19 @@
     "sharp": "^0.32.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.38.1",
     "@types/node": "20.2.5",
     "@types/react": "18.2.8",
     "@types/react-dom": "18.2.4",
-    "@playwright/test": "^1.35.0",
+    "autoprefixer": "10.4.14",
+    "eslint": "^8.42.0",
+    "eslint-config-next": "13.4.4",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.8",
-    "eslint": "^8.42.0",
-    "eslint-config-next": "13.4.4",
-    "tailwindcss": "3.3.2",
-    "autoprefixer": "10.4.14",
     "postcss": "8.4.24",
+    "prettier": "^2.8.8",
+    "tailwindcss": "3.3.2",
     "typescript": "5.1.3"
   }
 }

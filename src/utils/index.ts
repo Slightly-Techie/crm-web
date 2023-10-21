@@ -85,16 +85,28 @@ export function getAccountUserName(
   }
 }
 
-export function getSubdomainFromURL(url: string): string | null {
+export function getSubdomainFromURL(url: string | null): string | null {
   try {
-    const parsedURL = new URL(url);
-    const hostnameParts = parsedURL.hostname.split(".");
-    if (hostnameParts.length >= 3) {
-      return hostnameParts.slice(1).join(".");
+    if (url) {
+      const parsedURL = new URL(url);
+      const hostnameParts = parsedURL.hostname.split(".");
+      if (hostnameParts.length >= 3) {
+        return hostnameParts.slice(1).join(".");
+      }
+      return parsedURL.hostname;
     }
-    return parsedURL.hostname;
+    return null;
   } catch (error) {
-    console.error("Invalid URL:", error);
     return null;
   }
+}
+
+export function getSkillsArray(inputValue: string | string[] | undefined) {
+  if (inputValue) {
+    const result = Array.isArray(inputValue)
+      ? inputValue.join(",")
+      : inputValue;
+    return result.split(",").map((item) => item.trim());
+  }
+  return [];
 }

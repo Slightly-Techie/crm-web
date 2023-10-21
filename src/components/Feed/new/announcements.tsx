@@ -17,7 +17,6 @@ const Announcements = () => {
     }
     setCurrentLimit((prevLimit) => prevLimit + 3);
   };
-  console.log(paginatedData);
 
   return (
     <div className="w-full h-fit flex flex-col ">

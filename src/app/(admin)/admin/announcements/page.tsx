@@ -3,8 +3,10 @@
 import CreateAnnouncement from "@/components/admin/announcement/CreateAnnouncement";
 import ViewAnnouncement from "@/components/admin/announcement/ViewAnnouncement";
 import { useState } from "react";
-import { useFetchAnnouncements } from "../../../../services/AnnouncementServices";
-import { usePostAnnouncment } from "../../../../services/AnnouncementServices";
+import {
+  useFetchAnnouncements,
+  usePostAnnouncment,
+} from "../../../../services/AnnouncementServices";
 import { AnnouncementDataResponse } from "@/types";
 import LoadingSpinner from "@/components/loadingSpinner";
 
@@ -32,7 +34,7 @@ export default function Announcement() {
     DeleteAnnouncement(id);
   }
   return (
-    <div className="w-full grid gap-4 h-full lg:grid-cols-announcement">
+    <div className="w-4/5 absolute right-0 grid h-full lg:grid-cols-announcement">
       <CreateAnnouncement
         existingPost={currentPost}
         submitHandler={handleNewAnnouncement}
@@ -49,7 +51,7 @@ export default function Announcement() {
           </h1>
         )}
         {Announcements && (
-          <div className="min-h-screen">
+          <div className="h-full ">
             <h3 className="text-black dark:text-st-subTextDark text-center text-xl font-medium">
               {Announcements.length} New Announcements
             </h3>
@@ -63,6 +65,9 @@ export default function Announcement() {
                 />
               );
             })}
+            <button className="py-3 w-full flex items-center justify-center bg-[#1E1E1E] text-white font-tt-hoves text-lg rounded-lg">
+              Show more
+            </button>
           </div>
         )}
       </div>

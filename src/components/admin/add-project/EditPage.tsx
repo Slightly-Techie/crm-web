@@ -3,114 +3,90 @@ import { AiOutlinePlus } from "react-icons/ai";
 
 const EditPage = () => {
   return (
-    <div className="w-2/3 h-[58rem] border border-gray-300 rounded-md ml-3">
-      <h1 className="text-2xl text-[#3D4450] border-b border-gray-300 font-bold p-3 ">
-        Slightly Techie CRM E-commerce
-      </h1>
+    <div className=" w-full lg:w-2/3 p-2 pb-6">
       <div className="flex flex-col gap-1 mt-4 mx-3">
-        <label className="text-[#3D4450] text-lg font-medium">
-          Name of Project
-        </label>
+        <label className=" text-lg pb-2">Project Name</label>
         <input
           type="text"
+          placeholder="Enter the project's name"
           name="name-of-project"
-          className="border border-gray-300 rounded-md p-2 focus:outline-none bg-transparent"
+          className="border border-neutral-700 rounded-md p-2 focus:outline-none bg-transparent"
         />
       </div>
       <div className="flex flex-col gap-1 mt-4 mx-3">
-        <label className="text-[#3D4450] text-lg font-medium">
-          Project Description
-        </label>
+        <label className="text-lg pb-2 ">Project Description</label>
         <textarea
           name="project description"
-          rows={6}
-          className="border border-gray-300 rounded-md p-2 resize-none focus:outline-none bg-transparent"
+          placeholder="What is the project about?"
+          rows={4}
+          className="border border-neutral-700 rounded-md p-2 resize-none focus:outline-none bg-transparent"
         />
       </div>
-      <div className="flex justify-evenly mt-5 mx-3 gap-4">
-        <div className="flex flex-col gap-1 w-full">
-          <label className="text-bold text-[#3D4450] font-medium">
-            Priorities
-          </label>
-          <select
-            name="priorities"
-            className="border border-gray-300 py-3 rounded-md focus:outline-none bg-transparent"
-          >
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-          </select>
-        </div>
-        <div className="flex flex-col gap-1 w-full">
-          <label className="text-bold text-[#3D4450] font-medium">
-            Priorities
-          </label>
-          <select
-            name="priorities"
-            className="border border-gray-300 py-3 rounded-md focus:outline-none bg-transparent"
-          >
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-          </select>
-        </div>
-        <div className="flex flex-col gap-1 w-full">
-          <label className="text-bold text-[#3D4450] font-medium">Size</label>
-          <select
-            name="priorities"
-            className="border border-gray-300 py-3 rounded-md focus:outline-none bg-transparent"
-          >
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-          </select>
-        </div>
+
+      <div className="flex flex-col gap-1 mx-3 mt-4">
+        <label className="pb-2">Project type</label>
+        <select
+          name="project_type"
+          className="border border-neutral-700 py-3 rounded-md focus:outline-none bg-transparent"
+        >
+          <option value="community">Community</option>
+          <option value="paid">Medium</option>
+        </select>
+      </div>
+      <div className="flex flex-col gap-1 mx-3 mt-4">
+        <label className="text-bold pb-2 ">Priority</label>
+        <select
+          name="priority"
+          placeholder="How urgent is the project?"
+          className="border border-neutral-700 py-3 rounded-md focus:outline-none bg-transparent"
+        >
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
       </div>
       <div className="mt-6 mx-3">
-        <div className="text-bold text-[#3D4450] font-medium flex items-center gap-2 cursor-pointer">
+        <div className="text-bold   flex items-center gap-2 cursor-pointer">
           <span>
-            <AiOutlinePlus className="text-[#3D4450]" />
+            <AiOutlinePlus className="" />
           </span>
           Add Team Lead
         </div>
         <input
           type="text"
           name="add"
-          className="border border-gray-300 rounded-md p-2 w-full mt-2 focus:outline-none bg-transparent"
+          className="border border-neutral-700 rounded-md p-2 w-full mt-2 focus:outline-none bg-transparent"
         />
       </div>
       <div className="mt-6 mx-3">
-        <div className="text-bold text-[#3D4450] font-medium flex items-center gap-2 cursor-pointer">
+        <div className="text-bold   flex items-center gap-2 cursor-pointer">
           <span>
-            <AiOutlinePlus className="text-[#3D4450]" />
+            <AiOutlinePlus className="" />
           </span>
           Add Frontend Team
         </div>
         <input
           type="text"
           name="add"
-          className="border border-gray-300 rounded-md p-2 w-full mt-2 focus:outline-none bg-transparent"
+          className="border border-neutral-700 rounded-md p-2 w-full mt-2 focus:outline-none bg-transparent"
         />
       </div>
       <div className="mt-6 mx-3">
-        <div className="text-bold text-[#3D4450] font-medium flex items-center gap-2 cursor-pointer">
+        <div className="text-bold   flex items-center gap-2 cursor-pointer">
           <span>
-            <AiOutlinePlus className="text-[#3D4450]" />
+            <AiOutlinePlus className="" />
           </span>
           Add Backend Team
         </div>
         <input
           type="text"
           name="add"
-          className="border border-gray-300 rounded-md p-2 w-full mt-2 focus:outline-none bg-transparent"
+          className="border border-neutral-700 rounded-md p-2 w-full mt-2 focus:outline-none bg-transparent"
         />
       </div>
-      <div className="flex gap-4 mt-6 mx-3">
-        <button className="bg-[#3D4450] w-1/2 py-2 text-white font-normal rounded-md">
-          Add Project
-        </button>
-        <button className="bg-white w-1/2 border border-[#3D4450] text-[#3D4450] font-medium rounded-md">
-          Draft Project
+      <div className="mt-6 mx-3">
+        <button className=" text-st-surfaceDark font-bold w-1/2 py-2 bg-white rounded-md">
+          Create Project
         </button>
       </div>
     </div>

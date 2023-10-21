@@ -102,7 +102,7 @@ function Navbar() {
   });
 
   return (
-    <nav className="hidden lg:block lg:w-[25vw] xl:w-[20vw] h-screen p-4 fixed top-0 left-0 z-[50] border-r border-r-complementary bg-primary-dark">
+    <nav className="hidden lg:block lg:w-[25vw] xl:w-[20vw] h-screen p-4 fixed top-0 left-0 z-[50] border-r border-r-neutral-700 bg-primary-dark">
       <section className="flex flex-col justify-between items-center h-full">
         {/* Top Section */}
         <section className="w-full">
@@ -124,7 +124,7 @@ function Navbar() {
                         <Link href={item.link} key={item.id}>
                           <section className="flex items-center gap-3">
                             {item.icon}
-                            <p className="font-bold text-sm">{item.name}</p>
+                            <p className=" text-sm">{item.name}</p>
                           </section>
                         </Link>
                       );

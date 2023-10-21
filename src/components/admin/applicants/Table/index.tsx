@@ -34,7 +34,7 @@ function TableComponent(props: TableProps) {
   return (
     <>
       <div
-        className="table-wrapper"
+        className="table-wrapper p-2"
         onClick={() => {
           if (selected) {
             setSelected((prev) => !prev);
@@ -43,19 +43,19 @@ function TableComponent(props: TableProps) {
         }}
       >
         {props.searchIncluded && (
-          <div className="flex border-2 gap-[5px] w-[50%] items-center mb-[20px] p-[10px] rounded-xl border-secondary">
+          <div className="flex border my-4 gap-[5px] w-[50%] items-center mb-[20px] p-[10px] rounded-md border-neutral-700">
             <Image src={Search} alt="search Icon" />
             <input
               type="text"
               placeholder="Search Name or Email"
               value={props.value}
               onChange={props.onChange}
-              className="p-[15px] text-sm border-none focus:outline-none dark:bg-[#232323] dark:text-white w-full"
+              className="text-sm border-none focus:outline-none bg-transparent dark:text-white w-full"
             />
           </div>
         )}
         <table>
-          <thead>
+          <thead className="rounded-none">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (

@@ -4,6 +4,7 @@ import { ApplicantsTableColumns } from "@/components/admin/applicants/Applicants
 import TableComponent from "@/components/admin/applicants/Table";
 import { useApplicantHooks } from "@/hooks/useApplicantsHook";
 import Loading from "../../loading";
+import PageTitle from "@/components/PageTitle";
 
 export default function Applicants() {
   const {
@@ -51,10 +52,8 @@ export default function Applicants() {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="interviewee-wrapper bg-[white] w-[90%] p-[20px] dark:bg-[#232323] dark:text-white relative bottom-0 top-0">
-          <h1 className="text-[#3D4450] font-normal text-xl mb-[20px] dark:text-white">
-            Applicants
-          </h1>
+        <div className="interviewee-wrapper bg-[white] w-full dark:bg-[#141414] dark:text-white relative bottom-0 top-0">
+          <PageTitle title="Applicants" />
           <TableComponent
             columns={ApplicantsTableColumns}
             data={tableData}

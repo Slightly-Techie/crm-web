@@ -16,14 +16,14 @@ export default function ViewAnnouncement({
   handleEdit,
 }: ViewAnnouncementProps) {
   return (
-    <div className="w-full mt-6 py-4 border rounded-xl mb-6 bg-[#F9FAFC] border-gray-300 px-3 flex flex-col gap-5">
+    <div className="w-5/6 mt-6 p-4 rounded-xl mb-6 bg-[#F9FAFC] flex flex-col gap-6">
       <div className=" flex justify-between">
-        <h2 className=" text-st-text dark:text-slate-200 text-xl font-medium ">
+        <h2 className=" text-st-text light:text-slate-200 text-xl font-medium ">
           {title}
         </h2>
         <div className="text-[#777777]">2h ago.</div>
       </div>
-      <div className="  text-st-text dark:text-slate-300">{content}</div>
+      <div className="  text-st-text light:text-slate-300">{content}</div>
       <div className="w-full mx-auto my-2 flex gap-4 justify-between">
         <div className="flex items-center gap-1">
           <Image
@@ -33,7 +33,7 @@ export default function ViewAnnouncement({
             height={20}
             className="w-10 h-10 aspect-square shrink-0 rounded-full"
           />
-          <div className="text-lg font-medium">Ayebea Korantema</div>
+          <div className="text-lg">Ayebea Korantema</div>
         </div>
         <div className="flex gap-2">
           <button onClick={() => handleEdit(id)}>

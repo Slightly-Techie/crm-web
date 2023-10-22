@@ -17,6 +17,18 @@ export default function Announcement() {
     useFetchAnnouncements(10);
   const { createNewAnnouncement, DeleteAnnouncement } = usePostAnnouncment();
 
+  const [visibleAnnouncement, setVisibleAnnouncement] = useState(3);
+  const paginatedAnnouncement =
+    Announcements && Announcements.slice(0, visibleAnnouncement);
+
+  const showMoreAnnouncements = () => {
+    if (visibleAnnouncement === Announcements.length) {
+      setVisibleAnnouncement(3);
+    } else {
+      setVisibleAnnouncement(visibleAnnouncement + 3);
+    }
+  };
+
   function handleNewAnnouncement(obj: Partial<AnnouncementDataResponse>) {
     createNewAnnouncement(obj);
     setCurrentPost(null);
@@ -34,7 +46,7 @@ export default function Announcement() {
     DeleteAnnouncement(id);
   }
   return (
-    <div className="w-4/5 absolute right-0 grid h-full lg:grid-cols-announcement">
+    <div className="w-4/5 absolute right-0 grid h-full lg:grid-cols-[50%,1fr]">
       <CreateAnnouncement
         existingPost={currentPost}
         submitHandler={handleNewAnnouncement}
@@ -51,11 +63,11 @@ export default function Announcement() {
           </h1>
         )}
         {Announcements && (
-          <div className="h-full ">
-            <h3 className="text-black dark:text-st-subTextDark text-center text-xl font-medium">
+          <div className="h-full mt-14 ">
+            <h3 className="text-st-text light:text-st-subTextDark text-left text-xl font-">
               {Announcements.length} New Announcements
             </h3>
-            {Announcements.map((item) => {
+            {Announcements.slice(0, visibleAnnouncement).map((item) => {
               return (
                 <ViewAnnouncement
                   handleDelete={deleteAnnouncement}
@@ -65,9 +77,18 @@ export default function Announcement() {
                 />
               );
             })}
-            <button className="py-3 w-full flex items-center justify-center bg-[#1E1E1E] text-white font-tt-hoves text-lg rounded-lg">
-              Show more
-            </button>
+            {Announcements.length > 3 && (
+              <button
+                className="py-3 w-full flex items-center justify-center bg-[#1E1E1E] text-white font-tt-hoves text-lg rounded-lg"
+                onClick={showMoreAnnouncements}
+              >
+                <p className="text-sm text-secondary dark:text-primary">
+                  {paginatedAnnouncement.length === Announcements.length
+                    ? "Show Less"
+                    : "Show More"}
+                </p>
+              </button>
+            )}
           </div>
         )}
       </div>

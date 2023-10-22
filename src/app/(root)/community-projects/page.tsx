@@ -50,7 +50,7 @@ function Page() {
 
   return (
     <main>
-      <section className="border-b w-full p-5">
+      <section className="border-b border-b-neutral-700 sticky top-0 bg-primary-light dark:bg-[#141414] w-full p-5">
         <p className="lg:text-xl font-bold">Community Projects</p>
       </section>
       <section className="flex justify-between items-center w-full my-2 p-5">

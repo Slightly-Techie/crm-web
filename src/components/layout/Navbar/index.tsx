@@ -7,6 +7,7 @@ import useEndpoints from "@/services";
 import { ITechie } from "@/types";
 import { action } from "@/redux";
 import { useAppDispatch } from "@/hooks";
+import { AiOutlineMenu } from "react-icons/ai";
 // import ThemeSwitcher from "@/app/theme/theme";
 import {
   AiOutlineUser,
@@ -71,18 +72,18 @@ const Navlinks = [
         link: "/community-projects",
         icon: <FiTarget size={20} />,
       },
-      {
-        id: "c5",
-        name: "Marketplace",
-        link: "/marketplace",
-        icon: <BsCart2 size={20} />,
-      },
-      {
-        id: "c6",
-        name: "Points System",
-        link: "/points-system",
-        icon: <LuPuzzle size={20} />,
-      },
+      // {
+      //   id: "c5",
+      //   name: "Marketplace",
+      //   link: "/marketplace",
+      //   icon: <BsCart2 size={20} />,
+      // },
+      // {
+      //   id: "c6",
+      //   name: "Points System",
+      //   link: "/points-system",
+      //   icon: <LuPuzzle size={20} />,
+      // },
     ],
   },
 ];
@@ -90,6 +91,7 @@ const Navlinks = [
 function Navbar() {
   const { getUserProfile } = useEndpoints();
   const dispatch = useAppDispatch();
+  const [navToggle, setNavToggle] = useState<boolean>(false);
   const [user, setUser] = useState<undefined | ITechie>();
   const query = useQuery({
     queryKey: ["userProfile"],
@@ -102,15 +104,103 @@ function Navbar() {
   });
 
   return (
-    <nav className="hidden lg:block lg:w-[25vw] xl:w-[20vw] h-screen p-4 fixed top-0 left-0 z-[50] border-r border-r-neutral-700 bg-primary-dark">
-      <section className="flex flex-col justify-between items-center h-full">
-        {/* Top Section */}
-        <section className="w-full">
+    <header>
+      <nav className="hidden lg:block lg:w-[25vw] xl:w-[20vw] h-screen p-4 fixed top-0 left-0 z-[50] border-r border-r-neutral-700 bg-primary-dark">
+        <section className="flex flex-col justify-between items-center h-full">
+          {/* Top Section */}
+          <section className="w-full">
+            <Link href={"/"}>
+              <button className="bg-gray-600 p-2 mx-auto rounded-sm text-white">
+                <h1 className="font-bold text-lg">ST</h1>
+              </button>
+            </Link>
+            <section>
+              {Navlinks.map((link) => {
+                return (
+                  <section key={link.title} className="my-5">
+                    <p className="text-complementary font-bold text-sm mb-3">
+                      {link.title}
+                    </p>
+                    <section className="flex flex-col gap-y-5">
+                      {link.links.map((item) => {
+                        return (
+                          <Link href={item.link} key={item.id}>
+                            <section className="flex items-center gap-3">
+                              {item.icon}
+                              <p className=" text-sm">{item.name}</p>
+                            </section>
+                          </Link>
+                        );
+                      })}
+                    </section>
+                  </section>
+                );
+              })}
+            </section>
+          </section>
+          {/* Bottom Section */}
+          <section className="w-full">
+            <section className="flex gap-3 items-center mb-5">
+              <Image
+                className="w-10 h-10 aspect-square shrink-0 rounded-full"
+                width={48}
+                height={48}
+                src={
+                  user?.profile_pic_url
+                    ? user?.profile_pic_url
+                    : `https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`
+                }
+                alt="profile"
+                placeholder="blur"
+                blurDataURL={`https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`}
+                priority={true}
+              />
+              <section>
+                <p className="font-semibold text-sm">
+                  {user?.first_name} {user?.last_name}
+                </p>
+                <p className="text-complementary text-sm">{user?.email}</p>
+              </section>
+            </section>
+            <section className="flex items-center gap-3 mb-3">
+              <AiOutlineSetting size={20} />
+              <p className="font-bold text-sm">Settings</p>
+            </section>
+            <section className="flex items-center gap-3 mb-3">
+              <GoSignOut size={20} />
+              <p className="font-bold text-sm">Log Out</p>
+            </section>
+          </section>
+          {/* <ThemeSwitcher /> */}
+        </section>
+      </nav>
+      {/* Navbar- Mobile */}
+      <section className="block lg:hidden fixed top-0 left-0 z-50 w-full bg-black h-[7vh]">
+        <section className="flex justify-between items-center p-5 w-full h-full">
           <Link href={"/"}>
-            <button className="bg-gray-600 p-2 mx-auto rounded-sm text-white">
-              <h1 className="font-bold text-lg">ST</h1>
+            <button className="bg-gray-600 p-1 mx-auto rounded-sm text-white">
+              <h1 className="font-bold text-xs">ST</h1>
             </button>
           </Link>
+          <section
+            className="border p-1 rounded"
+            onClick={() => setNavToggle(!navToggle)}
+          >
+            <AiOutlineMenu size={15} />
+          </section>
+        </section>
+      </section>
+      {/* Mobile Nav Toggle */}
+      <section
+        className={
+          navToggle
+            ? "fixed z-[50] mt-[7vh] ease duration-500 h-[93vh] top-0 left-0 w-screen bg-black p-5"
+            : "fixed z-[50] mt-[7vh] ease duration-500 h-[93vh] top-0 left-[-100vw] w-screen bg-black p-5"
+        }
+        onClick={() => setNavToggle(!navToggle)}
+      >
+        <section className="flex flex-col justify-between h-full">
+          {/* Top Section */}
           <section>
             {Navlinks.map((link) => {
               return (
@@ -134,43 +224,42 @@ function Navbar() {
               );
             })}
           </section>
-        </section>
-        {/* Bottom Section */}
-        <section className="w-full">
-          <section className="flex gap-3 items-center mb-5">
-            <Image
-              className="w-10 h-10 aspect-square shrink-0 rounded-full"
-              width={48}
-              height={48}
-              src={
-                user?.profile_pic_url
-                  ? user?.profile_pic_url
-                  : `https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`
-              }
-              alt="profile"
-              placeholder="blur"
-              blurDataURL={`https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`}
-              priority={true}
-            />
-            <section>
-              <p className="font-semibold text-sm">
-                {user?.first_name} {user?.last_name}
-              </p>
-              <p className="text-complementary text-sm">{user?.email}</p>
+          {/* Bottom Section */}
+          <section className="w-full">
+            <section className="flex gap-3 items-center mb-5">
+              <Image
+                className="w-10 h-10 aspect-square shrink-0 rounded-full"
+                width={48}
+                height={48}
+                src={
+                  user?.profile_pic_url
+                    ? user?.profile_pic_url
+                    : `https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`
+                }
+                alt="profile"
+                placeholder="blur"
+                blurDataURL={`https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`}
+                priority={true}
+              />
+              <section>
+                <p className="font-semibold text-sm">
+                  {user?.first_name} {user?.last_name}
+                </p>
+                <p className="text-complementary text-sm">{user?.email}</p>
+              </section>
+            </section>
+            <section className="flex items-center gap-3 mb-3">
+              <AiOutlineSetting size={20} />
+              <p className="font-bold text-sm">Settings</p>
+            </section>
+            <section className="flex items-center gap-3 mb-3">
+              <GoSignOut size={20} />
+              <p className="font-bold text-sm">Log Out</p>
             </section>
           </section>
-          <section className="flex items-center gap-3 mb-3">
-            <AiOutlineSetting size={20} />
-            <p className="font-bold text-sm">Settings</p>
-          </section>
-          <section className="flex items-center gap-3 mb-3">
-            <GoSignOut size={20} />
-            <p className="font-bold text-sm">Log Out</p>
-          </section>
         </section>
-        {/* <ThemeSwitcher /> */}
       </section>
-    </nav>
+    </header>
   );
 }
 

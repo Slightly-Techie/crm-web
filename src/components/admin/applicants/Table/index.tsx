@@ -55,11 +55,14 @@ function TableComponent(props: TableProps) {
           </div>
         )}
         <table className="">
-          <thead className="rounded-none">
+          <thead className="">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id} className=" font-light text-base py-4">
+                  <th
+                    key={header.id}
+                    className=" font-light text-base py-4 dark:bg-[#232323] px-2 rounded-sm"
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -73,11 +76,11 @@ function TableComponent(props: TableProps) {
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row, j) => (
-              <tr key={row.id} className="py-0">
+              <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className={` dark:text-white text-base border-b border-b-neutral-700 font-light`}
+                    className={`p-2 dark:text-white text-base font-light`}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
@@ -111,47 +114,45 @@ export function PopupAction(props: PopupActionProps) {
   };
 
   return (
-    <>
-      <div className="menu-wrapper" key={props.rowId}>
-        <Image
-          src={MenuIcon}
-          alt="dropdown menu icon"
-          className="menu-image"
-          onClick={() => {
-            if (props.selectedId === props.rowId) {
-              props.onSelected?.("");
-            }
-            props.onSelected?.(props.rowId);
-          }}
-        />
-        {props.rowId === props.selectedId && (
-          <>
-            {props.selected && (
-              <div className="menu-list dark:bg-[#232323] dark:border-st-edgeDark dark:text-white bg-white">
-                {Object.entries(props.dropdownActions).map(([key, action]) => {
-                  const actionText = action.replace(/\s+/g, "-").toLowerCase();
-                  return (
-                    <p
-                      className="dark:bg-[#232323] dark:border-st-edgeDark dark:text-white dark:hover:bg-secondary hover:bg-[#e2e8f0]"
-                      key={key}
-                      onClick={() => {
-                        props.actionToPerform?.({
-                          ...actions,
-                          action: actionText,
-                        });
-                        props.onSelected?.("");
-                      }}
-                    >
-                      {action}
-                    </p>
-                  );
-                })}
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </>
+    <td className="menu-wrapper" key={props.rowId}>
+      <Image
+        src={MenuIcon}
+        alt="dropdown menu icon"
+        className="menu-image"
+        onClick={() => {
+          if (props.selectedId === props.rowId) {
+            props.onSelected?.("");
+          }
+          props.onSelected?.(props.rowId);
+        }}
+      />
+      {props.rowId === props.selectedId && (
+        <>
+          {props.selected && (
+            <div className="menu-list dark:bg-[#232323] dark:border-st-edgeDark dark:text-white bg-white">
+              {Object.entries(props.dropdownActions).map(([key, action]) => {
+                const actionText = action.replace(/\s+/g, "-").toLowerCase();
+                return (
+                  <p
+                    className="dark:bg-[#232323] dark:border-st-edgeDark dark:text-white dark:hover:bg-secondary hover:bg-[#e2e8f0]"
+                    key={key}
+                    onClick={() => {
+                      props.actionToPerform?.({
+                        ...actions,
+                        action: actionText,
+                      });
+                      props.onSelected?.("");
+                    }}
+                  >
+                    {action}
+                  </p>
+                );
+              })}
+            </div>
+          )}
+        </>
+      )}
+    </td>
   );
 }
 

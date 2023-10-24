@@ -52,7 +52,7 @@ export default function Applicants() {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="interviewee-wrapper bg-[white] w-full dark:bg-[#141414] dark:text-white relative bottom-0 top-0">
+        <div className="interviewee-wrapper h-full bg-[white] w-full dark:bg-[#141414] dark:text-white relative bottom-0 top-0">
           <PageTitle title="Applicants" />
           <TableComponent
             columns={ApplicantsTableColumns}
@@ -89,14 +89,15 @@ export default function Applicants() {
 function PaginationComponent(props: PaginationProps) {
   return (
     <>
-      <div className="my-3 flex justify-between">
+      <div className="py-3 flex px-2 justify-between">
         <p>
-          Showing {props.page} of {props.pages}
+          Showing page {props.page} of {props.pages} pages
         </p>
         <div className="flex gap-5">
           <button
             disabled={typeof props.pages !== "undefined" && props.page <= 1}
             onClick={() => props.setPage?.(props.page - 1)}
+            className=" dark:bg-[#232323] px-6 py-2 rounded-sm"
           >
             prev
           </button>
@@ -105,6 +106,7 @@ function PaginationComponent(props: PaginationProps) {
               typeof props.pages !== "undefined" && props.page >= props.pages
             }
             onClick={() => props.setPage?.(props.page + 1)}
+            className="dark:bg-[#232323] px-6 py-2 rounded-sm"
           >
             next
           </button>

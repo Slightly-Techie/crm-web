@@ -24,7 +24,7 @@ export function useApplicantHooks() {
   const query = useQuery({
     queryKey: ["allUsers"],
     queryFn: () =>
-      authAxios.get<AllUsersResponse>(`/api/v1/users/?limit=10&page=${page}`),
+      authAxios.get<AllUsersResponse>(`/api/v1/users/?limit=20&page=${page}`),
     onSuccess(res) {
       setUsers(res.data?.users);
       setPages(res?.data?.pages);

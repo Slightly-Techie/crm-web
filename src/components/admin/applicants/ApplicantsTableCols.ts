@@ -4,6 +4,7 @@ type Applicant = {
   email: string;
   phone_number: string;
   years_of_experience: string;
+  actions: any;
 };
 
 const columnHelper = createColumnHelper<Applicant>();

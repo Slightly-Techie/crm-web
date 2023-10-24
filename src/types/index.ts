@@ -121,6 +121,7 @@ export type AnnouncementData = {
   content: string;
   edited?: boolean;
   image_url?: string;
+  created_at: string;
 };
 
 export type AnnouncementDataResponse = AnnouncementData & {

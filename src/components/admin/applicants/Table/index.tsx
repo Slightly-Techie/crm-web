@@ -54,12 +54,12 @@ function TableComponent(props: TableProps) {
             />
           </div>
         )}
-        <table>
+        <table className="">
           <thead className="rounded-none">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id}>
+                  <th key={header.id} className=" font-light text-base py-4">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -73,11 +73,11 @@ function TableComponent(props: TableProps) {
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row, j) => (
-              <tr key={row.id}>
+              <tr key={row.id} className="py-0">
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="dark:bg-[#232323] dark:text-white"
+                    className={` dark:text-white text-base border-b border-b-neutral-700 font-light`}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>

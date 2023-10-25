@@ -1,11 +1,11 @@
 import EditPage from "@/components/admin/add-project/EditPage";
-import Sidebar from "@/components/admin/add-project/Sidebar";
 import React from "react";
+import PageTitle from "@/components/PageTitle";
 
 const page = () => {
   return (
-    <div className="flex">
-      <Sidebar />
+    <div className=" dark:text-st-surface text-st-surfaceDark">
+      <PageTitle title="Create A New Project" />
       <EditPage />
     </div>
   );

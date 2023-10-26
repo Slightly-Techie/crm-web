@@ -14,7 +14,7 @@ export default function Announcement() {
   const [currentPost, setCurrentPost] =
     useState<AnnouncementDataResponse | null>(null);
   const { isFetching, isFetchingError, Announcements } =
-    useFetchAnnouncements(10);
+    useFetchAnnouncements(9);
   const { createNewAnnouncement, DeleteAnnouncement } = usePostAnnouncment();
 
   const [visibleAnnouncement, setVisibleAnnouncement] = useState(3);
@@ -22,10 +22,11 @@ export default function Announcement() {
     Announcements && Announcements.slice(0, visibleAnnouncement);
 
   const showMoreAnnouncements = () => {
-    if (visibleAnnouncement === Announcements.length) {
-      setVisibleAnnouncement(3);
+    if (paginatedAnnouncement.length === Announcements.length) {
+      setVisibleAnnouncement((curr) => curr - 3);
+      return;
     } else {
-      setVisibleAnnouncement(visibleAnnouncement + 3);
+      setVisibleAnnouncement((curr) => curr + 3);
     }
   };
 
@@ -46,12 +47,12 @@ export default function Announcement() {
     DeleteAnnouncement(id);
   }
   return (
-    <div className="w-4/5 absolute right-0 grid h-full lg:grid-cols-[50%,1fr]">
+    <div className="w-full right-0 grid h-full lg:grid-cols-announcement">
       <CreateAnnouncement
         existingPost={currentPost}
         submitHandler={handleNewAnnouncement}
       />
-      <div className=" w-full lg:w-4/5 mx-auto ">
+      <div className=" w-full lg:w-4/5 mx-auto h-full ">
         {isFetching && (
           <div className="h-full w-full flex flex-col items-center justify-center">
             <LoadingSpinner />
@@ -63,23 +64,25 @@ export default function Announcement() {
           </h1>
         )}
         {Announcements && (
-          <div className="h-full mt-14 ">
-            <h3 className="text-st-text light:text-st-subTextDark text-left text-xl font-">
+          <div className="h-full pt-14 py-4 ">
+            <h3 className="text-st-text py-4 dark:text-st-surface text-left text-xl font-">
               {Announcements.length} New Announcements
             </h3>
-            {Announcements.slice(0, visibleAnnouncement).map((item) => {
-              return (
-                <ViewAnnouncement
-                  handleDelete={deleteAnnouncement}
-                  handleEdit={editAnnouncement}
-                  key={item.id}
-                  {...item}
-                />
-              );
-            })}
+            <div className=" flex flex-col gap-4">
+              {paginatedAnnouncement.map((item) => {
+                return (
+                  <ViewAnnouncement
+                    handleDelete={deleteAnnouncement}
+                    handleEdit={editAnnouncement}
+                    key={item.id}
+                    {...item}
+                  />
+                );
+              })}
+            </div>
             {Announcements.length > 3 && (
               <button
-                className="py-3 w-full flex items-center justify-center bg-[#1E1E1E] text-white font-tt-hoves text-lg rounded-lg"
+                className="py-3 my-4 w-full flex items-center justify-center bg-[#1E1E1E] text-white font-tt-hoves text-lg rounded-lg"
                 onClick={showMoreAnnouncements}
               >
                 <p className="text-sm text-secondary dark:text-primary">

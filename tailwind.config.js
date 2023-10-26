@@ -10,7 +10,7 @@ module.exports = {
     extend: {
       gridTemplateColumns: {
         feed: "60% 40%",
-        announcement: "40% 1fr",
+        announcement: "45% auto",
       },
       colors: {
         primary: {

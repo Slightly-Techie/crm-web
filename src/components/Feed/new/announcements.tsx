@@ -55,7 +55,9 @@ const Announcements = () => {
                     <h6 className="text-[#575F70] text-lg pb-4 dark:text-st-gray font-semibold">
                       {item.title}{" "}
                       <span className="text-[#9F9F9F] text-[13px]">
-                        &bull; {getTimeElapsedOrDate(item.created_at)}{" "}
+                        &bull;{" "}
+                        {item.created_at &&
+                          getTimeElapsedOrDate(item.created_at)}{" "}
                       </span>
                     </h6>
                   </span>

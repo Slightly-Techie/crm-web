@@ -1,8 +1,6 @@
 import { AnnouncementDataResponse } from "@/types";
-import Image from "next/image";
-import EditIcon from "@/assets/icons/Edit_light.svg";
-import TrashIcon from "@/assets/icons/Trash_light.svg";
-import PersonIcon from "@/assets/icons/person-icon.svg";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import { getTimeElapsedOrDate } from "@/utils";
 
 type ViewAnnouncementProps = AnnouncementDataResponse & {
   handleDelete: (id: number) => void;
@@ -12,35 +10,29 @@ export default function ViewAnnouncement({
   title,
   content,
   id,
+  created_at,
   handleDelete,
   handleEdit,
 }: ViewAnnouncementProps) {
   return (
-    <div className="w-full mt-6 py-4 border rounded-xl mb-6 bg-[#F9FAFC] border-gray-300 px-3 flex flex-col gap-5">
+    <div className="w-full p-4 rounded-xl dark:text-st-surface bg-[#F9FAFC] dark:bg-st-surfaceDark flex flex-col gap-6">
       <div className=" flex justify-between">
-        <h2 className=" text-st-text dark:text-slate-200 text-xl font-medium ">
-          {title}
-        </h2>
-        <div className="text-[#777777]">2h ago.</div>
-      </div>
-      <div className="  text-st-text dark:text-slate-300">{content}</div>
-      <div className="w-full mx-auto my-2 flex gap-4 justify-between">
-        <div className="flex items-center gap-1">
-          <Image
-            src={PersonIcon}
-            alt="image"
-            width={20}
-            height={20}
-            className="w-10 h-10 aspect-square shrink-0 rounded-full"
-          />
-          <div className="text-lg font-medium">Ayebea Korantema</div>
+        <h2 className=" dark:text-st-surface text-xl font-medium ">{title}</h2>
+        <div className=" dark:text-st-surface">
+          {created_at && getTimeElapsedOrDate(created_at)}
         </div>
+      </div>
+      <p className="  text-st-text dark:text-st-surface">{content}</p>
+      <div className="w-fit ml-auto flex gap-4 justify-between">
         <div className="flex gap-2">
-          <button onClick={() => handleEdit(id)}>
-            <Image src={EditIcon} alt="edit-icon" width={20} height={20} />
+          <button
+            className=" text-inherit dark:text-st-surface"
+            onClick={() => handleEdit(id)}
+          >
+            <FiEdit2 />
           </button>
           <button onClick={() => handleDelete(id)}>
-            <Image src={TrashIcon} alt="delete-icon" width={20} height={20} />
+            <FiTrash2 />
           </button>
         </div>
       </div>

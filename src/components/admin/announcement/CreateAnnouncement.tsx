@@ -46,32 +46,36 @@ export default function CreateAnnouncement({
         e.preventDefault();
         onSubmit();
       }}
-      className=" w-full h-fit lg:w-4/5 lg:mx-auto lg:sticky lg:top-[80px] self-start"
+      className=" pl-2 w-full h-fit lg:w-full lg:mx-auto lg:sticky lg:top-14 self-start"
     >
-      <h1 className=" text-center text-black dark:text-st-textDark font-base text-[1.2rem] py-4">
+      <h1 className=" text-center text-st-text dark:text-st-surface font-base text-[1.2rem] py-4">
         Create Announcement
       </h1>
-      <div className=" p-4 dark:bg-st-edgeDark rounded-sm">
+      <div className=" p-4  light:bg-st-edgeDark rounded-sm">
         <div className=" my-4 ">
-          <label className=" dark:text-st-gray">Title</label>
+          <label className=" light:text-st-gray dark:text-st-surface  text-st-text">
+            Title
+          </label>
           <input
             onChange={(e) => setFormTitle(e.target.value)}
             value={formTitle}
-            className="w-full text-st-textDark border-[1px] mt-2 px-2 dark:text-st-subTextDark dark:border-st-gray  py-3 rounded-lg focus:outline-none focus:border-[1px] focus:border-st-edge bg-white"
+            className="w-full bg-transparent text-st-textDark border-[1px] mt-2 px-2 dark:text-st-surface   py-3 rounded-lg focus:outline-none focus:border-[1px] border-st-edgeDark focus:border-st-surface "
             type="text"
           />
         </div>
         <div className="my-4">
-          <label className=" dark:text-st-gray">Content</label>
+          <label className=" light:text-st-gray dark:text-st-surface  text-st-text">
+            Content
+          </label>
           <textarea
             onChange={(e) => setFormContent(e.target.value)}
             value={formContent}
             cols={30}
             rows={6}
-            className="w-full text-st-textDark dark:text-st-subTextDark dark:border-st-gray resize-none my-4 border-[1px] px-2 py-2 border-st-edge dark:bg-[transparent] focus:outline-none focus:border-st-edge rounded-lg"
+            className="w-full bg-transparent text-st-textDark border-[1px] mt-2 px-2 dark:text-st-surface   py-3 rounded-lg focus:outline-none focus:border-[1px] border-st-edgeDark focus:border-st-surface  "
           />
         </div>
-        <button className="py-3 w-full flex items-center justify-center bg-[#1E1E1E] text-white font-tt-hoves text-lg rounded-lg">
+        <button className="py-3 w-full flex items-center justify-center bg-[#1E1E1E] text-white hover:bg-st-grayDark text-lg rounded-lg">
           {existingPost ? "Save Announcement" : "Post Announcement"}
         </button>
       </div>

@@ -134,3 +134,20 @@ export interface IStack {
   created_at: string;
   updated_at: string;
 }
+
+export interface IProject {
+  id: string;
+  name: string;
+  description: string;
+  project_type: string;
+  project_priority: string;
+  project_tools: string[];
+}
+
+export interface IProjectResponse {
+  items: IProject[];
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
+}

@@ -17,7 +17,7 @@ export default async function RootLayout({
     <main className="w-full min-h-screen bg-primary-light text-primary-dark dark:bg-primary-dark dark:text-primary-light">
       <Navbar />
       <section className="w-full">
-        <section className="lg:pl-[25vw] xl:pl-[20vw]  w-full">
+        <section className="lg:pl-[25vw] xl:pl-[20vw] pt-[7vh] lg:pt-0 w-full">
           {children}
         </section>
       </section>

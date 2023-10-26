@@ -32,7 +32,7 @@ const Member = ({ data }: MemberProps) => {
         </p>
         <br />
         <Link href={`/techies/${data.id}`}>
-          <button className="bg-primary-dark text-primary-white dark:bg-primary-light dark:text-primary-dark px-2 py-1 rounded-md">
+          <button className="bg-primary-dark text-primary-white dark:bg-primary-light dark:text-primary-dark px-2 py-1 rounded-md text-sm">
             View Profile
           </button>
         </Link>

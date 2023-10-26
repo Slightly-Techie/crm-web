@@ -33,8 +33,8 @@ const Navlinks = [
       },
       {
         id: "d2",
-        name: "Current Projects",
-        link: "/",
+        name: "Applicants",
+        link: "/admin/applicants",
         icon: <AiOutlineHourglass size={20} />,
       },
       {

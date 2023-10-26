@@ -3,50 +3,34 @@ import { useState } from "react";
 import Search from "@/assets/icons/search.png";
 import StatusCheck from "@/components/projects/StatusCheck";
 import Link from "next/link";
-
-const projects = [
-  {
-    id: 1,
-    title: "ST CRM",
-    about: "lorem50",
-    size: "Medium",
-    Priority: "Medium",
-    project_lead: "@briannewton",
-    team_members: ["Nana Kwasi Asante", "Bill Gates"],
-  },
-  {
-    id: 2,
-    title: "E-commerce Website Redesign",
-    about: "lorem50",
-    size: "Large",
-    Priority: "High",
-    project_lead: "@johndoe",
-    team_members: ["Alice Johnson", "Steve Jobs"],
-  },
-  {
-    id: 3,
-    title: "Mobile App Development",
-    about: "lorem50",
-    size: "Small",
-    Priority: "Low",
-    project_lead: "@janedoe",
-    team_members: ["Elon Musk", "Mark Zuckerberg"],
-  },
-  {
-    id: 4,
-    title: "Data Analytics Platform",
-    about: "lorem50",
-    size: "Extra Large",
-    Priority: "High",
-    project_lead: "@sarahsmith",
-    team_members: ["Warren Buffett", "Larry Page"],
-  },
-];
-
-// You can continue adding more projects as needed.
+import useEndpoints from "@/services";
+import { useQuery } from "@tanstack/react-query";
+import LoadingSpinner from "@/components/loadingSpinner";
 
 function Page() {
   const [isAdmin] = useState<boolean>(true);
+  const [query, setQuery] = useState<string>("");
+  const { getProjects } = useEndpoints();
+
+  const {
+    data: Projects,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["projects"],
+    queryFn: () => getProjects(),
+    refetchOnWindowFocus: false,
+    retry: 3,
+  });
+
+  const projectList = Projects?.data.items;
+
+  const filteredItems = projectList?.filter((item) => {
+    const projectMatch = item?.name
+      ?.toLowerCase()
+      .includes(query.toLowerCase());
+    return projectMatch;
+  });
 
   return (
     <main>
@@ -54,11 +38,13 @@ function Page() {
         <p className="lg:text-xl font-bold">Community Projects</p>
       </section>
       <section className="flex justify-between items-center w-full my-2 p-5">
-        <section className="w-[70%] flex items-center py-2 px-3 gap-2 border rounded-md">
+        <section className="w-[90%] flex items-center py-2 px-3 gap-2 border rounded-md">
           <input
             type="text"
             className="w-full bg-transparent border-none placeholder-st-gray-500 text-black dark:text-white focus:outline-none"
             placeholder="Search by keyword"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           />
           <img src={Search.src} alt="search icon" />
         </section>
@@ -73,38 +59,50 @@ function Page() {
       </section>
       <section className="p-5">
         <div className="relative overflow-x-auto">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead className="text-xs uppercase">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  Project name
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Status
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Start Date
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Team Members
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {projects.map((item) => {
-                return (
-                  <tr key={item.id} className="bg-[#121212] border-b w-full">
-                    <td className="px-6 py-3">{item.title}</td>
-                    <td className="px-6 py-3">
-                      <StatusCheck status="In Progress" />
-                    </td>
-                    <td className="px-6 py-3">{item.project_lead}</td>
-                    <td className="px-6 py-3">{item.team_members}</td>
+          {isLoading && <LoadingSpinner />}
+
+          {Projects &&
+            (filteredItems?.length! > 0 ? (
+              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead className="text-xs uppercase">
+                  <tr>
+                    <th scope="col" className="px-6 py-3">
+                      Project name
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Project type
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Project Priority
+                    </th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {filteredItems?.map((item) => {
+                    return (
+                      <tr
+                        key={item.name}
+                        className="bg-[#121212] border-b w-full"
+                      >
+                        <td className="px-6 py-3">{item.name}</td>
+                        <td className="px-6 py-3">
+                          {<StatusCheck project_type={item.project_type} />}
+                        </td>
+                        <td className="px-6 py-3">
+                          {<StatusCheck priority={item?.project_priority} />}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : (
+              <h1 className="text-center text-2xl text-[#777777]">
+                Sorry, this project does not exist.
+              </h1>
+            ))}
+
+          {isError && <h1>Data Failed to load</h1>}
         </div>
       </section>
     </main>

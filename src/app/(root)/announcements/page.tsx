@@ -3,6 +3,7 @@ import Search from "@/assets/icons/search.png";
 import LoadingSpinner from "@/components/loadingSpinner";
 import { useFetchAnnouncements } from "@/services/AnnouncementServices";
 import { getTimeElapsedOrDate } from "@/utils";
+import Link from "next/link";
 import { useState } from "react";
 
 function Page() {
@@ -17,6 +18,15 @@ function Page() {
     }
     setCurrentLimit((prevLimit) => prevLimit + 3);
   };
+  const [isAdmin] = useState<boolean>(true);
+  const [query, setQuery] = useState<string>("");
+
+  const filteredItems = paginatedData?.filter((item) => {
+    const projectMatch = item?.title
+      ?.toLowerCase()
+      .includes(query.toLowerCase());
+    return projectMatch;
+  });
 
   return (
     <section>
@@ -27,33 +37,50 @@ function Page() {
         {/* Left */}
         <section className="lg:w-[70%] h-full">
           <section className="flex justify-between items-center w-full p-5 border-r h-full">
-            <section className="w-full flex items-center py-2 px-3 gap-2 border rounded-md">
+            <section className="w-[50%] flex items-center py-2 px-3 gap-2 border rounded-md">
               <input
                 type="text"
                 className="w-full bg-transparent border-none placeholder-st-gray-500 text-black dark:text-white focus:outline-none"
                 placeholder="Search by keyword"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
               />
               <img src={Search.src} alt="search icon" />
             </section>
             {/* Add Filter and Sort Dropdowns */}
+            {isAdmin && (
+              <Link
+                href={"/admin/announcements"}
+                className="bg-[#090909] px-4 py-2 rounded text-sm"
+              >
+                Create Announcement
+              </Link>
+            )}
           </section>
           <section className="p-5">
-            {paginatedData?.map((item) => {
-              return (
-                <section
-                  key={item.id}
-                  className="bg-[#121212] my-3 p-5 rounded"
-                >
-                  <section className="flex justify-between items-center">
-                    <h2 className="font-bold text-lg">{item.title}</h2>
-                    <span className="text-[#9F9F9F] text-[13px]">
-                      {getTimeElapsedOrDate(item.created_at!)}
-                    </span>
+            {isFetching && <LoadingSpinner />}
+            {filteredItems?.length > 0 ? (
+              filteredItems?.map((item) => {
+                return (
+                  <section
+                    key={item.id}
+                    className="bg-[#090909] my-3 p-5 rounded-lg"
+                  >
+                    <section className="flex justify-between items-center">
+                      <h2 className="font-bold text-lg">{item.title}</h2>
+                      <span className="text-[#9F9F9F] text-[13px]">
+                        {getTimeElapsedOrDate(item.created_at!)}
+                      </span>
+                    </section>
+                    <p className="text-[#9F9F9F]">{item.content}</p>
                   </section>
-                  <p className="text-[#9F9F9F]">{item.content}</p>
-                </section>
-              );
-            })}
+                );
+              })
+            ) : (
+              <h1 className="text-center text-2xl text-[#777777]">
+                Sorry, this announcement does not exist.
+              </h1>
+            )}
           </section>
         </section>
         {/* Right */}

@@ -27,6 +27,7 @@ module.exports = {
           surfaceDark: "#232323",
           edge: "#DCDDE1",
           edgeDark: "#353535",
+          cardDark: "#141414",
         },
         "status-check": {
           yellow: "#BDAA00",

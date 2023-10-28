@@ -46,7 +46,7 @@ export default function CreateAnnouncement({
         e.preventDefault();
         onSubmit();
       }}
-      className=" pl-2 w-full h-fit lg:w-full lg:mx-auto lg:sticky lg:top-14 self-start"
+      className=" pl-2 w-full h-fit lg:w-full lg:mx-auto lg:sticky lg:top-16 self-start"
     >
       <h1 className=" text-center text-st-text dark:text-st-surface font-base text-[1.2rem] py-4">
         Create Announcement
@@ -75,7 +75,7 @@ export default function CreateAnnouncement({
             className="w-full bg-transparent text-st-textDark border-[1px] mt-2 px-2 dark:text-st-surface   py-3 rounded-lg focus:outline-none focus:border-[1px] border-st-edgeDark focus:border-st-surface  "
           />
         </div>
-        <button className="py-3 w-full flex items-center justify-center bg-[#1E1E1E] text-white hover:bg-st-grayDark text-lg rounded-lg">
+        <button className="py-3 w-full flex items-center justify-center bg-[#1E1E1E] text-white hover:bg-st-grayDark rounded-lg">
           {existingPost ? "Save Announcement" : "Post Announcement"}
         </button>
       </div>

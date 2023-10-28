@@ -3,7 +3,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 
 const EditPage = () => {
   return (
-    <div className=" w-full lg:w-2/3 p-2 pb-6">
+    <div className=" w-full lg:w-2/3 p-2 pb-6 dark:bg-primary-dark ">
       <div className="flex flex-col gap-1 mt-4 mx-3">
         <label className=" text-lg pb-2">Project Name</label>
         <input

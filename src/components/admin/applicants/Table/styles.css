@@ -7,6 +7,9 @@ table {
 tr:nth-child(even) {
   @apply dark:bg-[#232323];
 }
+tr:nth-child(odd) {
+  @apply dark:bg-[#141414];
+}
 
 .menu-wrapper {
   display: flex;

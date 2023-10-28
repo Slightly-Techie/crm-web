@@ -92,7 +92,6 @@ function Page() {
         <section className="flex justify-between lg:w-[25%] my-2 p-5">
           <p>Techie of the menth go dey here</p>
         </section>
-        pP
       </section>
     </section>
   );

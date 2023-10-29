@@ -102,11 +102,19 @@ export function getSubdomainFromURL(url: string | null): string | null {
 }
 
 export function getSkillsArray(inputValue: string | string[] | undefined) {
+  let skillsArray: string[] = [];
   if (inputValue) {
     const result = Array.isArray(inputValue)
       ? inputValue.join(",")
       : inputValue;
-    return result.split(",").map((item) => item.trim());
+    for (let value of result.split(",")) {
+      const format = value.trim();
+      if (!format.length) continue;
+      else {
+        skillsArray = [...skillsArray, format];
+      }
+    }
+    return skillsArray;
   }
   return [];
 }

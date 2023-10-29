@@ -24,8 +24,11 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
   return (
     <>
       <div className="my-4">
-        <label className=" text-[#000] dark:text-[#f1f3f7]" htmlFor="">
-          Password
+        <label
+          className=" text-[#000] dark:text-[#f1f3f7] font-bold"
+          htmlFor=""
+        >
+          Set A Password
         </label>
         <input
           {...register("password", {
@@ -34,7 +37,8 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
             max: 25,
             pattern: REGEXVALIDATION.password,
           })}
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
+          placeholder="Enter your password"
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]  rounded-[5px] dark:border-[#fff]"
           type="password"
         />
         {errors.password && (
@@ -45,7 +49,7 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
         )}
       </div>
       <div className="my-4">
-        <label className=" text-[#000] dark:text-[#f1f3f7]">
+        <label className=" text-[#000] dark:text-[#f1f3f7] font-bold">
           Confirm Password
         </label>
         <input
@@ -59,6 +63,7 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
               }
             },
           })}
+          placeholder="Confirm your password"
           style={{
             borderColor: errors.password_confirmation
               ? "#b92828"
@@ -66,7 +71,7 @@ function CreatePassword({ register, errors, watch }: PasswordFormType) {
               ? "#21c129"
               : "",
           }}
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]  rounded-[5px] dark:border-[#fff]"
           type="password"
         />
         {errors.password_confirmation && <small>Passwords do not match</small>}

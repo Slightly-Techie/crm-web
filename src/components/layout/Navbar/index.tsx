@@ -20,6 +20,7 @@ import { BsBarChart, BsCart2, BsChatLeft } from "react-icons/bs";
 import { GoSignOut } from "react-icons/go";
 import { FiTarget } from "react-icons/fi";
 import { LuPuzzle } from "react-icons/lu";
+import DropDown from "@/components/DropDown";
 
 const Navlinks = [
   {
@@ -140,36 +141,44 @@ function Navbar() {
           </section>
           {/* Bottom Section */}
           <section className="w-full">
-            <section className="flex gap-3 items-center mb-5">
-              <Image
-                className="w-10 h-10 aspect-square shrink-0 rounded-full"
-                width={48}
-                height={48}
-                src={
-                  user?.profile_pic_url
-                    ? user?.profile_pic_url
-                    : `https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`
-                }
-                alt="profile"
-                placeholder="blur"
-                blurDataURL={`https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`}
-                priority={true}
-              />
-              <section>
-                <p className="font-semibold text-sm">
-                  {user?.first_name} {user?.last_name}
-                </p>
-                <p className="text-complementary text-sm">{user?.email}</p>
-              </section>
-            </section>
-            <section className="flex items-center gap-3 mb-3">
-              <AiOutlineSetting size={20} />
-              <p className="font-bold text-sm">Settings</p>
-            </section>
-            <section className="flex items-center gap-3 mb-3">
-              <GoSignOut size={20} />
-              <p className="font-bold text-sm">Log Out</p>
-            </section>
+            <DropDown
+              MenuButtonContent={
+                <section className="flex gap-3 items-center mb-5">
+                  <Image
+                    className="w-10 h-10 aspect-square shrink-0 rounded-full"
+                    width={48}
+                    height={48}
+                    src={
+                      user?.profile_pic_url
+                        ? user?.profile_pic_url
+                        : `https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`
+                    }
+                    alt="profile"
+                    placeholder="blur"
+                    blurDataURL={`https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`}
+                    priority={true}
+                  />
+                  <section>
+                    <p className="font-semibold text-sm">
+                      {user?.first_name} {user?.last_name}
+                    </p>
+                    <p className="text-complementary text-sm">{user?.email}</p>
+                  </section>
+                </section>
+              }
+              MenuItemsContent={
+                <section className="flex flex-col justify-center gap-5 p-2">
+                  <section className="flex items-center gap-3">
+                    <AiOutlineSetting size={20} />
+                    <p className="font-bold text-sm">Settings</p>
+                  </section>
+                  <section className="flex items-center gap-3">
+                    <GoSignOut size={20} />
+                    <p className="font-bold text-sm">Log Out</p>
+                  </section>
+                </section>
+              }
+            />
           </section>
           {/* <ThemeSwitcher /> */}
         </section>
@@ -197,7 +206,6 @@ function Navbar() {
             ? "fixed z-[50] mt-[7vh] ease duration-500 h-[93vh] top-0 left-0 w-screen bg-black p-5"
             : "fixed z-[50] mt-[7vh] ease duration-500 h-[93vh] top-0 left-[-100vw] w-screen bg-black p-5"
         }
-        onClick={() => setNavToggle(!navToggle)}
       >
         <section className="flex flex-col justify-between h-full">
           {/* Top Section */}
@@ -226,36 +234,44 @@ function Navbar() {
           </section>
           {/* Bottom Section */}
           <section className="w-full">
-            <section className="flex gap-3 items-center mb-5">
-              <Image
-                className="w-10 h-10 aspect-square shrink-0 rounded-full"
-                width={48}
-                height={48}
-                src={
-                  user?.profile_pic_url
-                    ? user?.profile_pic_url
-                    : `https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`
-                }
-                alt="profile"
-                placeholder="blur"
-                blurDataURL={`https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`}
-                priority={true}
-              />
-              <section>
-                <p className="font-semibold text-sm">
-                  {user?.first_name} {user?.last_name}
-                </p>
-                <p className="text-complementary text-sm">{user?.email}</p>
-              </section>
-            </section>
-            <section className="flex items-center gap-3 mb-3">
-              <AiOutlineSetting size={20} />
-              <p className="font-bold text-sm">Settings</p>
-            </section>
-            <section className="flex items-center gap-3 mb-3">
-              <GoSignOut size={20} />
-              <p className="font-bold text-sm">Log Out</p>
-            </section>
+            <DropDown
+              MenuButtonContent={
+                <section className="flex gap-3 items-center mb-5">
+                  <Image
+                    className="w-10 h-10 aspect-square shrink-0 rounded-full"
+                    width={48}
+                    height={48}
+                    src={
+                      user?.profile_pic_url
+                        ? user?.profile_pic_url
+                        : `https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`
+                    }
+                    alt="profile"
+                    placeholder="blur"
+                    blurDataURL={`https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`}
+                    priority={true}
+                  />
+                  <section>
+                    <p className="font-semibold text-sm">
+                      {user?.first_name} {user?.last_name}
+                    </p>
+                    <p className="text-complementary text-sm">{user?.email}</p>
+                  </section>
+                </section>
+              }
+              MenuItemsContent={
+                <section className="flex flex-col justify-center gap-5 p-2">
+                  <section className="flex items-center gap-3">
+                    <AiOutlineSetting size={20} />
+                    <p className="font-bold text-sm">Settings</p>
+                  </section>
+                  <section className="flex items-center gap-3">
+                    <GoSignOut size={20} />
+                    <p className="font-bold text-sm">Log Out</p>
+                  </section>
+                </section>
+              }
+            />
           </section>
         </section>
       </section>

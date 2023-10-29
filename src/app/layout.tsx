@@ -1,6 +1,7 @@
 import FONTS from "@/assets/fonts";
 import "./globals.css";
 import { Providers } from "./providers";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "Slightly Techie Network",
@@ -18,6 +19,7 @@ export default function RootLayout({
         suppressHydrationWarning={true}
         className={`${FONTS.mona_sans.variable} font-mona-sans`}
       >
+        <Toaster />
         <Providers>{children}</Providers>
       </body>
     </html>

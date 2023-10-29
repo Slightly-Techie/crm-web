@@ -24,7 +24,7 @@ export default function Signup() {
     currentFormIndex,
   } = useNavigateForms();
   const { createNewUser, status, setStatus, errMessage } = usePostNewSignUp();
-  const isClosed = false;
+  const isClosed = true;
 
   const onSubmit = (data: Partial<NewUserFields>) => {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
@@ -44,8 +44,8 @@ export default function Signup() {
   };
 
   return (
-    <div className="w-full bg-st-bg dark:bg-[#111111] overflow-x-hidden">
-      <div className="w-screen h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-[#111111] mx-auto">
+    <div className="w-full bg-st-bg dark:bg-[#020202] overflow-x-hidden">
+      <div className="w-screen h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-[#020202] mx-auto">
         <>
           <div className="hidden lg:block">
             <div className="h-full lg:block bg-[#fff] dark:bg-[#020202] lg:bg-[#020202]">

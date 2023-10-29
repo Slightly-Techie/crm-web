@@ -52,110 +52,92 @@ function Team() {
   });
 
   return (
-    <section className="w-4/5 py-4 bg-white dark:bg-[#232323] rounded-sm border border-st-edge dark:border-st-edgeDark">
-      <div className="flex items-center gap-4 pb-4 px-8 border-b border-b-st-edge dark:border-st-edgeDark">
-        <h3 className="font-medium text-secondary dark:text-[#F1F3F7] flex gap-1 items-center text-base">
-          Team Memebers
-          <span className="text-[9px] px-3 font-medium bg-[#F1F3F7] dark:bg-[#444444] rounded-3xl">
-            {TechiesData ? TechiesData.total : 0} techies
-          </span>
-        </h3>
-        <h3 className="font-medium text-secondary dark:text-[#F1F3F7] flex gap-1 items-center text-base">
-          Community Projects
-          <span className="text-[9px] px-3 font-medium bg-[#F1F3F7] dark:bg-[#444444] rounded-3xl">
-            2 Active
-          </span>
-        </h3>
-        <h3 className="font-medium text-secondary dark:text-[#F1F3F7] flex gap-1 items-center text-base">
-          Paid Projects
-          <span className="text-[9px] px-3 font-medium bg-[#F1F3F7] dark:bg-[#444444] rounded-3xl">
-            1 Active
-          </span>
-        </h3>
-      </div>
+    <section className="w-full h-full">
+      <section className="border-b border-b-neutral-700 sticky top-[7vh] lg:top-0 z-[40] bg-primary-light dark:bg-[#141414] w-full p-5">
+        <p className="lg:text-xl font-bold">Techies</p>
+      </section>
 
-      {/* Form Section */}
-      <div className=" border-b-st-edge dark:border-st-edgeDark border-b py-4 px-8">
-        <form
-          action=""
-          className="bg-white dark:bg-[#444444] w-full border flex justify-between p-2 dark:border-st-edgeDark border-st-edge rounded"
-        >
-          <div className="w-full flex items-center py-2 px-3 gap-2">
-            <img src={Search.src} alt="search icon" />
+      {/* Search Input Section */}
+      <section className=" border-b-st-edge dark:border-st-edgeDark p-5">
+        <form className="flex justify-between items-center gap-5">
+          <section className="w-full flex items-center py-2 px-3 gap-2 border rounded-md">
             <input
               type="text"
               value={searchKeyword}
               onChange={(e) => setSearchKeyword(e.target.value)}
-              className="w-full dark:bg-[#444444] border-none placeholder-st-gray-500 text-black dark:text-white focus:outline-none"
+              className="w-full bg-transparent border-none placeholder-st-gray-500 text-black dark:text-white focus:outline-none"
               placeholder="Search by keyword"
             />
-          </div>
-
-          <button className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm">
-            Search
-          </button>
+            <img src={Search.src} alt="search icon" />
+          </section>
+          <section className="flex items-center gap-5">
+            <button className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm">
+              Search
+            </button>
+          </section>
         </form>
-      </div>
+        {/* Pagination */}
+        <section className="w-full h-10 mt-4">
+          <section className="flex items-center justify-between h-full">
+            <p className="text-sm text-slate-700 dark:text-[#F1F3F7]">
+              Showing{" "}
+              {1 + (paginatioinDetails.page - 1) * paginatioinDetails.size} to{" "}
+              {paginatioinDetails.page === paginatioinDetails.pages
+                ? paginatioinDetails.total
+                : paginatioinDetails.size * paginatioinDetails.page}{" "}
+              of {paginatioinDetails.total} entries
+            </p>
 
-      {/* User Info */}
-      <div className="w-full h-[calc(100%-196px)] overflow-y-scroll">
+            <section className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  if (currentPage > 1) {
+                    setCurrentPage(currentPage - 1);
+                  }
+                }}
+                disabled={currentPage === 1}
+                className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm disabled:opacity-70"
+              >
+                Previous
+              </button>
+              <button
+                onClick={() => {
+                  if (currentPage < paginatioinDetails.pages) {
+                    setCurrentPage(currentPage + 1);
+                  }
+                }}
+                disabled={currentPage === paginatioinDetails.pages}
+                className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm disabled:opacity-70"
+              >
+                Next
+              </button>
+            </section>
+          </section>
+        </section>
+      </section>
+
+      {/* Content */}
+      <section className="p-5">
         {isError && (
-          <div className="flex items-center justify-center w-full h-full">
+          <section className="flex items-center justify-center w-full h-full">
             <h1 className="text-2xl font-medium text-center text-secondary dark:text-[#F1F3F7]">
               Something went wrong
             </h1>
-          </div>
+          </section>
         )}
         {isLoading && (
-          <div className="flex items-center justify-center w-full h-full">
+          <section className="flex items-center justify-center w-full h-full">
             <LoadingSpinner />
-          </div>
+          </section>
         )}
         {filteredTechies && (
-          <div className="grid mt-8 px-8 grid-cols-3 gap-4">
+          <section className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {filteredTechies.map((user) => (
               <Member key={`${user.id}`} data={user} />
             ))}
-          </div>
+          </section>
         )}
-      </div>
-      <div className="w-full h-10 mt-2 px-8">
-        <div className="flex items-center justify-between h-full">
-          <p className="text-sm text-slate-700 dark:text-[#F1F3F7]">
-            Showing{" "}
-            {1 + (paginatioinDetails.page - 1) * paginatioinDetails.size} to{" "}
-            {paginatioinDetails.page === paginatioinDetails.pages
-              ? paginatioinDetails.total
-              : paginatioinDetails.size * paginatioinDetails.page}{" "}
-            of {paginatioinDetails.total} entries
-          </p>
-
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                if (currentPage > 1) {
-                  setCurrentPage(currentPage - 1);
-                }
-              }}
-              disabled={currentPage === 1}
-              className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm disabled:opacity-70"
-            >
-              Previous
-            </button>
-            <button
-              onClick={() => {
-                if (currentPage < paginatioinDetails.pages) {
-                  setCurrentPage(currentPage + 1);
-                }
-              }}
-              disabled={currentPage === paginatioinDetails.pages}
-              className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm disabled:opacity-70"
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      </div>
+      </section>
     </section>
   );
 }

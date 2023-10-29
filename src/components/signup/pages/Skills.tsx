@@ -3,7 +3,7 @@ import { REGEXVALIDATION } from "@/constants";
 import { NewUserFields } from "@/types";
 import { useRef } from "react";
 
-type SkillsFields = "years_of_experience" | "bio" | "stack";
+type SkillsFields = "years_of_experience" | "bio" | "skills";
 
 type TSkillsType = Pick<NewUserFields, SkillsFields>;
 
@@ -42,15 +42,20 @@ function Skills({ register, errors }: SkillsFormType) {
           What languages do you use?
         </label>
         <input
-          {...register("stack", {
+          {...register("skills", {
             required: "This field must be specified",
-            pattern: REGEXVALIDATION.shouldNotBeEmptyString,
+            pattern: REGEXVALIDATION.listSeparatedByComma,
           })}
           className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff] rounded-[5px] dark:border-[#8a8a8a]"
           type="text"
           placeholder="Enter programming languages you use"
         />
-        {errors.stack && <small>The technologies must be provided</small>}
+        {errors.skills && (
+          <small>
+            Valid technologies or languages must be provided and they must be
+            separated by a comma
+          </small>
+        )}
       </div>
       <div className="my-4">
         <label className=" text-[#000] dark:text-[#f1f3f7] font-bold">

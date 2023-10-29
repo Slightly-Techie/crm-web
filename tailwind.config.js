@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "media",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,15 +9,15 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        feed: "auto 1fr auto",
-        announcement: "40% 1fr",
+        feed: "60% 40%",
+        announcement: "45% auto",
       },
       colors: {
-        primary: "#F5F5F5",
-        secondary: "#3D4450",
+        primary: {
+          light: "#f5f5f5",
+          dark: "#020202",
+        },
         st: {
-          bg: "#F5F5F5",
-          bgDark: "#000",
           gray: "#E8E8E8",
           grayDark: "#c7c7c73b",
           text: "#3D4450",
@@ -27,10 +28,15 @@ module.exports = {
           edge: "#DCDDE1",
           edgeDark: "#353535",
         },
+        "status-check": {
+          yellow: "#BDAA00",
+          danger: "#e3342f",
+          success: "#38a169",
+          complementary: "#9EA1AB",
+        },
       },
       fontFamily: {
-        "tt-hoves": ["var(--font-tthoves)", "TT Hoves", "sans-serif"],
-        monalisa: ["var(--font-monalisa)", "Monalisa", "sans-serif"],
+        "mona-sans": ["var(--font-mona-sans)", "Mona Sans", "sans-serif"],
       },
     },
   },

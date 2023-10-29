@@ -92,7 +92,6 @@ small {
 .scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(190, 190, 190, 0.164);
   border-radius: 2rem;
-  display: none;
 }
 
 .scrollbar:hover::-webkit-scrollbar-thumb {

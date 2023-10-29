@@ -6,6 +6,7 @@ import usePostNewSignUp from "@/hooks/usePostNewSignUp";
 import { NewUserFields } from "@/types";
 import SubmitStatus from "@/components/signup/pages/SubmitStatus";
 import { NEW_USER_DATA as INITIAL_USER_DATA } from "@/constants";
+import { getSkillsArray } from "@/utils";
 import ClosedSignup from "@/components/signup/pages/ClosedSignup";
 import ArrowRight from "@/assets/icons/arrow-right.svg";
 
@@ -28,12 +29,14 @@ export default function Signup() {
   const onSubmit = (data: Partial<NewUserFields>) => {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
     if (currentFormIndex === 3) {
-      const { years_of_experience } = NEW_USER_DATA;
+      const { years_of_experience, skills } = NEW_USER_DATA;
+      const validatedSkills = getSkillsArray(skills);
       NEW_USER_DATA = {
         ...NEW_USER_DATA,
         stack_id:
           Number(NEW_USER_DATA.stack_id) === -1 ? 1 : NEW_USER_DATA.stack_id,
         years_of_experience: Number(years_of_experience),
+        skills: validatedSkills,
       };
       createNewUser(NEW_USER_DATA);
     }
@@ -41,8 +44,8 @@ export default function Signup() {
   };
 
   return (
-    <div className="w-full bg-st-bg dark:bg-[#020202] overflow-x-hidden font-tt-hoves">
-      <div className="w-screen h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-[#020202] mx-auto">
+    <div className="w-full bg-st-bg dark:bg-[#111111] overflow-x-hidden">
+      <div className="w-screen h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-[#111111] mx-auto">
         <>
           <div className="hidden lg:block">
             <div className="h-full lg:block bg-[#fff] dark:bg-[#020202] lg:bg-[#020202]">

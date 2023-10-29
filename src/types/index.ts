@@ -82,7 +82,8 @@ export type NewUserFields = {
   linkedin_profile: string;
   portfolio_url: string;
   stack_id: number;
-  stack: string;
+  stack?: string;
+  skills: string[];
   profile_pic_url: string;
   is_active: boolean;
   role_id?: number;
@@ -120,6 +121,7 @@ export type AnnouncementData = {
   content: string;
   edited?: boolean;
   image_url?: string;
+  created_at?: string;
 };
 
 export type AnnouncementDataResponse = AnnouncementData & {
@@ -131,4 +133,21 @@ export interface IStack {
   name: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface IProject {
+  id: string;
+  name: string;
+  description: string;
+  project_type: string;
+  project_priority: string;
+  project_tools: string[];
+}
+
+export interface IProjectResponse {
+  items: IProject[];
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
 }

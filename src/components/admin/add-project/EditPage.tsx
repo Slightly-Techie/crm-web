@@ -24,8 +24,7 @@ const EditPage = ({ ProjectSubmitHandler }: EditProps) => {
       manager_id: 5, // intentionally using brian's id for now.
       project_tools: getSkillsArray(data.project_tools),
     };
-    console.log(payload);
-    // ProjectSubmitHandler(payload);
+    ProjectSubmitHandler(payload);
   };
   return (
     <form

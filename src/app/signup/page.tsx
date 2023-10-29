@@ -8,7 +8,7 @@ import SubmitStatus from "@/components/signup/pages/SubmitStatus";
 import { NEW_USER_DATA as INITIAL_USER_DATA } from "@/constants";
 import ClosedSignup from "@/components/signup/pages/ClosedSignup";
 import Link from "next/link";
-import ArrowRight from "@/assets/icons/arrow-right.svg";
+import { RiArrowLeftLine } from "react-icons/ri";
 
 export type Status = "onsubmit" | "success" | "error" | "progress";
 
@@ -24,7 +24,7 @@ export default function Signup() {
     currentFormIndex,
   } = useNavigateForms();
   const { createNewUser, status, setStatus, errMessage } = usePostNewSignUp();
-  const isClosed = true;
+  const isClosed = false;
 
   const onSubmit = (data: Partial<NewUserFields>) => {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
@@ -77,7 +77,7 @@ export default function Signup() {
                     type="button"
                     className="px-2 py-2 bg-[#fff] border border-[#333] hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7]  dark:text-[#000] rounded-full"
                   >
-                    <Image src={ArrowRight} alt="" />
+                    <RiArrowLeftLine />
                   </button>
                 )}
                 <div>

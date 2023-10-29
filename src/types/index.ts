@@ -151,3 +151,12 @@ export interface IProjectResponse {
   size: number;
   pages: number;
 }
+
+export type ProjectFields = {
+  name: string;
+  description: string;
+  project_type: "COMMUNITY" | "PAID";
+  project_priority: "HIGH PRIORITY" | "MEDIUM PRIORITY" | "LOW PRIORITY";
+  manage_id: number;
+  project_tools: string[];
+};

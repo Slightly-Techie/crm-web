@@ -1,95 +1,127 @@
-import React from "react";
-import { AiOutlinePlus } from "react-icons/ai";
+"use client";
 
-const EditPage = () => {
+import React from "react";
+import { useForm } from "react-hook-form";
+import { getSkillsArray } from "@/utils";
+import { REGEXVALIDATION } from "@/constants";
+import { ProjectFields } from "@/types";
+import { UseMutateFunction } from "@tanstack/react-query";
+
+type EditProps = {
+  ProjectSubmitHandler: UseMutateFunction<unknown, unknown, ProjectFields>;
+};
+
+const EditPage = ({ ProjectSubmitHandler }: EditProps) => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<ProjectFields>({ mode: "onSubmit" });
+
+  const onSubmit = (data: ProjectFields) => {
+    const payload = {
+      ...data,
+      manager_id: 5, // intentionally using brian's id for now.
+      project_tools: getSkillsArray(data.project_tools),
+    };
+    ProjectSubmitHandler(payload);
+  };
   return (
-    <div className=" w-full lg:w-2/3 p-2 pb-6">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className=" w-full lg:w-2/3 p-2 pb-6 dark:bg-primary-dark "
+    >
       <div className="flex flex-col gap-1 mt-4 mx-3">
         <label className=" text-lg pb-2">Project Name</label>
         <input
+          {...register("name", {
+            required: true,
+            pattern: REGEXVALIDATION.shouldNotBeEmptyString,
+          })}
           type="text"
           placeholder="Enter the project's name"
-          name="name-of-project"
           className="border border-neutral-700 rounded-md p-2 focus:outline-none bg-transparent"
         />
+        {errors.name && <small>Provide the project&apos;s name</small>}
       </div>
       <div className="flex flex-col gap-1 mt-4 mx-3">
         <label className="text-lg pb-2 ">Project Description</label>
         <textarea
-          name="project description"
+          {...register("description", {
+            required: true,
+            pattern: REGEXVALIDATION.shouldNotBeEmptyString,
+          })}
           placeholder="What is the project about?"
           rows={4}
           className="border border-neutral-700 rounded-md p-2 resize-none focus:outline-none bg-transparent"
         />
+        {errors.description && (
+          <small>Provide the project&apos;s description</small>
+        )}
       </div>
 
       <div className="flex flex-col gap-1 mx-3 mt-4">
         <label className="pb-2">Project type</label>
         <select
-          name="project_type"
+          {...register("project_type", {
+            required: true,
+            pattern: REGEXVALIDATION.shouldNotBeEmptyString,
+          })}
           className="border border-neutral-700 py-3 rounded-md focus:outline-none bg-transparent"
         >
-          <option value="community">Community</option>
-          <option value="paid">Medium</option>
+          <option hidden value="">
+            Select type of Project
+          </option>
+          <option value="COMMUNITY">Community</option>
+          <option value="PAID">Paid</option>
         </select>
+        {errors.project_type && <small>Select the type of project</small>}
       </div>
       <div className="flex flex-col gap-1 mx-3 mt-4">
         <label className="text-bold pb-2 ">Priority</label>
         <select
-          name="priority"
+          {...register("project_priority", {
+            required: true,
+            pattern: REGEXVALIDATION.shouldNotBeEmptyString,
+          })}
           placeholder="How urgent is the project?"
           className="border border-neutral-700 py-3 rounded-md focus:outline-none bg-transparent"
         >
-          <option value="high">High</option>
-          <option value="medium">Medium</option>
-          <option value="low">Low</option>
+          <option hidden value="">
+            Select the priority of the project
+          </option>
+          <option value="HIGH PRIORITY">High</option>
+          <option value="MEDIUM PRIORITY">Medium</option>
+          <option value="LOW PRIORITY">Low</option>
         </select>
+        {errors.project_priority && (
+          <small>Select the priority of project</small>
+        )}
       </div>
-      <div className="mt-6 mx-3">
-        <div className="text-bold   flex items-center gap-2 cursor-pointer">
-          <span>
-            <AiOutlinePlus className="" />
-          </span>
-          Add Team Lead
-        </div>
+      <div className="flex flex-col gap-1 mt-4 mx-3">
+        <label className=" text-lg pb-2">Project Tools</label>
         <input
+          {...register("project_tools", {
+            required: true,
+            pattern: REGEXVALIDATION.listSeparatedByComma,
+          })}
           type="text"
-          name="add"
-          className="border border-neutral-700 rounded-md p-2 w-full mt-2 focus:outline-none bg-transparent"
+          placeholder="Eg. React, Django, Postgresql"
+          className="border border-neutral-700 rounded-md p-2 focus:outline-none bg-transparent"
         />
-      </div>
-      <div className="mt-6 mx-3">
-        <div className="text-bold   flex items-center gap-2 cursor-pointer">
-          <span>
-            <AiOutlinePlus className="" />
-          </span>
-          Add Frontend Team
-        </div>
-        <input
-          type="text"
-          name="add"
-          className="border border-neutral-700 rounded-md p-2 w-full mt-2 focus:outline-none bg-transparent"
-        />
-      </div>
-      <div className="mt-6 mx-3">
-        <div className="text-bold   flex items-center gap-2 cursor-pointer">
-          <span>
-            <AiOutlinePlus className="" />
-          </span>
-          Add Backend Team
-        </div>
-        <input
-          type="text"
-          name="add"
-          className="border border-neutral-700 rounded-md p-2 w-full mt-2 focus:outline-none bg-transparent"
-        />
+        {errors.project_tools && (
+          <small>
+            Valid technologies or languages must be provided and they must be
+            separated by a comma
+          </small>
+        )}
       </div>
       <div className="mt-6 mx-3">
         <button className=" text-st-surfaceDark font-bold w-1/2 py-2 bg-white rounded-md">
           Create Project
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 

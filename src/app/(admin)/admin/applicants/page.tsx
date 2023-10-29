@@ -55,7 +55,7 @@ export default function Applicants() {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="interviewee-wrapper h-full bg-[white] w-full dark:bg-[#141414] dark:text-white relative bottom-0 top-0">
+        <div className="interviewee-wrapper h-full bg-[white] w-full dark:bg-primary-dark dark:text-white relative bottom-0 top-0">
           <PageTitle title="Applicants" />
           <TableComponent
             columns={ApplicantsTableColumns}

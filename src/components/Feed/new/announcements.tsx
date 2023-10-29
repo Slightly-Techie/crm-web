@@ -32,7 +32,7 @@ const Announcements = () => {
       )}
       {paginatedData && (
         <div className=" flex gap-3 flex-col pb-6">
-          <h5 className=" dark:bg-primary-dark pt-4 bg-primary-light z-50 font-bold text-2xl sticky top-0 pb-4 text-secondary dark:text-primary ">
+          <h5 className=" dark:bg-primary-dark pt-4 bg-primary-light z-50 font-bold text-xl sticky top-0 pb-4 text-secondary dark:text-primary ">
             Announcements{" "}
             <small className=" text-status-check-success">
               + {Announcements.length}
@@ -49,7 +49,7 @@ const Announcements = () => {
               return (
                 <div
                   key={item.id}
-                  className="p-3 flex flex-col bg-white rounded-md dark:bg-st-surfaceDark border-st-gray dark:border-st-grayDark"
+                  className="p-3 flex flex-col bg-white rounded-md dark:bg-st-cardDark border-st-gray dark:border-st-grayDark"
                 >
                   <span className=" flex justify-between gap-4">
                     <h6 className="text-[#575F70] text-lg pb-4 dark:text-st-gray font-semibold">

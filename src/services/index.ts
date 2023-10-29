@@ -36,6 +36,8 @@ const useEndpoints = () => {
     authAxios.get<ITechie>(`api/v1/users/profile/${user_id}`);
 
   const getProjects = () => authAxios.get<IProjectResponse>(`api/v1/projects/`);
+  const postProjects = <T>(payload: T) =>
+    authAxios.post(`api/v1/projects/`, payload);
 
   return {
     getUserProfile,
@@ -45,6 +47,7 @@ const useEndpoints = () => {
     getAnnouncements,
     getSpecificUser,
     getProjects,
+    postProjects,
   };
 };
 

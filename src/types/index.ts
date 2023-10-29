@@ -152,10 +152,6 @@ export interface IProjectResponse {
   pages: number;
 }
 
-export type Override<T extends object, K, L> = K extends keyof T
-  ? Omit<T, K> & { K: L }
-  : never;
-
 export type ProjectFields = {
   name: string;
   description: string;

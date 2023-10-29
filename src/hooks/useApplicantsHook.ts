@@ -89,6 +89,7 @@ export function useApplicantHooks() {
         email,
         years_of_experience,
         phone_number,
+        status,
         id,
       }) => {
         return {
@@ -97,6 +98,7 @@ export function useApplicantHooks() {
           phone_number: phone_number || "N / A",
           years_of_experience: years_of_experience?.toString() || "N / A",
           id: id,
+          status,
         };
       }
     );

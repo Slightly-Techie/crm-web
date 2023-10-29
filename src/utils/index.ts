@@ -44,6 +44,7 @@ export const formatDate = (date: Date) => {
   return formattedDate;
 };
 
+//Fix
 export function getTimeElapsedOrDate(dateString: string): string {
   const now: Date = new Date();
   const date: Date = new Date(dateString);

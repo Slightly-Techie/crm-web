@@ -10,6 +10,7 @@ import {
 import { AnnouncementDataResponse } from "@/types";
 import LoadingSpinner from "@/components/loadingSpinner";
 import PageTitle from "@/components/PageTitle";
+import toast from "react-hot-toast";
 
 export default function Announcement() {
   const [currentPost, setCurrentPost] =
@@ -46,6 +47,7 @@ export default function Announcement() {
   function deleteAnnouncement(id: number) {
     if (currentPost && currentPost.id === id) return;
     DeleteAnnouncement(id);
+    toast.success("Announcement Deleted!");
   }
   return (
     <div className=" bg-primary-dark">

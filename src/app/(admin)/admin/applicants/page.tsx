@@ -5,6 +5,7 @@ import TableComponent from "@/components/admin/applicants/Table";
 import { useApplicantHooks } from "@/hooks/useApplicantsHook";
 import Loading from "../../loading";
 import PageTitle from "@/components/PageTitle";
+import toast from "react-hot-toast";
 
 export default function Applicants() {
   const {
@@ -33,8 +34,10 @@ export default function Applicants() {
       case "activate-applicant":
         mutation.mutate(payload?.id!);
         break;
-      case "send-email":
+      case "send-email": {
+        toast.success("Action Successful!");
         (window as Window).location = `mailto:${payload?.email}`;
+      }
     }
   }
 

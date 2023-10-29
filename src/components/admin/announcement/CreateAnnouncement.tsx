@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { isNonWhitespace } from "@/utils";
 import { AnnouncementData } from "@/types";
+import toast from "react-hot-toast";
 
 type CreateAnnouncementProps = {
   existingPost: AnnouncementData | null;
@@ -33,6 +34,11 @@ export default function CreateAnnouncement({
     };
     try {
       submitHandler(data);
+      if (existingPost) {
+        toast.success("Announcement Edited!");
+      } else {
+        toast.success("Announcement Created!");
+      }
       setFormTitle("");
       setFormContent("");
     } catch (err) {

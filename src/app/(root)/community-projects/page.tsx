@@ -51,7 +51,7 @@ function Page() {
         {isAdmin && (
           <Link
             href={"/admin/add-project"}
-            className="bg-[#090909] px-4 py-2 rounded text-sm"
+            className="border dark:border-none dark:bg-[#090909] dark:text-white px-4 py-2 rounded text-sm"
           >
             Add Project
           </Link>
@@ -82,7 +82,7 @@ function Page() {
                     return (
                       <tr
                         key={item.name}
-                        className="bg-[#121212] border-b w-full"
+                        className="dark:bg-[#121212] text-black dark:text-white border-b w-full"
                       >
                         <td className="px-6 py-3">{item.name}</td>
                         <td className="px-6 py-3">

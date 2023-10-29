@@ -7,7 +7,6 @@ import { NewUserFields } from "@/types";
 import SubmitStatus from "@/components/signup/pages/SubmitStatus";
 import { NEW_USER_DATA as INITIAL_USER_DATA } from "@/constants";
 import ClosedSignup from "@/components/signup/pages/ClosedSignup";
-import Link from "next/link";
 import ArrowRight from "@/assets/icons/arrow-right.svg";
 
 export type Status = "onsubmit" | "success" | "error" | "progress";
@@ -96,13 +95,6 @@ export default function Signup() {
                     </button>
                   )}
                 </section>
-                <Link
-                  href="/login"
-                  className="text-[20px] text-[#1e1e1e] hover:underline dark:text-[#fff]"
-                >
-                  Already have an account?{" "}
-                  <span className="font-bold dark:text-[#fff]">Sign In</span>
-                </Link>
               </form>
             </div>
           )}

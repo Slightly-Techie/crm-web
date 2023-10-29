@@ -19,26 +19,26 @@ function Social({ register, errors }: SocialsFormType) {
     <>
       <div className=" my-4">
         <label className=" text-[#000] dark:text-[#f1f3f7] font-bold">
-          Twitter Username
+          Twitter Profile Link
         </label>
         <input
           {...register("twitter_profile", {
             pattern: REGEXVALIDATION.twitter,
           })}
-          placeholder="eg. @billG8s"
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#fff]"
+          placeholder="eg. twitter.com/username"
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
           type="text"
         />
         {errors.twitter_profile && <small>Provide a valid profile link</small>}
       </div>
       <div className=" my-4">
         <label className=" text-[#000] dark:text-[#f1f3f7] font-bold">
-          GitHub Username
+          GitHub Profile Link
         </label>
         <input
           {...register("github_profile")}
-          placeholder="eg. github.com/billG8s"
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#fff]"
+          placeholder="eg. github.com/username"
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
           type="text"
         />
         {errors.github_profile && <small>Provide your github username </small>}
@@ -52,8 +52,8 @@ function Social({ register, errors }: SocialsFormType) {
         </label>
         <input
           {...register("portfolio_url", {})}
-          placeholder="eg. billG8s.com"
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#fff]"
+          placeholder="eg. www.username.com"
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
           type="text"
         />
         {errors.portfolio_url && (
@@ -65,14 +65,14 @@ function Social({ register, errors }: SocialsFormType) {
           className=" text-[#000] dark:text-[#f1f3f7] font-bold"
           htmlFor=""
         >
-          LinkedIn Profile
+          LinkedIn Profile Link
         </label>
         <input
           {...register("linkedin_profile", {
             pattern: REGEXVALIDATION.linkedIn,
           })}
-          placeholder="eg. linkedin.com/billGates"
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#fff]"
+          placeholder="eg. www.linkedin.com/in/name"
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
           type="text"
         />
         {errors.linkedin_profile && (

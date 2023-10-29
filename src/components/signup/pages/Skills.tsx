@@ -28,7 +28,7 @@ function Skills({ register, errors }: SkillsFormType) {
           {...register("years_of_experience", {
             required: true,
           })}
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] rounded-[5px] dark:border-[#fff]"
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff] rounded-[5px] dark:border-[#fff]"
           type="number"
           min={0}
           placeholder="Enter your years of experience"
@@ -46,7 +46,7 @@ function Skills({ register, errors }: SkillsFormType) {
             required: "This field must be specified",
             pattern: REGEXVALIDATION.shouldNotBeEmptyString,
           })}
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] rounded-[5px] dark:border-[#fff]"
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff] rounded-[5px] dark:border-[#fff]"
           type="text"
           placeholder="Enter programming languages you use"
         />
@@ -62,7 +62,7 @@ function Skills({ register, errors }: SkillsFormType) {
           cols={30}
           rows={1}
           placeholder="Enter your experience as a techie"
-          className="w-full text-[#000] resize-none dark:text-[#f1f3f7] my-4 border-[1px] px-2 py-2 border-[#3333337c] dark:bg-[transparent] focus:outline-none focus:border-[#333] rounded-[5px] dark:border-[#fff]"
+          className="w-full text-[#000] resize-none dark:text-[#f1f3f7] my-4 border-[1px] px-2 py-2 border-[#3333337c] dark:bg-[transparent] focus:outline-none focus:border-[#333] dark:focus:border-[#fff] rounded-[5px] dark:border-[#fff]"
         />
       </div>
       <div className="my-4">
@@ -75,7 +75,7 @@ function Skills({ register, errors }: SkillsFormType) {
           cols={30}
           rows={1}
           placeholder="Enter your experience as a techie"
-          className="w-full text-[#000] resize-none dark:text-[#f1f3f7] my-4 border-[1px] px-2 py-2 border-[#3333337c] dark:bg-[transparent] focus:outline-none focus:border-[#333] rounded-[5px] dark:border-[#fff]"
+          className="w-full text-[#000] resize-none dark:text-[#f1f3f7] my-4 border-[1px] px-2 py-2 border-[#3333337c] dark:bg-[transparent] focus:outline-none focus:border-[#333] dark:focus:border-[#fff] rounded-[5px] dark:border-[#fff]"
         />
       </div>
     </>

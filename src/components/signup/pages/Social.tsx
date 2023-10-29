@@ -26,7 +26,7 @@ function Social({ register, errors }: SocialsFormType) {
             pattern: REGEXVALIDATION.twitter,
           })}
           placeholder="eg. @billG8s"
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]  rounded-[5px] dark:border-[#fff]"
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#fff]"
           type="text"
         />
         {errors.twitter_profile && <small>Provide a valid profile link</small>}
@@ -38,7 +38,7 @@ function Social({ register, errors }: SocialsFormType) {
         <input
           {...register("github_profile")}
           placeholder="eg. github.com/billG8s"
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]  rounded-[5px] dark:border-[#fff]"
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#fff]"
           type="text"
         />
         {errors.github_profile && <small>Provide your github username </small>}
@@ -53,7 +53,7 @@ function Social({ register, errors }: SocialsFormType) {
         <input
           {...register("portfolio_url", {})}
           placeholder="eg. billG8s.com"
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]  rounded-[5px] dark:border-[#fff]"
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#fff]"
           type="text"
         />
         {errors.portfolio_url && (
@@ -72,7 +72,7 @@ function Social({ register, errors }: SocialsFormType) {
             pattern: REGEXVALIDATION.linkedIn,
           })}
           placeholder="eg. linkedin.com/billGates"
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]  rounded-[5px] dark:border-[#fff]"
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#fff]"
           type="text"
         />
         {errors.linkedin_profile && (

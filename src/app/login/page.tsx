@@ -142,7 +142,7 @@ export default function Login() {
                 Forgot your{" "}
                 <Link
                   className="font-bold hover:text-st-gray-400"
-                  href="/forgot-password"
+                  href="/user/forgot-password"
                 >
                   <u>password?</u>
                 </Link>

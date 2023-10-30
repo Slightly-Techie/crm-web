@@ -1,21 +1,36 @@
 "use client";
 
 import { REGEXVALIDATION } from "@/constants";
+import axios from "@/lib/axios";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 type ForgotPasswordField = {
   email: string;
 };
 
 export default function ForgotPassword() {
+  const router = useRouter();
   const {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<ForgotPasswordField>({ mode: "onSubmit" });
 
   const onSubmit = (data: ForgotPasswordField) => {
     console.log(data);
+    axios
+      .post("https://crm-api.fly.dev/api/v1/users/forgot-password", data)
+      .then((res) => {
+        console.log(res.data);
+        router.push("/user/reset-password/new-password");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    reset();
   };
 
   return (

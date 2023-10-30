@@ -106,7 +106,7 @@ function Navbar() {
 
   return (
     <header>
-      <nav className="hidden lg:block lg:w-[25vw] xl:w-[20vw] h-screen p-4 fixed top-0 left-0 z-[50] border-r border-r-neutral-700 bg-primary-dark">
+      <nav className="hidden lg:block lg:w-[25vw] xl:w-[20vw] h-screen p-4 fixed top-0 left-0 z-[50] border-r border-r-neutral-700 dark:bg-primary-dark">
         <section className="flex flex-col justify-between items-center h-full">
           {/* Top Section */}
           <section className="w-full">
@@ -167,7 +167,7 @@ function Navbar() {
                 </section>
               }
               MenuItemsContent={
-                <section className="flex flex-col justify-center gap-5 p-2">
+                <section className="text-black dark:text-white flex flex-col justify-center gap-5 p-2">
                   <section className="flex items-center gap-3">
                     <AiOutlineSetting size={20} />
                     <p className="font-bold text-sm">Settings</p>
@@ -207,7 +207,7 @@ function Navbar() {
             : "fixed z-[50] mt-[7vh] ease duration-500 h-[93vh] top-0 left-[-100vw] w-screen bg-black p-5"
         }
       >
-        <section className="flex flex-col justify-between h-full">
+        <section className="flex flex-col justify-between h-full bg-black">
           {/* Top Section */}
           <section>
             {Navlinks.map((link) => {
@@ -260,7 +260,7 @@ function Navbar() {
                 </section>
               }
               MenuItemsContent={
-                <section className="flex flex-col justify-center gap-5 p-2">
+                <section className="text-black dark:text-white flex flex-col justify-center gap-5 p-2">
                   <section className="flex items-center gap-3">
                     <AiOutlineSetting size={20} />
                     <p className="font-bold text-sm">Settings</p>

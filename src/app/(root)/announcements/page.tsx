@@ -55,7 +55,7 @@ function Page() {
             {isAdmin && (
               <Link
                 href={"/admin/announcements"}
-                className=" dark:bg-st-surfaceDark px-4 py-2 rounded text-sm"
+                className=" border dark:border-none dark:bg-st-surfaceDark px-4 py-2 rounded text-sm"
               >
                 Create Announcement
               </Link>
@@ -69,7 +69,7 @@ function Page() {
                 return (
                   <section
                     key={item.id}
-                    className="bg-st-cardDark my-3 p-5 rounded-lg"
+                    className="border dark:border-none dark:bg-st-cardDark my-3 p-5 rounded-lg"
                   >
                     <section className="flex justify-between items-center">
                       <h2 className="font-bold text-lg">{item.title}</h2>

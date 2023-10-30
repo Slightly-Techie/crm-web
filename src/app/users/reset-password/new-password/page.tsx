@@ -4,7 +4,7 @@ import { REGEXVALIDATION } from "@/constants";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-
+import { useSearchParams } from "next/navigation";
 type NewPassword = Record<"password" | "password_confirmation", string>;
 
 export default function CreateNewPassword() {
@@ -20,14 +20,15 @@ export default function CreateNewPassword() {
     "password_confirmation",
   ]);
 
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+
   const passwordMatch = password && password === password_confirmation;
 
   const onSubmit = (data: NewPassword) => {
     const payload = {
       new_password: data.password,
-      token:
-        //change this token
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZ3lhcG9uZ2FudHdpQHlhaG9vLmNvbSIsImlhdCI6MTY5ODY5MDQ0OCwiZXhwIjoxNjk4NjkxMzQ4fQ.Kfix3kmLnC6D7Fgelfr6I3FapCZ2ctfQvHp6jjmZgIQ",
+      token: token,
     };
     console.log(payload);
     axios
@@ -35,7 +36,6 @@ export default function CreateNewPassword() {
       .then((res) => {
         console.log(res.data);
         toast.success(res.data.message);
-        //reroute to login page
       })
       .catch((err) => {
         console.log(err);

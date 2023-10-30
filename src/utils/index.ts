@@ -50,9 +50,9 @@ export function getTimeElapsedOrDate(dateString: string): string {
   const date: Date = new Date(dateString);
 
   const timeDiff: number = now.getTime() - date.getTime();
-  const secondsDiff: number = Math.floor(timeDiff / 1000);
-  const minutesDiff: number = Math.floor(timeDiff / (1000 * 60));
-  const hoursDiff: number = Math.floor(timeDiff / (1000 * 60 * 60));
+  const secondsDiff: number = Math.abs(Math.floor(timeDiff / 1000));
+  const minutesDiff: number = Math.abs(Math.floor(timeDiff / (1000 * 60)));
+  const hoursDiff: number = Math.abs(Math.floor(timeDiff / (1000 * 60 * 60)));
 
   if (secondsDiff < 60) {
     return `${secondsDiff}s`;

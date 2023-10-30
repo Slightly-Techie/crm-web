@@ -6,6 +6,7 @@ import Link from "next/link";
 import useEndpoints from "@/services";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "@/components/loadingSpinner";
+import Image from "next/image";
 
 function Page() {
   const [isAdmin] = useState<boolean>(true);
@@ -46,7 +47,7 @@ function Page() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <img src={Search.src} alt="search icon" />
+          <Image src={Search.src} alt="search icon" />
         </section>
         {isAdmin && (
           <Link

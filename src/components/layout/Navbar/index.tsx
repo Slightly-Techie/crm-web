@@ -16,10 +16,10 @@ import {
   AiOutlineHome,
   AiOutlineHourglass,
 } from "react-icons/ai";
-import { BsBarChart, BsCart2, BsChatLeft } from "react-icons/bs";
+import { BsBarChart, BsChatLeft } from "react-icons/bs";
 import { GoSignOut } from "react-icons/go";
 import { FiTarget } from "react-icons/fi";
-import { LuPuzzle } from "react-icons/lu";
+// import { LuPuzzle } from "react-icons/lu";
 import DropDown from "@/components/DropDown";
 
 const Navlinks = [

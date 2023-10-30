@@ -13,10 +13,7 @@ export default function ForgotPassword() {
     formState: { errors },
     handleSubmit,
   } = useForm<ForgotPasswordField>({ mode: "onSubmit" });
-
-  const onSubmit = (data: ForgotPasswordField) => {
-    console.log(data);
-  };
+  const onSubmit = async (data: ForgotPasswordField) => {};
 
   return (
     <>

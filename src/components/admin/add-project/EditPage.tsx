@@ -40,7 +40,7 @@ const EditPage = ({ ProjectSubmitHandler }: EditProps) => {
           })}
           type="text"
           placeholder="Enter the project's name"
-          className="border border-neutral-700 rounded-md p-2 focus:outline-none bg-transparent"
+          className="border focus:border-st-surface border-neutral-700 rounded-md p-2 focus:outline-none bg-transparent"
         />
         {errors.name && <small>Provide the project&apos;s name</small>}
       </div>
@@ -53,7 +53,7 @@ const EditPage = ({ ProjectSubmitHandler }: EditProps) => {
           })}
           placeholder="What is the project about?"
           rows={4}
-          className="border border-neutral-700 rounded-md p-2 resize-none focus:outline-none bg-transparent"
+          className="border focus:border-st-surface border-neutral-700 rounded-md p-2 resize-none focus:outline-none bg-transparent"
         />
         {errors.description && (
           <small>Provide the project&apos;s description</small>
@@ -72,8 +72,12 @@ const EditPage = ({ ProjectSubmitHandler }: EditProps) => {
           <option hidden value="">
             Select type of Project
           </option>
-          <option value="COMMUNITY">Community</option>
-          <option value="PAID">Paid</option>
+          <option className=" text-st-surfaceDark" value="COMMUNITY">
+            Community
+          </option>
+          <option className=" text-st-surfaceDark" value="PAID">
+            Paid
+          </option>
         </select>
         {errors.project_type && <small>Select the type of project</small>}
       </div>
@@ -85,14 +89,20 @@ const EditPage = ({ ProjectSubmitHandler }: EditProps) => {
             pattern: REGEXVALIDATION.shouldNotBeEmptyString,
           })}
           placeholder="How urgent is the project?"
-          className="border border-neutral-700 py-3 rounded-md focus:outline-none bg-transparent"
+          className="border  border-neutral-700 py-3 rounded-md focus:outline-none bg-transparent"
         >
           <option hidden value="">
             Select the priority of the project
           </option>
-          <option value="HIGH PRIORITY">High</option>
-          <option value="MEDIUM PRIORITY">Medium</option>
-          <option value="LOW PRIORITY">Low</option>
+          <option className=" text-st-surfaceDark" value="HIGH PRIORITY">
+            High
+          </option>
+          <option className=" text-st-surfaceDark" value="MEDIUM PRIORITY">
+            Medium
+          </option>
+          <option className=" text-st-surfaceDark" value="LOW PRIORITY">
+            Low
+          </option>
         </select>
         {errors.project_priority && (
           <small>Select the priority of project</small>
@@ -107,7 +117,7 @@ const EditPage = ({ ProjectSubmitHandler }: EditProps) => {
           })}
           type="text"
           placeholder="Eg. React, Django, Postgresql"
-          className="border border-neutral-700 rounded-md p-2 focus:outline-none bg-transparent"
+          className="border focus:border-st-surface border-neutral-700 rounded-md p-2 focus:outline-none bg-transparent"
         />
         {errors.project_tools && (
           <small>

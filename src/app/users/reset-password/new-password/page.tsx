@@ -1,7 +1,9 @@
 "use client";
 
 import { REGEXVALIDATION } from "@/constants";
+import axios from "axios";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 type NewPassword = Record<"password" | "password_confirmation", string>;
 
@@ -11,6 +13,7 @@ export default function CreateNewPassword() {
     formState: { errors },
     watch,
     handleSubmit,
+    reset,
   } = useForm<NewPassword>({ mode: "onSubmit" });
   const [password, password_confirmation] = watch([
     "password",
@@ -20,7 +23,24 @@ export default function CreateNewPassword() {
   const passwordMatch = password && password === password_confirmation;
 
   const onSubmit = (data: NewPassword) => {
-    console.log(data);
+    const payload = {
+      new_password: data.password,
+      token:
+        //change this token
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZ3lhcG9uZ2FudHdpQHlhaG9vLmNvbSIsImlhdCI6MTY5ODY5MDQ0OCwiZXhwIjoxNjk4NjkxMzQ4fQ.Kfix3kmLnC6D7Fgelfr6I3FapCZ2ctfQvHp6jjmZgIQ",
+    };
+    console.log(payload);
+    axios
+      .post("https://crm-api.fly.dev/api/v1/users/reset-password", payload)
+      .then((res) => {
+        console.log(res.data);
+        toast.success(res.data.message);
+        //reroute to login page
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    reset();
   };
 
   return (

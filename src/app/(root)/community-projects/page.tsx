@@ -47,7 +47,7 @@ function Page() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <Image src={Search.src} alt="search icon" />
+          <Image src={Search.src} width={20} height={20} alt="search icon" />
         </section>
         {isAdmin && (
           <Link

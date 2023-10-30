@@ -2,6 +2,7 @@
 
 import { REGEXVALIDATION } from "@/constants";
 import { useForm } from "react-hook-form";
+import axios from "@/lib/axios";
 
 type ForgotPasswordField = {
   email: string;
@@ -12,10 +13,17 @@ export default function ForgotPassword() {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<ForgotPasswordField>({ mode: "onSubmit" });
 
   const onSubmit = (data: ForgotPasswordField) => {
-    console.log(data);
+    axios
+      .post("https://crm-api.fly.dev/api/v1/users/forgot-password", data)
+      .then((res) => {})
+      .catch((err) => {
+        console.log(err);
+      });
+    reset();
   };
 
   return (

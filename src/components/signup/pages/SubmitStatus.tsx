@@ -1,7 +1,5 @@
-import React from "react";
+import React, { SVGProps } from "react";
 import CheckIcon from "@/assets/icons/check-icon.svg";
-import PendingIcon from "@/assets/icons/pending-icon.svg";
-import CrownGlyph from "@/assets/icons/crown-glyph.svg";
 import { formatDate } from "@/utils";
 import { Status } from "@/types";
 import LoadingSpinner from "@/components/loadingSpinner";
@@ -46,28 +44,25 @@ const Success = ({ name = "" }) => {
   const formattedDate = formatDate(date);
 
   return (
-    <div className="w-full h-full flex items-center justify-center text-black dark:text-white p-8 md:w-[35rem] font-tt-hoves mx-auto">
+    <div className="w-full h-full flex items-center justify-center text-black dark:text-white p-8 md:w-[55rem] font-tt-hoves mx-auto">
       <div className="relative w-full flex flex-col gap-20">
-        <div className="absolute -top-16 right-0 hidden lg:block">
-          <Image className="w-12 h-12" src={CrownGlyph} alt="crown-glyph" />
-        </div>
         <div className="flex flex-col gap-1 text-3xl md:text-4xl items-center text-center md:text-start md:items-start">
-          <h3 className="text-black dark:text-white">
+          <h3 className="text-black dark:text-white text-5xl font-semibold">
             You are the real MVP, {name}!
           </h3>
-          <h3 className="text-[#4CAF50]">Thank you for signing up. 🎉</h3>
+          <h3 className="text-[#777] text-4xl">Thank you for signing up. 🎉</h3>
         </div>
         <div>
-          <p className="text-black dark:text-white text-xl">
+          <p className="text-black dark:text-white text-2xl">
             Your application is being reviewed
           </p>
-          <p className="text-black dark:text-white text-sm mt-1">
+          <p className="text-[#777] text-sm mt-1">
             We are currently reviewing your account information and will get in
             touch with you shortly. In the meantime, keep an eye on your email
             inbox. We&apos;ll be sending you an email with the next steps to
             join the network.
           </p>
-          <div className="w-full h-28 flex flex-row border-y border-black/80 dark:border-[#D4D1D180] mt-3 border-dashed py-4">
+          <div className="w-full h-28 flex flex-row border-t border-black/80 dark:border-[#D4D1D180] mt-3 border-dashed py-4">
             <div className="w-10 h-full">
               <Image src={CheckIcon} alt="check-icon" />
             </div>
@@ -79,9 +74,9 @@ const Success = ({ name = "" }) => {
               </p>
             </div>
           </div>
-          <div className="w-full h-28 flex flex-row items-center border-b border-black/80 dark:border-[#D4D1D180] border-dashed py-4">
+          <div className="w-full h-28 flex flex-row items-center border-black/80 dark:border-[#D4D1D180] border-dashed py-4">
             <div className="w-10">
-              <Image src={PendingIcon} alt="check-icon" />
+              <PendingIcon className="dark:invert" />
             </div>
             <div className="flex flex-col gap-1">
               <p className="text-[15px]">Account Activation</p>
@@ -112,3 +107,51 @@ function SubmitStatus({ status, message, resetForm }: StatusProp) {
 }
 
 export default SubmitStatus;
+
+const PendingIcon: React.FC<SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={30}
+    height={31}
+    fill="none"
+    {...props}
+  >
+    <g filter="url(#a)">
+      <circle cx={15} cy={11.5} r={11} fill="#000" />
+      <path
+        stroke="#fff"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="m10.723 11.718 2.906 2.837 6.26-6.11"
+      />
+    </g>
+    <defs>
+      <filter
+        id="a"
+        width={30}
+        height={30}
+        x={0}
+        y={0.5}
+        colorInterpolationFilters="sRGB"
+        filterUnits="userSpaceOnUse"
+      >
+        <feFlood floodOpacity={0} result="BackgroundImageFix" />
+        <feColorMatrix
+          in="SourceAlpha"
+          result="hardAlpha"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+        />
+        <feOffset dy={4} />
+        <feGaussianBlur stdDeviation={2} />
+        <feComposite in2="hardAlpha" operator="out" />
+        <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0" />
+        <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_12_1556" />
+        <feBlend
+          in="SourceGraphic"
+          in2="effect1_dropShadow_12_1556"
+          result="shape"
+        />
+      </filter>
+    </defs>
+  </svg>
+);

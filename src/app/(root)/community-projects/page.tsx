@@ -7,11 +7,14 @@ import useEndpoints from "@/services";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "@/components/loadingSpinner";
 import Image from "next/image";
+import { BsPlus } from "react-icons/bs";
+import { useRouter } from "next/navigation";
 
 function Page() {
   const [isAdmin] = useState<boolean>(true);
   const [query, setQuery] = useState<string>("");
-  const { getProjects } = useEndpoints();
+  const { getProjects } = useEndpoints().projects;
+  const router = useRouter();
 
   const {
     data: Projects,
@@ -38,7 +41,7 @@ function Page() {
       <section className="border-b border-b-neutral-700 sticky top-0 bg-primary-light dark:bg-[#141414] w-full p-5">
         <p className="lg:text-xl font-bold">Community Projects</p>
       </section>
-      <section className="flex justify-between items-center w-full my-2 p-5">
+      <section className="flex justify-between items-center gap-6 w-full my-2 p-5">
         <section className="w-[90%] flex items-center py-2 px-3 gap-2 border rounded-md">
           <input
             type="text"
@@ -52,9 +55,10 @@ function Page() {
         {isAdmin && (
           <Link
             href={"/admin/add-project"}
-            className="border dark:border-none dark:bg-[#090909] dark:text-white px-4 py-2 rounded text-sm"
+            className="flex flex-row items-center shrink-0 gap-2 border dark:border-none dark:bg-white dark:text-black px-2 pr-3.5 py-1.5 rounded text-sm"
           >
-            Add Project
+            <BsPlus size={24} />
+            <p>Add Project</p>
           </Link>
         )}
       </section>
@@ -83,7 +87,10 @@ function Page() {
                     return (
                       <tr
                         key={item.name}
-                        className="dark:bg-[#121212] text-black dark:text-white border-b w-full"
+                        onClick={() =>
+                          router.push(`/community-projects/${item.id}`)
+                        }
+                        className="dark:bg-[#121212] dark:hover:bg-zinc-900 text-black dark:text-white border-b border-black w-full"
                       >
                         <td className="px-6 py-3">{item.name}</td>
                         <td className="px-6 py-3">

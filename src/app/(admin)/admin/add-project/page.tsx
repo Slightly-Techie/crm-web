@@ -8,7 +8,7 @@ import useEndpoints from "@/services";
 import LoadingSpinner from "@/components/loadingSpinner";
 
 function AddProject() {
-  const { postProjects } = useEndpoints();
+  const { postProjects } = useEndpoints().projects;
   const { mutate: CreateNewProject, isLoading } = useMutation<
     unknown,
     unknown,

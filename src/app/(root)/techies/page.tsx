@@ -1,6 +1,5 @@
 "use client";
-import dynamic from "next/dynamic";
-const Team = dynamic(() => import("@/components/techies/Team"), { ssr: false });
+import Team from "@/components/techies/Team";
 
 export default function TechiesList() {
   return (

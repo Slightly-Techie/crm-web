@@ -1,15 +1,24 @@
-import axios from "@/lib/axios";
 import useAxiosAuth from "@/hooks/useAxiosAuth";
 import {
   IGetAllTechiesResponse,
   IGetFeedsResponse,
+  IProject,
   IProjectResponse,
   IStack,
   ITechie,
 } from "@/types";
+import { AxiosInstance } from "axios";
+import { getServerSideAxios } from "@/hooks/getAxiosAuth";
+import axios from "@/lib/axios";
 
-const useEndpoints = () => {
-  const authAxios = useAxiosAuth();
+const useEndpoints = (server = false) => {
+  let authAxios: AxiosInstance;
+  if (server) {
+    authAxios = getServerSideAxios();
+  } else {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    authAxios = useAxiosAuth();
+  }
 
   const getUserProfile = () => authAxios.get<ITechie>(`/api/v1/users/me`);
 
@@ -35,9 +44,16 @@ const useEndpoints = () => {
   const getSpecificUser = (user_id: any) =>
     authAxios.get<ITechie>(`api/v1/users/profile/${user_id}`);
 
-  const getProjects = () => authAxios.get<IProjectResponse>(`api/v1/projects/`);
-  const postProjects = <T>(payload: T) =>
-    authAxios.post(`api/v1/projects/`, payload);
+  const projects = {
+    getProjects: () => authAxios.get<IProjectResponse>(`api/v1/projects/`),
+    postProjects: <T>(payload: T) =>
+      authAxios.post(`api/v1/projects/`, payload),
+    getProject: async (id: string) => {
+      const { data } = await authAxios.get<IProject>(`api/v1/projects/${id}`);
+
+      return data;
+    },
+  };
 
   return {
     getUserProfile,
@@ -46,8 +62,7 @@ const useEndpoints = () => {
     getFeedPosts,
     getAnnouncements,
     getSpecificUser,
-    getProjects,
-    postProjects,
+    projects,
   };
 };
 

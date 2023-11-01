@@ -38,6 +38,7 @@ export enum UserStatusEnum {
 export interface ITechie {
   id: number;
   email: string;
+  username: string;
   first_name: string;
   last_name: string;
   years_of_experience: number;

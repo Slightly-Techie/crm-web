@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background-color: #020202;
+}
+
 #text-animate {
   white-space: pre;
 }

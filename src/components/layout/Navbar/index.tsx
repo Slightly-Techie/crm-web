@@ -19,7 +19,6 @@ import {
 import { BsBarChart, BsChatLeft } from "react-icons/bs";
 import { GoSignOut } from "react-icons/go";
 import { FiTarget } from "react-icons/fi";
-// import { LuPuzzle } from "react-icons/lu";
 import DropDown from "@/components/DropDown";
 
 const Navlinks = [
@@ -151,14 +150,14 @@ function Navbar() {
                     src={
                       user?.profile_pic_url
                         ? user?.profile_pic_url
-                        : `https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`
+                        : `https://avatars.dicebear.com/api/initials/${user?.first_name}_${user?.last_name}.svg`
                     }
                     alt="profile"
                     placeholder="blur"
-                    blurDataURL={`https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`}
+                    blurDataURL={`https://avatars.dicebear.com/api/initials/${user?.first_name}_${user?.last_name}.svg`}
                     priority={true}
                   />
-                  <section>
+                  <section className="text-start">
                     <p className="font-semibold text-sm">
                       {user?.first_name} {user?.last_name}
                     </p>

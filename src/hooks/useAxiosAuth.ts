@@ -1,3 +1,4 @@
+"use client";
 import { useEffect } from "react";
 import axiosAuth from "@/lib/axios";
 import { signOut, useSession } from "next-auth/react";
@@ -10,10 +11,20 @@ const useAxiosAuth = () => {
   useEffect(() => {
     const requestIntercept = axiosAuth.interceptors.request.use(
       (config) => {
+        const controller = new AbortController();
+
+        if (session?.user?.token === undefined) {
+          controller.abort("token is invalid");
+        }
+
         if (!config.headers.Authorization) {
           config.headers.Authorization = `Bearer ${session?.user?.token}`;
         }
-        return config;
+
+        return {
+          ...config,
+          signal: controller.signal,
+        };
       },
       (error) => Promise.reject(error)
     );

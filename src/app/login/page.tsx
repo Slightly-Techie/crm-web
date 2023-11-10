@@ -10,7 +10,7 @@ import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import LoadingSpinner from "@/components/loadingSpinner";
-import ThemeSwitcher from "../theme/theme";
+import ThemeSwitcher from "../../components/theme/theme";
 
 interface FormInputs {
   email: String;

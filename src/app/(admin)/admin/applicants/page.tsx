@@ -11,7 +11,6 @@ export default function Applicants() {
   const {
     tableData,
     mutation,
-    message,
     filter,
     setFilter,
     page,
@@ -47,11 +46,6 @@ export default function Applicants() {
 
   return (
     <>
-      {message && (
-        <div className="toast absolute left-0 top-0 right-0 bg-[green] h-[50px] flex justify-center items-center z-50">
-          <p className="text-[white]">{message}</p>
-        </div>
-      )}
       {isLoading ? (
         <Loading />
       ) : (

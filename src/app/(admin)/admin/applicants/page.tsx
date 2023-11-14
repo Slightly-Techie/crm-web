@@ -6,8 +6,10 @@ import { useApplicantHooks } from "@/hooks/useApplicantsHook";
 import Loading from "../../loading";
 import PageTitle from "@/components/PageTitle";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function Applicants() {
+  const router = useRouter();
   const {
     tableData,
     mutation,
@@ -36,7 +38,13 @@ export default function Applicants() {
       case "send-email": {
         toast.success("Action Successful!");
         (window as Window).location = `mailto:${payload?.email}`;
+        break;
       }
+      case "view-applicant":
+        router.push(`/techies/${payload.id}`);
+        break;
+      default:
+        toast.error("Something went wrong!");
     }
   }
 

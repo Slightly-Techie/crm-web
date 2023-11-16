@@ -8,11 +8,11 @@ const ClosedSignup = () => {
   const date = new Date(); // Current date
   const formattedDate = formatDate(date);
   return (
-    <div className="w-full h-full flex items-center justify-center text-black dark:text-white p-8 md:w-[35rem] font-tt-hoves mx-auto">
+    <div className="w-full h-full flex items-center justify-center text-black dark:text-white p-8 md:w-[35rem] 2xl:w-[45rem] font-tt-hoves mx-auto">
       <div className="relative w-full flex flex-col gap-6">
         <div className="flex flex-col gap-1 text-3xl md:text-4xl items-center text-center md:text-start md:items-start">
           <h3 className="text-black dark:text-white font-semibold pb-10">
-            HeyThere!👋
+            Hey There!👋
           </h3>
           <h3 className="text-[#777] pb-2">
             We appreciate your interest in joining our organization.

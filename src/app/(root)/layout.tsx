@@ -14,11 +14,13 @@ export default async function RootLayout({
   }
 
   return (
-    <main className="font-tt-hoves w-screen bg-st-bg dark:bg-black overflow-clip h-screen">
+    <main className="w-full min-h-screen bg-primary-light text-primary-dark dark:bg-primary-dark dark:text-primary-light">
       <Navbar />
-      <div className="overflow-y-scroll min-h-[720px] h-[calc(100vh-80px)] max-w-screen-2xl mx-auto ">
-        {children}
-      </div>
+      <section className="w-full">
+        <section className="lg:pl-[25vw] xl:pl-[20vw] pt-[7vh] lg:pt-0 w-full">
+          {children}
+        </section>
+      </section>
     </main>
   );
 }

@@ -4,6 +4,8 @@ type Applicant = {
   email: string;
   phone_number: string;
   years_of_experience: string;
+  status: string;
+  actions: any;
 };
 
 const columnHelper = createColumnHelper<Applicant>();
@@ -23,6 +25,10 @@ export const ApplicantsTableColumns = [
   }),
   columnHelper.accessor("years_of_experience", {
     header: "Years Of Experience",
+    cell: (info) => info.getValue(),
+  }),
+  columnHelper.accessor("status", {
+    header: "Status",
     cell: (info) => info.getValue(),
   }),
 ];

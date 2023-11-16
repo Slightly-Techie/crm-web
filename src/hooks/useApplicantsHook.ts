@@ -24,7 +24,7 @@ export function useApplicantHooks() {
   const query = useQuery({
     queryKey: ["allUsers"],
     queryFn: () =>
-      authAxios.get<AllUsersResponse>(`/api/v1/users/?limit=10&page=${page}`),
+      authAxios.get<AllUsersResponse>(`/api/v1/users/?limit=20&page=${page}`),
     onSuccess(res) {
       setUsers(res.data?.users);
       setPages(res?.data?.pages);
@@ -89,6 +89,7 @@ export function useApplicantHooks() {
         email,
         years_of_experience,
         phone_number,
+        status,
         id,
       }) => {
         return {
@@ -97,6 +98,7 @@ export function useApplicantHooks() {
           phone_number: phone_number || "N / A",
           years_of_experience: years_of_experience?.toString() || "N / A",
           id: id,
+          status,
         };
       }
     );

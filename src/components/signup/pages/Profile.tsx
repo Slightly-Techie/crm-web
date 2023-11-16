@@ -40,11 +40,13 @@ function Profile({ register, errors }: ProfileFormType) {
   return (
     <>
       <div className="my-4">
-        <label className="text-[#000] dark:text-[#f1f3f7]">First Name</label>
+        <label className="text-[#000] dark:text-[#f1f3f7] font-bold">
+          First Name
+        </label>
         <input
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] "
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff] rounded-[5px] dark:border-[#8a8a8a]"
           type="text"
-          placeholder="Susana"
+          placeholder="Enter your first name"
           {...register("first_name", {
             required: true,
             min: 2,
@@ -53,11 +55,13 @@ function Profile({ register, errors }: ProfileFormType) {
         {errors.first_name && <small>First name must be provided</small>}
       </div>
       <div className=" my-4">
-        <label className="text-[#000] dark:text-[#f1f3f7]">Last Name</label>
+        <label className="text-[#000] dark:text-[#f1f3f7] font-bold">
+          Last Name
+        </label>
         <input
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] "
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff] rounded-[5px] dark:border-[#8a8a8a]"
           type="text"
-          placeholder="Taibobo"
+          placeholder="Enter your last name"
           {...register("last_name", {
             required: true,
             min: 2,
@@ -66,11 +70,13 @@ function Profile({ register, errors }: ProfileFormType) {
         {errors.last_name && <small>Last name must be provided</small>}
       </div>
       <div className=" my-4">
-        <label className="text-[#000] dark:text-[#f1f3f7]">Email</label>
+        <label className="text-[#000] dark:text-[#f1f3f7] font-bold">
+          Email
+        </label>
         <input
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] "
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff] rounded-[5px] dark:border-[#8a8a8a]"
           type="email"
-          placeholder="kofi@example.com"
+          placeholder="Enter your email"
           {...register("email", {
             required: true,
             pattern: REGEXVALIDATION.email,
@@ -79,22 +85,22 @@ function Profile({ register, errors }: ProfileFormType) {
         {errors.email && <small>Email must be valid</small>}
       </div>
       <div className="my-4">
-        <label className="text-[#000] dark:text-[#f1f3f7]">
-          Phone Number(s) (Separated by /)
+        <label className="text-[#000] dark:text-[#f1f3f7] font-bold">
+          Phone Number
         </label>
         <input
-          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
           type="text"
           {...register("phone_number", {
             required: true,
             pattern: REGEXVALIDATION.phoneNumberMultiple,
           })}
-          placeholder="0123456789/098765431"
+          placeholder="Confirm your Phone Number"
         />
         {errors.phone_number && <small>Provide your Phone number(s)</small>}
       </div>
       <div className="my-4">
-        <label className="text-[#000] dark:text-[#f1f3f7]">
+        <label className="text-[#000] dark:text-[#f1f3f7] font-bold">
           What type of techie are you?
         </label>
         {stackLoading ? (
@@ -108,8 +114,9 @@ function Profile({ register, errors }: ProfileFormType) {
         ) : (
           <select
             {...register("stack_id")}
+            placeholder="Select your stack"
             onChange={(e) => setSelectValue(parseInt(e.target.value))}
-            className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
+            className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
           >
             {stackSuccess &&
               STACKS?.data.map((stack) => (
@@ -130,7 +137,7 @@ function Profile({ register, errors }: ProfileFormType) {
           </label>
           <input
             {...register("stack")}
-            className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-white border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333]"
+            className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-white border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:bor333-[#fff] dark:border-[#8a8a8a]"
             type="text"
           />
         </div>

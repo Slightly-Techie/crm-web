@@ -44,14 +44,15 @@ export const formatDate = (date: Date) => {
   return formattedDate;
 };
 
+//Fix
 export function getTimeElapsedOrDate(dateString: string): string {
   const now: Date = new Date();
   const date: Date = new Date(dateString);
 
   const timeDiff: number = now.getTime() - date.getTime();
-  const secondsDiff: number = Math.floor(timeDiff / 1000);
-  const minutesDiff: number = Math.floor(timeDiff / (1000 * 60));
-  const hoursDiff: number = Math.floor(timeDiff / (1000 * 60 * 60));
+  const secondsDiff: number = Math.abs(Math.floor(timeDiff / 1000));
+  const minutesDiff: number = Math.abs(Math.floor(timeDiff / (1000 * 60)));
+  const hoursDiff: number = Math.abs(Math.floor(timeDiff / (1000 * 60 * 60)));
 
   if (secondsDiff < 60) {
     return `${secondsDiff}s`;
@@ -85,16 +86,36 @@ export function getAccountUserName(
   }
 }
 
-export function getSubdomainFromURL(url: string): string | null {
+export function getSubdomainFromURL(url: string | null): string | null {
   try {
-    const parsedURL = new URL(url);
-    const hostnameParts = parsedURL.hostname.split(".");
-    if (hostnameParts.length >= 3) {
-      return hostnameParts.slice(1).join(".");
+    if (url) {
+      const parsedURL = new URL(url);
+      const hostnameParts = parsedURL.hostname.split(".");
+      if (hostnameParts.length >= 3) {
+        return hostnameParts.slice(1).join(".");
+      }
+      return parsedURL.hostname;
     }
-    return parsedURL.hostname;
+    return null;
   } catch (error) {
-    console.error("Invalid URL:", error);
     return null;
   }
+}
+
+export function getSkillsArray(inputValue: string | string[] | undefined) {
+  let skillsArray: string[] = [];
+  if (inputValue) {
+    const result = Array.isArray(inputValue)
+      ? inputValue.join(",")
+      : inputValue;
+    for (let value of result.split(",")) {
+      const format = value.trim();
+      if (!format.length) continue;
+      else {
+        skillsArray = [...skillsArray, format];
+      }
+    }
+    return skillsArray;
+  }
+  return [];
 }

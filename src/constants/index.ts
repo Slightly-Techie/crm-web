@@ -14,6 +14,8 @@ export const REGEXVALIDATION = {
   linkedIn:
     /^(https?:\/\/)?([a-z]{2,3}\.)?linkedin\.com\/(in|pub|company)\/[\w-]+\/?$/,
   shouldNotBeEmptyString: /^\s*\S.*\S\s*$/,
+  listSeparatedByComma:
+    /^(?=\s*[\w+#\s]*\S)[\w+#\s]+(?:\s*,\s*[\w+#\s]+)*,?\s*$/,
 };
 
 export let NEW_USER_DATA: NewUserFields = {
@@ -33,4 +35,5 @@ export let NEW_USER_DATA: NewUserFields = {
   portfolio_url: "",
   is_active: false,
   profile_pic_url: "",
+  skills: [],
 };

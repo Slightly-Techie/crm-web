@@ -3,6 +3,7 @@ import useAxiosAuth from "@/hooks/useAxiosAuth";
 import {
   IGetAllTechiesResponse,
   IGetFeedsResponse,
+  IProjectResponse,
   IStack,
   ITechie,
 } from "@/types";
@@ -34,6 +35,10 @@ const useEndpoints = () => {
   const getSpecificUser = (user_id: any) =>
     authAxios.get<ITechie>(`api/v1/users/profile/${user_id}`);
 
+  const getProjects = () => authAxios.get<IProjectResponse>(`api/v1/projects/`);
+  const postProjects = <T>(payload: T) =>
+    authAxios.post(`api/v1/projects/`, payload);
+
   return {
     getUserProfile,
     updateUserProfile,
@@ -41,6 +46,8 @@ const useEndpoints = () => {
     getFeedPosts,
     getAnnouncements,
     getSpecificUser,
+    getProjects,
+    postProjects,
   };
 };
 

@@ -1,0 +1,23 @@
+.switch {
+  @apply h-[1.5rem] w-[3rem] relative inline-block;
+}
+
+.switch input {
+  @apply h-[0] w-[0] opacity-[0];
+}
+
+.slider {
+  cursor: pointer;
+  transition: 0.4s;
+  @apply absolute top-[0] bottom-[0] left-[0] right-[0] bg-gray-500 dark:bg-slate-500 rounded-[12px];
+}
+
+.slider::before {
+  content: "";
+  transition: transform 200ms ease;
+  @apply h-[14px] w-[14px] absolute left-[5px] bottom-[5px] rounded-[50%]  dark:bg-white;
+}
+
+.switch input:checked + .slider::before {
+  transform: translate(24px);
+}

@@ -4,6 +4,8 @@ import { ApplicantsTableColumns } from "@/components/admin/applicants/Applicants
 import TableComponent from "@/components/admin/applicants/Table";
 import { useApplicantHooks } from "@/hooks/useApplicantsHook";
 import Loading from "../../loading";
+import PageTitle from "@/components/PageTitle";
+import toast from "react-hot-toast";
 
 export default function Applicants() {
   const {
@@ -32,8 +34,10 @@ export default function Applicants() {
       case "activate-applicant":
         mutation.mutate(payload?.id!);
         break;
-      case "send-email":
+      case "send-email": {
+        toast.success("Action Successful!");
         (window as Window).location = `mailto:${payload?.email}`;
+      }
     }
   }
 
@@ -51,10 +55,8 @@ export default function Applicants() {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="interviewee-wrapper bg-[white] w-[90%] p-[20px] dark:bg-[#232323] dark:text-white relative bottom-0 top-0">
-          <h1 className="text-[#3D4450] font-normal text-xl mb-[20px] dark:text-white">
-            Applicants
-          </h1>
+        <div className="interviewee-wrapper h-full bg-[white] w-full dark:bg-primary-dark dark:text-white relative bottom-0 top-0">
+          <PageTitle title="Applicants" />
           <TableComponent
             columns={ApplicantsTableColumns}
             data={tableData}
@@ -90,14 +92,15 @@ export default function Applicants() {
 function PaginationComponent(props: PaginationProps) {
   return (
     <>
-      <div className="my-3 flex justify-between">
+      <div className="py-3 flex px-2 justify-between">
         <p>
-          Showing {props.page} of {props.pages}
+          Showing page {props.page} of {props.pages} pages
         </p>
         <div className="flex gap-5">
           <button
             disabled={typeof props.pages !== "undefined" && props.page <= 1}
             onClick={() => props.setPage?.(props.page - 1)}
+            className=" dark:bg-[#232323] px-6 py-2 rounded-sm"
           >
             prev
           </button>
@@ -106,6 +109,7 @@ function PaginationComponent(props: PaginationProps) {
               typeof props.pages !== "undefined" && props.page >= props.pages
             }
             onClick={() => props.setPage?.(props.page + 1)}
+            className="dark:bg-[#232323] px-6 py-2 rounded-sm"
           >
             next
           </button>

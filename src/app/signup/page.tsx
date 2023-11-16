@@ -1,13 +1,14 @@
 "use client";
 import Image from "next/image";
-import Stars from "@/assets/icons/Stars.png";
-import Rocket from "@/assets/icons/blue-rocket.png";
+import LeftImage from "@/assets/images/Left.png";
 import useNavigateForms from "@/hooks/useNavigateForms";
 import usePostNewSignUp from "@/hooks/usePostNewSignUp";
 import { NewUserFields } from "@/types";
 import SubmitStatus from "@/components/signup/pages/SubmitStatus";
 import { NEW_USER_DATA as INITIAL_USER_DATA } from "@/constants";
+import { getSkillsArray } from "@/utils";
 import ClosedSignup from "@/components/signup/pages/ClosedSignup";
+import { RiArrowLeftLine } from "react-icons/ri";
 
 export type Status = "onsubmit" | "success" | "error" | "progress";
 
@@ -28,12 +29,14 @@ export default function Signup() {
   const onSubmit = (data: Partial<NewUserFields>) => {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
     if (currentFormIndex === 3) {
-      const { years_of_experience } = NEW_USER_DATA;
+      const { years_of_experience, skills } = NEW_USER_DATA;
+      const validatedSkills = getSkillsArray(skills);
       NEW_USER_DATA = {
         ...NEW_USER_DATA,
         stack_id:
           Number(NEW_USER_DATA.stack_id) === -1 ? 1 : NEW_USER_DATA.stack_id,
         years_of_experience: Number(years_of_experience),
+        skills: validatedSkills,
       };
       createNewUser(NEW_USER_DATA);
     }
@@ -41,26 +44,15 @@ export default function Signup() {
   };
 
   return (
-    <div className="w-full bg-st-bg dark:bg-[#111111] overflow-x-hidden font-tt-hoves">
-      <div className="w-screen h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-[#111111] mx-auto">
+    <div className="w-full bg-st-bg dark:bg-[#020202] overflow-x-hidden">
+      <div className="w-screen h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-[#020202] mx-auto">
         <>
-          <div className="new-sign-upbg  lg:block  ">
-            <div className="flex flex-col gap-4 justify-center p-0 lg:p-8 w-4/5 mx-auto  h-full">
+          <div className="hidden lg:block">
+            <div className="h-full lg:block bg-[#fff] dark:bg-[#020202] lg:bg-[#020202]">
               <Image
-                src={Stars}
-                className="hidden lg:block w-36 object-contain h-8 "
-                alt="stars"
-              />
-              <h1 className=" text-[2rem] text-center lg:text-left md:text-[3.5rem] text-white font-bold ">
-                Welcome to{" "}
-                <span className="text-[#ffffffd8]">
-                  Slightly Techie Network
-                </span>
-              </h1>
-              <Image
-                className=" hidden lg:block aspect-square w-20 object-contain "
-                src={Rocket}
-                alt="rocket"
+                src={LeftImage}
+                alt=""
+                className="hidden lg:block w-full object-contain h-screen "
               />
             </div>
           </div>
@@ -80,24 +72,29 @@ export default function Signup() {
             />
           ) : (
             <div className=" p-8 w-full md:w-[30rem] lg:w-5/6 mx-auto my-auto flex flex-col gap-4 justify-center h-fit">
-              <section className="flex text-[#000] dark:text-[#f1f3f7]  mx-auto text-[1.5rem] font-medium justify-between">
-                <h3>{currentForm.category}</h3>
+              <section className=" text-[#000] dark:text-[#f1f3f7]  text-[1.5rem] font-bold flex items-center gap-4">
+                {currentFormIndex !== 0 && (
+                  <button
+                    onClick={previous}
+                    type="button"
+                    className="px-2 py-2 bg-[#fff] border border-[#333] hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7]  dark:text-[#000] rounded-full"
+                  >
+                    <RiArrowLeftLine />
+                  </button>
+                )}
+                <div>
+                  <h3>Welcome to CRM🎉</h3>
+                  <p className="text-[#777] text-[20px] font-normal">
+                    Create your account
+                  </p>
+                </div>
               </section>
               <form onSubmit={handleSubmit(onSubmit)}>
                 {currentForm.element}
-                <section className="flex gap-4 justify-end">
-                  {currentFormIndex !== 0 && (
-                    <button
-                      onClick={previous}
-                      type="button"
-                      className=" px-8 py-2 bg-[#001] hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7]  dark:text-[#000] rounded-sm"
-                    >
-                      Back
-                    </button>
-                  )}
+                <section className="flex gap-4 mb-8">
                   {currentFormIndex <= 3 && (
-                    <button className="px-8 py-2 bg-[#001] hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7] dark:text-[#000] rounded-sm">
-                      {currentFormIndex === 3 ? "Submit" : "Next"}
+                    <button className="px-8 py-2 bg-[#001] hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7] dark:text-[#000] rounded-lg w-full">
+                      {currentFormIndex === 3 ? "Submit" : "Proceed"}
                     </button>
                   )}
                 </section>

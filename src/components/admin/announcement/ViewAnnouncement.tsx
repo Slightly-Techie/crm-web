@@ -1,5 +1,6 @@
-import { RiDeleteBin4Line } from "react-icons/ri";
 import { AnnouncementDataResponse } from "@/types";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import { getTimeElapsedOrDate } from "@/utils";
 
 type ViewAnnouncementProps = AnnouncementDataResponse & {
   handleDelete: (id: number) => void;
@@ -9,31 +10,32 @@ export default function ViewAnnouncement({
   title,
   content,
   id,
+  created_at,
   handleDelete,
   handleEdit,
 }: ViewAnnouncementProps) {
   return (
-    <div className="w-full py-4 border-b-[1px] border-b-slate-700">
-      <section>
-        <h2 className=" text-st-text dark:text-slate-200 text-[1.2rem] font-semibold ">
-          {title}
-        </h2>
-        <p className="  text-st-text dark:text-slate-300">{content}</p>
-      </section>
-      <section className="w-full mx-auto my-2 flex gap-4 flex-row-reverse ">
-        <button
-          onClick={() => handleDelete(id)}
-          className="h-9 py-2 px-8 flex items-center justify-center bg-secondary text-white font-tt-hoves font-semibold rounded-[4px]"
-        >
-          <RiDeleteBin4Line />
-        </button>
-        <button
-          onClick={() => handleEdit(id)}
-          className="h-9 py-2 px-8  flex items-center justify-center bg-secondary text-white font-tt-hoves font-semibold rounded-[4px]"
-        >
-          Edit
-        </button>
-      </section>
+    <div className="w-full p-4 rounded-xl dark:text-st-surface bg-[#F9FAFC] dark:bg-st-cardDark flex flex-col gap-6">
+      <div className=" flex justify-between">
+        <h2 className=" dark:text-st-surface text-xl font-medium ">{title}</h2>
+        <div className=" dark:text-st-surface">
+          {created_at && getTimeElapsedOrDate(created_at)}
+        </div>
+      </div>
+      <p className="  text-st-text dark:text-st-surface">{content}</p>
+      <div className="w-fit ml-auto flex gap-4 justify-between">
+        <div className="flex gap-2">
+          <button
+            className=" text-inherit dark:text-st-surface"
+            onClick={() => handleEdit(id)}
+          >
+            <FiEdit2 />
+          </button>
+          <button onClick={() => handleDelete(id)}>
+            <FiTrash2 />
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

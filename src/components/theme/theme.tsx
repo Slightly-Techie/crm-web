@@ -9,15 +9,17 @@ import sun from "@/assets/icons/light-mode-black.png";
 import Image from "next/image";
 export default function ThemeSwitcher() {
   const [dark, setDark] = useState(() => {
-    const prefersDarkMode = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
+    if (typeof window !== "undefined") {
+      const prefersDarkMode = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
 
-    if (prefersDarkMode) {
-      document.documentElement.classList.add("dark");
+      if (prefersDarkMode) {
+        document.documentElement.classList.add("dark");
+      }
+
+      return prefersDarkMode;
     }
-
-    return prefersDarkMode;
   });
 
   React.useEffect(() => {

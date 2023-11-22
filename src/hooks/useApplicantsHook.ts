@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ITechie } from "@/types";
 import useAxiosAuth from "./useAxiosAuth";
+import { toast } from "react-hot-toast";
 
 interface AllUsersResponse {
   users: ITechie[];
@@ -13,7 +14,7 @@ interface AllUsersResponse {
 
 export function useApplicantHooks() {
   const [users, setUsers] = useState<undefined | ITechie[]>();
-  const [message, setMessage] = useState("");
+  const [currentUser, setCurrentUser] = useState<number>();
   const [filter, setFilter] = useState("");
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(0);
@@ -36,16 +37,15 @@ export function useApplicantHooks() {
 
   const mutation = useMutation({
     mutationFn: (userId: number) => {
+      setCurrentUser(userId);
       return authAxios.put(`/api/v1/users/profile/${userId}/activate`);
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["allUsers"] });
     },
     onSuccess: () => {
-      setMessage("Activation successful");
-      setTimeout(() => {
-        setMessage("");
-      }, 2000);
+      const user = newData?.find((user) => user.id === currentUser);
+      toast.success(`${user?.first_name}'s account has been activated!`);
     },
   });
 
@@ -107,7 +107,6 @@ export function useApplicantHooks() {
     tableData,
     users,
     mutation,
-    message,
     query,
     filter,
     setFilter,

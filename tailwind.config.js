@@ -15,7 +15,7 @@ module.exports = {
       colors: {
         primary: {
           light: "#f5f5f5",
-          dark: "#020202",
+          dark: "#141414",
         },
         st: {
           gray: "#E8E8E8",
@@ -41,5 +41,6 @@ module.exports = {
       },
     },
   },
+  darkMode: 'class',
   plugins: [],
 };

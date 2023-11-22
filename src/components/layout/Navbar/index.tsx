@@ -8,7 +8,6 @@ import { ITechie } from "@/types";
 import { action } from "@/redux";
 import { useAppDispatch } from "@/hooks";
 import { AiOutlineMenu } from "react-icons/ai";
-// import ThemeSwitcher from "@/app/theme/theme";
 import {
   AiOutlineUser,
   AiOutlineSetting,
@@ -21,6 +20,7 @@ import { GoSignOut } from "react-icons/go";
 import { FiTarget } from "react-icons/fi";
 // import { LuPuzzle } from "react-icons/lu";
 import DropDown from "@/components/DropDown";
+import ThemeSwitcher from "@/components/theme/theme";
 
 const Navlinks = [
   {
@@ -168,6 +168,7 @@ function Navbar() {
               }
               MenuItemsContent={
                 <section className="text-black dark:text-white flex flex-col justify-center gap-5 p-2">
+                  <ThemeSwitcher />
                   <section className="flex items-center gap-3">
                     <AiOutlineSetting size={20} />
                     <p className="font-bold text-sm">Settings</p>
@@ -180,11 +181,10 @@ function Navbar() {
               }
             />
           </section>
-          {/* <ThemeSwitcher /> */}
         </section>
       </nav>
       {/* Navbar- Mobile */}
-      <section className="block lg:hidden fixed top-0 left-0 z-50 w-full bg-black h-[7vh]">
+      <section className="block lg:hidden fixed top-0 left-0 z-50 w-full bg-white dark:bg-primary-dark h-[7vh]">
         <section className="flex justify-between items-center p-5 w-full h-full">
           <Link href={"/"}>
             <button className="bg-gray-600 p-1 mx-auto rounded-sm text-white">
@@ -203,11 +203,11 @@ function Navbar() {
       <section
         className={
           navToggle
-            ? "fixed z-[50] mt-[7vh] ease duration-500 h-[93vh] top-0 left-0 w-screen bg-black p-5"
-            : "fixed z-[50] mt-[7vh] ease duration-500 h-[93vh] top-0 left-[-100vw] w-screen bg-black p-5"
+            ? "fixed z-[50] mt-[7vh] ease duration-500 h-[93vh] top-0 left-0 w-screen bg-white dark:bg-primary-dark p-5"
+            : "fixed z-[50] mt-[7vh] ease duration-500 h-[93vh] top-0 left-[-100vw] w-screen bg-white dark:bg-primary-dark p-5"
         }
       >
-        <section className="flex flex-col justify-between h-full bg-black">
+        <section className="flex flex-col justify-between h-full">
           {/* Top Section */}
           <section>
             {Navlinks.map((link) => {
@@ -261,6 +261,7 @@ function Navbar() {
               }
               MenuItemsContent={
                 <section className="text-black dark:text-white flex flex-col justify-center gap-5 p-2">
+                  <ThemeSwitcher />
                   <section className="flex items-center gap-3">
                     <AiOutlineSetting size={20} />
                     <p className="font-bold text-sm">Settings</p>

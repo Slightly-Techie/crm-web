@@ -11,7 +11,7 @@ export default function PageTitle({
         background === "primary"
           ? " dark:bg-primary-dark"
           : "dark:bg-st-cardDark"
-      } w-full z-[100]  p-5`}
+      } w-full z-[40]  p-5`}
     >
       <p className="lg:text-xl font-bold">{title}</p>
     </section>

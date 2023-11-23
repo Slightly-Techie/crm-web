@@ -111,7 +111,7 @@ function Navbar() {
           {/* Top Section */}
           <section className="w-full">
             <Link href={"/"}>
-              <button className="bg-gray-600 p-2 mx-auto rounded-sm text-white">
+              <button className="bg-gray-600 p-2 mx-auto rounded-sm text-[white]">
                 <h1 className="font-bold text-lg">ST</h1>
               </button>
             </Link>
@@ -119,7 +119,7 @@ function Navbar() {
               {Navlinks.map((link) => {
                 return (
                   <section key={link.title} className="my-5">
-                    <p className="text-complementary font-bold text-sm mb-3">
+                    <p className="text-complementary font-bold text-xs mb-3 text-[#9EA1AB]">
                       {link.title}
                     </p>
                     <section className="flex flex-col gap-y-5">
@@ -141,6 +141,8 @@ function Navbar() {
           </section>
           {/* Bottom Section */}
           <section className="w-full">
+            <ThemeSwitcher />
+            <br />
             <DropDown
               MenuButtonContent={
                 <section className="flex gap-3 items-center mb-5">
@@ -168,7 +170,6 @@ function Navbar() {
               }
               MenuItemsContent={
                 <section className="text-black dark:text-white flex flex-col justify-center gap-5 p-2">
-                  <ThemeSwitcher />
                   <section className="flex items-center gap-3">
                     <AiOutlineSetting size={20} />
                     <p className="font-bold text-sm">Settings</p>

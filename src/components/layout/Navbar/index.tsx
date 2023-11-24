@@ -18,7 +18,6 @@ import {
 import { BsBarChart, BsChatLeft } from "react-icons/bs";
 import { GoSignOut } from "react-icons/go";
 import { FiTarget } from "react-icons/fi";
-// import { LuPuzzle } from "react-icons/lu";
 import DropDown from "@/components/DropDown";
 import ThemeSwitcher from "@/components/theme/theme";
 import { signOut } from "next-auth/react";
@@ -107,7 +106,7 @@ function Navbar() {
 
   return (
     <header>
-      <nav className="hidden lg:block lg:w-[25vw] xl:w-[20vw] h-screen p-4 fixed top-0 left-0 z-[50] border-r border-r-neutral-700 dark:bg-primary-dark">
+      <nav className="hidden lg:block lg:w-[25vw] xl:w-[20vw] sticky top-0 h-screen p-4  z-[50] border-r border-r-neutral-700 dark:bg-primary-dark">
         <section className="flex flex-col justify-between items-center h-full">
           {/* Top Section */}
           <section className="w-full">

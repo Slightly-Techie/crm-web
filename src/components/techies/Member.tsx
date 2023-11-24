@@ -20,6 +20,9 @@ const Member = ({ data }: MemberProps) => {
         alt="profile"
       />
       <section className="p-3">
+        <p className="py-2">
+          {data.first_name} {data.last_name}
+        </p>
         <p className="font-light text-[#5D6675] dark:text-[#cacbcf] text-sm">
           {data.stack?.name} Engineer
         </p>

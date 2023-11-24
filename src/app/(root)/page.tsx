@@ -11,7 +11,7 @@ export default function FeedPage() {
         <CreatePost />
         <Posts />
       </section>
-      <section className="hidden xl:flex px-2 h-screen overflow-y-scroll scrollbar">
+      <section className="hidden lg:flex px-2 h-screen overflow-y-scroll scrollbar">
         <Announcements />
       </section>
     </div>

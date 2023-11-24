@@ -138,6 +138,7 @@ function Navbar() {
                   </section>
                 );
               })}
+              <ThemeSwitcher />
             </section>
           </section>
           {/* Bottom Section */}
@@ -169,7 +170,6 @@ function Navbar() {
               }
               MenuItemsContent={
                 <section className="text-black dark:text-white flex flex-col justify-center gap-5 p-2">
-                  <ThemeSwitcher />
                   <section className="flex items-center gap-3">
                     <AiOutlineSetting size={20} />
                     <p className="font-bold text-sm">Settings</p>
@@ -265,7 +265,6 @@ function Navbar() {
               }
               MenuItemsContent={
                 <section className="text-black dark:text-white flex flex-col justify-center gap-5 p-2">
-                  <ThemeSwitcher />
                   <section className="flex items-center gap-3">
                     <AiOutlineSetting size={20} />
                     <p className="font-bold text-sm">Settings</p>

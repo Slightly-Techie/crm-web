@@ -20,9 +20,9 @@ const Member = ({ data }: MemberProps) => {
         alt="profile"
       />
       <section className="p-3">
-        {/* <p className="font-light text-[#5D6675] dark:text-[#cacbcf] text-sm">
+        <p className="font-light text-[#5D6675] dark:text-[#cacbcf] text-sm">
           {data.stack?.name} Engineer
-        </p> */}
+        </p>
         <p className="text-complementary text-sm">@{data.username}</p>
         <br />
         <Link href={`/techies/${data.id}`}>

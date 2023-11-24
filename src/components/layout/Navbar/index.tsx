@@ -21,6 +21,7 @@ import { FiTarget } from "react-icons/fi";
 // import { LuPuzzle } from "react-icons/lu";
 import DropDown from "@/components/DropDown";
 import ThemeSwitcher from "@/components/theme/theme";
+import { signOut } from "next-auth/react";
 
 const Navlinks = [
   {
@@ -173,10 +174,13 @@ function Navbar() {
                     <AiOutlineSetting size={20} />
                     <p className="font-bold text-sm">Settings</p>
                   </section>
-                  <section className="flex items-center gap-3">
+                  <button
+                    onClick={() => signOut()}
+                    className="flex items-center gap-3"
+                  >
                     <GoSignOut size={20} />
                     <p className="font-bold text-sm">Log Out</p>
-                  </section>
+                  </button>
                 </section>
               }
             />
@@ -266,10 +270,13 @@ function Navbar() {
                     <AiOutlineSetting size={20} />
                     <p className="font-bold text-sm">Settings</p>
                   </section>
-                  <section className="flex items-center gap-3">
+                  <button
+                    onClick={() => signOut()}
+                    className="flex items-center gap-3 cursor-pointer"
+                  >
                     <GoSignOut size={20} />
-                    <p className="font-bold text-sm">Log Out</p>
-                  </section>
+                    Log Out
+                  </button>
                 </section>
               }
             />

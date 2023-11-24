@@ -21,7 +21,7 @@ export interface TGetPaginatedResponse {
 }
 
 export interface IGetAllTechiesResponse extends TGetPaginatedResponse {
-  users: ITechie[];
+  items: ITechie[];
 }
 
 export enum UserStatusEnum {
@@ -54,6 +54,7 @@ export interface ITechie {
   created_at: string;
   is_active: boolean;
   status?: keyof typeof UserStatusEnum;
+  username?: string;
 }
 
 export interface ISkill {
@@ -103,7 +104,7 @@ export interface IPost {
 }
 
 export interface IGetFeedsResponse {
-  feeds: IPost[];
+  items: IPost[];
   total: number;
   page: number;
   size: number;

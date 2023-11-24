@@ -74,15 +74,13 @@ function Page() {
                       {UserProfile?.first_name} {""}
                       {UserProfile?.last_name}
                     </h1>
-                    <p className="text-[#777777]">
-                      @{UserProfile?.first_name}
-                      {UserProfile?.last_name}
-                    </p>
-                    <section className="my-2">
-                      <p>{UserProfile.bio || "The Bio go dey here"}</p>
-                    </section>
+                    <p className="text-[#777777]">@{UserProfile.username}</p>
+                    {UserProfile.bio && (
+                      <section className="my-2">
+                        <p>{UserProfile.bio}</p>
+                      </section>
+                    )}
                     <section className="flex items-center gap-2 flex-wrap">
-                      <AiOutlineLink />
                       <a
                         href={
                           UserProfile?.portfolio_url || "https://google.com"
@@ -91,9 +89,10 @@ function Page() {
                         rel="noreferrer"
                         className="text-sm text-gray-400"
                       >
+                        <AiOutlineLink />
                         {getSubdomainFromURL(
                           UserProfile.portfolio_url as string
-                        ) || "userportfolio.com"}
+                        ) || ""}
                       </a>
                     </section>
                   </section>
@@ -145,10 +144,16 @@ function Page() {
                     There is an error fetching posts
                   </h1>
                 )}
-                {currentUserPosts &&
-                  currentUserPosts.map((data) => (
-                    <UserPost key={data.id} post={data} />
-                  ))}
+                {currentUserPosts && (
+                  <>
+                    <section className="  border-b border-b-neutral-600 my-6 pb-2">
+                      <h2 className=" px-4 text-2xl  ">Posts</h2>
+                    </section>
+                    {currentUserPosts.map((data) => (
+                      <UserPost key={data.id} post={data} />
+                    ))}
+                  </>
+                )}
               </section>
             </section>
           </section>

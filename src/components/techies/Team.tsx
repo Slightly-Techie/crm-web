@@ -39,17 +39,18 @@ function Team() {
     retry: 3,
   });
 
-  const techies = TechiesData?.users;
+  const techies = TechiesData?.items;
 
-  const filteredTechies = techies?.filter((user) => {
-    if (searchKeyword === "") {
-      return user;
-    }
-    return (
-      user.first_name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      user.last_name.toLowerCase().includes(searchKeyword.toLowerCase())
-    );
-  });
+  // const filteredTechies = techies?.filter((user) => {
+  //   if (searchKeyword === "") {
+  //     return user;
+  //   }
+  //   return (
+
+  //     user.first_name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+  //     user.last_name.toLowerCase().includes(searchKeyword.toLowerCase())
+  //   );
+  // });
 
   return (
     <section className="w-full h-full">
@@ -130,9 +131,9 @@ function Team() {
             <LoadingSpinner />
           </section>
         )}
-        {filteredTechies && (
+        {techies && (
           <section className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {filteredTechies.map((user) => (
+            {techies.map((user) => (
               <Member key={`${user.id}`} data={user} />
             ))}
           </section>

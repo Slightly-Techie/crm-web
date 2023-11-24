@@ -13,11 +13,11 @@ type SkillsFormType = {
 };
 
 function Skills({ register, errors }: SkillsFormType) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  if (textareaRef.current) {
-    textareaRef.current.style.height = "auto";
-    textareaRef.current.style.height = textareaRef.current.scrollHeight + "px";
-  }
+  // const textareaRef = useRef<HTMLTextAreaElement>(null);
+  // if (textareaRef.current) {
+  //   textareaRef.current.style.height = "auto";
+  //   textareaRef.current.style.height = textareaRef.current.scrollHeight + "px";
+  // }
   return (
     <>
       <div className="my-4">
@@ -39,7 +39,7 @@ function Skills({ register, errors }: SkillsFormType) {
           className=" text-[#000] dark:text-[#f1f3f7] font-bold"
           htmlFor=""
         >
-          What languages do you use?
+          What languages/tools do you use?
         </label>
         <input
           {...register("skills", {
@@ -48,7 +48,7 @@ function Skills({ register, errors }: SkillsFormType) {
           })}
           className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff] rounded-[5px] dark:border-[#8a8a8a]"
           type="text"
-          placeholder="Enter programming languages you use"
+          placeholder="e.g JavaScript, Django, NodeJs, Python"
         />
         {errors.skills && (
           <small>
@@ -62,13 +62,19 @@ function Skills({ register, errors }: SkillsFormType) {
           How has the experience as a techie been?
         </label>
         <textarea
-          {...register("bio")}
-          ref={textareaRef}
+          {...register("bio", {
+            required: true,
+            pattern: REGEXVALIDATION.shouldNotBeEmptyString,
+          })}
+          // ref={textareaRef}
           cols={30}
-          rows={1}
+          rows={3}
           placeholder="Enter your experience as a techie"
           className="w-full text-[#000] resize-none dark:text-[#f1f3f7] my-4 border-[1px] px-2 py-2 border-[#3333337c] dark:bg-[transparent] focus:outline-none focus:border-[#333] dark:focus:border-[#fff] rounded-[5px] dark:border-[#8a8a8a]"
         />
+        {errors.bio && (
+          <small>Add a brief message about your experience.</small>
+        )}
       </div>
     </>
   );

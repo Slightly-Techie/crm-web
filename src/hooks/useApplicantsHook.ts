@@ -5,7 +5,7 @@ import useAxiosAuth from "./useAxiosAuth";
 import { toast } from "react-hot-toast";
 
 interface AllUsersResponse {
-  users: ITechie[];
+  items: ITechie[];
   total: number;
   size: number;
   page: number;
@@ -25,14 +25,15 @@ export function useApplicantHooks() {
   const query = useQuery({
     queryKey: ["allUsers"],
     queryFn: () =>
-      authAxios.get<AllUsersResponse>(`/api/v1/users/?limit=20&page=${page}`),
+      authAxios.get<AllUsersResponse>(
+        `/api/v1/users/?active=false&page=${page}&size=50`
+      ),
     onSuccess(res) {
-      setUsers(res.data?.users);
+      setUsers(res.data?.items);
       setPages(res?.data?.pages);
     },
   });
 
-  // const isLoading = query.fetchStatus === "fetching";
   const isLoading = query.isLoading;
 
   const mutation = useMutation({
@@ -80,28 +81,26 @@ export function useApplicantHooks() {
     }
   }, [debouncedInputValue, users]);
 
-  const tableData = newData
-    ?.filter((user) => user?.is_active === false)
-    .map(
-      ({
-        first_name,
-        last_name,
-        email,
-        years_of_experience,
-        phone_number,
+  const tableData = newData?.map(
+    ({
+      first_name,
+      last_name,
+      email,
+      years_of_experience,
+      phone_number,
+      status,
+      id,
+    }) => {
+      return {
+        name: first_name + " " + last_name,
+        email: email,
+        phone_number: phone_number || "N / A",
+        years_of_experience: years_of_experience?.toString() || "N / A",
+        id: id,
         status,
-        id,
-      }) => {
-        return {
-          name: first_name + " " + last_name,
-          email: email,
-          phone_number: phone_number || "N / A",
-          years_of_experience: years_of_experience?.toString() || "N / A",
-          id: id,
-          status,
-        };
-      }
-    );
+      };
+    }
+  );
 
   return {
     tableData,

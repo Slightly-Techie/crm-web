@@ -15,7 +15,7 @@ export function useFetchFeeds(): {
     data: FeedPosts,
   } = useQuery({
     queryKey: ["feed-data"],
-    queryFn: () => getFeedPosts().then(({ data }) => data.feeds),
+    queryFn: () => getFeedPosts().then(({ data }) => data.items),
     refetchOnWindowFocus: false,
   });
 

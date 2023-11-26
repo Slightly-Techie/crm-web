@@ -18,7 +18,7 @@ const useEndpoints = () => {
 
   const getTechiesList = async ({ page = 1 }: { page: number }) => {
     const { data } = await authAxios.get<IGetAllTechiesResponse>(
-      `/api/v1/users/?page=${page}`
+      `/api/v1/users/?active=true&page=${page}`
     );
     return data;
   };

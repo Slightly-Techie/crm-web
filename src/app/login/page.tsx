@@ -54,7 +54,7 @@ export default function Login() {
 
   return (
     <div className="flex bg-st-bg dark:bg-[#111111] dark:text-white text-[#3D4450] min-h-screen">
-      <div className="hidden lg:flex justify-center items-center w-1/2 border-solid border-r-[1px] border-st-edge dark:border-st-edgeDark left">
+      <div className="hidden lg:flex justify-center dark:bg-primary-dark items-center w-1/2 border-solid border-r-[1px] border-st-edge dark:border-st-edgeDark left">
         <div className="">
           <Image className="mb-5" src={Stars} alt="" />
           <div className="w-[440px] ">

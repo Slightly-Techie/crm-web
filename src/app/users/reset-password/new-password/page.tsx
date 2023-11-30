@@ -35,7 +35,6 @@ export default function CreateNewPassword() {
     axios
       .post("https://crm-api.fly.dev/api/v1/users/reset-password", payload)
       .then((res) => {
-        console.log(res.data);
         toast.success(res.data.message);
         setTimeout(() => {
           router.push("/login");

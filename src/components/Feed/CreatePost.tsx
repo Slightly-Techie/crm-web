@@ -14,6 +14,7 @@ function CreatePost() {
   const [postText, setPostText] = React.useState("");
   const [selectedFile, setSelectedFile] = React.useState<string | null>();
   const [preview, setPreview] = React.useState<string>("");
+  const [newFile, setNewFile] = React.useState<Blob | null>();
 
   function submitHandler(
     userPostData: Pick<IPost, "content" | "feed_pic_url">
@@ -22,7 +23,13 @@ function CreatePost() {
       ...userPostData,
       title: "",
     };
-    createNewPost(PostData);
+
+    let feedFormData = new FormData();
+    feedFormData.set("content", PostData.content);
+    let file = newFile as Blob;
+    feedFormData.set("feed_pic_url", file);
+
+    createNewPost(feedFormData);
   }
 
   function onSelectFile(e: ChangeEvent<HTMLInputElement>) {
@@ -32,6 +39,7 @@ function CreatePost() {
       return;
     }
     const file = e.target.files[0];
+    setNewFile(file);
     const reader = new FileReader();
     reader.onloadend = () => {
       const dataURL = reader.result as string;
@@ -48,10 +56,12 @@ function CreatePost() {
       content: postText,
       feed_pic_url: selectedFile || "",
     };
+
     submitHandler(data);
     setPostText("");
     setSelectedFile(null);
     setPreview("");
+    setNewFile(null);
   }
 
   const { user } = useAppSelector((state) => state.auth);

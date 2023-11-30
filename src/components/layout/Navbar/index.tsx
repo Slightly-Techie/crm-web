@@ -106,7 +106,7 @@ function Navbar() {
 
   return (
     <header>
-      <nav className="hidden lg:block lg:w-[25vw] xl:w-[20vw] sticky top-0 h-screen p-4  z-[50] border-r border-r-neutral-700 dark:bg-primary-dark">
+      <nav className="hidden lg:block xl:w-[20vw] sticky top-0 h-screen p-4  z-[50] border-r border-r-neutral-700 dark:bg-primary-dark">
         <section className="flex flex-col justify-between items-center h-full">
           {/* Top Section */}
           <section className="w-full">
@@ -168,11 +168,11 @@ function Navbar() {
                 </section>
               }
               MenuItemsContent={
-                <section className="text-black dark:text-white flex flex-col justify-center gap-5 p-2">
-                  <section className="flex items-center gap-3">
+                <section className="text-black bg-black dark:text-white flex flex-col justify-center gap-5 p-2">
+                  <button className="flex items-center gap-3">
                     <AiOutlineSetting size={20} />
                     <p className="font-bold text-sm">Settings</p>
-                  </section>
+                  </button>
                   <button
                     onClick={() => signOut()}
                     className="flex items-center gap-3"

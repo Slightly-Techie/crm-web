@@ -6,14 +6,15 @@ import PictureGlyph from "@/assets/icons/picture-glyph.svg";
 import Image from "next/image";
 import { useAppSelector } from "@/hooks";
 import { usePostFeeds } from "./FeedServices";
-
+import { RiCloseLine } from "react-icons/ri";
 export type NewPostFields = Pick<IPost, "content" | "feed_pic_url">;
 
 function CreatePost() {
   const { createNewPost } = usePostFeeds();
   const [postText, setPostText] = React.useState("");
-  const [selectedFile, setSelectedFile] = React.useState<File | null>();
+  const [selectedFile, setSelectedFile] = React.useState<string | null>();
   const [preview, setPreview] = React.useState<string>("");
+  const [newFile, setNewFile] = React.useState<Blob | null>();
 
   function submitHandler(
     userPostData: Pick<IPost, "content" | "feed_pic_url">
@@ -22,23 +23,28 @@ function CreatePost() {
       ...userPostData,
       title: "",
     };
-    createNewPost(PostData);
+
+    let feedFormData = new FormData();
+    feedFormData.set("content", PostData.content);
+    feedFormData.set("feed_pic_url", PostData.feed_pic_url);
+
+    createNewPost(feedFormData);
   }
 
   function onSelectFile(e: ChangeEvent<HTMLInputElement>) {
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedFile(null);
       setPreview("");
+      setNewFile(null);
       return;
     }
-
     const file = e.target.files[0];
-    setSelectedFile(file);
-
+    setNewFile(file);
     const reader = new FileReader();
     reader.onloadend = () => {
       const dataURL = reader.result as string;
       setPreview(dataURL);
+      setSelectedFile(dataURL);
     };
     reader.readAsDataURL(file);
   }
@@ -48,12 +54,14 @@ function CreatePost() {
     if ((!postText || !isNonWhitespace(postText)) && !selectedFile) return;
     const data = {
       content: postText,
-      feed_pic_url: "",
+      feed_pic_url: newFile || "",
     };
+
     submitHandler(data);
     setPostText("");
     setSelectedFile(null);
     setPreview("");
+    setNewFile(null);
   }
 
   const { user } = useAppSelector((state) => state.auth);
@@ -89,6 +97,30 @@ function CreatePost() {
           onChange={(e) => setPostText(e.target.value)}
         />
       </div>
+      {preview && (
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedFile(null);
+              setPreview("");
+              setNewFile(null);
+            }}
+            className="absolute p-4 aspect-square rounded-full bg-primary-dark/80 backdrop-blur-md hover:cursor-pointer top-4 right-4"
+          >
+            <RiCloseLine className="text-st-gray200" />
+          </button>
+          <div className=" ">
+            <Image
+              src={preview}
+              alt="User Post"
+              width={100}
+              height={100}
+              className=" w-full mx-auto rounded-md object-cover"
+            />
+          </div>
+        </div>
+      )}
       <div className="flex flex-row items-center justify-between">
         <label
           htmlFor="imageUpload"
@@ -102,16 +134,15 @@ function CreatePost() {
             />
           </div>
           <p>Media</p>
-          <div className="hidden">{preview}</div>
         </label>
+
         <input
           type="file"
           id="imageUpload"
           className="hidden relative h-[0.1px] -z-50"
           accept="image/*"
           onChange={(e) => onSelectFile(e)}
-          disabled
-          key={selectedFile?.name} // Add a unique key to the input element
+          key={selectedFile} // Add a unique key to the input element
         />
         <button
           className="h-9 w-20 flex items-center justify-center bg-secondary text-white font-tt-hoves font-semibold rounded-[4px]"

@@ -33,7 +33,10 @@ export default function CreateNewPassword() {
       token: token,
     };
     axios
-      .post("https://crm-api.fly.dev/api/v1/users/reset-password", payload)
+      .post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/reset-password`,
+        payload
+      )
       .then((res) => {
         toast.success(res.data.message);
         setTimeout(() => {

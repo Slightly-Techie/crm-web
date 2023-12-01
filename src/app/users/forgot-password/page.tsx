@@ -29,7 +29,10 @@ export default function ForgotPassword() {
   const onSubmit = (data: ForgotPasswordField) => {
     setStatus("loading");
     axios
-      .post("https://crm-api.fly.dev/api/v1/users/forgot-password", data)
+      .post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/forgot-password`,
+        data
+      )
       .then((res) => {
         setStatus("success");
       })

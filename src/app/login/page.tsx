@@ -87,7 +87,7 @@ export default function Login() {
                     pattern: REGEXVALIDATION.email,
                   })}
                   style={{ borderColor: errors.email ? "#b92828" : "" }}
-                  className="bg-[#F1F3F7] dark:bg-[#1E1E1E] border-st-edge dark:border-st-edgeDark rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
+                  className=" border-st-edge dark:border-st-subTextDark bg-transparent rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
                   type="email"
                   name="email"
                   placeholder="Johndoe@slightytechie.io"
@@ -99,7 +99,7 @@ export default function Login() {
                 )}
               </div>
               <>
-                <div className="flex items-center justify-between bg-[#F1F3F7] dark:bg-[#1E1E1E] border-st-edge dark:border-st-edgeDark rounded-sm border-[1.8px] h-[40px] w-[20rem] pl-4 ">
+                <div className="flex items-center justify-between bg-transparent dark:border-st-edge rounded-sm border-[1.8px] h-[40px] w-[20rem] pl-4 ">
                   <input
                     {...register("password", {
                       required: true,
@@ -107,7 +107,7 @@ export default function Login() {
                       max: 25,
                     })}
                     style={{ borderColor: errors.password ? "#b92828" : "" }}
-                    className="bg-[#F1F3F7] dark:bg-[#1E1E1E] placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] w-[85%] focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
+                    className="placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] w-[85%] focus:outline-none dark:focus:border-white bg-transparent focus:border-[#3D4450]"
                     type={showPassword ? "text" : "password"}
                     name="password"
                     placeholder="Enter your password"
@@ -138,19 +138,18 @@ export default function Login() {
                   </p>
                 )}
               </>
-              <p className="my-2 text-st-edgeDark text-[11px] font-bold">
+              <p className="my-2 text-st-subTextDark text-sm font-bold">
                 Forgot your{" "}
                 <Link
                   className="font-bold hover:text-st-gray-400"
-                  href="/user/forgot-password"
+                  href="/users/forgot-password"
                 >
                   <u>password?</u>
                 </Link>
               </p>
 
               <button
-                className="bg-[#3D4450] font-monalisa dark:bg-white text-st-bg text-sm dark:text-black hover:bg-[#525b6c] rounded-sm flex items-center justify-center w-full h-[48px]"
-                id="btn"
+                className="bg-[#3D4450] font-monalisa rounded-sm dark:bg-white text-st-bg text-sm dark:text-black hover:bg-[#525b6c] py-2 flex items-center justify-center w-full "
                 type="submit"
                 disabled={isRequestSent}
               >

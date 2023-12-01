@@ -4,11 +4,11 @@ import React, { useState } from "react";
 import { useTheme } from "next-themes";
 import { RiMoonLine, RiSunLine } from "react-icons/ri";
 import "./index.css";
-import moon from "@/assets/icons/dark-mode-black.png";
-import moonlight from "@/assets/icons/dark-mode.png";
-import sunlight from "@/assets/icons/light-mode.png";
-import sun from "@/assets/icons/light-mode-black.png";
-import Image from "next/image";
+// import moon from "@/assets/icons/dark-mode-black.png";
+// import moonlight from "@/assets/icons/dark-mode.png";
+// import sunlight from "@/assets/icons/light-mode.png";
+// import sun from "@/assets/icons/light-mode-black.png";
+// import Image from "next/image";
 
 export default function ThemeSwitcher() {
   const { systemTheme, theme, setTheme } = useTheme();

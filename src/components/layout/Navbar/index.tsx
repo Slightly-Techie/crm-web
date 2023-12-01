@@ -138,7 +138,6 @@ function Navbar() {
                   </section>
                 );
               })}
-              <ThemeSwitcher />
             </section>
           </section>
           {/* Bottom Section */}
@@ -240,6 +239,8 @@ function Navbar() {
           </section>
           {/* Bottom Section */}
           <section className="w-full">
+            <ThemeSwitcher/>
+            <br />
             <DropDown
               MenuButtonContent={
                 <section className="flex gap-3 items-center mb-5">

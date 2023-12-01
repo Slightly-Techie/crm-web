@@ -7,8 +7,10 @@ import Link from "next/link";
 import Image from "next/image";
 import PageTitle from "@/components/PageTitle";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 function Page() {
+  const session = useSession()
   const { isFetching, Announcements } = useFetchAnnouncements(10);
   const [currentLimit] = useState(10);
   const paginatedData = Announcements && Announcements.slice(0, currentLimit);

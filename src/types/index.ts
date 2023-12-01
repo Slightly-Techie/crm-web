@@ -48,13 +48,14 @@ export interface ITechie {
   linkedin_profile: string | null;
   portfolio_url: string | null;
   profile_pic_url: string | null;
-  skills: ISkill[];
+  skills: string[];
   tags: ITag[];
   stack: IStack | null;
   created_at: string;
   is_active: boolean;
   status?: keyof typeof UserStatusEnum;
   username?: string;
+  stack_id?: number | null;
 }
 
 export interface ISkill {

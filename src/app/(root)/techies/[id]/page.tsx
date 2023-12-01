@@ -3,9 +3,10 @@ import { useFetchFeeds } from "@/components/Feed/FeedServices";
 import UserPost from "@/components/Feed/UserPost";
 import LoadingSpinner from "@/components/loadingSpinner";
 import useEndpoints from "@/services";
-import { getSubdomainFromURL, getAccountUserName } from "@/utils";
+import { getAccountUserName } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import PageTitle from "@/components/PageTitle";
 import { useParams } from "next/navigation";
 import {
   AiOutlineLink,
@@ -46,9 +47,7 @@ function Page() {
         <p>Error loading data</p>
       ) : (
         <section className="w-full h-full">
-          <section className="border-b w-full p-5">
-            <p className="lg:text-xl font-bold">Techies</p>
-          </section>
+          <PageTitle title="Techie" />
           <section className="p-5">
             <section className="w-full flex-col lg:flex-row justify-between flex gap-2 p-5 xl:p-0">
               {/* Left Side */}
@@ -87,12 +86,10 @@ function Page() {
                         }
                         target="_blank"
                         rel="noreferrer"
-                        className="text-sm text-gray-400"
+                        className="text-sm flex items-center gap-2 text-gray-400"
                       >
                         <AiOutlineLink />
-                        {getSubdomainFromURL(
-                          UserProfile.portfolio_url as string
-                        ) || ""}
+                        {UserProfile.portfolio_url as string}
                       </a>
                     </section>
                   </section>
@@ -127,6 +124,15 @@ function Page() {
                           UserProfile.github_profile as string
                         )}
                       </a>
+                    </section>
+                    <section>
+                      {UserProfile.skills.map((item) => {
+                        return (
+                          <p className=" text-st-surface" key={item}>
+                            {item}
+                          </p>
+                        );
+                      })}
                     </section>
                   </section>
                 </section>

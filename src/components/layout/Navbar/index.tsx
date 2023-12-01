@@ -169,11 +169,11 @@ function Navbar() {
                 </section>
               }
               MenuItemsContent={
-                <section className="text-black bg-black dark:text-white flex flex-col justify-center gap-5 p-2">
-                  <button className="flex items-center gap-3">
+                <section className="text-black dark:text-white flex flex-col justify-center gap-5 p-2">
+                  <a href="/techie/me" className="flex items-center gap-3">
                     <AiOutlineSetting size={20} />
                     <p className="font-bold text-sm">Settings</p>
-                  </button>
+                  </a>
                   <button
                     onClick={() => signOut()}
                     className="flex items-center gap-3"
@@ -238,7 +238,7 @@ function Navbar() {
           </section>
           {/* Bottom Section */}
           <section className="w-full">
-            <ThemeSwitcher/>
+            <ThemeSwitcher />
             <br />
             <DropDown
               MenuButtonContent={

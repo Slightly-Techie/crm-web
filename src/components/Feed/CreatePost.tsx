@@ -26,8 +26,7 @@ function CreatePost() {
 
     let feedFormData = new FormData();
     feedFormData.set("content", PostData.content);
-    let file = newFile as Blob;
-    feedFormData.set("feed_pic_url", file);
+    feedFormData.set("feed_pic_url", PostData.feed_pic_url);
 
     createNewPost(feedFormData);
   }
@@ -36,6 +35,7 @@ function CreatePost() {
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedFile(null);
       setPreview("");
+      setNewFile(null);
       return;
     }
     const file = e.target.files[0];
@@ -54,7 +54,7 @@ function CreatePost() {
     if ((!postText || !isNonWhitespace(postText)) && !selectedFile) return;
     const data = {
       content: postText,
-      feed_pic_url: selectedFile || "",
+      feed_pic_url: newFile || "",
     };
 
     submitHandler(data);
@@ -104,6 +104,7 @@ function CreatePost() {
             onClick={() => {
               setSelectedFile(null);
               setPreview("");
+              setNewFile(null);
             }}
             className="absolute p-4 aspect-square rounded-full bg-primary-dark/80 backdrop-blur-md hover:cursor-pointer top-4 right-4"
           >

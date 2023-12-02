@@ -6,7 +6,8 @@ import PictureGlyph from "@/assets/icons/picture-glyph.svg";
 import Image from "next/image";
 import { useAppSelector } from "@/hooks";
 import { usePostFeeds } from "./FeedServices";
-import { RiCloseLine } from "react-icons/ri";
+import { RiCloseLine, RiImageAddLine } from "react-icons/ri";
+
 export type NewPostFields = Pick<IPost, "content" | "feed_pic_url">;
 
 function CreatePost() {
@@ -69,7 +70,7 @@ function CreatePost() {
   return (
     <form
       onSubmit={(e) => onSubmit(e)}
-      className="w-full gap-3 flex flex-col p-4 border-b border-st-gray dark:border-st-grayDark"
+      className="w-full gap-3 flex flex-col p-4 border-b border-st-edge dark:border-st-grayDark"
     >
       <div className="w-full gap-4 flex flex-row">
         <div className="w-12 shrink-0 flex flex-col items-center">
@@ -91,7 +92,7 @@ function CreatePost() {
           )}
         </div>
         <textarea
-          className="w-full min-h-20 resize-none text-black dark:text-white p-4 border-st-grayDark dark:border-st-grayDark focus:border-2 bg-transparent border rounded-md outline-none"
+          className="w-full min-h-20 resize-none text-black dark:text-white p-4 border-st-edge dark:border-st-grayDark focus:border-primary-dark bg-transparent border rounded-md outline-none"
           placeholder="What's on your mind?"
           value={postText}
           onChange={(e) => setPostText(e.target.value)}
@@ -124,14 +125,10 @@ function CreatePost() {
       <div className="flex flex-row items-center justify-between">
         <label
           htmlFor="imageUpload"
-          className="h-9 w-24 gap-2 flex flex-row items-center justify-center bg-[#EBEDF1] dark:bg-transparent dark:border dark:border-secondary text-secondary font-tt-hoves font-semibold rounded-[4px] hover:cursor-pointer"
+          className="h-9 w-24 gap-2 flex flex-row items-center justify-center bg-primary-dark text-st-surface dark:border dark:border-st-edgeDark dark:bg-st-grayDark text-secondary font-tt-hoves font-semibold rounded-[4px] hover:cursor-pointer"
         >
           <div className="">
-            <Image
-              className="w-[20px] h-[20px]"
-              src={PictureGlyph}
-              alt="sunny-picture-glyph"
-            />
+            <RiImageAddLine />
           </div>
           <p>Media</p>
         </label>
@@ -145,7 +142,7 @@ function CreatePost() {
           key={selectedFile} // Add a unique key to the input element
         />
         <button
-          className="h-9 w-20 flex items-center justify-center bg-secondary text-white font-tt-hoves font-semibold rounded-[4px]"
+          className="h-9 w-20 flex items-center justify-center bg-secondary bg-primary-dark dark:bg-st-edgeDark text-primary-light font-tt-hoves font-semibold rounded-[4px]"
           type="submit"
         >
           Send

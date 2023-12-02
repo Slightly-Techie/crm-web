@@ -58,13 +58,13 @@ export default function ThemeSwitcher() {
     //   </div>
     // </>
     <button
-      onClick={() => (theme == "dark" ? setTheme("light") : setTheme("dark"))}
-      className="hover:scale-105 ease duration-500 aspect-square p-1 w-fit grid place-items-center cursor-pointer border border-black dark:border-white rounded"
+      onClick={() => (theme === "dark" ? setTheme("light") : setTheme("dark"))}
+      className="hover:scale-105 ease duration-500 aspect-square p-1 w-fit grid place-items-center cursor-pointer border border-white rounded"
     >
       {theme === "light" ? (
-        <RiMoonLine className="text-primary-dark dark:text-primary-light" />
+        <RiMoonLine className="text-primary-light" />
       ) : (
-        <RiSunLine className=" text-primary-dark dark:text-primary-light" />
+        <RiSunLine className=" text-primary-light" />
       )}
     </button>
   );

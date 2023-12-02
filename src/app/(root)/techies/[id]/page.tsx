@@ -47,12 +47,12 @@ function Page() {
         <p>Error loading data</p>
       ) : (
         <section className="w-full h-full">
-          <PageTitle title="Techie" />
+          <PageTitle title={UserProfile.first_name} />
           <section className="p-5">
             <section className="w-full flex-col lg:flex-row justify-between flex gap-2 p-5 xl:p-0">
               {/* Left Side */}
               <section className="relative lg:w-[70%] h-[500px] lg:h-[350px]">
-                <section className="absolute bg-[#121212] w-full h-[150px] z-[1]"></section>
+                <section className="absolute bg-primary-light dark:bg-st-surfaceDark w-full h-[150px] z-[1]"></section>
                 <section className="flex flex-col gap-5 absolute z-[2] top-[125px] px-5">
                   <Image
                     className="w-12 md:w-20 h-12 md:h-20 aspect-square shrink-0 rounded-full"
@@ -96,7 +96,7 @@ function Page() {
                 </section>
               </section>
               {/* Right Side */}
-              <section className="lg:w-[25%] bg-[#121212] rounded p-5">
+              <section className="lg:w-[25%] bg-primary-light dark:bg-[#121212] rounded p-5">
                 <section>
                   <h1>Stack:</h1>
                   <p className="text-gray-400">
@@ -150,10 +150,12 @@ function Page() {
                     There is an error fetching posts
                   </h1>
                 )}
-                {currentUserPosts && (
+                {currentUserPosts?.length && (
                   <>
                     <section className="  border-b border-b-neutral-600 my-6 pb-2">
-                      <h2 className=" px-4 text-2xl  ">Posts</h2>
+                      <h2 className=" px-4 text-2xl  ">
+                        Posts ({currentUserPosts.length})
+                      </h2>
                     </section>
                     {currentUserPosts.map((data) => (
                       <UserPost key={data.id} post={data} />

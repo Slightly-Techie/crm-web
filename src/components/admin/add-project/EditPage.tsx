@@ -21,7 +21,7 @@ const EditPage = ({ ProjectSubmitHandler }: EditProps) => {
   const onSubmit = (data: ProjectFields) => {
     const payload = {
       ...data,
-      manager_id: 5, // intentionally using brian's id for now.
+      manager_id: 5, // intentionally using brian's id for now. replace this with the admin's id
       project_tools: getSkillsArray(data.project_tools),
     };
     ProjectSubmitHandler(payload);
@@ -40,7 +40,7 @@ const EditPage = ({ ProjectSubmitHandler }: EditProps) => {
           })}
           type="text"
           placeholder="Enter the project's name"
-          className="border focus:border-st-surface border-neutral-700 rounded-md p-2 focus:outline-none bg-transparent"
+          className="border focus:dark:border-st-surface border-neutral-700 rounded-md p-2 focus:outline-none bg-transparent"
         />
         {errors.name && <small>Provide the project&apos;s name</small>}
       </div>
@@ -53,7 +53,7 @@ const EditPage = ({ ProjectSubmitHandler }: EditProps) => {
           })}
           placeholder="What is the project about?"
           rows={4}
-          className="border focus:border-st-surface border-neutral-700 rounded-md p-2 resize-none focus:outline-none bg-transparent"
+          className="border focus:dark:border-st-surface border-neutral-700 rounded-md p-2 resize-none focus:outline-none bg-transparent"
         />
         {errors.description && (
           <small>Provide the project&apos;s description</small>
@@ -117,7 +117,7 @@ const EditPage = ({ ProjectSubmitHandler }: EditProps) => {
           })}
           type="text"
           placeholder="Eg. React, Django, Postgresql"
-          className="border focus:border-st-surface border-neutral-700 rounded-md p-2 focus:outline-none bg-transparent"
+          className="border focus:dark:border-st-surface border-neutral-700 rounded-md p-2 focus:outline-none bg-transparent"
         />
         {errors.project_tools && (
           <small>
@@ -127,7 +127,7 @@ const EditPage = ({ ProjectSubmitHandler }: EditProps) => {
         )}
       </div>
       <div className="mt-6 mx-3">
-        <button className=" text-st-surfaceDark font-bold w-1/2 py-2 bg-white rounded-md">
+        <button className=" text-primary-light dark:text-st-surfaceDark font-bold w-full py-2 dark:bg-primary-light bg-primary-dark rounded-md">
           Create Project
         </button>
       </div>

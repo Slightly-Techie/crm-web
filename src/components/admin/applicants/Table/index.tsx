@@ -10,6 +10,8 @@ import {
 } from "@tanstack/react-table";
 import Image from "next/image";
 
+import { CiMenuKebab } from "react-icons/ci";
+
 function TableComponent(props: TableProps) {
   const [selected, setSelected] = useState(false);
   const [selectedId, setSelectedId] = useState<string | undefined>("");
@@ -61,7 +63,7 @@ function TableComponent(props: TableProps) {
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className=" font-light text-base py-4 dark:bg-[#232323] px-2 rounded-sm"
+                    className=" text-base py-2 bg-st-edge font-bold dark:bg-[#232323] px-2 rounded-sm"
                   >
                     {header.isPlaceholder
                       ? null
@@ -115,9 +117,8 @@ export function PopupAction(props: PopupActionProps) {
 
   return (
     <td className="menu-wrapper" key={props.rowId}>
-      <Image
-        src={MenuIcon}
-        alt="dropdown menu icon"
+      <CiMenuKebab
+        size={20}
         className="menu-image"
         onClick={() => {
           if (props.selectedId === props.rowId) {
@@ -134,7 +135,7 @@ export function PopupAction(props: PopupActionProps) {
                 const actionText = action.replace(/\s+/g, "-").toLowerCase();
                 return (
                   <p
-                    className="dark:bg-[#232323] dark:border-st-edgeDark dark:text-white dark:hover:bg-secondary hover:bg-[#e2e8f0]"
+                    className="dark:bg-[#232323] dark:hover:bg-st-edgeDark dark:border-st-edgeDark dark:text-white dark:hover:text-primary-light dark:hover:bg-secondary hover:bg-neutral-100"
                     key={key}
                     onClick={() => {
                       props.actionToPerform?.({

@@ -106,7 +106,7 @@ function Navbar() {
 
   return (
     <header>
-      <nav className="hidden lg:block xl:w-[20vw] sticky top-0 h-screen p-4  z-[50] border-r border-r-neutral-700 dark:bg-primary-dark">
+      <nav className="hidden xl:block xl:w-[20vw] sticky top-0 h-screen p-4  z-[50] border-r border-r-neutral-700 bg-primary-dark">
         <section className="flex flex-col justify-between items-center h-full">
           {/* Top Section */}
           <section className="w-full">
@@ -126,9 +126,9 @@ function Navbar() {
                       {link.links.map((item) => {
                         return (
                           <Link href={item.link} key={item.id}>
-                            <section className="flex items-center gap-3">
+                            <section className="flex items-center text-white gap-3">
                               {item.icon}
-                              <p className=" text-sm">{item.name}</p>
+                              <p className=" text-white text-sm">{item.name}</p>
                             </section>
                           </Link>
                         );
@@ -161,19 +161,21 @@ function Navbar() {
                     priority={true}
                   />
                   <section>
-                    <p className="font-semibold text-sm">
+                    <p className=" text-left font-semibold text-sm text-white">
                       {user?.first_name} {user?.last_name}
                     </p>
-                    <p className="text-complementary text-sm">{user?.email}</p>
+                    <p className="text-complementary text-sm text-st-subTextDark">
+                      {user?.email}
+                    </p>
                   </section>
                 </section>
               }
               MenuItemsContent={
-                <section className="text-black bg-black dark:text-white flex flex-col justify-center gap-5 p-2">
-                  <button className="flex items-center gap-3">
+                <section className="text-white flex flex-col justify-center gap-5 p-2 z-100 bg-black">
+                  <a href="/techie/me" className="flex items-center gap-3">
                     <AiOutlineSetting size={20} />
                     <p className="font-bold text-sm">Settings</p>
-                  </button>
+                  </a>
                   <button
                     onClick={() => signOut()}
                     className="flex items-center gap-3"
@@ -188,7 +190,7 @@ function Navbar() {
         </section>
       </nav>
       {/* Navbar- Mobile */}
-      <section className="block lg:hidden fixed top-0 left-0 z-50 w-full bg-white dark:bg-primary-dark h-[7vh]">
+      <section className="block lg:hidden fixed top-0 left-0 z-50 w-full bg-primary-dark h-[7vh]">
         <section className="flex justify-between items-center p-5 w-full h-full">
           <Link href={"/"}>
             <button className="bg-gray-600 p-1 mx-auto rounded-sm text-white">
@@ -238,7 +240,7 @@ function Navbar() {
           </section>
           {/* Bottom Section */}
           <section className="w-full">
-            <ThemeSwitcher/>
+            <ThemeSwitcher />
             <br />
             <DropDown
               MenuButtonContent={
@@ -266,7 +268,7 @@ function Navbar() {
                 </section>
               }
               MenuItemsContent={
-                <section className="text-black dark:text-white flex flex-col justify-center gap-5 p-2">
+                <section className="text-white flex flex-col justify-center gap-5 p-2">
                   <section className="flex items-center gap-3">
                     <AiOutlineSetting size={20} />
                     <p className="font-bold text-sm">Settings</p>

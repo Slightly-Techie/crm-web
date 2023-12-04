@@ -7,6 +7,7 @@ import useEndpoints from "@/services";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "@/components/loadingSpinner";
 import Image from "next/image";
+import PageTitle from "@/components/PageTitle";
 
 function Page() {
   const [isAdmin] = useState<boolean>(true);
@@ -35,11 +36,9 @@ function Page() {
 
   return (
     <main>
-      <section className="border-b border-b-neutral-700 sticky top-0 bg-primary-light dark:bg-[#141414] w-full p-5">
-        <p className="lg:text-xl font-bold">Community Projects</p>
-      </section>
+      <PageTitle title="Community Projects" />
       <section className="flex justify-between items-center w-full my-2 p-5">
-        <section className="w-[90%] flex items-center py-2 px-3 gap-2 border rounded-md">
+        <section className="w-3/5 flex items-center py-2 px-3 gap-2 border rounded-md">
           <input
             type="text"
             className="w-full bg-transparent border-none placeholder-st-gray-500 text-black dark:text-white focus:outline-none"
@@ -52,7 +51,7 @@ function Page() {
         {isAdmin && (
           <Link
             href={"/admin/add-project"}
-            className="border dark:border-none dark:bg-[#090909] dark:text-white px-4 py-2 rounded text-sm"
+            className="border dark:border-none bg-primary-dark text-primary-light hover:bg-st-edgeDark dark:bg-white dark:text-st-surfaceDark hover:dark:bg-neutral-100 px-4 py-2 rounded text-sm"
           >
             Add Project
           </Link>

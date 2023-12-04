@@ -50,7 +50,7 @@ export default function Announcement() {
     toast.success("Announcement Deleted!");
   }
   return (
-    <div className=" bg-primary-dark">
+    <div className="">
       <PageTitle title="Create announcement" />
       <div className="w-full right-0 grid h-full lg:grid-cols-announcement">
         <CreateAnnouncement
@@ -87,7 +87,7 @@ export default function Announcement() {
               </div>
               {Announcements.length > 3 && (
                 <button
-                  className="py-3 w-full flex items-center justify-center bg-[#1E1E1E] my-4 text-white hover:bg-st-grayDark text-lg rounded-lg"
+                  className="py-3 w-full flex items-center justify-center bg-[#1E1E1E] my-4 text-white hover:bg-st-edgeDark hover:dark:bg-st-grayDarktext-lg rounded-lg"
                   onClick={showMoreAnnouncements}
                 >
                   <p className=" text-base text-secondary dark:text-primary">

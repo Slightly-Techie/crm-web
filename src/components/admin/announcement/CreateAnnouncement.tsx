@@ -65,7 +65,7 @@ export default function CreateAnnouncement({
           <input
             onChange={(e) => setFormTitle(e.target.value)}
             value={formTitle}
-            className="w-full bg-transparent text-st-textDark border-[1px] mt-2 px-2 dark:text-st-surface   py-3 rounded-lg focus:outline-none focus:border-[1px] border-st-edgeDark focus:border-st-surface "
+            className="w-full bg-transparent text-st-textDark border mt-2 px-2 dark:text-st-surface   py-3 rounded-lg focus:outline-none  border-st-edgeDark focus:border-primary-dark focus:dark:border-st-surface "
             type="text"
           />
         </div>
@@ -78,10 +78,10 @@ export default function CreateAnnouncement({
             value={formContent}
             cols={30}
             rows={6}
-            className="w-full bg-transparent text-st-textDark border-[1px] mt-2 px-2 dark:text-st-surface   py-3 rounded-lg focus:outline-none focus:border-[1px] border-st-edgeDark focus:border-st-surface  "
+            className="w-full bg-transparent text-st-textDark border-[1px] mt-2 px-2 dark:text-st-surface   py-3 rounded-lg focus:outline-none  border-st-edgeDark  focus:border-primary-dark focus:dark:border-st-surface   "
           />
         </div>
-        <button className="py-3 w-full flex items-center justify-center bg-[#1E1E1E] text-white hover:bg-st-grayDark rounded-lg">
+        <button className="py-3 w-full flex items-center justify-center bg-[#1E1E1E] text-white hover:bg-st-edgeDark hover:dark:bg-st-grayDark rounded-lg">
           {existingPost ? "Save Announcement" : "Post Announcement"}
         </button>
       </div>

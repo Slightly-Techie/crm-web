@@ -14,11 +14,11 @@ export default async function RootLayout({
   }
 
   return (
-    <main className="w-full min-h-screen bg-primary-light text-primary-dark dark:bg-primary-dark dark:text-primary-light ">
-      <div className="max-w-screen-2xl grid grid-cols-[20vw_auto] w-full mx-auto">
-        <Navbar />
-        <section className=" w-full ">{children}</section>
-      </div>
+    <main className="w-full min-h-screen max-w-screen-2xl mx-auto grid grid-cols-[20vw_auto] text-primary-dark dark:bg-primary-dark dark:text-primary-light ">
+      <Navbar />
+      <section className="w-full h-full">
+        <section className=" pt-[7vh] lg:pt-0 w-full">{children}</section>
+      </section>
     </main>
   );
 }

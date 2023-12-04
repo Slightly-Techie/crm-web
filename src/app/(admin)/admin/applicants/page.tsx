@@ -102,18 +102,18 @@ function PaginationComponent(props: PaginationProps) {
           <button
             disabled={typeof props.pages !== "undefined" && props.page <= 1}
             onClick={() => props.setPage?.(props.page - 1)}
-            className=" dark:bg-[#232323] px-6 py-2 rounded-sm"
+            className=" bg-primary-dark text-primary-light disabled:bg-primary-dark/20 dark:bg-[#232323] px-6 py-2 rounded-md hover:bg-st-edgeDark"
           >
-            prev
+            Prev
           </button>
           <button
             disabled={
               typeof props.pages !== "undefined" && props.page >= props.pages
             }
             onClick={() => props.setPage?.(props.page + 1)}
-            className="dark:bg-[#232323] px-6 py-2 rounded-sm"
+            className=" bg-primary-dark text-primary-light dark:bg-[#232323] disabled:bg-primary-dark/20 px-6 py-2 rounded-md hover:bg-st-edgeDark"
           >
-            next
+            Next
           </button>
         </div>
       </div>

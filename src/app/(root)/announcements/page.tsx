@@ -7,8 +7,10 @@ import Link from "next/link";
 import Image from "next/image";
 import PageTitle from "@/components/PageTitle";
 import { useState } from "react";
+// import { useSession } from "next-auth/react";
 
 function Page() {
+  // const session = useSession();
   const { isFetching, Announcements } = useFetchAnnouncements(10);
   const [currentLimit] = useState(10);
   const paginatedData = Announcements && Announcements.slice(0, currentLimit);
@@ -39,7 +41,7 @@ function Page() {
             <section className="w-[50%] flex items-center py-2 px-3 gap-2 border rounded-md">
               <input
                 type="text"
-                className="w-full bg-transparent border-none placeholder-st-gray-500 text-black dark:text-white focus:outline-none"
+                className="w-full bg-transparent border-none placeholder-st-gray-500 text-black dark:text-white focus:outline-none "
                 placeholder="Search by keyword"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -55,7 +57,7 @@ function Page() {
             {isAdmin && (
               <Link
                 href={"/admin/announcements"}
-                className=" border dark:border-none dark:bg-st-surfaceDark px-4 py-2 rounded text-sm"
+                className=" border dark:border-none bg-primary-dark text-white dark:bg-st-surfaceDark px-4 py-2 rounded text-sm"
               >
                 Create Announcement
               </Link>
@@ -69,7 +71,7 @@ function Page() {
                 return (
                   <section
                     key={item.id}
-                    className="border dark:border-none dark:bg-st-cardDark my-3 p-5 rounded-lg"
+                    className="border dark:border-none bg-neutral-100 dark:bg-st-cardDark my-3 p-5 rounded-lg"
                   >
                     <section className="flex justify-between items-center">
                       <h2 className="font-bold text-lg">{item.title}</h2>

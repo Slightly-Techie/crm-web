@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: "media",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -11,6 +10,9 @@ module.exports = {
       gridTemplateColumns: {
         feed: "60% 40%",
         announcement: "45% auto",
+      },
+      backgroundImage: {
+        signup: "url('/src/assets/images/Left.png')",
       },
       colors: {
         primary: {
@@ -41,5 +43,6 @@ module.exports = {
       },
     },
   },
+  darkMode: "class",
   plugins: [],
 };

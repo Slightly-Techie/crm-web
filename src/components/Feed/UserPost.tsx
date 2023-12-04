@@ -15,7 +15,7 @@ function UserPost({ post }: UserPostProps) {
         <div className="flex flex-row items-center gap-3">
           <div>
             <Image
-              className="w-12 h-12 aspect-square shrink-0 rounded-full"
+              className="w-12 h-12 aspect-square object-cover shrink-0 rounded-full"
               width={48}
               height={48}
               src={
@@ -36,18 +36,20 @@ function UserPost({ post }: UserPostProps) {
                 &bull; {getTimeElapsedOrDate(post.created_at!)}{" "}
               </span>
             </p>
-            <p className="text-[13px] text-[#9F9F9F]">
-              @{post.user.first_name}
-              {post.user.last_name}
-            </p>
+            <p className="text-[13px] text-[#9F9F9F]">@{post.user.username}</p>
           </div>
         </div>
       </Link>
       <p className="text-black dark:text-white">{post.content}</p>
       {post.feed_pic_url && (
         <div className="rounded-lg overflow-clip">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={post.feed_pic_url} alt="content-pic" className="w-full" />
+          <Image
+            width={200}
+            height={200}
+            src={post.feed_pic_url as string}
+            alt="content-pic"
+            className="w-full"
+          />
         </div>
       )}
     </div>

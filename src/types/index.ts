@@ -21,7 +21,7 @@ export interface TGetPaginatedResponse {
 }
 
 export interface IGetAllTechiesResponse extends TGetPaginatedResponse {
-  users: ITechie[];
+  items: ITechie[];
 }
 
 export enum UserStatusEnum {
@@ -48,12 +48,14 @@ export interface ITechie {
   linkedin_profile: string | null;
   portfolio_url: string | null;
   profile_pic_url: string | null;
-  skills: ISkill[];
+  skills: string[];
   tags: ITag[];
   stack: IStack | null;
   created_at: string;
   is_active: boolean;
   status?: keyof typeof UserStatusEnum;
+  username?: string;
+  stack_id?: number | null;
 }
 
 export interface ISkill {
@@ -91,19 +93,20 @@ export type NewUserFields = {
 
 export interface IPost {
   content: string;
-  feed_pic_url: string;
+  feed_pic_url: Blob | string;
   id: string;
   created_at?: string;
   user: {
     first_name: string;
     last_name: string;
     profile_pic_url: string;
+    username: string;
     id?: string;
   };
 }
 
 export interface IGetFeedsResponse {
-  feeds: IPost[];
+  items: IPost[];
   total: number;
   page: number;
   size: number;

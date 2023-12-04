@@ -5,10 +5,10 @@ table {
 }
 
 tr:nth-child(even) {
-  @apply dark:bg-[#232323];
+  @apply bg-st-gray dark:bg-[#232323];
 }
 tr:nth-child(odd) {
-  @apply dark:bg-[#141414];
+  @apply bg-neutral-100 dark:bg-[#141414];
 }
 
 .menu-wrapper {
@@ -42,7 +42,7 @@ tr:nth-child(odd) {
 }
 
 .menu-list p {
-  padding: 0.2rem;
+  padding: 0.4rem;
 }
 
 .menu-list p:hover {
@@ -50,8 +50,4 @@ tr:nth-child(odd) {
   color: black;
 }
 
-@media (prefers-color-scheme: dark) {
-  .menu-image {
-    filter: invert();
-  }
-}
+

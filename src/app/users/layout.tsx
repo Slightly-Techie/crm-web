@@ -9,7 +9,7 @@ export default function ForgotPasswordLayout({
 }) {
   return (
     <div className="w-full bg-st-bg dark:bg-primary-dark overflow-x-hidden">
-      <div className="w-screen h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-black mx-auto">
+      <div className="w-screen h-screen grid lg:grid-cols-2 bg-black mx-auto">
         <>
           <div className="new-sign-upbg  lg:block  ">
             <div className="flex flex-col gap-4 justify-center p-0 lg:p-8 w-4/5 mx-auto  h-full">
@@ -31,7 +31,7 @@ export default function ForgotPasswordLayout({
               />
             </div>
           </div>
-          <div className=" p-8 w-full md:w-[30rem] lg:w-5/6 mx-auto my-auto flex flex-col gap-4 justify-center h-fit">
+          <div className=" p-8 w-full md:w-[30rem] lg:w-5/6 mx-auto my-auto flex flex-col gap-4 justify-center dark:bg-primary-[#020202] h-fit">
             {children}
           </div>
         </>

@@ -4,7 +4,8 @@ import { REGEXVALIDATION } from "@/constants";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { logToConsole } from "@/utils";
 type NewPassword = Record<"password" | "password_confirmation", string>;
 
 export default function CreateNewPassword() {
@@ -20,6 +21,8 @@ export default function CreateNewPassword() {
     "password_confirmation",
   ]);
 
+  const router = useRouter();
+
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
@@ -30,22 +33,26 @@ export default function CreateNewPassword() {
       new_password: data.password,
       token: token,
     };
-    console.log(payload);
     axios
-      .post("https://crm-api.fly.dev/api/v1/users/reset-password", payload)
+      .post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/reset-password`,
+        payload
+      )
       .then((res) => {
-        console.log(res.data);
         toast.success(res.data.message);
+        setTimeout(() => {
+          router.push("/login");
+        }, 800);
       })
       .catch((err) => {
-        console.log(err);
+        logToConsole(err);
       });
     reset();
   };
 
   return (
     <>
-      <section className=" text-st-surfaceDark dark:text-st-surface justify-between">
+      <section className=" text-st-surface justify-between">
         <h3 className=" font-medium text-2xl">Reset Password ✅</h3>
         <p className=" text-white/40 font-light">
           Your email has been verified, create your new password.
@@ -53,10 +60,7 @@ export default function CreateNewPassword() {
       </section>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className=" my-4">
-          <label
-            className=" text-st-surfaceDark dark:text-st-surface"
-            htmlFor=""
-          >
+          <label className=" text-st-surface" htmlFor="">
             New Password
           </label>
           <input
@@ -66,7 +70,7 @@ export default function CreateNewPassword() {
               required: true,
               pattern: REGEXVALIDATION.password,
             })}
-            className="w-full border mt-2 px-2 text-[#000] dark:text-[#f1f3f7] dark:border-st-grayDark input__transparent py-2 focus:outline-none focus:border rounded-md dark:focus:border-st-surface"
+            className="w-full border mt-2 px-2 text-[#f1f3f7] dark:border-st-grayDark input__transparent py-2 focus:outline-none focus:border rounded-md dark:focus:border-st-surface"
             type="password"
           />
           {errors.password && (
@@ -77,10 +81,7 @@ export default function CreateNewPassword() {
           )}
         </div>
         <div className=" my-4">
-          <label
-            className=" text-st-surfaceDark dark:text-st-surface"
-            htmlFor=""
-          >
+          <label className=" text-st-surface" htmlFor="">
             Confirm New Password
           </label>
           <input
@@ -102,14 +103,14 @@ export default function CreateNewPassword() {
                 ? "#21c129"
                 : "",
             }}
-            className="w-full border mt-2 px-2 text-[#000] dark:text-[#f1f3f7] dark:border-st-grayDark input__transparent py-2 focus:outline-none focus:border rounded-md dark:focus:border-st-surface"
+            className="w-full border mt-2 px-2 text-[#f1f3f7] dark:border-st-grayDark input__transparent py-2 focus:outline-none focus:border rounded-md dark:focus:border-st-surface"
             type="password"
           />
           {errors.password_confirmation && (
             <small>Passwords do not match</small>
           )}
         </div>
-        <button className="w-full flex items-center justify-center font-bold p-2 dark:hover:bg-st-subTextDark hover:bg-st-text/30 dark:bg-primary-light bg-primary-dark duration-100 rounded-md dark:text-st-surfaceDark text-st-surface">
+        <button className="w-full flex items-center justify-center font-bold p-2 dark:hover:bg-st-subTextDark hover:bg-primary-light/90 bg-primary-light duration-100 rounded-md text-st-surfaceDark ">
           Submit
         </button>
       </form>

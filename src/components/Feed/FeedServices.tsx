@@ -15,7 +15,7 @@ export function useFetchFeeds(): {
     data: FeedPosts,
   } = useQuery({
     queryKey: ["feed-data"],
-    queryFn: () => getFeedPosts().then(({ data }) => data.feeds),
+    queryFn: () => getFeedPosts().then(({ data }) => data.items),
     refetchOnWindowFocus: false,
   });
 
@@ -28,7 +28,7 @@ export function usePostFeeds() {
   const { mutate: createNewPost } = useMutation<
     Pick<IPost, "content" | "feed_pic_url">,
     any,
-    Pick<IPost, "content" | "feed_pic_url">
+    FormData
   >(
     async (data) => {
       const res = await axiosAuth.post("/api/v1/feed/", data);

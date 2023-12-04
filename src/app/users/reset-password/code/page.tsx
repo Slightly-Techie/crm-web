@@ -15,7 +15,7 @@ export default function ResetPasswordCode() {
   } = useForm<ResetPasswordCodeFields>({ mode: "onSubmit" });
 
   const onSubmit = (data: ResetPasswordCodeFields) => {
-    console.log(data);
+    // logToConsole(err)
   };
 
   return (

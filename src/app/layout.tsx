@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         suppressHydrationWarning={true}
-        className={`${FONTS.mona_sans.variable} font-mona-sans`}
+        className={`${FONTS.mona_sans.variable} font-mona-sans overflow-x-hidden dark:bg-black`}
       >
         <Toaster />
         <Providers>{children}</Providers>

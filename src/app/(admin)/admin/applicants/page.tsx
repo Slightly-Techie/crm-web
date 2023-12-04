@@ -6,12 +6,13 @@ import { useApplicantHooks } from "@/hooks/useApplicantsHook";
 import Loading from "../../loading";
 import PageTitle from "@/components/PageTitle";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function Applicants() {
+  const router = useRouter();
   const {
     tableData,
     mutation,
-    message,
     filter,
     setFilter,
     page,
@@ -37,7 +38,13 @@ export default function Applicants() {
       case "send-email": {
         toast.success("Action Successful!");
         (window as Window).location = `mailto:${payload?.email}`;
+        break;
       }
+      case "view-applicant":
+        router.push(`/techies/${payload.id}`);
+        break;
+      default:
+        toast.error("Something went wrong!");
     }
   }
 
@@ -47,11 +54,6 @@ export default function Applicants() {
 
   return (
     <>
-      {message && (
-        <div className="toast absolute left-0 top-0 right-0 bg-[green] h-[50px] flex justify-center items-center z-50">
-          <p className="text-[white]">{message}</p>
-        </div>
-      )}
       {isLoading ? (
         <Loading />
       ) : (
@@ -100,18 +102,18 @@ function PaginationComponent(props: PaginationProps) {
           <button
             disabled={typeof props.pages !== "undefined" && props.page <= 1}
             onClick={() => props.setPage?.(props.page - 1)}
-            className=" dark:bg-[#232323] px-6 py-2 rounded-sm"
+            className=" bg-primary-dark text-primary-light disabled:bg-primary-dark/20 dark:bg-[#232323] px-6 py-2 rounded-md hover:bg-st-edgeDark"
           >
-            prev
+            Prev
           </button>
           <button
             disabled={
               typeof props.pages !== "undefined" && props.page >= props.pages
             }
             onClick={() => props.setPage?.(props.page + 1)}
-            className="dark:bg-[#232323] px-6 py-2 rounded-sm"
+            className=" bg-primary-dark text-primary-light dark:bg-[#232323] disabled:bg-primary-dark/20 px-6 py-2 rounded-md hover:bg-st-edgeDark"
           >
-            next
+            Next
           </button>
         </div>
       </div>

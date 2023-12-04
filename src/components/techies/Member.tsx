@@ -20,16 +20,13 @@ const Member = ({ data }: MemberProps) => {
         alt="profile"
       />
       <section className="p-3">
-        <h3 className="text-lg font-medium">
+        <p className="py-2">
           {data.first_name} {data.last_name}
-        </h3>
+        </p>
         <p className="font-light text-[#5D6675] dark:text-[#cacbcf] text-sm">
           {data.stack?.name} Engineer
         </p>
-        <p className="text-complementary text-sm">
-          {/* Replace with username */}@{data.first_name}
-          {data.last_name}
-        </p>
+        <p className="text-complementary text-sm">@{data.username}</p>
         <br />
         <Link href={`/techies/${data.id}`}>
           <button className="text-white bg-primary-dark text-primary-white dark:bg-primary-light dark:text-primary-dark px-2 py-1 rounded-md text-sm">

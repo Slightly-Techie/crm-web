@@ -5,6 +5,7 @@ import Member from "./Member";
 import { useQuery } from "@tanstack/react-query";
 import useEndpoints from "@/services";
 import LoadingSpinner from "../loadingSpinner";
+import PageTitle from "../PageTitle";
 
 function Team() {
   const { getTechiesList } = useEndpoints();
@@ -39,7 +40,7 @@ function Team() {
     retry: 3,
   });
 
-  const techies = TechiesData?.users;
+  const techies = TechiesData?.items;
 
   const filteredTechies = techies?.filter((user) => {
     if (searchKeyword === "") {
@@ -53,9 +54,7 @@ function Team() {
 
   return (
     <section className="w-full h-full">
-      <section className="border-b border-b-neutral-700 sticky top-[7vh] lg:top-0 z-[40] bg-primary-light dark:bg-[#141414] w-full p-5">
-        <p className="lg:text-xl font-bold">Techies</p>
-      </section>
+      <PageTitle title="Techies" />
 
       {/* Search Input Section */}
       <section className=" border-b-st-edge dark:border-st-edgeDark p-5">
@@ -130,11 +129,12 @@ function Team() {
             <LoadingSpinner />
           </section>
         )}
-        {filteredTechies && (
+        {techies && (
           <section className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {filteredTechies.map((user) => (
-              <Member key={`${user.id}`} data={user} />
-            ))}
+            {filteredTechies &&
+              filteredTechies.map((user) => (
+                <Member key={`${user.id}`} data={user} />
+              ))}
           </section>
         )}
       </section>

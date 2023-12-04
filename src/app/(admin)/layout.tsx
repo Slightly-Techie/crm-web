@@ -14,10 +14,10 @@ export default async function RootLayout({
   }
 
   return (
-    <main className="font-tt-hoves bg-primary-light dark:bg-[#141414] text-primary-dark dark:text-primary-light ">
-      <Navbar />
-      <div className=" min-h-screen lg:pl-[25vw] xl:pl-[20vw]  w-full max-w-screen-2xl  ">
-        {children}
+    <main className="w-full min-h-screen  text-primary-dark dark:bg-primary-dark dark:text-primary-light ">
+      <div className="max-w-screen-2xl grid grid-cols-[20vw_auto] w-full mx-auto">
+        <Navbar />
+        <section className=" w-full ">{children}</section>
       </div>
     </main>
   );

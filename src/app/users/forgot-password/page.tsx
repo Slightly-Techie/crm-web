@@ -88,7 +88,7 @@ export default function ForgotPassword() {
                   required: true,
                   pattern: REGEXVALIDATION.email,
                 })}
-                className="w-full border mt-2 px-2 text-[#000] dark:text-[#f1f3f7] dark:border-st-grayDark input__transparent py-2 focus:outline-none focus:border rounded-md dark:focus:border-st-surface"
+                className="w-full border mt-2 px-2 text-[#f1f3f7] dark:border-st-grayDark input__transparent py-2 focus:outline-none focus:border rounded-md dark:focus:border-st-surface"
                 type="email"
                 placeholder="susanataibs@email.com"
               />

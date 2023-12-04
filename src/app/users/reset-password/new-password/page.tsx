@@ -6,6 +6,9 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import { logToConsole } from "@/utils";
+import { useState } from "react";
+import { Status } from "@/types";
+import { Oval } from "react-loader-spinner";
 type NewPassword = Record<"password" | "password_confirmation", string>;
 
 export default function CreateNewPassword() {
@@ -21,6 +24,8 @@ export default function CreateNewPassword() {
     "password_confirmation",
   ]);
 
+  const [status, setStatus] = useState<Status>("progress");
+
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -28,25 +33,27 @@ export default function CreateNewPassword() {
 
   const passwordMatch = password && password === password_confirmation;
 
-  const onSubmit = (data: NewPassword) => {
-    const payload = {
-      new_password: data.password,
-      token: token,
-    };
-    axios
-      .post(
+  const onSubmit = async (data: NewPassword) => {
+    setStatus("onsubmit");
+    try {
+      const payload = {
+        new_password: data.password,
+        token: token,
+      };
+      const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/reset-password`,
         payload
-      )
-      .then((res) => {
-        toast.success(res.data.message);
-        setTimeout(() => {
-          router.push("/login");
-        }, 800);
-      })
-      .catch((err) => {
-        logToConsole(err);
-      });
+      );
+      setStatus("success");
+      toast.success(res.data.message);
+      setTimeout(() => {
+        router.push("/login");
+      }, 800);
+    } catch (err) {
+      toast.error("Something went wrong, try again");
+      setStatus("error");
+      logToConsole(err);
+    }
     reset();
   };
 
@@ -111,7 +118,11 @@ export default function CreateNewPassword() {
           )}
         </div>
         <button className="w-full flex items-center justify-center font-bold p-2 dark:hover:bg-st-subTextDark hover:bg-primary-light/90 bg-primary-light duration-100 rounded-md text-st-surfaceDark ">
-          Submit
+          {status === "onsubmit" ? (
+            <Oval width={20} height={20} strokeWidth={4} color="#42f5ad" />
+          ) : (
+            "Submit"
+          )}
         </button>
       </form>
     </>

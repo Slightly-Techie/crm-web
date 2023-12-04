@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { isNonWhitespace } from "@/utils";
+import { isNonWhitespace, logToConsole } from "@/utils";
 import { AnnouncementData } from "@/types";
 import toast from "react-hot-toast";
 
@@ -42,7 +42,7 @@ export default function CreateAnnouncement({
       setFormTitle("");
       setFormContent("");
     } catch (err) {
-      console.log(err);
+      logToConsole(err);
     }
   }
 

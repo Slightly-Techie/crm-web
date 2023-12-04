@@ -127,7 +127,7 @@ export default function Techie() {
         setEditMode(false);
       }
     } catch (err) {
-      console.log(err);
+      logToConsole(err);
       toast.error("Something went wrong, Try again");
       setStatus("progress");
     }

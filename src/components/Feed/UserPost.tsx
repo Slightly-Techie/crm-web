@@ -9,7 +9,6 @@ type UserPostProps = {
 };
 
 function UserPost({ post }: UserPostProps) {
-  console.log(post.user.profile_pic_url);
   return (
     <div className="flex flex-col gap-3 w-full p-3 border-b border-st-gray dark:border-st-grayDark">
       <Link href={`/techies/${String(post.user.id)}`}>

@@ -119,6 +119,12 @@ export default function Techie() {
         toast.success("Profile has been updated successfully");
         setStatus("progress");
         setEditMode(false);
+      } else {
+        const res = await updateUserProfile(payload);
+        setUser(res.data);
+        toast.success("Profile has been updated successfully");
+        setStatus("progress");
+        setEditMode(false);
       }
     } catch (err) {
       console.log(err);

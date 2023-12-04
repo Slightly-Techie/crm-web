@@ -15,11 +15,7 @@ const Member = ({ data }: MemberProps) => {
         className="rounded-t-md w-full h-[250px] object-cover"
         width={48}
         height={48}
-        src={
-          data.profile_pic_url
-            ? data.profile_pic_url
-            : `https://avatars.dicebear.com/api/initials/${data?.first_name} ${data?.last_name}`
-        }
+        src={`https://avatars.dicebear.com/api/initials/${data?.first_name} ${data?.last_name}.svg`}
         priority
         alt="profile"
       />

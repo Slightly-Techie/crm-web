@@ -44,64 +44,60 @@ export default function Signup() {
   };
 
   return (
-    <div className="w-full bg-st-bg dark:bg-[#020202] overflow-x-hidden">
-      <div className="w-screen h-screen grid lg:grid-cols-2 bg-[#fff] dark:bg-[#020202] mx-auto">
-        <>
-          <div className="hidden lg:block">
-            <div className="h-full lg:block bg-[#fff] dark:bg-[#020202] lg:bg-[#020202]">
-              <Image
-                src={LeftImage}
-                alt=""
-                className="hidden lg:block w-full object-contain h-screen "
-              />
-            </div>
-          </div>
+    <div className="w-screen dark:bg-[#020202]">
+      <div className="grid lg:grid-cols-2 bg-[#fff] dark:bg-[#020202] mx-auto">
+        <div className="h-screen  lg:block sticky top-0 bg-[#fff] dark:bg-[#020202] lg:bg-[#020202]">
+          <Image
+            src={LeftImage}
+            alt=""
+            className="hidden lg:block w-full object-cover h-screen "
+          />
+        </div>
 
-          {isClosed ? (
-            <ClosedSignup />
-          ) : status !== "progress" ? (
-            <SubmitStatus
-              status={status}
-              message={
-                status === "success" ? NEW_USER_DATA.first_name : errMessage
-              }
-              resetForm={() => {
-                resetForm();
-                setStatus("progress");
-              }}
-            />
-          ) : (
-            <div className=" p-8 w-full md:w-[30rem] lg:w-5/6 mx-auto my-auto flex flex-col gap-4 justify-center h-fit">
-              <section className=" text-[#000] dark:text-[#f1f3f7]  text-[1.5rem] font-bold flex items-center gap-4">
-                {currentFormIndex !== 0 && (
-                  <button
-                    onClick={previous}
-                    type="button"
-                    className="px-2 py-2 bg-[#fff] border border-[#333] hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7]  dark:text-[#000] rounded-full"
-                  >
-                    <RiArrowLeftLine />
+        {isClosed ? (
+          <ClosedSignup />
+        ) : status !== "progress" ? (
+          <SubmitStatus
+            status={status}
+            message={
+              status === "success" ? NEW_USER_DATA.first_name : errMessage
+            }
+            resetForm={() => {
+              resetForm();
+              setStatus("progress");
+            }}
+          />
+        ) : (
+          <div className="  p-8 w-full md:w-[30rem] lg:w-5/6 mx-auto my-auto flex flex-col gap-4 justify-center h-fit">
+            <section className=" text-[#000] dark:text-[#f1f3f7]  text-[1.5rem] font-bold flex items-center gap-4">
+              {currentFormIndex !== 0 && (
+                <button
+                  onClick={previous}
+                  type="button"
+                  className="px-2 py-2 bg-[#fff] border border-[#333] hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7]  dark:text-[#000] rounded-full"
+                >
+                  <RiArrowLeftLine />
+                </button>
+              )}
+              <div>
+                <h3>Welcome to CRM🎉</h3>
+                <p className="text-[#777] text-[20px] font-normal">
+                  Create your account
+                </p>
+              </div>
+            </section>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {currentForm.element}
+              <section className="flex gap-4 mb-8">
+                {currentFormIndex <= 3 && (
+                  <button className="px-8 py-2 bg-[#001] hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7] dark:text-[#000] rounded-lg w-full">
+                    {currentFormIndex === 3 ? "Submit" : "Proceed"}
                   </button>
                 )}
-                <div>
-                  <h3>Welcome to CRM🎉</h3>
-                  <p className="text-[#777] text-[20px] font-normal">
-                    Create your account
-                  </p>
-                </div>
               </section>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                {currentForm.element}
-                <section className="flex gap-4 mb-8">
-                  {currentFormIndex <= 3 && (
-                    <button className="px-8 py-2 bg-[#001] hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7] dark:text-[#000] rounded-lg w-full">
-                      {currentFormIndex === 3 ? "Submit" : "Proceed"}
-                    </button>
-                  )}
-                </section>
-              </form>
-            </div>
-          )}
-        </>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -11,6 +11,9 @@ module.exports = {
         feed: "60% 40%",
         announcement: "45% auto",
       },
+      backgroundImage: {
+        signup: "url('/src/assets/images/Left.png')",
+      },
       colors: {
         primary: {
           light: "#f5f5f5",

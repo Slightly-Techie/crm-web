@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import { useTheme } from "next-themes";
 import { RiMoonLine, RiSunLine } from "react-icons/ri";
 import "./index.css";
@@ -11,7 +10,7 @@ import "./index.css";
 // import Image from "next/image";
 
 export default function ThemeSwitcher() {
-  const { systemTheme, theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   // const [dark, setDark] = useState(() => {
   //   if (typeof window !== "undefined") {
   //     const prefersDarkMode = window.matchMedia(
@@ -59,12 +58,12 @@ export default function ThemeSwitcher() {
     // </>
     <button
       onClick={() => (theme === "dark" ? setTheme("light") : setTheme("dark"))}
-      className="hover:scale-105 ease duration-500 aspect-square p-1 w-fit grid place-items-center cursor-pointer border border-white rounded"
+      className={`hover:scale-105 ease duration-500 aspect-square p-1 w-fit grid place-items-center cursor-pointer border border-inherit rounded`}
     >
       {theme === "light" ? (
-        <RiMoonLine className="text-primary-light" />
+        <RiMoonLine className="text-inherit" />
       ) : (
-        <RiSunLine className=" text-primary-light" />
+        <RiSunLine className=" text-inherit" />
       )}
     </button>
   );

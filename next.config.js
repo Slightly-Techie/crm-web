@@ -10,6 +10,18 @@ const nextConfig = {
         protocol: "https",
         hostname: "crm-testing991.s3.amazonaws.com",
       },
+      {
+        protocol: "https",
+        hostname: "stncrmutilities.s3.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.dicebear.com",
+      },
+      {
+        protocol: "https",
+        hostname: "api.dicebear.com",
+      },
     ],
   },
 };

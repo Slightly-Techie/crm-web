@@ -5,6 +5,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
+import { logToConsole } from "@/utils";
 type NewPassword = Record<"password" | "password_confirmation", string>;
 
 export default function CreateNewPassword() {
@@ -44,7 +45,7 @@ export default function CreateNewPassword() {
         }, 800);
       })
       .catch((err) => {
-        console.log(err);
+        logToConsole(err);
       });
     reset();
   };

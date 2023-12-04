@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import axios from "@/lib/axios";
 import { useState } from "react";
 import LoadingSpinner from "@/components/loadingSpinner";
+import { logToConsole } from "@/utils";
 
 type ForgotPasswordField = {
   email: string;
@@ -38,7 +39,7 @@ export default function ForgotPassword() {
       })
       .catch((err) => {
         setStatus("error");
-        console.log(err);
+        logToConsole(err);
       });
     reset();
   };

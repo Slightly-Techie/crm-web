@@ -15,7 +15,7 @@ function UserPost({ post }: UserPostProps) {
         <div className="flex flex-row items-center gap-3">
           <div>
             <Image
-              className="w-12 h-12 aspect-square shrink-0 rounded-full"
+              className="w-12 h-12 aspect-square object-cover shrink-0 rounded-full"
               width={48}
               height={48}
               src={
@@ -46,7 +46,7 @@ function UserPost({ post }: UserPostProps) {
           <Image
             width={200}
             height={200}
-            src={post.feed_pic_url}
+            src={post.feed_pic_url as string}
             alt="content-pic"
             className="w-full"
           />

@@ -3,8 +3,8 @@ import useEndpoints from "@/services";
 import { ITechie, WithoutNullableKeys } from "@/types";
 import { logToConsole } from "@/utils";
 import Image from "next/image";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { Form, useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import PageTitle from "@/components/PageTitle";
 import { REGEXVALIDATION } from "@/constants";
@@ -13,6 +13,7 @@ import { Oval } from "react-loader-spinner";
 import { getSkillsArray } from "@/utils";
 import toast from "react-hot-toast";
 import { Status } from "@/types";
+import { PiUserGear } from "react-icons/pi";
 type inputeField = WithoutNullableKeys<Omit<ITechie, "id" | "skills">>;
 type InitialField = inputeField & Record<"skills", string>;
 
@@ -38,7 +39,8 @@ const initialUserField: ITechie = {
   stack_id: null,
 };
 export default function Techie() {
-  const { getUserProfile, updateUserProfile } = useEndpoints();
+  const { getUserProfile, updateUserProfile, updateProfilePicture } =
+    useEndpoints();
   const [user, setUser] = useState<ITechie>(initialUserField);
   const [editMode, setEditMode] = useState(false);
   const [status, setStatus] = useState<Status>("progress");
@@ -52,6 +54,8 @@ export default function Techie() {
   } = useForm<InitialField>();
 
   const [selectValue, setSelectValue] = useState(initialUserField.stack_id);
+  const [selectedFile, setSelectedFile] = useState<Blob | null>();
+  const [preview, setPreview] = useState("");
 
   const {
     data: STACKS,
@@ -95,33 +99,73 @@ export default function Techie() {
     refetchOnWindowFocus: false,
   });
 
-  const onSubmit = handleSubmit((data) => {
-    const payload: Partial<ITechie> = {
-      ...data,
-      skills: getSkillsArray(data.skills),
-    };
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      setStatus("onsubmit");
+      const payload: Partial<ITechie> = {
+        ...data,
+        skills: getSkillsArray(data.skills),
+      };
 
-    setStatus("onsubmit");
+      const avatar = new FormData();
+      if (selectedFile) {
+        avatar.set("file", selectedFile);
+        const [profileRes] = await Promise.all([
+          updateUserProfile(payload),
+          updateProfilePicture(avatar),
+        ]);
 
-    updateUserProfile(payload)
-      .then((res) => {
+        setUser(profileRes.data);
+        toast.success("Profile has been updated successfully");
+        setStatus("progress");
+        setEditMode(false);
+      } else {
+        const res = await updateUserProfile(payload);
         setUser(res.data);
         toast.success("Profile has been updated successfully");
         setStatus("progress");
         setEditMode(false);
-      })
-      .catch((err) => {
-        setStatus("error");
-        toast.error("Something went wrong, Try again");
-        logToConsole(err);
-      });
+      }
+    } catch (err) {
+      logToConsole(err);
+      toast.error("Something went wrong, Try again");
+      setStatus("progress");
+    }
   });
+
+  const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setSelectedFile(null);
+      setPreview("");
+      return;
+    }
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const dataURL = reader.result as string;
+      setPreview(dataURL);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDiscardImage = () => {
+    setSelectedFile(null);
+    setPreview("");
+  };
 
   const handleCancel = () => {
     setDefaultValues(user);
     reset(query.data?.data as unknown as InitialField); // works but the types can be better..hm
+    setSelectedFile(null);
+    setPreview("");
     setEditMode(false);
   };
+
+  const imageURL =
+    preview ||
+    user.profile_pic_url ||
+    `https://avatars.dicebear.com/api/initials/${user.first_name} ${user.last_name}.svg`;
 
   return (
     <>
@@ -182,14 +226,41 @@ export default function Techie() {
                       <Image
                         width={200}
                         height={200}
-                        src={
-                          user.profile_pic_url
-                            ? user.profile_pic_url
-                            : `https://avatars.dicebear.com/api/initials/${user.first_name} ${user.last_name}.svg`
-                        }
+                        src={imageURL}
                         alt="profile"
                         className="w-[150px] lg:w-full lg:h-full aspect-h-1 object-cover"
                       />
+                    )}
+                  </div>
+                  <div className=" flex items-center gap-2">
+                    {editMode && (
+                      <div className=" py-4">
+                        <label
+                          htmlFor="imageUpload"
+                          className="h-9 w-24 gap-2 flex flex-row items-center justify-center bg-primary-dark text-st-surface dark:border dark:border-st-edgeDark dark:bg-st-grayDark text-secondary font-tt-hoves  rounded-[4px] hover:cursor-pointer"
+                        >
+                          <div className="">
+                            <PiUserGear />
+                          </div>
+                          <p>Upload</p>
+                        </label>
+
+                        <input
+                          type="file"
+                          id="imageUpload"
+                          className="hidden relative h-[0.1px] -z-50"
+                          accept="image/*"
+                          onChange={(e) => onSelectFile(e)}
+                        />
+                      </div>
+                    )}
+                    {editMode && preview && (
+                      <button
+                        onClick={handleDiscardImage}
+                        className="bg-red-400 rounded-md  py-2 px-6"
+                      >
+                        Discard
+                      </button>
                     )}
                   </div>
                 </div>

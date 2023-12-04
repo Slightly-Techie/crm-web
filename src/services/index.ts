@@ -15,6 +15,8 @@ const useEndpoints = () => {
 
   const updateUserProfile = (data: any) =>
     authAxios.put(`/api/v1/users/profile`, data);
+  const updateProfilePicture = (data: any) =>
+    authAxios.patch(`/api/v1/users/profile/avatar`, data);
 
   const getTechiesList = async ({ page = 1 }: { page: number }) => {
     const { data } = await authAxios.get<IGetAllTechiesResponse>(
@@ -48,6 +50,7 @@ const useEndpoints = () => {
     getSpecificUser,
     getProjects,
     postProjects,
+    updateProfilePicture,
   };
 };
 

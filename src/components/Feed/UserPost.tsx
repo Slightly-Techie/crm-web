@@ -9,13 +9,14 @@ type UserPostProps = {
 };
 
 function UserPost({ post }: UserPostProps) {
+  console.log(post.user.profile_pic_url);
   return (
     <div className="flex flex-col gap-3 w-full p-3 border-b border-st-gray dark:border-st-grayDark">
       <Link href={`/techies/${String(post.user.id)}`}>
         <div className="flex flex-row items-center gap-3">
           <div>
             <Image
-              className="w-12 h-12 aspect-square shrink-0 rounded-full"
+              className="w-12 h-12 aspect-square object-cover shrink-0 rounded-full"
               width={48}
               height={48}
               src={
@@ -46,7 +47,7 @@ function UserPost({ post }: UserPostProps) {
           <Image
             width={200}
             height={200}
-            src={post.feed_pic_url}
+            src={post.feed_pic_url as string}
             alt="content-pic"
             className="w-full"
           />

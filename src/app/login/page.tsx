@@ -44,7 +44,7 @@ export default function Login() {
         // setIsRequestSent(false);
         /**
          * setIsRequestSent is removed intentionally to avoid rendering the signup form again while
-         * compiling the root page (if the result is ok).
+         * compiling the root page when the result is ok
          */
         router.push(callbackUrl);
       } else {

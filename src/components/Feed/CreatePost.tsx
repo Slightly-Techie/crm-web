@@ -76,7 +76,7 @@ function CreatePost() {
         <div className="w-12 shrink-0 flex flex-col items-center">
           {user !== undefined && (
             <Image
-              className="w-12 h-12 aspect-square shrink-0 rounded-full"
+              className="w-12 h-12 aspect-square object-cover shrink-0 rounded-full"
               width={48}
               height={48}
               src={

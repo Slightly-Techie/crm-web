@@ -55,12 +55,12 @@ const Navlinks = [
         link: "/techies",
         icon: <AiOutlineUser size={20} />,
       },
-      {
-        id: "c2",
-        name: "Leaderboard",
-        link: "/leaderboard",
-        icon: <BsBarChart size={20} />,
-      },
+      // {
+      //   id: "c2",
+      //   name: "Leaderboard",
+      //   link: "/leaderboard",
+      //   icon: <BsBarChart size={20} />,
+      // },
       {
         id: "c3",
         name: "Announcements",
@@ -106,7 +106,7 @@ function Navbar() {
 
   return (
     <header>
-      <nav className="hidden xl:block xl:w-[20vw] sticky top-0 h-screen p-4  z-[50] border-r border-r-neutral-700 bg-primary-dark">
+      <nav className="hidden xl:block xl:w-[20vw] sticky top-0 h-screen p-4  z-[50] border-r border-r-neutral-700 bg-primary-dark text-white">
         <section className="flex flex-col justify-between items-center h-full">
           {/* Top Section */}
           <section className="w-full">
@@ -147,7 +147,7 @@ function Navbar() {
               MenuButtonContent={
                 <section className="flex gap-3 items-center mb-5">
                   <Image
-                    className="w-10 h-10 aspect-square shrink-0 rounded-full"
+                    className="w-10 h-10 aspect-square object-cover shrink-0 rounded-full"
                     width={48}
                     height={48}
                     src={
@@ -246,7 +246,7 @@ function Navbar() {
               MenuButtonContent={
                 <section className="flex gap-3 items-center mb-5">
                   <Image
-                    className="w-10 h-10 aspect-square shrink-0 rounded-full"
+                    className="w-10 h-10 aspect-square object-cover shrink-0 rounded-full"
                     width={48}
                     height={48}
                     src={

@@ -14,7 +14,7 @@ export default function Applicants() {
     tableData,
     mutation,
     filter,
-    setFilter,
+    handleFilter,
     page,
     setPage,
     isLoading,
@@ -49,7 +49,7 @@ export default function Applicants() {
   }
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setFilter(event.target.value);
+    handleFilter(event.target.value);
   }
 
   return (
@@ -76,7 +76,8 @@ export default function Applicants() {
             </div>
           )}
           {typeof tableData?.length !== "undefined" &&
-            tableData?.length > 0 && (
+            tableData?.length > 0 &&
+            !filter && (
               <div>
                 <PaginationComponent
                   page={page}

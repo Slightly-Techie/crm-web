@@ -8,16 +8,21 @@ export default function useDebouncedSearch<TDataReturn>(
   const [result, setResult] = useState<TDataReturn | null>(null);
 
   const debounce = useCallback(
-    function (this: any, ...args: any[]) {
+    function (this: any, ...args: string[]) {
       clearTimeout(timer.current);
-      timer.current = setTimeout(async () => {
-        try {
-          const response = await func.apply(this, args);
-          setResult(response);
-        } catch (error) {
-          toast.error(`${args.join(" ")} not found`);
-        }
-      }, wait);
+      if (args[0].length) {
+        timer.current = setTimeout(async () => {
+          try {
+            toast.loading("Searching...");
+            const response = await func.apply(this, args);
+            toast.dismiss();
+            setResult(response);
+          } catch (error) {
+            toast.dismiss();
+            toast.error(`${args.join(" ")} not found`);
+          }
+        }, wait);
+      }
     },
     [func, wait]
   );

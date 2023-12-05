@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { PopupActionProps, TableProps } from "./types";
-import MenuIcon from "@/assets/icons/more.png";
 import Search from "@/assets/icons/search.png";
 import "./styles.css";
 import {

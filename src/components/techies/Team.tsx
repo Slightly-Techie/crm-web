@@ -54,6 +54,8 @@ function Team() {
   const techies =
     searchKeyword && result?.items ? result?.items : TechiesData?.items;
 
+    console.log(techies)
+
   return (
     <section className="w-full h-full">
       <PageTitle title="Techies" />

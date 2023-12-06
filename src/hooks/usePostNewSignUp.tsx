@@ -14,6 +14,10 @@ type ResponseError = {
   detail: ErrorObj[];
 };
 
+type BadRequest = {
+  detail: string;
+};
+
 function usePostNewSignUp() {
   const [status, setStatus] = React.useState<Status>("progress");
   const [errMessage, setErrMessage] = React.useState("");
@@ -29,11 +33,18 @@ function usePostNewSignUp() {
       const res = await axiosAuth.post("/api/v1/users/register", data);
       setStatus("success");
       return res.data;
-    } catch (error) {
-      const err = error as AxiosError<ResponseError>;
-      const errObj = err.response?.data.detail[0];
-      const errField = errObj?.loc[1] || "";
-      const errMsg = `${errField}: ${errObj?.msg}`;
+    } catch (errorObj) {
+      let errMsg: string;
+      const err = errorObj as AxiosError;
+      if (err.response?.status === 400) {
+        const error = err as AxiosError<BadRequest>;
+        errMsg = error.response?.data.detail as string;
+      } else {
+        const error = errorObj as AxiosError<ResponseError>;
+        const errObj = error.response?.data.detail[0];
+        const errField = errObj?.loc[1] || "";
+        errMsg = `${errField}: ${errObj?.msg}`;
+      }
       setStatus("error");
       setErrMessage(errMsg || "An error occured");
     }

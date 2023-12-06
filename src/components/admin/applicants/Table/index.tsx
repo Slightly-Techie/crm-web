@@ -62,7 +62,7 @@ function TableComponent(props: TableProps) {
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className=" text-base py-2 bg-st-edge font-bold dark:bg-[#232323] px-2 rounded-sm"
+                    className=" text-base py-2 bg-st-edge font-semibold dark:bg-[#232323] px-2 rounded-sm"
                   >
                     {header.isPlaceholder
                       ? null
@@ -72,6 +72,7 @@ function TableComponent(props: TableProps) {
                         )}
                   </th>
                 ))}
+                <th className=" text-base py-2 bg-st-edge font-bold dark:bg-[#232323] px-2 rounded-sm"></th>
               </tr>
             ))}
           </thead>

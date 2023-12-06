@@ -48,10 +48,14 @@ export default function Login() {
          */
         router.push(callbackUrl);
       } else {
-        if (result?.error) setResponseError(result?.error);
+        if (result?.error) {
+          setIsRequestSent(false);
+          setResponseError(result?.error);
+        }
       }
     } catch (error) {
       setIsRequestSent(false);
+      setResponseError("Something went wrong...");
     }
   });
 

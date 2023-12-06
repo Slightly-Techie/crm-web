@@ -48,17 +48,21 @@ export default function Login() {
          */
         router.push(callbackUrl);
       } else {
-        if (result?.error) setResponseError(result?.error);
+        if (result?.error) {
+          setIsRequestSent(false);
+          setResponseError(result?.error);
+        }
       }
     } catch (error) {
       setIsRequestSent(false);
+      setResponseError("Something went wrong...");
     }
   });
 
   return (
     <div className="w-screen dark:bg-[#020202]">
       <div className="grid lg:grid-cols-2 bg-[#fff] dark:bg-[#020202] mx-auto">
-        <div className="h-screen  lg:block sticky top-0 bg-[#fff] dark:bg-[#020202] lg:bg-[#020202]">
+        <div className="lg:h-screen lg:block sticky top-0 bg-[#fff] dark:bg-[#020202] lg:bg-[#020202]">
           <Image
             src={LeftImage}
             alt=""

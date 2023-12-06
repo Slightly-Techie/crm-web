@@ -11,7 +11,8 @@ type ProfileFields =
   | "phone_number"
   | "stack_id"
   | "first_name"
-  | "last_name";
+  | "last_name"
+  | "username";
 
 type TProfileType = Pick<NewUserFields, ProfileFields>;
 
@@ -49,7 +50,7 @@ function Profile({ register, errors }: ProfileFormType) {
           placeholder="Enter your first name"
           {...register("first_name", {
             required: true,
-            min: 2,
+            pattern: REGEXVALIDATION.shouldNotBeEmptyString,
           })}
         />
         {errors.first_name && <small>First name must be provided</small>}
@@ -64,10 +65,25 @@ function Profile({ register, errors }: ProfileFormType) {
           placeholder="Enter your last name"
           {...register("last_name", {
             required: true,
-            min: 2,
+            pattern: REGEXVALIDATION.shouldNotBeEmptyString,
           })}
         />
         {errors.last_name && <small>Last name must be provided</small>}
+      </div>
+      <div className=" my-4">
+        <label className="text-[#000] dark:text-[#f1f3f7] font-bold">
+          Username
+        </label>
+        <input
+          className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff] rounded-[5px] dark:border-[#8a8a8a]"
+          type="text"
+          placeholder="Enter your username"
+          {...register("username", {
+            required: true,
+            pattern: REGEXVALIDATION.shouldNotBeEmptyString,
+          })}
+        />
+        {errors.username && <small>username must be provided</small>}
       </div>
       <div className=" my-4">
         <label className="text-[#000] dark:text-[#f1f3f7] font-bold">

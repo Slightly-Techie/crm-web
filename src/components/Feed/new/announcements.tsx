@@ -32,7 +32,7 @@ const Announcements = () => {
       )}
       {paginatedData && (
         <div className=" flex gap-3 flex-col pb-6">
-          <h5 className=" dark:bg-primary-dark pt-4  z-50 font-bold text-xl sticky top-0 pb-4 text-secondary dark:text-primary ">
+          <h5 className=" bg-white dark:bg-primary-dark pt-4  z-50 font-bold text-xl sticky top-0 pb-4 text-secondary dark:text-primary ">
             Announcements{" "}
             <small className=" text-status-check-success">
               + {Announcements.length}

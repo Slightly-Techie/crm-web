@@ -106,7 +106,7 @@ function Navbar() {
 
   return (
     <header>
-      <nav className="hidden xl:block xl:w-[20vw] sticky top-0 h-screen p-4  z-[50] border-r border-r-neutral-700 bg-primary-dark text-white">
+      <nav className="hidden xl:block xl:w-[20vw] sticky top-0 h-screen p-4 z-[50] border-r border-r-neutral-700 bg-primary-dark text-white">
         <section className="flex flex-col justify-between items-center h-full">
           {/* Top Section */}
           <section className="w-full">
@@ -173,8 +173,8 @@ function Navbar() {
               MenuItemsContent={
                 <section className="text-white flex flex-col justify-center gap-5 p-2 z-100 bg-black">
                   <a href="/techie/me" className="flex items-center gap-3">
-                    <AiOutlineSetting size={20} />
-                    <p className="font-bold text-sm">Settings</p>
+                    <AiOutlineUser size={20} />
+                    <p className="font-bold text-sm">Profile</p>
                   </a>
                   <button
                     onClick={() => signOut()}
@@ -245,20 +245,23 @@ function Navbar() {
             <DropDown
               MenuButtonContent={
                 <section className="flex gap-3 items-center mb-5">
-                  <Image
-                    className="w-10 h-10 aspect-square object-cover shrink-0 rounded-full"
-                    width={48}
-                    height={48}
-                    src={
-                      user?.profile_pic_url
-                        ? user?.profile_pic_url
-                        : `https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`
-                    }
-                    alt="profile"
-                    placeholder="blur"
-                    blurDataURL={`https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`}
-                    priority={true}
-                  />
+                  {user && (
+                    <Image
+                      className="w-10 h-10 aspect-square object-cover shrink-0 rounded-full"
+                      width={48}
+                      height={48}
+                      src={
+                        (user?.profile_pic_url === ""
+                          ? `https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`
+                          : `${user?.profile_pic_url}`) ||
+                        `https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`
+                      }
+                      alt={user?.username as string}
+                      placeholder="blur"
+                      blurDataURL={`https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`}
+                      priority={true}
+                    />
+                  )}
                   <section>
                     <p className="font-semibold text-sm">
                       {user?.first_name} {user?.last_name}
@@ -270,8 +273,8 @@ function Navbar() {
               MenuItemsContent={
                 <section className="text-white flex flex-col justify-center gap-5 p-2">
                   <section className="flex items-center gap-3">
-                    <AiOutlineSetting size={20} />
-                    <p className="font-bold text-sm">Settings</p>
+                    <AiOutlineUser size={20} />
+                    <p className="font-bold text-sm">Profile</p>
                   </section>
                   <button
                     onClick={() => signOut()}

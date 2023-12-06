@@ -32,10 +32,7 @@ const ClosedSignup = () => {
               twitter page
             </a>{" "}
             and our{" "}
-            <a
-              href="https://app.slightlytechie.com/"
-              className="text-[#FBBC04]"
-            >
+            <a href="https://slightlytechie.com/" className="text-[#FBBC04]">
               official website{" "}
             </a>
             for updates on when applications will swing back open. We can&apos;t

@@ -6,9 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 import useEndpoints from "@/services";
 import LoadingSpinner from "../loadingSpinner";
 import PageTitle from "../PageTitle";
+import useDebounce from "@/hooks/useDebouncedSearch";
+import { IGetAllTechiesResponse } from "@/types";
 
 function Team() {
-  const { getTechiesList } = useEndpoints();
+  const { getTechiesList, searchTechie } = useEndpoints();
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatioinDetails, setPaginatioinDetails] = useState({
     total: 0,
@@ -17,6 +19,10 @@ function Team() {
     page: 0,
   });
   const [searchKeyword, setSearchKeyword] = useState("");
+  const { debounce, result } = useDebounce<IGetAllTechiesResponse>(
+    searchTechie,
+    500
+  );
 
   const {
     data: TechiesData,
@@ -40,17 +46,13 @@ function Team() {
     retry: 3,
   });
 
-  const techies = TechiesData?.items;
+  const handleSearch = async (value: string) => {
+    setSearchKeyword(value);
+    debounce(value);
+  };
 
-  const filteredTechies = techies?.filter((user) => {
-    if (searchKeyword === "") {
-      return user;
-    }
-    return (
-      user.first_name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      user.last_name.toLowerCase().includes(searchKeyword.toLowerCase())
-    );
-  });
+  const techies =
+    searchKeyword && result?.items ? result?.items : TechiesData?.items;
 
   return (
     <section className="w-full h-full">
@@ -63,7 +65,7 @@ function Team() {
             <input
               type="text"
               value={searchKeyword}
-              onChange={(e) => setSearchKeyword(e.target.value)}
+              onChange={(e) => handleSearch(e.target.value)}
               className="w-full bg-transparent border-none placeholder-st-gray-500 text-black dark:text-white focus:outline-none"
               placeholder="Search by keyword"
             />
@@ -131,10 +133,9 @@ function Team() {
         )}
         {techies && (
           <section className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {filteredTechies &&
-              filteredTechies.map((user) => (
-                <Member key={`${user.id}`} data={user} />
-              ))}
+            {techies.map((user) => (
+              <Member key={`${user.id}`} data={user} />
+            ))}
           </section>
         )}
       </section>

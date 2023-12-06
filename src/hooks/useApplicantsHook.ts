@@ -3,6 +3,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ITechie } from "@/types";
 import useAxiosAuth from "./useAxiosAuth";
 import { toast } from "react-hot-toast";
+import useEndpoints from "@/services";
+import useDebouncedSearch from "./useDebouncedSearch";
 
 interface AllUsersResponse {
   items: ITechie[];
@@ -18,10 +20,10 @@ export function useApplicantHooks() {
   const [filter, setFilter] = useState("");
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(0);
-  const [debouncedInputValue, setDebouncedInputValue] = useState("");
-  const [newData, setNewData] = useState<undefined | ITechie[]>();
   const authAxios = useAxiosAuth();
   const queryClient = useQueryClient();
+  const { searchApplicant } = useEndpoints();
+  const { debounce, result } = useDebouncedSearch(searchApplicant, 400);
   const query = useQuery({
     queryKey: ["allUsers"],
     queryFn: () =>
@@ -33,6 +35,8 @@ export function useApplicantHooks() {
       setPages(res?.data?.pages);
     },
   });
+
+  const newData = filter && result?.items ? result.items : users;
 
   const isLoading = query.isLoading;
 
@@ -50,36 +54,14 @@ export function useApplicantHooks() {
     },
   });
 
-  useEffect(() => {
-    const delayInputTimeoutId = setTimeout(() => {
-      setDebouncedInputValue(filter);
-    }, 500);
-    return () => clearTimeout(delayInputTimeoutId);
-  }, [filter]);
+  const handleFilter = (value: string) => {
+    setFilter(value);
+    debounce(value);
+  };
 
   useEffect(() => {
     query.refetch();
   }, [page, query]);
-
-  useEffect(() => {
-    if (debouncedInputValue) {
-      const filteredUserData = users?.filter(
-        (user) =>
-          user?.first_name
-            .toLowerCase()
-            .includes(debouncedInputValue.toLowerCase().trim()) ||
-          user?.last_name
-            .toLowerCase()
-            .includes(debouncedInputValue.toLowerCase().trim()) ||
-          user?.email
-            .toLowerCase()
-            .includes(debouncedInputValue.toLowerCase().trim())
-      );
-      setNewData(filteredUserData);
-    } else {
-      setNewData(users);
-    }
-  }, [debouncedInputValue, users]);
 
   const tableData = newData?.map(
     ({
@@ -108,11 +90,11 @@ export function useApplicantHooks() {
     mutation,
     query,
     filter,
-    setFilter,
     newData,
     setPage,
     page,
     pages,
     isLoading,
+    handleFilter,
   };
 }

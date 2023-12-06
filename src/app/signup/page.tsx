@@ -39,6 +39,7 @@ export default function Signup() {
         skills: validatedSkills,
       };
       createNewUser(NEW_USER_DATA);
+      return;
     }
     next();
   };

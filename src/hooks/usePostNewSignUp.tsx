@@ -4,6 +4,16 @@ import { useMutation } from "@tanstack/react-query";
 import { NewUserFields, Status } from "@/types";
 import { AxiosError } from "axios";
 
+type ErrorObj = {
+  loc: string[];
+  msg: string;
+  type: string;
+};
+
+type ResponseError = {
+  detail: ErrorObj[];
+};
+
 function usePostNewSignUp() {
   const [status, setStatus] = React.useState<Status>("progress");
   const [errMessage, setErrMessage] = React.useState("");
@@ -20,9 +30,12 @@ function usePostNewSignUp() {
       setStatus("success");
       return res.data;
     } catch (error) {
-      const err = error as AxiosError<{ detail: string }>;
+      const err = error as AxiosError<ResponseError>;
+      const errObj = err.response?.data.detail[0];
+      const errField = errObj?.loc[1] || "";
+      const errMsg = `${errField}: ${errObj?.msg}`;
       setStatus("error");
-      setErrMessage(err.response?.data.detail || "An error occured");
+      setErrMessage(errMsg || "An error occured");
     }
   });
 

@@ -44,10 +44,10 @@ const Success = ({ name = "" }) => {
   const formattedDate = formatDate(date);
 
   return (
-    <div className="w-full h-full flex items-center justify-center text-black dark:text-white p-8 md:w-[55rem] font-tt-hoves mx-auto">
-      <div className="relative w-full flex flex-col gap-20">
-        <div className="flex flex-col gap-1 text-3xl md:text-4xl items-center text-center md:text-start md:items-start">
-          <h3 className="text-black dark:text-white text-5xl font-semibold">
+    <div className="w-full h-full flex items-center justify-center text-black dark:text-white p-8 xl:w-[40rem]  font-tt-hoves mx-auto">
+      <div className="relative w-full flex flex-col gap-20 px-4">
+        <div className="flex flex-col gap-1 items-center text-center md:text-start md:items-start">
+          <h3 className="text-black dark:text-white  py-4 text-3xl md:text-4xl lg:text-5xl font-semibold">
             You are the real MVP, {name}!
           </h3>
           <h3 className="text-[#777] text-4xl">Thank you for signing up. 🎉</h3>

@@ -50,7 +50,7 @@ function Profile({ register, errors }: ProfileFormType) {
           placeholder="Enter your first name"
           {...register("first_name", {
             required: true,
-            min: 2,
+            pattern: REGEXVALIDATION.shouldNotBeEmptyString,
           })}
         />
         {errors.first_name && <small>First name must be provided</small>}
@@ -65,7 +65,7 @@ function Profile({ register, errors }: ProfileFormType) {
           placeholder="Enter your last name"
           {...register("last_name", {
             required: true,
-            min: 2,
+            pattern: REGEXVALIDATION.shouldNotBeEmptyString,
           })}
         />
         {errors.last_name && <small>Last name must be provided</small>}
@@ -80,10 +80,10 @@ function Profile({ register, errors }: ProfileFormType) {
           placeholder="Enter your username"
           {...register("username", {
             required: true,
-            min: 2,
+            pattern: REGEXVALIDATION.shouldNotBeEmptyString,
           })}
         />
-        {errors.username && <small>Last name must be provided</small>}
+        {errors.username && <small>username must be provided</small>}
       </div>
       <div className=" my-4">
         <label className="text-[#000] dark:text-[#f1f3f7] font-bold">

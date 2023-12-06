@@ -25,6 +25,20 @@ const useEndpoints = () => {
     return data;
   };
 
+  const searchTechie = async (query: string) => {
+    const { data } = await authAxios.get(
+      `/api/v1/users/?active=true&p=${query}`
+    );
+    return data;
+  };
+
+  const searchApplicant = async (query: string) => {
+    const { data } = await authAxios.get<IGetAllTechiesResponse>(
+      `/api/v1/users/?active=false&p=${query}`
+    );
+    return data;
+  };
+
   const getFeedPosts = () => authAxios.get<IGetFeedsResponse>(`api/v1/feed/`);
 
   const getAnnouncements = (limit?: number) => {
@@ -51,6 +65,8 @@ const useEndpoints = () => {
     getProjects,
     postProjects,
     updateProfilePicture,
+    searchTechie,
+    searchApplicant,
   };
 };
 

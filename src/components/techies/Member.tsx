@@ -13,9 +13,14 @@ const Member = ({ data }: MemberProps) => {
     <section className="col-span-1 border-st-edge dark:border-st-edgeDark dark:text-[#F1F3F7] border rounded-md">
       <Image
         className="rounded-t-md w-full h-[250px] object-cover"
-        width={48}
-        height={48}
-        src={`https://avatars.dicebear.com/api/initials/${data?.first_name} ${data?.last_name}.svg`}
+        width={1000}
+        height={1000}
+        src={
+          (data.profile_pic_url === "string"
+            ? `https://api.dicebear.com/7.x/initials/jpg?seed=${data.first_name} ${data.last_name}`
+            : `${data.profile_pic_url}`) ||
+          `https://api.dicebear.com/7.x/initials/jpg?seed=${data.first_name} ${data.last_name}`
+        }
         priority
         alt="profile"
       />

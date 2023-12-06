@@ -1,12 +1,15 @@
-import FONTS from "@/assets/fonts";
+// import FONTS from "@/assets/fonts";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Toaster } from "react-hot-toast";
+import { Inter } from "next/font/google";
 
 export const metadata = {
   title: "Slightly Techie Network",
   description: "Welcome to Slightly Techie Network",
 };
+
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -17,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         suppressHydrationWarning={true}
-        className={`${FONTS.mona_sans.variable} font-mona-sans overflow-x-hidden dark:bg-black`}
+        className={`${inter.className} overflow-x-hidden dark:bg-black`}
       >
         <Toaster />
         <Providers>{children}</Providers>

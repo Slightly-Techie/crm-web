@@ -16,12 +16,13 @@ function UserPost({ post }: UserPostProps) {
           <div>
             <Image
               className="w-12 h-12 aspect-square object-cover shrink-0 rounded-full"
-              width={48}
-              height={48}
+              width={1000}
+              height={1000}
               src={
-                post.user?.profile_pic_url
-                  ? post.user?.profile_pic_url
-                  : `https://avatars.dicebear.com/api/initials/${post.user?.first_name} ${post.user?.last_name}.svg`
+                (post.user.profile_pic_url === "string"
+                  ? `https://api.dicebear.com/7.x/initials/jpg?seed=${post.user.first_name} ${post.user.last_name}`
+                  : `${post.user.profile_pic_url}`) ||
+                `https://api.dicebear.com/7.x/initials/jpg?seed=${post.user.first_name} ${post.user.last_name}`
               }
               alt="profile"
               placeholder="blur"
@@ -44,8 +45,8 @@ function UserPost({ post }: UserPostProps) {
       {post.feed_pic_url && (
         <div className="rounded-lg overflow-clip">
           <Image
-            width={200}
-            height={200}
+            width={5000}
+            height={5000}
             src={post.feed_pic_url as string}
             alt="content-pic"
             className="w-full"

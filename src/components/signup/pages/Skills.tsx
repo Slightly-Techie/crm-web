@@ -1,7 +1,6 @@
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { REGEXVALIDATION } from "@/constants";
 import { NewUserFields } from "@/types";
-import { useRef } from "react";
 
 type SkillsFields = "years_of_experience" | "bio" | "skills";
 

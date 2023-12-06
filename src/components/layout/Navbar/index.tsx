@@ -10,12 +10,11 @@ import { useAppDispatch } from "@/hooks";
 import { AiOutlineMenu } from "react-icons/ai";
 import {
   AiOutlineUser,
-  AiOutlineSetting,
   AiOutlineBell,
   AiOutlineHome,
   AiOutlineHourglass,
 } from "react-icons/ai";
-import { BsBarChart, BsChatLeft } from "react-icons/bs";
+import { BsChatLeft } from "react-icons/bs";
 import { GoSignOut } from "react-icons/go";
 import { FiTarget } from "react-icons/fi";
 import DropDown from "@/components/DropDown";

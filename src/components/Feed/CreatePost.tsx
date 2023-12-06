@@ -2,7 +2,6 @@
 import React, { ChangeEvent } from "react";
 import { IPost } from "@/types";
 import { isNonWhitespace } from "@/utils";
-import PictureGlyph from "@/assets/icons/picture-glyph.svg";
 import Image from "next/image";
 import { useAppSelector } from "@/hooks";
 import { usePostFeeds } from "./FeedServices";

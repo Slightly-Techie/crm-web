@@ -36,4 +36,5 @@ export let NEW_USER_DATA: NewUserFields = {
   is_active: false,
   profile_pic_url: "",
   skills: [],
+  username: "",
 };

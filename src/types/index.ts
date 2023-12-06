@@ -71,7 +71,7 @@ export interface NavbarProps {
 }
 
 export type NewUserFields = {
-  username:string
+  username: string;
   email: string;
   first_name: string;
   last_name: string;

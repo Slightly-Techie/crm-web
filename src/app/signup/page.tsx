@@ -46,7 +46,7 @@ export default function Signup() {
   return (
     <div className="w-screen dark:bg-[#020202]">
       <div className="grid lg:grid-cols-2 bg-[#fff] dark:bg-[#020202] mx-auto">
-        <div className="h-screen  lg:block sticky top-0 bg-[#fff] dark:bg-[#020202] lg:bg-[#020202]">
+        <div className="lg:h-screen lg:block sticky top-0 bg-[#fff] dark:bg-[#020202] lg:bg-[#020202]">
           <Image
             src={LeftImage}
             alt=""
@@ -68,7 +68,7 @@ export default function Signup() {
             }}
           />
         ) : (
-          <div className="  p-8 w-full md:w-[30rem] lg:w-5/6 mx-auto my-auto flex flex-col gap-4 justify-center h-fit">
+          <div className="p-8 w-full md:w-[30rem] lg:w-5/6 mx-auto my-auto flex flex-col gap-4 justify-center h-full">
             <section className=" text-[#000] dark:text-[#f1f3f7]  text-[1.5rem] font-bold flex items-center gap-4">
               {currentFormIndex !== 0 && (
                 <button

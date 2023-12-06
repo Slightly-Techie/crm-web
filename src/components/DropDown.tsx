@@ -24,7 +24,7 @@ export default function DropDown({
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items
-            className={`absolute bottom-[4.5rem] left-0 mt-2 w-56 origin-bottom-left border text-white rounded`}
+            className={`absolute bottom-[4.5rem] left-0 mt-2 w-56 origin-bottom-left border dark:bg-black text-white rounded`}
           >
             {MenuItemsContent}
           </Menu.Items>

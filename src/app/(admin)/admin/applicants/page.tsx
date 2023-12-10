@@ -7,6 +7,9 @@ import Loading from "../../loading";
 import PageTitle from "@/components/PageTitle";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import useEndpoints from "@/services";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 
 export default function Applicants() {
   const router = useRouter();
@@ -51,6 +54,11 @@ export default function Applicants() {
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     handleFilter(event.target.value);
   }
+
+
+
+
+  //Implement the data
 
   return (
     <>

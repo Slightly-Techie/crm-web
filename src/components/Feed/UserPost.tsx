@@ -45,8 +45,8 @@ function UserPost({ post }: UserPostProps) {
       {post.feed_pic_url && (
         <div className="rounded-lg overflow-clip">
           <Image
-            width={5000}
-            height={5000}
+            width={1000}
+            height={1000}
             src={post.feed_pic_url as string}
             alt="content-pic"
             className="w-full"

@@ -8,13 +8,16 @@ interface MemberProps {
   data: ITechie;
 }
 
-const Member = ({ data }: MemberProps) => {
+function Member({ data }: MemberProps) {
+  console.log(data);
+
   return (
-    <section className="col-span-1 border-st-edge dark:border-st-edgeDark dark:text-[#F1F3F7] border rounded-md">
+    <section className="col-span-1 border-st-edge dark:border-st-edgeDark dark:text-[#F1F3F7] border-2 rounded-md p-5">
+      {/* Top Section */}
       <Image
-        className="rounded-t-md w-full h-[250px] object-cover"
-        width={1000}
-        height={1000}
+        className="rounded-full w-[60px] h-[60px] object-cover mb-5"
+        width={5000}
+        height={5000}
         src={
           (data.profile_pic_url === "string"
             ? `https://api.dicebear.com/7.x/initials/jpg?seed=${data.first_name} ${data.last_name}`
@@ -24,15 +27,15 @@ const Member = ({ data }: MemberProps) => {
         priority
         alt="profile"
       />
-      <section className="p-3">
-        <p className="py-2">
+      <section>
+        <p className="lg:text-lg font-semibold">
           {data.first_name} {data.last_name}
         </p>
         <p className="font-light text-[#5D6675] dark:text-[#cacbcf] text-sm">
-          {data.stack?.name} Engineer
+          {data.stack?.name ? `${data.stack.name} Engineer` : "Techie"}
         </p>
-        <p className="text-complementary text-sm">@{data.username}</p>
-        <br />
+      </section>
+      <section className="mt-5">
         <Link href={`/techies/${data.id}`}>
           <button className="text-white bg-primary-dark text-primary-white dark:bg-primary-light dark:text-primary-dark px-2 py-1 rounded-md text-sm">
             View Profile
@@ -41,6 +44,6 @@ const Member = ({ data }: MemberProps) => {
       </section>
     </section>
   );
-};
+}
 
 export default Member;

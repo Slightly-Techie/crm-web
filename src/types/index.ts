@@ -56,6 +56,10 @@ export interface ITechie {
   status?: keyof typeof UserStatusEnum;
   username?: string;
   stack_id?: number | null;
+  role?: {
+    id: number;
+    name: "user" | "admin";
+  };
 }
 
 export interface ISkill {

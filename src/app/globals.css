@@ -96,3 +96,37 @@ small {
 :hover::-webkit-scrollbar-thumb {
   display: block;
 }
+
+/* Styles for the dropdown container */
+.react-select__value-container {
+  @apply border border-stone-300 text-st-surfaceDark px-1 rounded-tl-md rounded-bl-md  dark:border-st-edgeDark dark:focus:border-white py-2
+}
+
+/* Styles for the dropdown menu */
+.react-select__menu {
+  @apply py-2 px-1 border-stone-300 bg-white dark:bg-black rounded-md  border dark:border-neutral-600
+} 
+
+/* Styles for the options */
+.react-select__option {
+  @apply py-2 pl-1 rounded-md text-st-surfaceDark dark:text-st-surface
+}
+
+.react-select__option:hover {
+  @apply bg-st-gray dark:bg-st-surfaceDark
+}
+
+/* Styles for the container of selected options */
+.react-select__multi-value {
+  @apply bg-black text-white ml-1 py-1 dark:bg-white dark:text-black rounded-sm px-2
+}
+
+/* Styles for the label of each selected option */
+.react-select__multi-value__label {
+  @apply text-white dark:text-black text-sm mr-2
+}
+
+.react-select__indicators {
+  @apply border text-black dark:text-white dark:border-st-edgeDark
+}
+

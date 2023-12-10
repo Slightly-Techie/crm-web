@@ -3,8 +3,8 @@ import useEndpoints from "@/services";
 import { ITechie, WithoutNullableKeys } from "@/types";
 import { logToConsole } from "@/utils";
 import Image from "next/image";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { Form, useForm } from "react-hook-form";
+import { ChangeEvent, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import PageTitle from "@/components/PageTitle";
 import { REGEXVALIDATION } from "@/constants";
@@ -14,6 +14,9 @@ import { getSkillsArray } from "@/utils";
 import toast from "react-hot-toast";
 import { Status } from "@/types";
 import { PiUserGear } from "react-icons/pi";
+// import Select from "react-select/dist/declarations/src/Select";
+import Select from "react-select";
+
 type inputeField = WithoutNullableKeys<Omit<ITechie, "id" | "skills">>;
 type InitialField = inputeField & Record<"skills", string>;
 
@@ -88,6 +91,13 @@ export default function Techie() {
       setValue("skills", skills);
     }
   };
+
+  const options = [
+    { value: "blue", label: "Blue" },
+    { value: "green", label: "Green" },
+    { value: "orange", label: "Orange" },
+    { value: "purple", label: "Purple" },
+  ];
 
   const query = useQuery({
     queryKey: ["userProfile"],
@@ -214,7 +224,7 @@ export default function Techie() {
               </div>
             )}
             <div className="  p-[20px] text-white">
-              <div className="h-14 flex flex-row items-center border-b dark:border-[#8a8a8a]">
+              <div className="h-14 flex flex-row items-center border-b dark:border-st-edgeDark">
                 <h1 className="text-xl font-medium text-st-surfaceDark dark:text-st-surface">
                   Profile
                 </h1>
@@ -276,7 +286,7 @@ export default function Techie() {
                           required: true,
                           pattern: REGEXVALIDATION.shouldNotBeEmptyString,
                         })}
-                        className=" w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
+                        className=" w-full border mt-2 px-2  text-st-surfaceDark dark:text-st-surface border-stone-300 input__transparent py-2 focus:outline-none focus:border focus:border-st-cardDark dark:focus:border-white  rounded-md dark:border-st-edgeDark"
                       />
                       {errors.first_name && (
                         <small>First name must be provided</small>
@@ -292,7 +302,7 @@ export default function Techie() {
                           required: true,
                           pattern: REGEXVALIDATION.shouldNotBeEmptyString,
                         })}
-                        className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
+                        className="w-full border mt-2 px-2  text-st-surfaceDark dark:text-st-surface border-stone-300 input__transparent py-2 focus:outline-none focus:border focus:border-st-cardDark dark:focus:border-white  rounded-md dark:border-st-edgeDark"
                       />
                       {errors.last_name && (
                         <small>Last name must be provided</small>
@@ -319,19 +329,19 @@ export default function Techie() {
                         onChange={(e) =>
                           setSelectValue(parseInt(e.target.value))
                         }
-                        className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
+                        className="w-full border mt-2 px-2  text-st-surfaceDark dark:text-st-surface border-stone-300 input__transparent py-2 focus:outline-none focus:border focus:border-st-cardDark dark:focus:border-white  rounded-md dark:border-st-edgeDark"
                       >
                         {stackSuccess &&
                           STACKS?.data.map((stack) => (
                             <option
-                              className="text-[#000]"
+                              className=" text-st-surfaceDark"
                               key={stack.id}
                               value={stack.id}
                             >
                               {stack.name}
                             </option>
                           ))}
-                        <option className="text-[#000]" value={-1}>
+                        <option className=" text-st-surfaceDark" value={-1}>
                           Other
                         </option>
                       </select>
@@ -339,12 +349,12 @@ export default function Techie() {
                   </div>
                   {selectValue === -1 && (
                     <div className="my-4">
-                      <label className="text-[#000] dark:text-white">
+                      <label className=" text-st-surfaceDark dark:text-white">
                         If &apos;Other&apos;, please specify
                       </label>
                       <input
                         {...register("stack")}
-                        className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-white border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:bor333-[#fff] dark:border-[#8a8a8a]"
+                        className="w-full border mt-2 px-2  text-st-surfaceDark dark:text-white border-stone-300 input__transparent py-2 focus:outline-none focus:border focus:bor333-[#fff] dark:border-st-edgeDark"
                         type="text"
                       />
                     </div>
@@ -353,22 +363,14 @@ export default function Techie() {
                     <label className="dark:text-st-surface text-st-surfaceDark">
                       Languages/Tools
                     </label>
-                    <input
-                      {...register("skills", {
-                        required: true,
-                        pattern: REGEXVALIDATION.listSeparatedByComma,
-                      })}
-                      disabled={!editMode}
-                      placeholder="JavaScript, Django, C#"
-                      className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
+                    <Select
+                      isDisabled={!editMode}
+                      unstyled
+                      options={options}
+                      classNamePrefix="react-select"
+                      className=" react-select-container"
+                      isMulti
                     />
-                    {errors.skills && (
-                      <small>
-                        {" "}
-                        Valid technologies or languages must be provided and
-                        they must be separated by a comma
-                      </small>
-                    )}
                   </div>
                   <div className="flex flex-col gap-1">
                     <label className="dark:text-st-surface text-st-surfaceDark">
@@ -378,7 +380,7 @@ export default function Techie() {
                       disabled
                       readOnly
                       {...register("email", { required: true })}
-                      className="w-full border-[1px] mt-2 px-2 text-st-subTextDark dark:text-[#f1f3f7]/70 dark:bg-neutral-900 border-[#33333380] py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
+                      className="w-full border mt-2 px-2 text-st-subTextDark dark:text-st-surface/70 dark:bg-neutral-900 border-stone-300 py-2 focus:outline-none focus:border focus:border-st-cardDark dark:focus:border-white  rounded-md dark:border-st-edgeDark"
                     />
                   </div>
                   <div className="flex flex-col gap-1">
@@ -389,7 +391,7 @@ export default function Techie() {
                       disabled
                       readOnly
                       value={`@${user.username}`}
-                      className="w-full border-[1px] mt-2 px-2 text-st-subTextDark dark:text-[#f1f3f7]/70 dark:bg-neutral-900  border-[#33333380] py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
+                      className="w-full border mt-2 px-2 text-st-subTextDark dark:text-st-surface/70 dark:bg-neutral-900  border-stone-300 py-2 focus:outline-none focus:border focus:border-st-cardDark dark:focus:border-white  rounded-md dark:border-st-edgeDark"
                     />
                   </div>
                 </div>
@@ -397,7 +399,7 @@ export default function Techie() {
             </div>
           </div>
           <div className="lg:h-[28.5rem] shrink-0 bg-white p-[20px] dark:bg-[#000000] dark:text-white">
-            <div className="h-14 flex flex-row items-center border-b dark:border-[#8a8a8a]">
+            <div className="h-14 flex flex-row items-center border-b dark:border-st-edgeDark">
               <h1 className="text-xl font-medium">Socials</h1>
             </div>
             <div className="flex flex-col md:flex-row gap-8 mt-[10px]">
@@ -410,7 +412,7 @@ export default function Techie() {
                     })}
                     disabled={!editMode}
                     rows={12}
-                    className="w-[25rem] border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
+                    className="w-[25rem] border mt-2 px-2  text-st-surfaceDark dark:text-st-surface border-stone-300 input__transparent py-2 focus:outline-none focus:border focus:border-st-cardDark dark:focus:border-white  rounded-md dark:border-st-edgeDark"
                   />
                 </div>
               </div>
@@ -420,7 +422,7 @@ export default function Techie() {
                   <input
                     disabled={!editMode}
                     {...register("github_profile")}
-                    className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a] "
+                    className="w-full border mt-2 px-2  text-st-surfaceDark dark:text-st-surface border-stone-300 input__transparent py-2 focus:outline-none focus:border focus:border-st-cardDark dark:focus:border-white  rounded-md dark:border-st-edgeDark "
                   />
                 </div>
                 <div className="flex flex-col gap-0.5">
@@ -428,7 +430,7 @@ export default function Techie() {
                   <input
                     disabled={!editMode}
                     {...register("portfolio_url")}
-                    className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a] "
+                    className="w-full border mt-2 px-2  text-st-surfaceDark dark:text-st-surface border-stone-300 input__transparent py-2 focus:outline-none focus:border focus:border-st-cardDark dark:focus:border-white  rounded-md dark:border-st-edgeDark "
                   />
                 </div>
 
@@ -437,7 +439,7 @@ export default function Techie() {
                   <input
                     disabled={!editMode}
                     {...register("twitter_profile")}
-                    className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a] "
+                    className="w-full border mt-2 px-2  text-st-surfaceDark dark:text-st-surface border-stone-300 input__transparent py-2 focus:outline-none focus:border focus:border-st-cardDark dark:focus:border-white  rounded-md dark:border-st-edgeDark "
                   />
                 </div>
                 <div className="flex flex-col gap-0.5">
@@ -445,7 +447,7 @@ export default function Techie() {
                   <input
                     disabled={!editMode}
                     {...register("linkedin_profile")}
-                    className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
+                    className="w-full border mt-2 px-2  text-st-surfaceDark dark:text-st-surface border-stone-300 input__transparent py-2 focus:outline-none focus:border focus:border-st-cardDark dark:focus:border-white  rounded-md dark:border-st-edgeDark"
                   />
                 </div>
               </div>

@@ -19,7 +19,7 @@ const Announcements = () => {
   };
 
   return (
-    <div className="w-full h-fit flex flex-col ">
+    <div className="w-full h-fit flex flex-col p-5">
       {isFetching && (
         <div className="h-full w-full flex p-4 flex-col items-center justify-center">
           <LoadingSpinner />
@@ -32,7 +32,7 @@ const Announcements = () => {
       )}
       {paginatedData && (
         <div className=" flex gap-3 flex-col pb-6">
-          <h5 className=" bg-white dark:bg-primary-dark pt-4  z-50 font-bold text-xl sticky top-0 pb-4 text-secondary dark:text-primary ">
+          <h5 className=" bg-white dark:bg-primary-dark pt-4 z-50 font-bold text-xl sticky top-0 pb-4 text-secondary dark:text-primary ">
             Announcements{" "}
             <small className=" text-status-check-success">
               + {Announcements.length}
@@ -49,7 +49,7 @@ const Announcements = () => {
               return (
                 <div
                   key={item.id}
-                  className="p-3 flex flex-col bg-neutral-100 rounded-md dark:bg-st-cardDark border-st-gray dark:border-st-grayDark"
+                  className="p-5 flex flex-col bg-neutral-100 rounded-md dark:bg-st-cardDark border-st-gray dark:border-st-grayDark"
                 >
                   <span className=" flex justify-between gap-4">
                     <h6 className="text-primary-dark text-lg pb-4 dark:text-st-gray font-semibold">

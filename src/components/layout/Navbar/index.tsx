@@ -19,7 +19,7 @@ import { GoSignOut } from "react-icons/go";
 import { FiTarget } from "react-icons/fi";
 import DropDown from "@/components/DropDown";
 import ThemeSwitcher from "@/components/theme/theme";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const Navlinks = [
   {
@@ -90,6 +90,7 @@ const Navlinks = [
 
 function Navbar() {
   const { getUserProfile } = useEndpoints();
+  const session = useSession();
   const dispatch = useAppDispatch();
   const [navToggle, setNavToggle] = useState<boolean>(false);
   const [user, setUser] = useState<undefined | ITechie>();
@@ -100,12 +101,20 @@ function Navbar() {
       setUser(data);
       dispatch(action.auth.setUser(data));
     },
+    enabled: session.status === "authenticated",
+    refetchOnWindowFocus: false,
+  });
+
+  const { data: role } = useQuery({
+    queryKey: ["user_profile"],
+    enabled: session.status === "authenticated",
+    queryFn: () => getUserProfile().then((res) => res?.data?.role?.name),
     refetchOnWindowFocus: false,
   });
 
   return (
     <header>
-      <nav className="hidden xl:block xl:w-[20vw] sticky top-0 h-screen p-4 z-[50] border-r border-r-neutral-700 bg-primary-dark text-white">
+      <nav className="hidden xl:block xl:w-[20vw] sticky top-0 h-screen p-4 z-[50] border-l border-r border-r-neutral-700 border-l-neutral-700 bg-primary-dark text-white">
         <section className="flex flex-col justify-between items-center h-full">
           {/* Top Section */}
           <section className="w-full">
@@ -123,6 +132,9 @@ function Navbar() {
                     </p>
                     <section className="flex flex-col gap-y-5">
                       {link.links.map((item) => {
+                        if (role === "user" && item.name === "Applicants") {
+                          return <></>;
+                        }
                         return (
                           <Link href={item.link} key={item.id}>
                             <section className="flex items-center text-white gap-3">
@@ -147,8 +159,8 @@ function Navbar() {
                 <section className="flex gap-3 items-center mb-5">
                   <Image
                     className="w-10 h-10 aspect-square object-cover shrink-0 rounded-full"
-                    width={48}
-                    height={48}
+                    width={1000}
+                    height={1000}
                     src={
                       user?.profile_pic_url
                         ? user?.profile_pic_url
@@ -247,8 +259,8 @@ function Navbar() {
                   {user && (
                     <Image
                       className="w-10 h-10 aspect-square object-cover shrink-0 rounded-full"
-                      width={48}
-                      height={48}
+                      width={1000}
+                      height={1000}
                       src={
                         (user?.profile_pic_url === ""
                           ? `https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`

@@ -24,7 +24,7 @@ export default function Signup() {
     currentFormIndex,
   } = useNavigateForms();
   const { createNewUser, status, setStatus, errMessage } = usePostNewSignUp();
-  const isClosed = true;
+  const isClosed = false;
 
   const onSubmit = (data: Partial<NewUserFields>) => {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };

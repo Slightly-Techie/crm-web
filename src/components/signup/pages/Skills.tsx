@@ -2,7 +2,7 @@ import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { REGEXVALIDATION } from "@/constants";
 import { NewUserFields } from "@/types";
 
-type SkillsFields = "years_of_experience" | "bio" | "skills";
+type SkillsFields = "years_of_experience" | "bio";
 
 type TSkillsType = Pick<NewUserFields, SkillsFields>;
 
@@ -33,7 +33,7 @@ function Skills({ register, errors }: SkillsFormType) {
           placeholder="Enter your years of experience"
         />
       </div>
-      <div className=" my-4">
+      {/* <div className=" my-4">
         <label
           className=" text-[#000] dark:text-[#f1f3f7] font-bold"
           htmlFor=""
@@ -55,7 +55,7 @@ function Skills({ register, errors }: SkillsFormType) {
             separated by a comma
           </small>
         )}
-      </div>
+      </div> */}
       <div className="my-4">
         <label className=" text-[#000] dark:text-[#f1f3f7] font-bold">
           How has the experience as a techie been?

@@ -35,6 +35,6 @@ export let NEW_USER_DATA: NewUserFields = {
   portfolio_url: "",
   is_active: false,
   profile_pic_url: "",
-  skills: [],
+  // skills: [],
   username: "",
 };

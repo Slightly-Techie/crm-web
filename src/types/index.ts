@@ -90,7 +90,7 @@ export type NewUserFields = {
   portfolio_url: string;
   stack_id: number;
   stack?: string;
-  skills: string[];
+  // skills: string[];
   profile_pic_url: string;
   is_active: boolean;
   role_id?: number;

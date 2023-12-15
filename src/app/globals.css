@@ -96,3 +96,7 @@ small {
 :hover::-webkit-scrollbar-thumb {
   display: block;
 }
+
+mark {
+  all: unset
+}

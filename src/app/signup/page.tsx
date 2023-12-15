@@ -6,7 +6,7 @@ import usePostNewSignUp from "@/hooks/usePostNewSignUp";
 import { NewUserFields } from "@/types";
 import SubmitStatus from "@/components/signup/pages/SubmitStatus";
 import { NEW_USER_DATA as INITIAL_USER_DATA } from "@/constants";
-import { getSkillsArray } from "@/utils";
+// import { getSkillsArray } from "@/utils";
 import ClosedSignup from "@/components/signup/pages/ClosedSignup";
 import { RiArrowLeftLine } from "react-icons/ri";
 
@@ -24,19 +24,19 @@ export default function Signup() {
     currentFormIndex,
   } = useNavigateForms();
   const { createNewUser, status, setStatus, errMessage } = usePostNewSignUp();
-  const isClosed = true;
+  const isClosed = false;
 
   const onSubmit = (data: Partial<NewUserFields>) => {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
     if (currentFormIndex === 3) {
-      const { years_of_experience, skills } = NEW_USER_DATA;
-      const validatedSkills = getSkillsArray(skills);
+      const { years_of_experience } = NEW_USER_DATA;
+      // const validatedSkills = getSkillsArray(skills);
       NEW_USER_DATA = {
         ...NEW_USER_DATA,
         stack_id:
           Number(NEW_USER_DATA.stack_id) === -1 ? 1 : NEW_USER_DATA.stack_id,
         years_of_experience: Number(years_of_experience),
-        skills: validatedSkills,
+        // skills: validatedSkills,/
       };
       createNewUser(NEW_USER_DATA);
       return;

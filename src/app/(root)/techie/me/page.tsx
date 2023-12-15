@@ -1,6 +1,6 @@
 "use client";
 import useEndpoints from "@/services";
-import { IGetAllTechiesResponse, ITechie, WithoutNullableKeys } from "@/types";
+import { ITechie, WithoutNullableKeys } from "@/types";
 import { logToConsole } from "@/utils";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";

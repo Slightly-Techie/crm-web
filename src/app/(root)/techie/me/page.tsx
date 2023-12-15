@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import PageTitle from "@/components/PageTitle";
 import { REGEXVALIDATION } from "@/constants";
 import { getStacks } from "@/services";
-import { Oval } from "react-loader-spinner";
+import Oval from "react-loader-spinner";
 import { getSkillsArray } from "@/utils";
 import toast from "react-hot-toast";
 import { Status } from "@/types";

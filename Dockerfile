@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:20-alpine3.18 AS builder
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ ENV NODE_ENV=production \
 
 RUN yarn build
 
-FROM node:18-alpine
+FROM node:20-alpine3.18
 
 WORKDIR /app
 

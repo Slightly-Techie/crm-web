@@ -1,6 +1,6 @@
 "use client";
 import useEndpoints from "@/services";
-import { ITechie, WithoutNullableKeys } from "@/types";
+import { IGetAllTechiesResponse, ITechie, WithoutNullableKeys } from "@/types";
 import { logToConsole } from "@/utils";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
@@ -14,11 +14,16 @@ import { getSkillsArray } from "@/utils";
 import toast from "react-hot-toast";
 import { Status } from "@/types";
 import { PiUserGear } from "react-icons/pi";
-// import Select from "react-select/dist/declarations/src/Select";
-import Select from "react-select";
+import AsyncSelect from "react-select/async";
+import useDebouncedSearch from "@/hooks/useDebouncedSearch";
 
 type inputeField = WithoutNullableKeys<Omit<ITechie, "id" | "skills">>;
 type InitialField = inputeField & Record<"skills", string>;
+
+type SearchOption = {
+  value: number;
+  label: string;
+}[];
 
 // inital UserField state
 const initialUserField: ITechie = {
@@ -42,8 +47,12 @@ const initialUserField: ITechie = {
   stack_id: null,
 };
 export default function Techie() {
-  const { getUserProfile, updateUserProfile, updateProfilePicture } =
-    useEndpoints();
+  const {
+    getUserProfile,
+    updateUserProfile,
+    searchApplicant,
+    updateProfilePicture,
+  } = useEndpoints();
   const [user, setUser] = useState<ITechie>(initialUserField);
   const [editMode, setEditMode] = useState(false);
   const [status, setStatus] = useState<Status>("progress");
@@ -59,7 +68,7 @@ export default function Techie() {
   const [selectValue, setSelectValue] = useState(initialUserField.stack_id);
   const [selectedFile, setSelectedFile] = useState<Blob | null>();
   const [preview, setPreview] = useState("");
-
+  const { promisifyDebounce } = useDebouncedSearch(searchApplicant, 1000);
   const {
     data: STACKS,
     isSuccess: stackSuccess,
@@ -93,12 +102,46 @@ export default function Techie() {
   };
 
   const options = [
-    { value: "blue", label: "Blue" },
-    { value: "green", label: "Green" },
-    { value: "orange", label: "Orange" },
-    { value: "purple", label: "Purple" },
+    {
+      id: 0,
+      name: "Go",
+    },
+    {
+      id: 1,
+      name: "JavaScript",
+    },
+    {
+      id: 2,
+      name: "Python",
+    },
+    {
+      id: 3,
+      name: "Ruby",
+    },
   ];
 
+  const defaultOptions = options.map((option) => ({
+    value: option.id,
+    label: option.name,
+  }));
+
+  async function promiseOptions(inputValue: string): Promise<SearchOption> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const data = await promisifyDebounce(inputValue);
+        if (data?.items.length) {
+          resolve(
+            data.items.map((item) => ({
+              value: item.id,
+              label: item.first_name,
+            }))
+          );
+        }
+      } catch (err) {
+        reject("not found");
+      }
+    });
+  }
   const query = useQuery({
     queryKey: ["userProfile"],
     queryFn: getUserProfile,
@@ -363,13 +406,18 @@ export default function Techie() {
                     <label className="dark:text-st-surface text-st-surfaceDark">
                       Languages/Tools
                     </label>
-                    <Select
+                    <AsyncSelect
+                      placeholder="Select tool.."
                       isDisabled={!editMode}
                       unstyled
-                      options={options}
+                      onChange={(e) => console.log(e)}
+                      // options={result?.items}
+                      cacheOptions
+                      loadOptions={promiseOptions}
                       classNamePrefix="react-select"
                       className=" react-select-container"
                       isMulti
+                      defaultOptions={defaultOptions}
                     />
                   </div>
                   <div className="flex flex-col gap-1">

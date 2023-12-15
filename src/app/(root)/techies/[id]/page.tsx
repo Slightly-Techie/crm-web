@@ -47,7 +47,9 @@ function Page() {
         <p>Error loading data</p>
       ) : (
         <section className="w-full h-full">
-          <PageTitle title={`${UserProfile.first_name} ${UserProfile.last_name}`} />
+          <PageTitle
+            title={`${UserProfile.first_name} ${UserProfile.last_name}`}
+          />
           <section className="p-5">
             <section className="w-full flex-col lg:flex-row justify-between flex gap-2 p-5 xl:p-0">
               {/* Left Side */}
@@ -82,15 +84,13 @@ function Page() {
                     )}
                     <section className="flex items-center gap-2 flex-wrap">
                       <a
-                        href={
-                          UserProfile?.portfolio_url || "#"
-                        }
+                        href={UserProfile?.portfolio_url || "#"}
                         target="_blank"
                         rel="noreferrer"
                         className="text-sm flex items-center gap-2 text-gray-400"
                       >
                         <AiOutlineLink />
-                        {UserProfile.portfolio_url as string || "Unspecified"}
+                        {(UserProfile.portfolio_url as string) || "Unspecified"}
                       </a>
                     </section>
                   </section>

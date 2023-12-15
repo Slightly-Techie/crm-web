@@ -118,7 +118,7 @@ small {
 
 /* Styles for the container of selected options */
 .react-select__multi-value {
-  @apply bg-black text-white ml-1 py-1 dark:bg-white dark:text-black rounded-sm px-2
+  @apply bg-black text-white ml-1 py-1 dark:bg-white dark:text-black rounded-sm px-2 mb-2
 }
 
 /* Styles for the label of each selected option */

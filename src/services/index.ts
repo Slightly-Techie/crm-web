@@ -33,10 +33,10 @@ const useEndpoints = () => {
   };
 
   const searchApplicant = async (query: string) => {
-    const { data } = await authAxios.get<IGetAllTechiesResponse>(
+    const res = await authAxios.get<IGetAllTechiesResponse>(
       `/api/v1/users/?active=false&p=${query}`
     );
-    return data;
+    return res;
   };
 
   const getFeedPosts = () => authAxios.get<IGetFeedsResponse>(`api/v1/feed/`);

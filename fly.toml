@@ -1,43 +1,42 @@
+# fly.toml app configuration file generated for crm-web-preprod on 2023-12-15T20:46:25Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-
-app = "crm-web"
+app = "crm-web-preprod"
+primary_region = "jnb"
 kill_signal = "SIGINT"
-kill_timeout = 5
-processes = []
+kill_timeout = "5s"
+
+[experimental]
+  auto_rollback = true
 
 [build]
   dockerfile = "Dockerfile"
 
 [env]
-  PORT = "3000"
   NEXT_PUBLIC_API_URL = "https://crm-api.fly.dev"
-
-[experimental]
-  allowed_public_ports = []
-  auto_rollback = true
+  PORT = "3000"
 
 [[services]]
-  http_checks = []
+  protocol = "tcp"
   internal_port = 3000
   processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
   [services.concurrency]
+    type = "connections"
     hard_limit = 25
     soft_limit = 20
-    type = "connections"
-
-  [[services.ports]]
-    force_https = true
-    handlers = ["http"]
-    port = 80
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
 
   [[services.tcp_checks]]
-    grace_period = "1s"
     interval = "15s"
-    restart_limit = 0
     timeout = "2s"
+    grace_period = "1s"

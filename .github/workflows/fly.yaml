@@ -2,9 +2,9 @@ name: Fly CRM Web Deploy
 on:
   push:
     branches:
-      - main
+      - release-0.0.1
 env:
-  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_VIXION }}
 jobs:
   deploy:
     name: Deploy app

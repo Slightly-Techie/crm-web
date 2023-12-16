@@ -76,8 +76,8 @@ function CreatePost() {
           {user !== undefined && (
             <Image
               className="w-12 h-12 aspect-square object-cover shrink-0 rounded-full"
-              width={48}
-              height={48}
+              width={1000}
+              height={1000}
               src={
                 user?.profile_pic_url
                   ? user?.profile_pic_url

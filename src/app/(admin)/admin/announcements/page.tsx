@@ -50,8 +50,8 @@ export default function Announcement() {
     toast.success("Announcement Deleted!");
   }
   return (
-    <div className="">
-      <PageTitle title="Create announcement" />
+    <div>
+      <PageTitle title="Create Announcements" />
       <div className="w-full right-0 grid h-full lg:grid-cols-announcement">
         <CreateAnnouncement
           existingPost={currentPost}
@@ -69,7 +69,7 @@ export default function Announcement() {
             </h1>
           )}
           {Announcements && (
-            <div className="h-full pt-14 py-4 ">
+            <div className="h-full py-4 ">
               <h3 className="text-st-text py-4 dark:text-st-surface text-left text-xl font-">
                 {Announcements.length} New Announcements
               </h3>

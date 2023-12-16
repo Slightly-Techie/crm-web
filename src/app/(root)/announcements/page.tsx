@@ -7,10 +7,11 @@ import Link from "next/link";
 import Image from "next/image";
 import PageTitle from "@/components/PageTitle";
 import { useState } from "react";
-// import { useSession } from "next-auth/react";
+import useEndpoints from "@/services";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 
 function Page() {
-  // const session = useSession();
   const { isFetching, Announcements } = useFetchAnnouncements(10);
   const [currentLimit] = useState(10);
   const paginatedData = Announcements && Announcements.slice(0, currentLimit);
@@ -31,13 +32,27 @@ function Page() {
     return projectMatch;
   });
 
+  const session = useSession();
+  
+  const {getUserProfile} = useEndpoints()
+
+  const {
+    data: role,
+  } = useQuery({
+    queryKey: ["user_profile"],
+    enabled: session.status === "authenticated",
+    queryFn: () => getUserProfile().then(res=>res?.data?.role?.name),
+    refetchOnWindowFocus: false,
+  });
+
+
   return (
     <section>
       <PageTitle title="Announcements" />
       <section className="flex flex-col lg:flex-row w-full h-full">
         {/* Left */}
-        <section className="lg:w-[70%] h-full">
-          <section className="flex justify-between items-center w-full p-5 border-r h-full">
+        <section className="lg:w-[70%] h-screen overflow-y-auto border-r dark:border-r-neutral-700">
+          <section className="flex justify-between items-center w-full p-5 ">
             <section className="w-[50%] flex items-center py-2 px-3 gap-2 border rounded-md">
               <input
                 type="text"
@@ -54,7 +69,7 @@ function Page() {
               />
             </section>
             {/* Add Filter and Sort Dropdowns */}
-            {isAdmin && (
+            {role === "admin" && (
               <Link
                 href={"/admin/announcements"}
                 className=" border dark:border-none bg-primary-dark text-white dark:bg-st-surfaceDark px-4 py-2 rounded text-sm"
@@ -91,8 +106,9 @@ function Page() {
           </section>
         </section>
         {/* Right */}
-        <section className="flex justify-between lg:w-[25%] my-2 p-5">
-          <p>Techie of the menth go dey here</p>
+        <section className="lg:w-[30%] my-2 p-5">
+          <h1 className="font-semibold md:text-xl">Techie of the Month</h1>
+          <hr className="my-5 border dark:border-neutral-700"/>
         </section>
       </section>
     </section>

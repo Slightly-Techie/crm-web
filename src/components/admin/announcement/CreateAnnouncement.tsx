@@ -46,6 +46,8 @@ export default function CreateAnnouncement({
     }
   }
 
+
+
   return (
     <form
       onSubmit={(e) => {
@@ -54,9 +56,7 @@ export default function CreateAnnouncement({
       }}
       className=" pl-2 w-full h-fit lg:w-full lg:mx-auto lg:sticky lg:top-16 self-start"
     >
-      <h1 className=" text-center text-st-text dark:text-st-surface font-base text-[1.2rem] py-4">
-        Create Announcement
-      </h1>
+     
       <div className=" p-4  light:bg-st-edgeDark rounded-sm">
         <div className=" my-4 ">
           <label className=" light:text-st-gray dark:text-st-surface  text-st-text">

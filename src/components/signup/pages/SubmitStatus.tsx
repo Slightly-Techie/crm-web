@@ -19,20 +19,24 @@ const Error = ({
   resetForm: () => void;
 }) => {
   return (
-    <div className="w-full h-full flex text-black dark:text-white items-center justify-center p-8 md:w-[35rem] font-tt-hoves mx-auto">
-      <div className="w-full md:w-96 flex flex-col border border-[#757575] p-8">
-        <h1 className="text-lg text-[#000] dark:text-[#f3f1f7] text-center font-medium">
-          There was an <mark className="text-[#ff7676]">error</mark> submitting
-          your request{" "}
+    <div className="w-full h-full flex text-black dark:text-white items-center justify-center p-4 md:w-[35rem] font-tt-hoves mx-auto">
+      <div className="w-full md:w-96 flex flex-col border border-[#757575] rounded-md p-4">
+        <h1 className="text-2xl py-2 text-[#000] dark:text-[#f3f1f7] text-center font-medium">
+          There was an <mark className="text-[#ff7676] bg-none">error</mark>{" "}
+          submitting your request{" "}
         </h1>
         <div className="w-full h-full grid place-content-center p-2">
           {message && (
-            <p className="text-[1.2rem] text-[#000] dark:text-[#f3f1f7] text-center ">
+            <p className="text-base text-[#000] dark:text-[#f3f1f7] text-center ">
               {message}
             </p>
           )}
         </div>
-        <button className="" type="button" onClick={resetForm}>
+        <button
+          className=" border  w-fit mx-auto px-4 py-1 rounded-md"
+          type="button"
+          onClick={resetForm}
+        >
           Try Again
         </button>
       </div>

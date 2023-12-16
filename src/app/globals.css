@@ -80,19 +80,23 @@ small {
   overflow-y: scroll;
 }
 
-.scrollbar::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 0.4rem;
 }
 
-.scrollbar::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
-.scrollbar::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background-color: rgba(190, 190, 190, 0.164);
   border-radius: 2rem;
 }
 
-.scrollbar:hover::-webkit-scrollbar-thumb {
+:hover::-webkit-scrollbar-thumb {
   display: block;
+}
+
+mark {
+  all: unset
 }

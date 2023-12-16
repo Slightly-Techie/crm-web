@@ -49,10 +49,11 @@ const Success = ({ name = "" }) => {
 
   return (
     <div className="w-full h-full flex items-center justify-center text-black dark:text-white p-8 xl:w-[40rem]  font-tt-hoves mx-auto">
-      <div className="relative w-full flex flex-col gap-20 px-4">
+      <div className="relative w-full flex flex-col gap-4 px-4">
         <div className="flex flex-col gap-1 items-center text-center md:text-start md:items-start">
           <h3 className="text-black dark:text-white  py-4 text-3xl md:text-4xl lg:text-5xl font-semibold">
-            You are the real MVP, {name}!
+            You are the real <mark className=" text-green-500">MVP</mark>,{" "}
+            {name}!
           </h3>
           <h3 className="text-[#777] text-4xl">Thank you for signing up. 🎉</h3>
         </div>

@@ -170,7 +170,7 @@ export default function Techie() {
   return (
     <>
       <PageTitle title="Edit Your Profile" />
-      <div className="flex w-full justify-center relative p-8 ">
+      <div className="flex w-full justify-center relative px-8 pt-[10vh]">
         <form
           onSubmit={onSubmit}
           className="flex flex-col gap-12 w-full sm:w-[calc(100% - 48px)] sm:max-w-[1000px] bg-[white] dark:bg-[#000000] dark:text-white"

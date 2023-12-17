@@ -47,21 +47,24 @@ function Page() {
         <p>Error loading data</p>
       ) : (
         <section className="w-full h-full">
-          <PageTitle title={UserProfile.first_name} />
-          <section className="p-5">
+          <PageTitle
+            title={`${UserProfile.first_name} ${UserProfile.last_name}`}
+          />
+          <section className="px-5 pt-[10vh]">
             <section className="w-full flex-col lg:flex-row justify-between flex gap-2 p-5 xl:p-0">
               {/* Left Side */}
               <section className="relative lg:w-[70%] h-[500px] lg:h-[350px]">
                 <section className="absolute bg-primary-light dark:bg-st-surfaceDark w-full h-[150px] z-[1]"></section>
                 <section className="flex flex-col gap-5 absolute z-[2] top-[125px] px-5">
                   <Image
-                    className="w-12 md:w-20 h-12 md:h-20 aspect-square shrink-0 rounded-full"
-                    width={48}
-                    height={48}
+                    className="w-12 md:w-20 h-12 md:h-20 aspect-square shrink-0 rounded-full object-cover"
+                    width={1000}
+                    height={1000}
                     src={
-                      UserProfile?.profile_pic_url
-                        ? UserProfile?.profile_pic_url
-                        : `https://avatars.dicebear.com/api/initials/${UserProfile?.first_name} ${UserProfile?.last_name}.svg`
+                      (UserProfile.profile_pic_url === "string"
+                        ? `https://api.dicebear.com/7.x/initials/jpg?seed=${UserProfile.first_name} ${UserProfile.last_name}`
+                        : `${UserProfile.profile_pic_url}`) ||
+                      `https://api.dicebear.com/7.x/initials/jpg?seed=${UserProfile.first_name} ${UserProfile.last_name}`
                     }
                     alt="profile"
                     placeholder="blur"
@@ -81,15 +84,13 @@ function Page() {
                     )}
                     <section className="flex items-center gap-2 flex-wrap">
                       <a
-                        href={
-                          UserProfile?.portfolio_url || "https://google.com"
-                        }
+                        href={UserProfile?.portfolio_url || "#"}
                         target="_blank"
                         rel="noreferrer"
                         className="text-sm flex items-center gap-2 text-gray-400"
                       >
                         <AiOutlineLink />
-                        {UserProfile.portfolio_url as string}
+                        {(UserProfile.portfolio_url as string) || "Unspecified"}
                       </a>
                     </section>
                   </section>
@@ -100,7 +101,7 @@ function Page() {
                 <section>
                   <h1>Stack:</h1>
                   <p className="text-gray-400">
-                    {UserProfile.stack?.name || "He no add yet"}
+                    {UserProfile.stack?.name || "Unspecified"}
                   </p>
                 </section>
                 <hr className="my-5 border-[#777777]" />
@@ -153,7 +154,7 @@ function Page() {
                 {currentUserPosts?.length && (
                   <>
                     <section className="  border-b border-b-neutral-600 my-6 pb-2">
-                      <h2 className=" px-4 text-2xl  ">
+                      <h2 className="text-xl">
                         Posts ({currentUserPosts.length})
                       </h2>
                     </section>

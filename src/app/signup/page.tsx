@@ -75,7 +75,7 @@ export default function Signup() {
                 <button
                   onClick={previous}
                   type="button"
-                  className="px-2 py-2 bg-[#fff] border border-[#333] hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7]  dark:text-[#000] rounded-full"
+                  className="px-2 bg-black py-2 dark:bg-[#fff] border border-[#333] hover:bg-[#333]  dark:hover:bg-[#ffffff] text-[#f1f3f7]  dark:text-[#000] rounded-full"
                 >
                   <RiArrowLeftLine />
                 </button>

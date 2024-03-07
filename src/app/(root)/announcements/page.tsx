@@ -52,8 +52,8 @@ function Page() {
       <section className="flex flex-col lg:flex-row w-full h-full">
         {/* Left */}
         <section className="lg:w-[70%] h-screen overflow-y-auto border-r dark:border-r-neutral-700">
-          <section className="flex justify-between items-center w-full p-5 ">
-            <section className="w-[50%] flex items-center py-2 px-3 gap-2 border rounded-md">
+          <section className="flex flex-col lg:flex-row justify-between items-center w-full p-5">
+            <section className="w-[100%] lg:w-[50%] flex mb-4 lg:mb-0 items-center py-2 px-3 gap-2 border rounded-md">
               <input
                 type="text"
                 className="w-full bg-transparent border-none placeholder-st-gray-500 text-black dark:text-white focus:outline-none "

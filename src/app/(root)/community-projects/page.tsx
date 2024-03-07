@@ -37,8 +37,8 @@ function Page() {
   return (
     <main>
       <PageTitle title="Community Projects" />
-      <section className="flex justify-between items-center w-full my-2 p-5">
-        <section className="w-3/5 flex items-center py-2 px-3 gap-2 border rounded-md">
+      <section className="flex flex-col md:flex-row gap-6 justify-between items-center lg:w-full my-2 p-5">
+        <section className="w-full lg:w-3/5 flex items-center py-2 px-3 gap-2 border rounded-md">
           <input
             type="text"
             className="w-full bg-transparent border-none placeholder-st-gray-500 text-black dark:text-white focus:outline-none"
@@ -57,7 +57,7 @@ function Page() {
           </Link>
         )}
       </section>
-      <section className="p-5">
+      <section className="py-5 px-2 lg:px-5">
         <div className="relative overflow-x-auto">
           {isLoading && <LoadingSpinner />}
 
@@ -66,13 +66,13 @@ function Page() {
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs uppercase">
                   <tr>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-2 md:px-6 py-3">
                       Project name
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-2 md:px-6 py-3">
                       Project type
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-2 md:px-6 py-3">
                       Project Priority
                     </th>
                   </tr>
@@ -84,11 +84,11 @@ function Page() {
                         key={item.name}
                         className="dark:bg-[#121212] text-black dark:text-white border-b w-full"
                       >
-                        <td className="px-6 py-3">{item.name}</td>
-                        <td className="px-6 py-3">
+                        <td className="px-2 md:px-6 py-3">{item.name}</td>
+                        <td className="px-2 md:px-6 py-3">
                           {<StatusCheck project_type={item.project_type} />}
                         </td>
-                        <td className="px-6 py-3">
+                        <td className="px-2 md:px-6 py-3">
                           {<StatusCheck priority={item?.project_priority} />}
                         </td>
                       </tr>

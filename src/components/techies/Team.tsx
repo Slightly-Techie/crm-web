@@ -60,7 +60,7 @@ function Team() {
 
       {/* Search Input Section */}
       <section className=" border-b-st-edge dark:border-st-edgeDark p-5">
-        <form className="flex justify-between items-center gap-5">
+        <form className="flex flex-col lg:flex-row justify-between mb-8 items-center gap-5">
           <section className="w-full flex items-center py-2 px-3 gap-2 border rounded-md">
             <input
               type="text"
@@ -79,7 +79,7 @@ function Team() {
         </form>
         {/* Pagination */}
         <section className="w-full h-10 mt-4">
-          <section className="flex items-center justify-between h-full">
+          <section className="flex flex-col lg:flex-row lg items-center justify-between h-full">
             <p className="text-sm text-slate-700 dark:text-[#F1F3F7]">
               Showing{" "}
               {1 + (paginatioinDetails.page - 1) * paginatioinDetails.size} to{" "}

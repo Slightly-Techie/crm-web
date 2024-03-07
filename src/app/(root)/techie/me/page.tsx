@@ -170,10 +170,10 @@ export default function Techie() {
   return (
     <>
       <PageTitle title="Edit Your Profile" />
-      <div className="flex w-full justify-center relative p-8 ">
+      <div className="flex w-full justify-center overflow-x-hidden relative p-8 ">
         <form
           onSubmit={onSubmit}
-          className="flex flex-col gap-12 w-full sm:w-[calc(100% - 48px)] sm:max-w-[1000px] bg-[white] dark:bg-[#000000] dark:text-white"
+          className="flex flex-col gap-12 w-full sm:w-[calc(100% - 48px)] overflow-hidden  sm:max-w-[1000px] bg-[white] dark:bg-[#000000] dark:text-white"
         >
           <div className="text-white">
             {!editMode && (
@@ -181,7 +181,7 @@ export default function Techie() {
                 <button
                   type="button"
                   onClick={() => setEditMode(!editMode)}
-                  className={`bg-primary-dark dark:bg-primary-light text-st-surface dark:text-st-surfaceDark rounded-md  py-2 px-6 `}
+                  className={`bg-primary-dark mb-4 dark:bg-primary-light text-st-surface dark:text-st-surfaceDark rounded-md  py-2 px-6 `}
                 >
                   Edit Profile
                 </button>
@@ -213,7 +213,7 @@ export default function Techie() {
                 </button>
               </div>
             )}
-            <div className="  p-[20px] text-white">
+            <div className="  p-[20px] text-white bg-blue-400">
               <div className="h-14 flex flex-row items-center border-b dark:border-[#8a8a8a]">
                 <h1 className="text-xl font-medium text-st-surfaceDark dark:text-st-surface">
                   Profile

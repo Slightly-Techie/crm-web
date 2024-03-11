@@ -49,7 +49,7 @@ function Page() {
   return (
     <section>
       <PageTitle title="Announcements" />
-      <section className="flex flex-col lg:flex-row w-full h-full">
+      <section className="flex flex-col lg:flex-row w-full h-full pt-[7vh]">
         {/* Left */}
         <section className="lg:w-[70%] h-screen overflow-y-auto border-r dark:border-r-neutral-700">
           <section className="flex flex-col lg:flex-row justify-between items-center w-full p-5">

@@ -20,7 +20,7 @@ tr:nth-child(odd) {
   align-items: center;
   cursor: pointer;
   z-index: 1;
-}
+}  
 
 .menu-wrapper img {
   width: 20px;

@@ -52,7 +52,7 @@ export default function Announcement() {
   return (
     <div>
       <PageTitle title="Create Announcements" />
-      <div className="w-full right-0 grid h-full lg:grid-cols-announcement">
+      <div className="!w-full mx-auto md:mx-0 bg-green-500 border-4 grid h-full lg:grid-cols-announcement">
         <CreateAnnouncement
           existingPost={currentPost}
           submitHandler={handleNewAnnouncement}

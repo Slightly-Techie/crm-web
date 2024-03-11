@@ -7,9 +7,6 @@ import Loading from "../../loading";
 import PageTitle from "@/components/PageTitle";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import useEndpoints from "@/services";
-import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 
 export default function Applicants() {
   const router = useRouter();
@@ -55,17 +52,12 @@ export default function Applicants() {
     handleFilter(event.target.value);
   }
 
-
-
-
-  //Implement the data
-
   return (
     <>
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="interviewee-wrapper h-full bg-[white] w-full dark:bg-primary-dark dark:text-white relative bottom-0 top-0">
+        <div className="interviewee-wrapper overflow-x-auto h-full w-full dark:bg-primary-dark dark:text-white relative bottom-0 top-0 left-0">
           <PageTitle title="Applicants" />
           <TableComponent
             columns={ApplicantsTableColumns}

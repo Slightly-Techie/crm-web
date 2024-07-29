@@ -33,18 +33,15 @@ function Page() {
   });
 
   const session = useSession();
-  
-  const {getUserProfile} = useEndpoints()
 
-  const {
-    data: role,
-  } = useQuery({
+  const { getUserProfile } = useEndpoints();
+
+  const { data: role } = useQuery({
     queryKey: ["user_profile"],
     enabled: session.status === "authenticated",
-    queryFn: () => getUserProfile().then(res=>res?.data?.role?.name),
+    queryFn: () => getUserProfile().then((res) => res?.data?.role?.name),
     refetchOnWindowFocus: false,
   });
-
 
   return (
     <section>
@@ -108,7 +105,7 @@ function Page() {
         {/* Right */}
         <section className="lg:w-[30%] my-2 p-5">
           <h1 className="font-semibold md:text-xl">Techie of the Month</h1>
-          <hr className="my-5 border dark:border-neutral-700"/>
+          <hr className="my-5 border dark:border-neutral-700" />
         </section>
       </section>
     </section>

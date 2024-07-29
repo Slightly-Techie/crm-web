@@ -52,7 +52,7 @@ function Page() {
       <section className="flex flex-col lg:flex-row w-full h-full pt-[7vh]">
         {/* Left */}
         <section className="lg:w-[70%] h-screen overflow-y-auto border-r dark:border-r-neutral-700">
-          <section className="flex justify-between items-center w-full p-5 ">
+          <section className="flex justify-between fixed  items-center w-[55%] p-5 ">
             <section className="w-[50%] flex items-center py-2 px-3 gap-2 border rounded-md">
               <input
                 type="text"
@@ -78,7 +78,7 @@ function Page() {
               </Link>
             )}
           </section>
-          <section className="p-5">
+          <section className="p-5 mt-24">
             {isFetching ? (
               <LoadingSpinner />
             ) : filteredItems?.length > 0 ? (

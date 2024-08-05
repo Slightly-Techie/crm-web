@@ -33,15 +33,18 @@ function Page() {
   });
 
   const session = useSession();
+  
+  const {getUserProfile} = useEndpoints()
 
-  const { getUserProfile } = useEndpoints();
-
-  const { data: role } = useQuery({
+  const {
+    data: role,
+  } = useQuery({
     queryKey: ["user_profile"],
     enabled: session.status === "authenticated",
-    queryFn: () => getUserProfile().then((res) => res?.data?.role?.name),
+    queryFn: () => getUserProfile().then(res=>res?.data?.role?.name),
     refetchOnWindowFocus: false,
   });
+
 
   return (
     <section>
@@ -49,7 +52,7 @@ function Page() {
       <section className="flex flex-col lg:flex-row w-full h-full pt-[7vh]">
         {/* Left */}
         <section className="lg:w-[70%] h-screen overflow-y-auto border-r dark:border-r-neutral-700">
-          <section className="flex justify-between   items-center w-full p-5 ">
+          <section className="flex justify-between items-center w-full p-5 ">
             <section className="w-[50%] flex items-center py-2 px-3 gap-2 border rounded-md">
               <input
                 type="text"
@@ -105,7 +108,7 @@ function Page() {
         {/* Right */}
         <section className="lg:w-[30%] my-2 p-5">
           <h1 className="font-semibold md:text-xl">Techie of the Month</h1>
-          <hr className="my-5 border dark:border-neutral-700" />
+          <hr className="my-5 border dark:border-neutral-700"/>
         </section>
       </section>
     </section>

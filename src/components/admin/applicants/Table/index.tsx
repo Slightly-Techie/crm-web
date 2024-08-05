@@ -44,7 +44,7 @@ function TableComponent(props: TableProps) {
         }}
       >
         {props.searchIncluded && (
-          <div className="flex border my-4 gap-[5px] w-[50%] items-center mb-[20px] p-[10px] rounded-md border-neutral-700">
+          <div className="flex border mt-12 gap-[5px] w-[50%] items-center mb-[20px] p-[10px] rounded-md border-neutral-700">
             <Image src={Search} alt="search Icon" />
             <input
               type="text"

@@ -147,9 +147,13 @@ export interface IProject {
   id: string;
   name: string;
   description: string;
-  project_type: string;
-  project_priority: string;
-  project_tools: string[];
+  project_type?: string;
+  project_priority?: string;
+  project_tools?: string[];
+  stacks?: number[];
+  members?: any[];
+  created_at: string;
+  status?: string;
 }
 
 export interface IProjectResponse {
@@ -160,11 +164,17 @@ export interface IProjectResponse {
   pages: number;
 }
 
+export type ProjectTool = {
+  value: string;
+};
+
 export type ProjectFields = {
   name: string;
   description: string;
-  project_type: "COMMUNITY" | "PAID";
-  project_priority: "HIGH PRIORITY" | "MEDIUM PRIORITY" | "LOW PRIORITY";
+  project_type?: "COMMUNITY" | "PAID";
+  project_priority?: "HIGH PRIORITY" | "MEDIUM PRIORITY" | "LOW PRIORITY";
+  project_tools?: ProjectTool[];
   manage_id: number;
-  project_tools: string[];
+  stacks?: number[];
+  members?: number[] | string[];
 };

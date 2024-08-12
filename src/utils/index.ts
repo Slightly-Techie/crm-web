@@ -1,3 +1,5 @@
+import { ProjectTool } from "@/types";
+
 export const logToConsole = (message?: any, ...optionalParams: any[]) => {
   if (process.env.NODE_ENV === "development") {
     console.log(message, ...optionalParams);
@@ -102,7 +104,9 @@ export function getSubdomainFromURL(url: string | null): string | null {
   }
 }
 
-export function getSkillsArray(inputValue: string | string[] | undefined) {
+export function getSkillsArray(
+  inputValue: string | ProjectTool[] | number[] | undefined
+) {
   let skillsArray: string[] = [];
   if (inputValue) {
     const result = Array.isArray(inputValue)

@@ -15,10 +15,10 @@ import {
 } from "react-icons/ai";
 
 function Page() {
-  //get the users ID from the route
+  // Get the user's ID from the route
   const { id } = useParams();
 
-  //Initiate the getSpecific user function from the useEndpoints hook
+  // Initiate the getSpecific user function from the useEndpoints hook
   const { getSpecificUser } = useEndpoints();
 
   const { isFetching, isFetchingError, FeedPosts } = useFetchFeeds();
@@ -36,6 +36,12 @@ function Page() {
   const currentUserPosts = FeedPosts?.filter(
     (item) => item.user.id === UserProfile?.id
   );
+
+  // Determine the profile picture URL
+  const profilePicUrl =
+    UserProfile?.profile_pic_url && UserProfile?.profile_pic_url !== "string"
+      ? UserProfile.profile_pic_url
+      : `https://api.dicebear.com/7.x/initials/jpg?seed=${UserProfile?.first_name} ${UserProfile?.last_name}`;
 
   return (
     <section>
@@ -60,12 +66,7 @@ function Page() {
                     className="w-12 md:w-20 h-12 md:h-20 aspect-square shrink-0 rounded-full object-cover"
                     width={1000}
                     height={1000}
-                    src={
-                      (UserProfile.profile_pic_url === "string"
-                        ? `https://api.dicebear.com/7.x/initials/jpg?seed=${UserProfile.first_name} ${UserProfile.last_name}`
-                        : `${UserProfile.profile_pic_url}`) ||
-                      `https://api.dicebear.com/7.x/initials/jpg?seed=${UserProfile.first_name} ${UserProfile.last_name}`
-                    }
+                    src={profilePicUrl}
                     alt="profile"
                     placeholder="blur"
                     blurDataURL={`https://avatars.dicebear.com/api/initials/${UserProfile?.first_name} ${UserProfile?.last_name}.svg`}

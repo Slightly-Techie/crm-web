@@ -10,7 +10,7 @@ processes = []
 
 [env]
   PORT = "3000"
-  NEXT_PUBLIC_API_URL = "https://crm-api.fly.dev"
+  NEXT_PUBLIC_API_URL = "https://crm-api-dev.fly.dev/docs"
 
 [experimental]
   allowed_public_ports = []

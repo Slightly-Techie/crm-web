@@ -13,7 +13,12 @@ import { useRouter } from "next/navigation";
 import { useProject } from "@/context/ProjectContext";
 
 type EditProps = {
-  ProjectSubmitHandler: UseMutateFunction<unknown, unknown, ProjectFields>;
+  ProjectSubmitHandler: UseMutateFunction<
+    unknown,
+    unknown,
+    ProjectFields,
+    unknown
+  >;
 };
 
 type OptionType = {
@@ -38,7 +43,7 @@ const customStyles = {
   }),
 };
 
-const EditPage = () => {
+const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
   const { setFormValues } = useProject();
   const router = useRouter();
   const {

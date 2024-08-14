@@ -3,6 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Toaster } from "react-hot-toast";
 import { Inter } from "next/font/google";
+import { ProjectProvider } from "@/context/ProjectContext";
 
 export const metadata = {
   title: "Slightly Techie Network",
@@ -23,7 +24,9 @@ export default function RootLayout({
         className={`${inter.className} overflow-x-hidden dark:bg-black`}
       >
         <Toaster />
-        <Providers>{children}</Providers>
+        <Providers>
+          <ProjectProvider>{children}</ProjectProvider>
+        </Providers>
       </body>
     </html>
   );

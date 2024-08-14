@@ -18,12 +18,14 @@ function AddProject() {
     return res.data;
   });
   return (
-    <div className=" dark:text-st-surface text-st-surfaceDark dark:bg-primary-dark">
+    <div className=" dark:text-st-surface text-st-surfaceDark dark:bg-primary-dark mt-[100px]">
       <PageTitle title="Create A New Project" />
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <EditPage ProjectSubmitHandler={CreateNewProject} />
+        <div className=" lg:ml-[300px] justify-center">
+          <EditPage ProjectSubmitHandler={CreateNewProject} />
+        </div>
       )}
     </div>
   );

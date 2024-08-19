@@ -6,24 +6,36 @@ import Link from "next/link";
 
 interface MemberProps {
   data: ITechie;
+  onSelect?: () => void; // Callback function for selection
+  isSelected?: boolean; // Boolean to check if the member is selected
+  className?: string;
 }
 
-function Member({ data }: MemberProps) {
-  console.log(data);
+function Member({ data, onSelect, isSelected, className }: MemberProps) {
+  // console.log(data);
+
+  // Determine the profile picture URL
+  const profilePicUrl =
+    data.profile_pic_url && data.profile_pic_url !== "string"
+      ? data.profile_pic_url
+      : `https://api.dicebear.com/7.x/initials/jpg?seed=${data.first_name} ${data.last_name}`;
+
+  // Safely access stack properties
+  const stackName = data.stack?.name || "Techie";
 
   return (
-    <section className="col-span-1 border-st-edge dark:border-st-edgeDark dark:text-[#F1F3F7] border-2 rounded-md p-5">
+    <section
+      className={`col-span-1 border-2 rounded-md p-5 ${className} ${
+        isSelected ? "bg-blue-200" : "bg-white"
+      }`}
+      onClick={onSelect}
+    >
       {/* Top Section */}
       <Image
         className="rounded-full w-[60px] h-[60px] object-cover mb-5"
         width={5000}
         height={5000}
-        src={
-          (data.profile_pic_url === "string"
-            ? `https://api.dicebear.com/7.x/initials/jpg?seed=${data.first_name} ${data.last_name}`
-            : `${data.profile_pic_url}`) ||
-          `https://api.dicebear.com/7.x/initials/jpg?seed=${data.first_name} ${data.last_name}`
-        }
+        src={profilePicUrl}
         priority
         alt="profile"
       />
@@ -32,7 +44,8 @@ function Member({ data }: MemberProps) {
           {data.first_name} {data.last_name}
         </p>
         <p className="font-light text-[#5D6675] dark:text-[#cacbcf] text-sm">
-          {data.stack?.name ? `${data.stack.name} Engineer` : "Techie"}
+          {/* {data.stack?.name ? `${data.stack.name} Engineer` : "Techie"} */}
+          {stackName} Engineer
         </p>
       </section>
       <section className="mt-5">

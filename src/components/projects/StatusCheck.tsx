@@ -3,7 +3,7 @@ type StatusCheckProps = {
   project_type?: string;
   priority?: string;
 };
-function StatusCheck({ project_type, priority }: StatusCheckProps) {
+function StatusCheck({ project_type, priority, status }: StatusCheckProps) {
   switch (project_type) {
     case "COMMUNITY":
       return (
@@ -35,6 +35,26 @@ function StatusCheck({ project_type, priority }: StatusCheckProps) {
       return (
         <section className="bg-[#6096ba] rounded-full text-center text-white w-[110px] px-2 py-1 text-xs">
           MEDIUM
+        </section>
+      );
+  }
+  switch (status) {
+    case "IN PROGRESS":
+      return (
+        <section className="bg-[#fab92b] rounded-full text-center text-white w-[110px] px-2 py-1 text-xs">
+          In progress
+        </section>
+      );
+    case "  COMPLETED":
+      return (
+        <section className="bg-[#c3dcf1] rounded-full text-center text-black w-[110px] px-2 py-1 text-xs">
+          Completed
+        </section>
+      );
+    case "WITHELD":
+      return (
+        <section className="bg-[#6096ba] rounded-full text-center text-white w-[110px] px-2 py-1 text-xs">
+          Witheld
         </section>
       );
   }

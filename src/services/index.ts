@@ -3,6 +3,7 @@ import useAxiosAuth from "@/hooks/useAxiosAuth";
 import {
   IGetAllTechiesResponse,
   IGetFeedsResponse,
+  IProject,
   IProjectResponse,
   IStack,
   ITechie,
@@ -55,6 +56,24 @@ const useEndpoints = () => {
   const postProjects = <T>(payload: T) =>
     authAxios.post(`api/v1/projects/`, payload);
 
+  // Function to update project status
+  const updateProjectStatus = async (projectId: string, status: string) => {
+    return authAxios.patch(`api/projects/${projectId}`, { status });
+  };
+
+  // Function to get project by ID
+  const getProjectById = (projectId: any) =>
+    authAxios.get(`/api/v1/projects/${projectId}`);
+
+  const deleteProjectById = async (projectId: any) =>
+    authAxios.delete(`/api/v1/projects/${projectId}`);
+
+  const updateProjectById = (projectId: any) =>
+    authAxios.patch(`/api/v1/projects/${projectId}`);
+
+  // const getProjectById = (projectId: string) =>
+  //   axios.get(`api/v1/projects/${projectId}`);
+
   return {
     getUserProfile,
     updateUserProfile,
@@ -67,6 +86,10 @@ const useEndpoints = () => {
     updateProfilePicture,
     searchTechie,
     searchApplicant,
+    updateProjectStatus,
+    getProjectById, // Add this line
+    deleteProjectById,
+    updateProjectById,
   };
 };
 

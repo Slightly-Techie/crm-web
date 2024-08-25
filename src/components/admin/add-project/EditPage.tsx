@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Select, { components } from "react-select";
-import { getSkillsArray } from "@/utils";
+import { getSkillsArray, getStacksArray } from "@/utils";
 import { REGEXVALIDATION } from "@/constants";
-import { ISkill, ProjectFields } from "@/types";
+import { ISkill, IStack, ProjectFields } from "@/types";
 import { UseMutateFunction, useQuery } from "@tanstack/react-query";
 import { FaTimes } from "react-icons/fa";
 import Link from "next/link";
@@ -46,7 +46,7 @@ const customStyles = {
 const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
   const { setFormValues } = useProject();
   const router = useRouter();
-  const { getSkills } = useEndpoints(); // Destructure getSkills from endpoints
+  const { getSkills, getStacks } = useEndpoints(); // Destructure getSkills from endpoints
   const {
     control,
     register,
@@ -55,6 +55,9 @@ const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
   } = useForm<ProjectFields>({ mode: "onSubmit" });
 
   const [skillOptions, setSkillOptions] = useState<OptionType[]>([]);
+  const [stackOptions, setStackOptions] = useState<OptionType[]>([]);
+
+  console.log("StackedOption", stackOptions);
 
   const {
     data: Skills,
@@ -68,6 +71,14 @@ const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
   });
   console.log("Skills", Skills);
 
+  const { data: Stacks } = useQuery({
+    queryKey: ["stacks"],
+    queryFn: () => getStacks(),
+    refetchOnWindowFocus: false,
+    retry: 3,
+  });
+  console.log("Stacks", Stacks);
+
   useEffect(() => {
     if (Skills && Skills.data) {
       const formattedOptions = Skills.data.items.map((skill: any) => ({
@@ -76,14 +87,26 @@ const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
       }));
       setSkillOptions(formattedOptions);
     }
-  }, [Skills]);
+
+    if (Stacks && Stacks?.data) {
+      const formattedStackOptions = Stacks.data.map((stack: IStack) => ({
+        value: stack.id, // Assuming `id` is the unique identifier for stacks
+        label: stack.name,
+      }));
+      console.log("StackOptions", formattedStackOptions);
+      setStackOptions(formattedStackOptions);
+    }
+  }, [Skills, Stacks]);
 
   const handleNext = (data: ProjectFields) => {
     // Extract selected tool IDs from the form data
     const selectedTools = getSkillsArray(data.project_tools);
     console.log("SelectedTools >>", selectedTools); // Debug: Check if IDs are present
 
-    // Filter and map the skill options based on selected tool IDs
+    const selectedStacks = getStacksArray(data.stacks);
+    console.log("SelectedStacks >>", selectedStacks); // Debug: Check if IDs are present
+
+    // Filter and map the skills options based on selected tools IDs
     const selectedOptions: ISkill[] = skillOptions
       .filter((option) => selectedTools.includes(option.value.toString())) // Ensure IDs match
       .map((option) =>
@@ -93,10 +116,21 @@ const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
 
     console.log("selectedOptions", selectedOptions); // Debug: Verify filtered skills
 
+    // Filter and map the stacks options based on selected stacks IDs
+    const selectedStackOptions: IStack[] = stackOptions
+      .filter((option) => selectedStacks.includes(option.value.toString())) // Ensure IDs match
+      .map((option) =>
+        Stacks?.data.find((stack: IStack) => stack.id === option.value)
+      ) // Compare as strings
+      .filter((stack): stack is IStack => stack !== undefined); // Filter out undefined values
+
+    console.log("selectedStackOptions", selectedStackOptions); // Debug: Verify filtered skills
+
     // Prepare the payload with the selected skill options
     const payload: ProjectFields = {
       ...data,
       project_tools: selectedOptions, // Include selected skills
+      stacks: selectedStackOptions,
     };
 
     console.log("payload", payload); // Debug: Check final payload
@@ -192,7 +226,7 @@ const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
       </div>
       <div className="flex flex-col gap-1 mt-4 mx-3">
         <div className="flex items-end justify-between pb-2">
-          <label className="text-lg font-bold">Project Stack</label>
+          <label className="text-lg font-bold">Project Tools</label>
           <Link className="text-sm" href="">
             + Add Items
           </Link>
@@ -231,6 +265,53 @@ const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
           )}
         />
         {errors.project_tools && (
+          <small>
+            Valid technologies or languages must be provided and they must be
+            separated by a comma
+          </small>
+        )}
+      </div>
+      <div className="flex flex-col gap-1 mt-4 mx-3">
+        <div className="flex items-end justify-between pb-2">
+          <label className="text-lg font-bold">Project Stack</label>
+          <Link className="text-sm" href="">
+            + Add Items
+          </Link>
+        </div>
+        <Controller
+          name="stacks"
+          control={control}
+          defaultValue={[]} // Ensure the default value is an empty array
+          rules={{ required: true }}
+          render={({ field: { onChange, onBlur, value, name } }) => (
+            <Select
+              isMulti
+              options={stackOptions} // Use the fetched options here
+              value={value?.map((v: any) => ({
+                value: v,
+                label: stackOptions.find((opt) => opt.value === v)?.label || v,
+              }))}
+              onChange={(selectedStackOptions) => {
+                const selectedValues = selectedStackOptions.map(
+                  (option: OptionType) => option.value
+                );
+                onChange(selectedValues);
+              }}
+              onBlur={onBlur}
+              styles={customStyles}
+              components={{
+                MultiValueRemove: (props) => (
+                  <components.MultiValueRemove {...props}>
+                    <FaTimes />
+                  </components.MultiValueRemove>
+                ),
+              }}
+              classNamePrefix="stack-select"
+              placeholder="Eg. Frontend, Backend, UI/UX"
+            />
+          )}
+        />
+        {errors.stacks && (
           <small>
             Valid technologies or languages must be provided and they must be
             separated by a comma

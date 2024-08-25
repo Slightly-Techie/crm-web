@@ -62,7 +62,7 @@ function TeamSelectionPage() {
     setSelectedTeam((prev) =>
       prev.find((member) => member.id === teamMember.id)
         ? prev.filter((member) => member.id !== teamMember.id)
-        : [...prev, { id: teamMember.id, stack: teamMember.stack }]
+        : [...prev, teamMember]
     );
   };
 
@@ -72,17 +72,16 @@ function TeamSelectionPage() {
 
       // Assuming you have stack IDs in your selectedTeam
       // const stackIds = selectedTeam.map((member) => member.stack.id);
-      const { project_tools, ...otherFormValues } = formValues;
+      const { project_tools, stacks, ...otherFormValues } = formValues;
       const adjustedProjectTools = project_tools?.map((tool) => tool.id); // Extract the value from each tool
+      const adjustedProjectStack = stacks?.map((tool) => tool.id); // Extract the value from each tool
 
       const payload = {
-        ...formValues,
+        ...otherFormValues,
         project_tools: adjustedProjectTools,
+        stacks: adjustedProjectStack,
         members: selectedTeam.map((member) => member.id), // Extract the id from each member
         manager_id: 5, // Replace with the actual manager ID
-        stacks: selectedTeam
-          .filter((member) => member.stack) // Filter out members without a stack
-          .map((member) => member.stack.id), // Extract the id from each stack
       };
 
       try {

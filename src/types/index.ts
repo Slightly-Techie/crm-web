@@ -130,9 +130,18 @@ export interface IGetFeedsResponse {
 export interface IStack {
   id: number;
   name: string;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }
+
+export interface IStackResponse {
+  items: IStack[];
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
+}
+
 export type AnnouncementData = {
   title: string;
   content: string;
@@ -145,12 +154,12 @@ export type AnnouncementDataResponse = AnnouncementData & {
   id: number;
 };
 
-export interface IStack {
-  id: number;
-  name: string;
-  created_at: string;
-  updated_at: string;
-}
+// export interface IStack {
+//   id: number;
+//   name: string;
+//   created_at: string;
+//   updated_at: string;
+// }
 
 export interface IProject {
   id: string;
@@ -184,6 +193,6 @@ export type ProjectFields = {
   project_priority?: "HIGH PRIORITY" | "MEDIUM PRIORITY" | "LOW PRIORITY";
   project_tools?: ISkill[]; // Update this to ISkill[]
   manage_id: number;
-  stacks?: number[];
+  stacks?: IStack[];
   members?: number[] | string[];
 };

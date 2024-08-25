@@ -65,6 +65,15 @@ export interface ITechie {
 export interface ISkill {
   id: number;
   name: string;
+  image_url?: string;
+}
+
+export interface ISKillResponse {
+  items: ISkill[];
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
 }
 
 export interface ITag extends ISkill {}
@@ -173,7 +182,7 @@ export type ProjectFields = {
   description: string;
   project_type?: "COMMUNITY" | "PAID";
   project_priority?: "HIGH PRIORITY" | "MEDIUM PRIORITY" | "LOW PRIORITY";
-  project_tools?: ProjectTool[];
+  project_tools?: ISkill[]; // Update this to ISkill[]
   manage_id: number;
   stacks?: number[];
   members?: number[] | string[];

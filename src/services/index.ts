@@ -5,6 +5,8 @@ import {
   IGetFeedsResponse,
   IProject,
   IProjectResponse,
+  ISkill,
+  ISKillResponse,
   IStack,
   ITechie,
 } from "@/types";
@@ -74,6 +76,8 @@ const useEndpoints = () => {
   // const getProjectById = (projectId: string) =>
   //   axios.get(`api/v1/projects/${projectId}`);
 
+  const getSkills = () => authAxios.get<ISKillResponse>(`api/v1/skills/all`);
+
   return {
     getUserProfile,
     updateUserProfile,
@@ -90,6 +94,7 @@ const useEndpoints = () => {
     getProjectById, // Add this line
     deleteProjectById,
     updateProjectById,
+    getSkills,
   };
 };
 

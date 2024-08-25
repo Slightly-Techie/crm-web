@@ -73,10 +73,10 @@ function TeamSelectionPage() {
       // Assuming you have stack IDs in your selectedTeam
       // const stackIds = selectedTeam.map((member) => member.stack.id);
       const { project_tools, ...otherFormValues } = formValues;
-      const adjustedProjectTools = project_tools?.map((tool) => tool.value); // Extract the value from each tool
+      const adjustedProjectTools = project_tools?.map((tool) => tool.id); // Extract the value from each tool
 
       const payload = {
-        ...otherFormValues,
+        ...formValues,
         project_tools: adjustedProjectTools,
         members: selectedTeam.map((member) => member.id), // Extract the id from each member
         manager_id: 5, // Replace with the actual manager ID

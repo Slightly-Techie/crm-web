@@ -1,16 +1,16 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Select, { components } from "react-select";
 import { getSkillsArray } from "@/utils";
 import { REGEXVALIDATION } from "@/constants";
-import { ProjectFields, ProjectTool } from "@/types";
-import { UseMutateFunction } from "@tanstack/react-query";
+import { ISkill, ProjectFields } from "@/types";
+import { UseMutateFunction, useQuery } from "@tanstack/react-query";
 import { FaTimes } from "react-icons/fa";
 import Link from "next/link";
-import options from "@/constants/index";
 import { useRouter } from "next/navigation";
 import { useProject } from "@/context/ProjectContext";
+import useEndpoints from "@/services"; // Import your endpoints
 
 type EditProps = {
   ProjectSubmitHandler: UseMutateFunction<
@@ -22,7 +22,7 @@ type EditProps = {
 };
 
 type OptionType = {
-  value: string;
+  value: number;
   label: string;
 };
 
@@ -46,6 +46,7 @@ const customStyles = {
 const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
   const { setFormValues } = useProject();
   const router = useRouter();
+  const { getSkills } = useEndpoints(); // Destructure getSkills from endpoints
   const {
     control,
     register,
@@ -53,23 +54,55 @@ const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
     handleSubmit,
   } = useForm<ProjectFields>({ mode: "onSubmit" });
 
-  const handleNext = (data: ProjectFields) => {
-    const selectedTools = getSkillsArray(data.project_tools);
-    const selectedOptions = options.filter((option) =>
-      selectedTools.includes(option.value)
-    );
+  const [skillOptions, setSkillOptions] = useState<OptionType[]>([]);
 
+  const {
+    data: Skills,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["skills"],
+    queryFn: () => getSkills(),
+    refetchOnWindowFocus: false,
+    retry: 3,
+  });
+  console.log("Skills", Skills);
+
+  useEffect(() => {
+    if (Skills && Skills.data) {
+      const formattedOptions = Skills.data.items.map((skill: any) => ({
+        value: skill.id, // Assuming `id` is the unique identifier for skills
+        label: skill.name,
+      }));
+      setSkillOptions(formattedOptions);
+    }
+  }, [Skills]);
+
+  const handleNext = (data: ProjectFields) => {
+    // Extract selected tool IDs from the form data
+    const selectedTools = getSkillsArray(data.project_tools);
+    console.log("SelectedTools >>", selectedTools); // Debug: Check if IDs are present
+
+    // Filter and map the skill options based on selected tool IDs
+    const selectedOptions: ISkill[] = skillOptions
+      .filter((option) => selectedTools.includes(option.value.toString())) // Ensure IDs match
+      .map((option) =>
+        Skills?.data.items.find((skill) => skill.id === option.value)
+      ) // Compare as strings
+      .filter((skill): skill is ISkill => skill !== undefined); // Filter out undefined values
+
+    console.log("selectedOptions", selectedOptions); // Debug: Verify filtered skills
+
+    // Prepare the payload with the selected skill options
     const payload: ProjectFields = {
       ...data,
-      project_tools: selectedOptions.map((option) => ({
-        value: option.value,
-      })),
+      project_tools: selectedOptions, // Include selected skills
     };
 
-    console.log("payload", payload);
-    setFormValues(payload);
-    console.log("setFormValues", setFormValues);
-    router.push(`/community-projects/team-selection`);
+    console.log("payload", payload); // Debug: Check final payload
+
+    setFormValues(payload); // Store form values in context
+    router.push(`/community-projects/team-selection`); // Navigate to the next page
   };
 
   return (
@@ -172,10 +205,10 @@ const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
           render={({ field: { onChange, onBlur, value, name } }) => (
             <Select
               isMulti
-              options={options}
+              options={skillOptions} // Use the fetched options here
               value={value?.map((v: any) => ({
                 value: v,
-                label: options.find((opt) => opt.value === v)?.label || v,
+                label: skillOptions.find((opt) => opt.value === v)?.label || v,
               }))}
               onChange={(selectedOptions) => {
                 const selectedValues = selectedOptions.map(

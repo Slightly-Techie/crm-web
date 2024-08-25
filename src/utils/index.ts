@@ -1,4 +1,4 @@
-import { ProjectTool } from "@/types";
+import { ISkill, ProjectTool } from "@/types";
 
 export const logToConsole = (message?: any, ...optionalParams: any[]) => {
   if (process.env.NODE_ENV === "development") {
@@ -105,7 +105,7 @@ export function getSubdomainFromURL(url: string | null): string | null {
 }
 
 export function getSkillsArray(
-  inputValue: string | ProjectTool[] | number[] | undefined
+  inputValue: string | ProjectTool[] | number[] | ISkill[] | undefined
 ) {
   let skillsArray: string[] = [];
   if (inputValue) {

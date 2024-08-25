@@ -7,7 +7,7 @@ import { format } from "date-fns";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import UpdateProjectModal from "@/components/admin/add-project/Modal";
+// import UpdateProjectModal from "@/components/admin/add-project/Modal";
 import Member from "@/components/techies/Member"; // Import the Member component
 import { IProject, ITechie } from "@/types";
 
@@ -68,16 +68,16 @@ const ProjectDetail = ({ params }: any) => {
   console.log("Project", project);
   console.log("stack", stack);
 
-  const generateImageUrl = (toolName: string) => {
-    return `https://cdn.simpleicons.org/${toolName.toLowerCase()}`; // Adjust the color as needed
-  };
+  // const generateImageUrl = (toolName: string) => {
+  //   return `https://cdn.simpleicons.org/${toolName.toLowerCase()}`; // Adjust the color as needed
+  // };
 
-  const projectToolsWithImages: any = project.project_tools?.map(
-    (tool: string) => ({
-      value: tool,
-      imageUrl: generateImageUrl(tool),
-    })
-  );
+  // const projectToolsWithImages: any = project.project_tools?.map(
+  //   (tool: string) => ({
+  //     value: tool,
+  //     imageUrl:
+  //   })
+  // );
 
   if (!project) {
     return <div>Project not found</div>;
@@ -123,14 +123,14 @@ const ProjectDetail = ({ params }: any) => {
           <div className=" flex flex-col gap-5 mb-5">
             <h3 className="text-gray-400 font-bold">STACK</h3>
             <div className="flex gap-5">
-              {projectToolsWithImages?.map((tool: any) => (
+              {stack.map((tool: any) => (
                 <div
-                  key={tool.value}
+                  key={tool.id}
                   className="flex flex-rows items-center gap-2"
                 >
                   <img
                     src={tool.imageUrl}
-                    alt={tool.value}
+                    alt={tool.name}
                     className="w-6 h-6"
                   />
                   {/* <span>{tool.value}</span> */}

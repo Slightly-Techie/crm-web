@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 // import UpdateProjectModal from "@/components/admin/add-project/Modal";
 import Member from "@/components/techies/Member"; // Import the Member component
-import { IProject, ITechie } from "@/types";
+import { IProject, IStack, ITechie } from "@/types";
 
 const ProjectDetail = ({ params }: any) => {
   const [isAdmin] = useState<boolean>(true);
@@ -121,7 +121,7 @@ const ProjectDetail = ({ params }: any) => {
             </div>
           </div>
           <div className=" flex flex-col gap-5 mb-5">
-            <h3 className="text-gray-400 font-bold">STACK</h3>
+            <h3 className="text-gray-400 font-bold">PROJECT TOOLS</h3>
             <div className="flex gap-5">
               {stack.map((tool: any) => (
                 <div
@@ -138,8 +138,18 @@ const ProjectDetail = ({ params }: any) => {
               ))}
             </div>
           </div>
+          <div className=" flex flex-col gap-5 mb-5">
+            <h3 className="text-gray-400 font-bold">STACKS</h3>
+            <div className="flex gap-5">
+              {project.stacks.map((stack: IStack) => (
+                <p className="bg-green-400 w-[120px] text-center rounded-full font-bold">
+                  {stack.name}
+                </p>
+              ))}
+            </div>
+          </div>
           <div className="flex flex-col gap5 w-full">
-            <h3 className="font-extrabold text-lg">Team</h3>
+            <h3 className="font-extrabold text-lg my-10">Team</h3>
             <div className="grid grid-cols-3 justify-between gap-3">
               {project.members.map((member: ITechie) => (
                 <Member key={member.id} data={member} />

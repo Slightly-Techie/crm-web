@@ -47,7 +47,7 @@ export interface ITechie {
   twitter_profile: string | null;
   linkedin_profile: string | null;
   portfolio_url: string | null;
-  profile_pic_url: string | null;
+  profile_pic_url?: string | null;
   skills: string[];
   tags: ITag[];
   stack: IStack | null;
@@ -196,3 +196,8 @@ export type ProjectFields = {
   stacks?: IStack[];
   members?: number[] | string[];
 };
+
+export interface IUser {
+  email: string;
+  password: string;
+}

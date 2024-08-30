@@ -10,6 +10,7 @@ import {
   IStackResponse,
   IStack,
   ITechie,
+  IUser,
 } from "@/types";
 
 const useEndpoints = () => {
@@ -81,6 +82,16 @@ const useEndpoints = () => {
 
   const getStacks = () => authAxios.get<any>(`api/v1/stacks/`);
 
+  const userLogin = async (data: any) => {
+    try {
+      const response = await authAxios.post(`/api/v1/users/login`, data);
+      return response.data;
+    } catch (error) {
+      console.error("Login error:", error);
+      throw error; // Re-throw or handle the error as needed
+    }
+  };
+
   return {
     getUserProfile,
     updateUserProfile,
@@ -99,6 +110,7 @@ const useEndpoints = () => {
     updateProjectById,
     getSkills,
     getStacks,
+    userLogin,
   };
 };
 

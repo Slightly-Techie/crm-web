@@ -11,10 +11,12 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import LoadingSpinner from "@/components/loadingSpinner";
 import ThemeSwitcher from "../../components/theme/theme";
 import LeftImage from "@/assets/images/Left.png";
+import useEndpoints from "@/services";
+import { IUser } from "@/types";
 
 interface FormInputs {
-  email: String;
-  password: String;
+  email: string;
+  password: string;
 }
 
 export default function Login() {
@@ -30,23 +32,61 @@ export default function Login() {
   const searchParams = useSearchParams();
   const callback = searchParams?.get("callbackUrl");
   const callbackUrl = callback ?? "/";
+  const { userLogin } = useEndpoints();
 
   const onSubmit = handleSubmit(async (data: FormInputs) => {
     try {
       setIsRequestSent(true);
+
+      const newData = {
+        username: data.email,
+        password: data.password,
+      };
+
+      // Serialize data into a query string format
+      const serializedData = new URLSearchParams(newData).toString();
+
+      const response = await fetch(
+        "https://crm-api.fly.dev/api/v1/users/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: serializedData,
+        }
+      );
+      console.log("Login Response >>", response);
+      const responseBody = await response.json();
+      console.log("Response Status:", response.status);
+      console.log("Response Body:", responseBody);
+      console.log("Response User_Status:", responseBody.user_status);
+
       const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
         callbackUrl: callbackUrl,
         redirect: false,
       });
+      console.log("Result", result);
+      console.log("Data", data);
       if (result?.ok && !result?.error) {
         // setIsRequestSent(false);
         /**
          * setIsRequestSent is removed intentionally to avoid rendering the signup form again while
          * compiling the root page when the result is ok
          */
-        router.push(callbackUrl);
+        const userStatus = responseBody.user_status;
+
+        // Check user status and redirect accordingly
+        if (userStatus === "CONTACTED") {
+          router.push("/assesment/[email]");
+        } else if (userStatus === "ACCEPTED") {
+          router.push(callbackUrl);
+        } else {
+          setIsRequestSent(false);
+          setResponseError("There is something wrong with your login.");
+        }
       } else {
         if (result?.error) {
           setIsRequestSent(false);

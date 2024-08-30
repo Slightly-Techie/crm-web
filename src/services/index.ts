@@ -5,8 +5,12 @@ import {
   IGetFeedsResponse,
   IProject,
   IProjectResponse,
+  ISkill,
+  ISKillResponse,
+  IStackResponse,
   IStack,
   ITechie,
+  IUser,
 } from "@/types";
 
 const useEndpoints = () => {
@@ -74,6 +78,20 @@ const useEndpoints = () => {
   // const getProjectById = (projectId: string) =>
   //   axios.get(`api/v1/projects/${projectId}`);
 
+  const getSkills = () => authAxios.get<ISKillResponse>(`api/v1/skills/all`);
+
+  const getStacks = () => authAxios.get<any>(`api/v1/stacks/`);
+
+  const userLogin = async (data: any) => {
+    try {
+      const response = await authAxios.post(`/api/v1/users/login`, data);
+      return response.data;
+    } catch (error) {
+      console.error("Login error:", error);
+      throw error; // Re-throw or handle the error as needed
+    }
+  };
+
   return {
     getUserProfile,
     updateUserProfile,
@@ -90,6 +108,9 @@ const useEndpoints = () => {
     getProjectById, // Add this line
     deleteProjectById,
     updateProjectById,
+    getSkills,
+    getStacks,
+    userLogin,
   };
 };
 

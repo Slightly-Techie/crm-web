@@ -171,7 +171,7 @@ function Page() {
                           <StatusCheck priority={item?.project_priority} />
                         </td> */}
                         <td className="px-6 py-3">
-                          <StatusCheck status="IN PROGRESS" />
+                          <StatusCheck status={item.status} />
                         </td>
                         <td className="px-6 py-3">
                           {format(new Date(item.created_at), "MM/dd/yyyy")}

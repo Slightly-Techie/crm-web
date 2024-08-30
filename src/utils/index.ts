@@ -1,4 +1,4 @@
-import { ProjectTool } from "@/types";
+import { ISkill, IStack, ProjectTool } from "@/types";
 
 export const logToConsole = (message?: any, ...optionalParams: any[]) => {
   if (process.env.NODE_ENV === "development") {
@@ -105,7 +105,13 @@ export function getSubdomainFromURL(url: string | null): string | null {
 }
 
 export function getSkillsArray(
-  inputValue: string | ProjectTool[] | number[] | undefined
+  inputValue:
+    | string
+    | string[]
+    | ProjectTool[]
+    | number[]
+    | ISkill[]
+    | undefined
 ) {
   let skillsArray: string[] = [];
   if (inputValue) {
@@ -120,6 +126,26 @@ export function getSkillsArray(
       }
     }
     return skillsArray;
+  }
+  return [];
+}
+
+export function getStacksArray(
+  inputValue: string | ProjectTool[] | number[] | IStack[] | undefined
+) {
+  let stacksArray: string[] = [];
+  if (inputValue) {
+    const result = Array.isArray(inputValue)
+      ? inputValue.join(",")
+      : inputValue;
+    for (let value of result.split(",")) {
+      const format = value.trim();
+      if (!format.length) continue;
+      else {
+        stacksArray = [...stacksArray, format];
+      }
+    }
+    return stacksArray;
   }
   return [];
 }

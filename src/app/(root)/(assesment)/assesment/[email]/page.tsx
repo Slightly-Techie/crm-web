@@ -11,6 +11,11 @@ function AssesmentPage() {
         <div>
           <TaskSubmissionForm />
         </div>
+        <h4 className="mt-10 text-gray-600 font-bold text-lg">
+          Thank you for Completing & Submitting your Project. Please wait as
+          your Project is being Evaluated. You will be contacted on your
+          Acceptance Status. Thank you
+        </h4>
       </div>
     </div>
   );

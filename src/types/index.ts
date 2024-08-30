@@ -47,7 +47,7 @@ export interface ITechie {
   twitter_profile: string | null;
   linkedin_profile: string | null;
   portfolio_url: string | null;
-  profile_pic_url: string | null;
+  profile_pic_url?: string | null;
   skills: string[];
   tags: ITag[];
   stack: IStack | null;
@@ -65,6 +65,15 @@ export interface ITechie {
 export interface ISkill {
   id: number;
   name: string;
+  image_url?: string;
+}
+
+export interface ISKillResponse {
+  items: ISkill[];
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
 }
 
 export interface ITag extends ISkill {}
@@ -121,9 +130,18 @@ export interface IGetFeedsResponse {
 export interface IStack {
   id: number;
   name: string;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }
+
+export interface IStackResponse {
+  items: IStack[];
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
+}
+
 export type AnnouncementData = {
   title: string;
   content: string;
@@ -136,12 +154,12 @@ export type AnnouncementDataResponse = AnnouncementData & {
   id: number;
 };
 
-export interface IStack {
-  id: number;
-  name: string;
-  created_at: string;
-  updated_at: string;
-}
+// export interface IStack {
+//   id: number;
+//   name: string;
+//   created_at: string;
+//   updated_at: string;
+// }
 
 export interface IProject {
   id: string;
@@ -173,8 +191,13 @@ export type ProjectFields = {
   description: string;
   project_type?: "COMMUNITY" | "PAID";
   project_priority?: "HIGH PRIORITY" | "MEDIUM PRIORITY" | "LOW PRIORITY";
-  project_tools?: ProjectTool[];
+  project_tools?: ISkill[]; // Update this to ISkill[]
   manage_id: number;
-  stacks?: number[];
+  stacks?: IStack[];
   members?: number[] | string[];
 };
+
+export interface IUser {
+  email: string;
+  password: string;
+}

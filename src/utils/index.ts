@@ -105,7 +105,13 @@ export function getSubdomainFromURL(url: string | null): string | null {
 }
 
 export function getSkillsArray(
-  inputValue: string | ProjectTool[] | number[] | ISkill[] | undefined
+  inputValue:
+    | string
+    | string[]
+    | ProjectTool[]
+    | number[]
+    | ISkill[]
+    | undefined
 ) {
   let skillsArray: string[] = [];
   if (inputValue) {

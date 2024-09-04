@@ -9,12 +9,22 @@ import { NEW_USER_DATA as INITIAL_USER_DATA } from "@/constants";
 import { getSkillsArray } from "@/utils";
 import ClosedSignup from "@/components/signup/pages/ClosedSignup";
 import { RiArrowLeftLine } from "react-icons/ri";
+import { useQuery } from "@tanstack/react-query";
+import { getStacks } from "@/services";
 
 export type Status = "onsubmit" | "success" | "error" | "progress";
 
 let NEW_USER_DATA: Partial<NewUserFields> = INITIAL_USER_DATA;
 
 export default function Signup() {
+  const { data: Stacks } = useQuery({
+    queryKey: ["stacks"],
+    queryFn: () => getStacks(),
+    refetchOnWindowFocus: false,
+    retry: 3,
+  });
+  console.log("Stacks", Stacks);
+
   const {
     handleSubmit,
     next,
@@ -24,7 +34,7 @@ export default function Signup() {
     currentFormIndex,
   } = useNavigateForms();
   const { createNewUser, status, setStatus, errMessage } = usePostNewSignUp();
-  const isClosed = true;
+  const isClosed = false;
 
   const onSubmit = (data: Partial<NewUserFields>) => {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
@@ -33,12 +43,31 @@ export default function Signup() {
       const validatedSkills = getSkillsArray(skills);
       NEW_USER_DATA = {
         ...NEW_USER_DATA,
-        stack_id:
-          Number(NEW_USER_DATA.stack_id) === -1 ? 1 : NEW_USER_DATA.stack_id,
         years_of_experience: Number(years_of_experience),
         skills: validatedSkills,
       };
-      createNewUser(NEW_USER_DATA);
+
+      if (NEW_USER_DATA) {
+        const { stack, ...otherNEW_USER_DATA } = NEW_USER_DATA;
+        console.log("Stack>>>", stack);
+        const selectedId = Number(stack);
+        const selectedStack = Stacks?.data.find(
+          (stack) => stack.id === selectedId
+        );
+        // If a matching stack is found, you can use it
+        if (selectedStack) {
+          console.log("Selected Stack:", selectedStack);
+          // You can now use selectedStack for your payload or any other logic
+          const payload = {
+            ...otherNEW_USER_DATA,
+            stack: [selectedStack],
+          };
+          console.log("Data>>", payload);
+          createNewUser(payload);
+        } else {
+          console.log("No matching stack found for the selected ID.");
+        }
+      }
       return;
     }
     next();

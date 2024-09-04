@@ -1,6 +1,9 @@
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { REGEXVALIDATION } from "@/constants";
-import { NewUserFields } from "@/types";
+import { ISkill, NewUserFields } from "@/types";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import useEndpoints from "@/services";
 
 type SkillsFields = "years_of_experience" | "bio" | "skills";
 
@@ -12,6 +15,20 @@ type SkillsFormType = {
 };
 
 function Skills({ register, errors }: SkillsFormType) {
+  const { getSkills } = useEndpoints(); // Destructure getSkills from endpoints
+  const [skillOptions, setSkillOptions] = useState<ISkill>();
+
+  const {
+    data: Skills,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["skills"],
+    queryFn: () => getSkills(),
+    refetchOnWindowFocus: false,
+    retry: 3,
+  });
+  console.log("Skills", Skills);
   // const textareaRef = useRef<HTMLTextAreaElement>(null);
   // if (textareaRef.current) {
   //   textareaRef.current.style.height = "auto";

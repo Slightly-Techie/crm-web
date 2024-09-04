@@ -83,6 +83,13 @@ export interface NavbarProps {
   setIsOpen?: Dispatch<SetStateAction<boolean>>;
 }
 
+export type Stack = {
+  id: number;
+  name: string;
+  created_at?: string;
+  updated_at?: string;
+};
+
 export type NewUserFields = {
   username: string;
   email: string;
@@ -90,6 +97,8 @@ export type NewUserFields = {
   last_name: string;
   password: string;
   password_confirmation: string;
+  role_id?: number;
+  // stack_id: number;
   bio: string;
   phone_number: string;
   years_of_experience: number | null;
@@ -97,12 +106,10 @@ export type NewUserFields = {
   twitter_profile: string;
   linkedin_profile: string;
   portfolio_url: string;
-  stack_id: number;
-  stack?: string;
+  stack?: IStack[];
+  profile_pic_url?: string;
   skills: string[];
-  profile_pic_url: string;
   is_active: boolean;
-  role_id?: number;
 };
 
 export interface IPost {

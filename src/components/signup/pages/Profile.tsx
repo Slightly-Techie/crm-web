@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { NEW_USER_DATA, REGEXVALIDATION } from "@/constants";
-import { NewUserFields } from "@/types";
+import { IStack, NewUserFields } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { getStacks } from "@/services";
 import { Oval } from "react-loader-spinner";
@@ -9,7 +9,7 @@ import { Oval } from "react-loader-spinner";
 type ProfileFields =
   | "email"
   | "phone_number"
-  | "stack_id"
+  | "stack"
   | "first_name"
   | "last_name"
   | "username";
@@ -22,7 +22,7 @@ type ProfileFormType = {
 };
 
 function Profile({ register, errors }: ProfileFormType) {
-  const [selectValue, setSelectValue] = useState(NEW_USER_DATA.stack_id);
+  const [selectedStack, setSelectedStack] = useState<IStack>();
 
   const {
     data: STACKS,
@@ -34,9 +34,16 @@ function Profile({ register, errors }: ProfileFormType) {
     refetchOnWindowFocus: false,
     retry: 3,
     onSuccess({ data }) {
-      setSelectValue(data[0].id);
+      setSelectedStack(data[0]); // Set the first stack as default
     },
   });
+
+  const handleStackChange = (e: any) => {
+    const selectedId = parseInt(e.target.value);
+    const selectedStack = STACKS?.data.find((stack) => stack.id === selectedId);
+    setSelectedStack(selectedStack);
+    // console.log("selectedStack", selectedStack);
+  };
 
   return (
     <>
@@ -129,9 +136,9 @@ function Profile({ register, errors }: ProfileFormType) {
           />
         ) : (
           <select
-            {...register("stack_id")}
+            {...register("stack")}
             placeholder="Select your stack"
-            onChange={(e) => setSelectValue(parseInt(e.target.value))}
+            onChange={handleStackChange}
             className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff]  rounded-[5px] dark:border-[#8a8a8a]"
           >
             {stackSuccess &&
@@ -146,7 +153,7 @@ function Profile({ register, errors }: ProfileFormType) {
           </select>
         )}
       </div>
-      {selectValue === -1 && (
+      {selectedStack?.id === -1 && (
         <div className="my-4">
           <label className="text-[#000] dark:text-white">
             If &apos;Other&apos;, please specify
@@ -158,6 +165,11 @@ function Profile({ register, errors }: ProfileFormType) {
           />
         </div>
       )}
+
+      {/* You can now access the full selected stack object in your payload */}
+      {/* <button onClick={() => console.log("Selected Stack:", selectedStack)}>
+        Log Selected Stack
+      </button> */}
     </>
   );
 }

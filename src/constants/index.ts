@@ -25,8 +25,8 @@ export let NEW_USER_DATA: NewUserFields = {
   password_confirmation: "",
   email: "",
   phone_number: "",
-  stack: "",
-  stack_id: 1,
+  stack: [],
+  // stack_id: 1,
   years_of_experience: null,
   bio: "",
   twitter_profile: "",
@@ -37,6 +37,7 @@ export let NEW_USER_DATA: NewUserFields = {
   profile_pic_url: "",
   skills: [],
   username: "",
+  // tags: [],
 };
 
 // options from the contants-

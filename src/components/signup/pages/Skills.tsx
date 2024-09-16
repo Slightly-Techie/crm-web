@@ -5,16 +5,16 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useEndpoints from "@/services";
 
-type SkillsFields = "years_of_experience" | "bio" | "skills";
+type SkillsFields = "years_of_experience" | "bio";
 
-type TSkillsType = Pick<NewUserFields, SkillsFields>;
+// type TSkillsType = Pick<NewUserFields, SkillsFields>;
 
-type SkillsFormType = {
-  register: UseFormRegister<NewUserFields>;
-  errors: FieldErrors<TSkillsType>;
-};
+// type SkillsFormType = {
+//   register: UseFormRegister<NewUserFields>;
+//   errors: FieldErrors<TSkillsType>;
+// };
 
-function Skills({ register, errors }: SkillsFormType) {
+function Skills({ register, errors }: any) {
   const { getSkills } = useEndpoints(); // Destructure getSkills from endpoints
   const [skillOptions, setSkillOptions] = useState<ISkill>();
 
@@ -28,7 +28,7 @@ function Skills({ register, errors }: SkillsFormType) {
     refetchOnWindowFocus: false,
     retry: 3,
   });
-  console.log("Skills", Skills);
+
   // const textareaRef = useRef<HTMLTextAreaElement>(null);
   // if (textareaRef.current) {
   //   textareaRef.current.style.height = "auto";
@@ -58,10 +58,10 @@ function Skills({ register, errors }: SkillsFormType) {
           What languages/tools do you use?
         </label>
         <input
-          {...register("skills", {
-            required: "This field must be specified",
-            pattern: REGEXVALIDATION.listSeparatedByComma,
-          })}
+          // {...register("skills", {
+          //   required: "This field must be specified",
+          //   pattern: REGEXVALIDATION.listSeparatedByComma,
+          // })}
           className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-[#f1f3f7] border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:border-[#333] dark:focus:border-[#fff] rounded-[5px] dark:border-[#8a8a8a]"
           type="text"
           placeholder="e.g JavaScript, Django, NodeJs, Python"

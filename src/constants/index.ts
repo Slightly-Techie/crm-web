@@ -26,7 +26,7 @@ export let NEW_USER_DATA: NewUserFields = {
   email: "",
   phone_number: "",
   stack: [],
-  // stack_id: 1,
+  stack_id: 1,
   years_of_experience: null,
   bio: "",
   twitter_profile: "",

@@ -11,19 +11,20 @@ import ClosedSignup from "@/components/signup/pages/ClosedSignup";
 import { RiArrowLeftLine } from "react-icons/ri";
 import { useQuery } from "@tanstack/react-query";
 import { getStacks } from "@/services";
+import { useRouter } from "next/navigation";
 
 export type Status = "onsubmit" | "success" | "error" | "progress";
 
 let NEW_USER_DATA: Partial<NewUserFields> = INITIAL_USER_DATA;
 
 export default function Signup() {
+  const router = useRouter();
   const { data: Stacks } = useQuery({
     queryKey: ["stacks"],
     queryFn: () => getStacks(),
     refetchOnWindowFocus: false,
     retry: 3,
   });
-  console.log("Stacks", Stacks);
 
   const {
     handleSubmit,
@@ -34,9 +35,17 @@ export default function Signup() {
     currentFormIndex,
   } = useNavigateForms();
   const { createNewUser, status, setStatus, errMessage } = usePostNewSignUp();
-  const isClosed = false;
+  const isClosed = true;
 
-  const onSubmit = (data: Partial<NewUserFields>) => {
+  const serializePayload = (payload: Record<string, any>) =>
+    Object.keys(payload)
+      .map(
+        (key) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(payload[key])}`
+      )
+      .join("&");
+
+  const onSubmit = async (data: Partial<NewUserFields>) => {
     NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
     if (currentFormIndex === 3) {
       const { years_of_experience, skills } = NEW_USER_DATA;
@@ -44,30 +53,50 @@ export default function Signup() {
       NEW_USER_DATA = {
         ...NEW_USER_DATA,
         years_of_experience: Number(years_of_experience),
-        skills: validatedSkills,
+        // skills: validatedSkills,
       };
 
       if (NEW_USER_DATA) {
-        const { stack, ...otherNEW_USER_DATA } = NEW_USER_DATA;
-        console.log("Stack>>>", stack);
+        const {
+          stack,
+          skills,
+          stack_id,
+          role_id,
+          profile_pic_url,
+          ...otherNEW_USER_DATA
+        } = NEW_USER_DATA;
+        // console.log("Stack>>>", stack);
         const selectedId = Number(stack);
         const selectedStack = Stacks?.data.find(
           (stack) => stack.id === selectedId
         );
         // If a matching stack is found, you can use it
-        if (selectedStack) {
-          console.log("Selected Stack:", selectedStack);
-          // You can now use selectedStack for your payload or any other logic
-          const payload = {
-            ...otherNEW_USER_DATA,
-            stack: [selectedStack],
-          };
-          console.log("Data>>", payload);
-          createNewUser(payload);
-        } else {
-          console.log("No matching stack found for the selected ID.");
-        }
+        // if (selectedStack) {
+        //   console.log("Selected Stack:", selectedStack);
+        // You can now use selectedStack for your payload or any other logic
+        const payload = {
+          ...otherNEW_USER_DATA,
+          // stack: [selectedStack],
+          stack_id: 1,
+          role_id: 1,
+          profile_pic_url: "/profile.png",
+        };
+        const response = await fetch(
+          "https://crm-api.fly.dev/api/v1/users/register",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          }
+        );
+        // createNewUser(payload);
+        // } else {
+        //   console.log("No matching stack found for the selected ID.");
+        // }
       }
+      router.push("/login");
       return;
     }
     next();

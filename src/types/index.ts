@@ -98,7 +98,7 @@ export type NewUserFields = {
   password: string;
   password_confirmation: string;
   role_id?: number;
-  // stack_id: number;
+  stack_id: number;
   bio: string;
   phone_number: string;
   years_of_experience: number | null;
@@ -109,6 +109,28 @@ export type NewUserFields = {
   stack?: IStack[];
   profile_pic_url?: string;
   skills: string[];
+  is_active: boolean;
+};
+
+export type NewUserField = {
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  password: string;
+  password_confirmation: string;
+  role_id?: number;
+  stack_id: number;
+  bio: string;
+  phone_number: string;
+  years_of_experience: number | null;
+  github_profile: string;
+  twitter_profile: string;
+  linkedin_profile: string;
+  portfolio_url: string;
+  // stack?: IStack[];
+  profile_pic_url?: string;
+  // skills: string[];
   is_active: boolean;
 };
 

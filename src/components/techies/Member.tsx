@@ -1,8 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
+"use client";
+
 import React from "react";
 import { ITechie } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
+import { useTheme } from "next-themes"; // Import useTheme for theme management
 
 interface MemberProps {
   data: ITechie;
@@ -12,7 +14,7 @@ interface MemberProps {
 }
 
 function Member({ data, onSelect, isSelected, className }: MemberProps) {
-  // console.log(data);
+  const { theme } = useTheme(); // Get the current theme
 
   // Determine the profile picture URL
   const profilePicUrl =
@@ -23,11 +25,16 @@ function Member({ data, onSelect, isSelected, className }: MemberProps) {
   // Safely access stack properties
   const stackName = data.stack?.name || "Techie";
 
+  // Determine background color based on the theme
+  const backgroundColor = isSelected
+    ? "bg-blue-200"
+    : theme === "dark"
+    ? "bg-gray-800"
+    : "bg-white";
+
   return (
     <section
-      className={`col-span-1 border-2 rounded-md p-5 ${className} ${
-        isSelected ? "bg-blue-200" : "bg-white"
-      }`}
+      className={`col-span-1 border-2 rounded-md p-5 ${className} ${backgroundColor}`}
       onClick={onSelect}
     >
       {/* Top Section */}
@@ -44,7 +51,6 @@ function Member({ data, onSelect, isSelected, className }: MemberProps) {
           {data.first_name} {data.last_name}
         </p>
         <p className="font-light text-[#5D6675] dark:text-[#cacbcf] text-sm">
-          {/* {data.stack?.name ? `${data.stack.name} Engineer` : "Techie"} */}
           {stackName} Engineer
         </p>
       </section>

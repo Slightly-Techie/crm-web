@@ -35,7 +35,7 @@ export default function Signup() {
     currentFormIndex,
   } = useNavigateForms();
   const { createNewUser, status, setStatus, errMessage } = usePostNewSignUp();
-  const isClosed = true;
+  const isClosed = false;
 
   const serializePayload = (payload: Record<string, any>) =>
     Object.keys(payload)
@@ -81,22 +81,22 @@ export default function Signup() {
           role_id: 1,
           profile_pic_url: "/profile.png",
         };
-        const response = await fetch(
-          "https://crm-api.fly.dev/api/v1/users/register",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-          }
-        );
-        // createNewUser(payload);
+        // const response = await fetch(
+        //   "https://crm-api.fly.dev/api/v1/users/register",
+        //   {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify(payload),
+        //   }
+        // );
+        createNewUser(payload);
         // } else {
         //   console.log("No matching stack found for the selected ID.");
         // }
       }
-      router.push("/login");
+      // router.push("/login");
       return;
     }
     next();

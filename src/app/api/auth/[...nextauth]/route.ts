@@ -5,6 +5,7 @@ declare module "next-auth" {
   interface Session {
     user: {
       token?: string; // Add the token to the session user
+      refresh_token?: string; // Add refresh_token to the session user
       name?: string | null;
       email?: string | null;
       image?: string | null;

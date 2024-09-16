@@ -12,7 +12,9 @@ import {
   AiOutlineLink,
   AiOutlineTwitter,
   AiOutlineGithub,
+  AiOutlineLinkedin,
 } from "react-icons/ai";
+import Link from "next/link";
 
 function Page() {
   // Get the user's ID from the route
@@ -42,6 +44,11 @@ function Page() {
     UserProfile?.profile_pic_url && UserProfile?.profile_pic_url !== "string"
       ? UserProfile.profile_pic_url
       : `https://api.dicebear.com/7.x/initials/jpg?seed=${UserProfile?.first_name} ${UserProfile?.last_name}`;
+
+  const formattedStatus = UserProfile?.status
+    ? UserProfile.status.charAt(0).toUpperCase() +
+      UserProfile.status.slice(1).toLowerCase()
+    : "Unspecified";
 
   return (
     <section>
@@ -94,16 +101,26 @@ function Page() {
                         {(UserProfile.portfolio_url as string) || "Unspecified"}
                       </a>
                     </section>
+                    <p>Tel: {UserProfile.phone_number} </p>
                   </section>
                 </section>
               </section>
               {/* Right Side */}
               <section className="lg:w-[25%] bg-primary-light dark:bg-[#121212] rounded p-5">
                 <section>
+                  <div className="flex items-center gap-2">
+                    <p>Status:</p>
+                    <span> {formattedStatus} </span>
+                  </div>
                   <h1>Stack:</h1>
                   <p className="text-gray-400">
                     {UserProfile.stack?.name || "Unspecified"}
                   </p>
+                  <div className="flex items-center gap-2">
+                    <p>
+                      Years of Experience: {UserProfile.years_of_experience}
+                    </p>
+                  </div>
                 </section>
                 <hr className="my-5 border-[#777777]" />
                 <section>
@@ -115,7 +132,7 @@ function Page() {
                         @
                         {getAccountUserName(
                           UserProfile?.twitter_profile as string
-                        )}
+                        ) || "Unspecified"}
                       </a>
                     </section>
                     <section className="flex items-center gap-2">
@@ -124,7 +141,16 @@ function Page() {
                         @
                         {getAccountUserName(
                           UserProfile.github_profile as string
-                        )}
+                        ) || "Unspecified"}
+                      </a>
+                    </section>
+                    <section className="flex items-center gap-2">
+                      <AiOutlineLinkedin />
+                      <a href={(UserProfile.linkedin_profile as string) || "#"}>
+                        @
+                        {getAccountUserName(
+                          UserProfile.linkedin_profile as string
+                        ) || "Unspecified"}
                       </a>
                     </section>
                     <section>
@@ -152,14 +178,14 @@ function Page() {
                     There is an error fetching posts
                   </h1>
                 )}
-                {currentUserPosts?.length && (
+                {currentUserPosts?.length! > 1 && (
                   <>
                     <section className="  border-b border-b-neutral-600 my-6 pb-2">
                       <h2 className="text-xl">
-                        Posts ({currentUserPosts.length})
+                        Posts ({currentUserPosts?.length})
                       </h2>
                     </section>
-                    {currentUserPosts.map((data) => (
+                    {currentUserPosts?.map((data) => (
                       <UserPost key={data.id} post={data} />
                     ))}
                   </>
@@ -167,6 +193,18 @@ function Page() {
               </section>
             </section>
           </section>
+          {!currentUserPosts?.length && (
+            <section className="h-full py-28 w-full flex flex-col items-center justify-center">
+              <h1>No posts found</h1>
+              <p className="mt-4">
+                Say Hello to the{" "}
+                <Link href="/" className="font-bold">
+                  {" "}
+                  Slightly Techie Community.{" "}
+                </Link>
+              </p>
+            </section>
+          )}
         </section>
       )}
     </section>

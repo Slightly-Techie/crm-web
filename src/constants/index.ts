@@ -25,7 +25,7 @@ export let NEW_USER_DATA: NewUserFields = {
   password_confirmation: "",
   email: "",
   phone_number: "",
-  stack: "",
+  stack: [],
   stack_id: 1,
   years_of_experience: null,
   bio: "",
@@ -37,6 +37,7 @@ export let NEW_USER_DATA: NewUserFields = {
   profile_pic_url: "",
   skills: [],
   username: "",
+  // tags: [],
 };
 
 // options from the contants-

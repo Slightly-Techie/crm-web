@@ -26,7 +26,16 @@ export const authOptions: NextAuthOptions = {
             throw new Error(err.response.data.detail);
           });
 
-        return { ...user };
+        // Ensure the returned user includes the token
+        if (user && user.token) {
+          return {
+            ...user,
+            token: user.token,
+            refresh_token: user.refresh_token,
+          };
+        }
+
+        return null;
       },
     }),
   ],
@@ -35,29 +44,34 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 30 * 60,
+    maxAge: 30 * 60, // 30 minutes
   },
   jwt: {
-    maxAge: 30 * 60,
+    maxAge: 30 * 60, // 30 minutes
   },
   callbacks: {
-    async jwt({ token, user, trigger, session, account }) {
-      if (trigger === "update" && session) {
-        return { ...token, ...session };
+    async jwt({ token, user }) {
+      // If the user object exists, it's a sign-in, so merge the token
+      if (user) {
+        return { ...token, ...user }; // Pass the token into the JWT
       }
-      if (user && account) {
-        return { ...token, ...user };
-      }
+
+      // Decode and check token expiration
       const tokenParts: {
         exp: number;
         sub: string;
       } = jwtDecode(token.token as string);
+
+      // If the token is still valid, return it
       if (Date.now() < tokenParts.exp * 1000) {
         return token;
       }
+
+      // Return token with expiration error if invalid
       return { ...token, error: "token-expired" };
     },
     async session({ session, token }) {
+      // Pass the token to the session
       session.user = token as Session["user"];
       return session;
     },

@@ -56,11 +56,22 @@ export default function Login() {
           body: serializedData,
         }
       );
-      console.log("Login Response >>", response);
+      // console.log("Login Response >>", response);
       const responseBody = await response.json();
-      console.log("Response Status:", response.status);
-      console.log("Response Body:", responseBody);
-      console.log("Response User_Status:", responseBody.user_status);
+      // console.log("Response Status:", response.status);
+      // console.log("Response Body:", responseBody);
+      // console.log("Response User_Status:", responseBody.user_status);
+
+      const token = responseBody?.token;
+      // console.log("token:", token);
+        // Assume the token is in responseBody
+      if (token) {
+        sessionStorage.setItem("authToken", token);  // Use localStorage if you want the token to persist
+      }
+
+      // const test = sessionStorage.getItem("authToken");
+      // console.log(test);
+      
 
       const result = await signIn("credentials", {
         email: data.email,

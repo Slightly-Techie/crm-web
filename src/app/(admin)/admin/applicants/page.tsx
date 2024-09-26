@@ -55,9 +55,6 @@ export default function Applicants() {
     handleFilter(event.target.value);
   }
 
-
-
-
   //Implement the data
 
   return (

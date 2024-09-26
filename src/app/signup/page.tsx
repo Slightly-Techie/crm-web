@@ -61,15 +61,18 @@ export default function Signup() {
           stack,
           skills,
           stack_id,
-          role_id,
           profile_pic_url,
           ...otherNEW_USER_DATA
         } = NEW_USER_DATA;
         // console.log("Stack>>>", stack);
-        const selectedId = Number(stack);
+        const selectedId = Number(stack); 
         const selectedStack = Stacks?.data.find(
           (stack) => stack.id === selectedId
         );
+        console.log("selectedStack", selectedStack);
+        console.log("selectedId", selectedId);
+        
+        
         // If a matching stack is found, you can use it
         // if (selectedStack) {
         //   console.log("Selected Stack:", selectedStack);
@@ -77,10 +80,10 @@ export default function Signup() {
         const payload = {
           ...otherNEW_USER_DATA,
           // stack: [selectedStack],
-          stack_id: 1,
-          role_id: 1,
-          profile_pic_url: "/profile.png",
+          stack_id: selectedId,
         };
+        console.log("Data payload", payload);
+        
         // const response = await fetch(
         //   "https://crm-api.fly.dev/api/v1/users/register",
         //   {

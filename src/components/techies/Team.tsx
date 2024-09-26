@@ -6,23 +6,18 @@ import { useQuery } from "@tanstack/react-query";
 import useEndpoints from "@/services";
 import LoadingSpinner from "../loadingSpinner";
 import PageTitle from "../PageTitle";
-import useDebounce from "@/hooks/useDebouncedSearch";
 import { IGetAllTechiesResponse } from "@/types";
 
 function Team() {
-  const { getTechiesList, searchTechie } = useEndpoints();
+  const { getTechiesList } = useEndpoints(); // Removed searchTechie
   const [currentPage, setCurrentPage] = useState(1);
-  const [paginatioinDetails, setPaginatioinDetails] = useState({
+  const [paginationDetails, setPaginationDetails] = useState({
     total: 0,
     size: 0,
     pages: 0,
     page: 0,
   });
   const [searchKeyword, setSearchKeyword] = useState("");
-  const { debounce, result } = useDebounce<IGetAllTechiesResponse>(
-    searchTechie,
-    500
-  );
 
   const {
     data: TechiesData,
@@ -35,7 +30,7 @@ function Team() {
         page: currentPage,
       }),
     onSuccess: (data) => {
-      setPaginatioinDetails({
+      setPaginationDetails({
         total: data.total,
         size: data.size,
         pages: data.pages,
@@ -46,13 +41,19 @@ function Team() {
     retry: 3,
   });
 
-  const handleSearch = async (value: string) => {
+  // Filter the techies based on the searchKeyword
+  const handleSearch = (value: string) => {
     setSearchKeyword(value);
-    debounce(value);
   };
 
-  const techies =
-    searchKeyword && result?.items ? result?.items : TechiesData?.items;
+  // Filtering logic for techies
+  const filteredTechies = TechiesData?.items?.filter(
+    (techie) =>
+      techie.first_name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+      techie.last_name.toLowerCase().includes(searchKeyword.toLowerCase())
+  );
+
+  const techies = searchKeyword ? filteredTechies : TechiesData?.items;
 
   return (
     <section className="w-full h-full">
@@ -60,7 +61,7 @@ function Team() {
 
       <section className="pt-[7vh]">
         {/* Search Input Section */}
-        <section className=" border-b-st-edge dark:border-st-edgeDark p-5">
+        <section className="border-b-st-edge dark:border-st-edgeDark p-5">
           <form className="flex justify-between items-center gap-5">
             <section className="w-full flex items-center py-2 px-3 gap-2 border rounded-md">
               <input
@@ -73,7 +74,10 @@ function Team() {
               <img src={Search.src} alt="search icon" />
             </section>
             <section className="flex items-center gap-5">
-              <button className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm">
+              <button
+                type="button"
+                className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm"
+              >
                 Search
               </button>
             </section>
@@ -83,11 +87,11 @@ function Team() {
             <section className="flex items-center justify-between h-full">
               <p className="text-sm text-slate-700 dark:text-[#F1F3F7]">
                 Showing{" "}
-                {1 + (paginatioinDetails.page - 1) * paginatioinDetails.size} to{" "}
-                {paginatioinDetails.page === paginatioinDetails.pages
-                  ? paginatioinDetails.total
-                  : paginatioinDetails.size * paginatioinDetails.page}{" "}
-                of {paginatioinDetails.total} entries
+                {1 + (paginationDetails.page - 1) * paginationDetails.size} to{" "}
+                {paginationDetails.page === paginationDetails.pages
+                  ? paginationDetails.total
+                  : paginationDetails.size * paginationDetails.page}{" "}
+                of {paginationDetails.total} entries
               </p>
 
               <section className="flex items-center gap-2">
@@ -104,11 +108,11 @@ function Team() {
                 </button>
                 <button
                   onClick={() => {
-                    if (currentPage < paginatioinDetails.pages) {
+                    if (currentPage < paginationDetails.pages) {
                       setCurrentPage(currentPage + 1);
                     }
                   }}
-                  disabled={currentPage === paginatioinDetails.pages}
+                  disabled={currentPage === paginationDetails.pages}
                   className="bg-[#3D4450] dark:bg-st-edgeDark text-white py-2 px-6 rounded-sm disabled:opacity-70"
                 >
                   Next

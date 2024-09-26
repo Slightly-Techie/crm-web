@@ -8,14 +8,15 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "@/components/loadingSpinner";
 import PageTitle from "@/components/PageTitle";
 import { format } from "date-fns";
+import axios from "axios";
 
 function Page() {
-  const [isAdmin] = useState<boolean>(true);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [query, setQuery] = useState<string>("");
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const [showFilterOptions, setShowFilterOptions] = useState<boolean>(false);
   const [statuses, setStatuses] = useState<{ [key: string]: string }>({});
-  const { getProjects, updateProjectStatus } = useEndpoints();
+  const { getProjects, getUserProfile } = useEndpoints();
 
   const {
     data: Projects,
@@ -28,18 +29,58 @@ function Page() {
     retry: 3,
   });
 
-  // useEffect(() => {
-  //   if (Projects?.data.items) {
-  //     const initialStatuses = Projects.data.items.reduce(
-  //       (acc: { [key: string]: string }, item: { id: string }) => {
-  //         acc[item.id] = "In progress";
-  //         return acc;
-  //       },
-  //       {}
-  //     );
-  //     setStatuses(initialStatuses);
-  //   }
-  // }, [Projects]);
+    // Fetch the currently logged-in user's data
+    useEffect(() => {
+      const fetchUserData = async () => {
+        try {
+          const token = sessionStorage.getItem("authToken");
+          // or wherever you store your token
+          // console.log("token", token);
+          
+
+        if (token) {
+          const response = await axios.get(
+            `https://crm-api.fly.dev/api/v1/users/me`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const userData = response.data;
+          // console.log("User data", userData);
+          // console.log("role ID", userData.role.id);
+          
+          
+  
+          // Check the user's role and set isAdmin accordingly
+          if (userData.role.id === 1) {
+            setIsAdmin(true);
+          } else if (userData.role.id === 2) {
+            setIsAdmin(false);
+          }
+        }
+        } catch (error) {
+          console.error("Failed to fetch user data", error);
+        }
+      };
+  
+      fetchUserData();
+    }, []);
+  
+
+  useEffect(() => {
+    if (Projects?.data.items) {
+      const initialStatuses = Projects.data.items.reduce(
+        (acc: { [key: string]: string }, item: { id: string }) => {
+          acc[item.id] = "In progress";
+          return acc;
+        },
+        {}
+      );
+      setStatuses(initialStatuses);
+    }
+  }, [Projects]);
 
   const projectList = Projects?.data.items;
 

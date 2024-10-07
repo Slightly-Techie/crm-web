@@ -35,7 +35,7 @@ export default function Signup() {
     currentFormIndex,
   } = useNavigateForms();
   const { createNewUser, status, setStatus, errMessage } = usePostNewSignUp();
-  const isClosed = false;
+  const isClosed = true;
 
   const serializePayload = (payload: Record<string, any>) =>
     Object.keys(payload)

@@ -79,8 +79,8 @@ export default function Login() {
         callbackUrl: callbackUrl,
         redirect: false,
       });
-      console.log("Result", result);
-      console.log("Data", data);
+      // console.log("Result", result);
+      // console.log("Data", data);
       if (result?.ok && !result?.error) {
         // setIsRequestSent(false);
         /**

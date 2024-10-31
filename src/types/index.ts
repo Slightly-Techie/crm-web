@@ -230,3 +230,14 @@ export interface IUser {
   email: string;
   password: string;
 }
+
+
+export interface ITask {
+  description: string;
+  task_id: number;
+  github_link: string;
+  live_demo_url: string;
+  id: number;
+  created_at: string;
+  updated_at: string;
+}

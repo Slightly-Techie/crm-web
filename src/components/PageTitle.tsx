@@ -16,6 +16,6 @@ export default function PageTitle({
       <p className=" text-st-surfaceDark dark:text-st-surface lg:text-xl font-bold">
         {title}
       </p>
-    </section>
+    </section>  
   );
 }

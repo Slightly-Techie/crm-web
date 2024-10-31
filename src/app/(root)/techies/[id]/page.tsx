@@ -15,13 +15,15 @@ import {
   AiOutlineLinkedin,
 } from "react-icons/ai";
 import Link from "next/link";
+import { useState } from "react";
 
 function Page() {
   // Get the user's ID from the route
   const { id } = useParams();
+  // console.log('id', typeof +id)
 
   // Initiate the getSpecific user function from the useEndpoints hook
-  const { getSpecificUser } = useEndpoints();
+  const { getSpecificUser, applicantTask, taskSubmissions } = useEndpoints();
 
   const { isFetching, isFetchingError, FeedPosts } = useFetchFeeds();
 
@@ -35,20 +37,57 @@ function Page() {
     refetchOnWindowFocus: false,
   });
 
+
+  // const {
+  //   data: ApplicantSubmission,
+  // } = useQuery({
+  //   queryKey: ["tasksubmission", id],
+  //   queryFn: () => taskSubmissions(id).then((res) => res.data),
+  //   refetchOnWindowFocus: false,
+  // });
+
+
+  // console.log('Applicant>>', ApplicantSubmission)
+  // console.log('first', ApplicantSubmission.task_id)
+  // console.log('UserProfile', UserProfile)
+  console.log('UserProfile', UserProfile)
+  // const TaskId =  Number(ApplicantSubmission?.task_id)
+  // console.log('TaskId', TaskId)
+
   const currentUserPosts = FeedPosts?.filter(
     (item) => item.user.id === UserProfile?.id
   );
 
-  // Determine the profile picture URL
-  const profilePicUrl =
+  //   const {
+  //   data: ApplicantTask,
+  // } = useQuery({
+  //   queryKey: ["applicanttask", TaskId],
+  //   queryFn: () => applicantTask(TaskId).then((res) => res.data),
+  //   refetchOnWindowFocus: false,
+  // });
+
+  // console.log('Applicant Task', ApplicantTask)
+
+  // State to handle fallback for profile image
+  const [profilePicUrl, setProfilePicUrl] = useState(
     UserProfile?.profile_pic_url && UserProfile?.profile_pic_url !== "string"
-      ? UserProfile.profile_pic_url
-      : `https://api.dicebear.com/7.x/initials/jpg?seed=${UserProfile?.first_name} ${UserProfile?.last_name}`;
+      ? UserProfile.profile_pic_url || `https://api.dicebear.com/7.x/initials/jpg?seed=${UserProfile?.first_name} ${UserProfile?.last_name}`
+      : `https://api.dicebear.com/7.x/initials/jpg?seed=${UserProfile?.first_name} ${UserProfile?.last_name}`
+  );
+
+  const handleImageError = () => {
+    // Set fallback image if the provided URL fails
+    setProfilePicUrl(`https://avatars.dicebear.com/api/initials/${UserProfile?.first_name} ${UserProfile?.last_name}.svg`);
+  };
 
   const formattedStatus = UserProfile?.status
     ? UserProfile.status.charAt(0).toUpperCase() +
       UserProfile.status.slice(1).toLowerCase()
     : "Unspecified";
+
+  const techTask = UserProfile?.technical_task
+  console.log('techTask', techTask)
+    
 
   return (
     <section>
@@ -69,7 +108,7 @@ function Page() {
               <section className="relative lg:w-[70%] h-[500px] lg:h-[350px]">
                 <section className="absolute bg-primary-light dark:bg-st-surfaceDark w-full h-[150px] z-[1]"></section>
                 <section className="flex flex-col gap-5 absolute z-[2] top-[125px] px-5">
-                  <Image
+                <Image
                     className="w-12 md:w-20 h-12 md:h-20 aspect-square shrink-0 rounded-full object-cover"
                     width={1000}
                     height={1000}
@@ -78,6 +117,7 @@ function Page() {
                     placeholder="blur"
                     blurDataURL={`https://avatars.dicebear.com/api/initials/${UserProfile?.first_name} ${UserProfile?.last_name}.svg`}
                     priority={true}
+                    onError={handleImageError} // Sets fallback on error
                   />
                   <section>
                     <h1>
@@ -154,7 +194,7 @@ function Page() {
                       </a>
                     </section>
                     <section>
-                      {UserProfile.skills.map((item) => {
+                      {UserProfile.skills.map((item:any) => {
                         return (
                           <p className=" text-st-surface" key={item}>
                             {item}
@@ -162,12 +202,38 @@ function Page() {
                         );
                       })}
                     </section>
+
                   </section>
                 </section>
               </section>
             </section>
+            <section className=" mt-[100px]">
+              <h1 className="flex items-center justify-center font-bold text-2xl">Task</h1>
+              <section className="mt-5">
+                {techTask ? (
+                  <>
+                    <h2 className="font-semibold mb-5">Description</h2>
+                    <p className="text-gray-700">{techTask.description || "No Description available"}</p>
+                    <div className="flex gap-20 items-center mt-10">
+                      <div>
+                        <h2 className="font-semibold mb-5">Github Link</h2>
+                        <p className="text-gray-700">{techTask.github_link || "No link available"}</p>
+                      </div>
+                      <div>
+                        <h2 className="font-semibold mb-5">Demo Link</h2>
+                        <p className="text-gray-700">{techTask.live_demo_url || "No demo available"}</p>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  // Placeholder when techTask is null or undefined
+                  <p className="text-gray-500">No technical task available for this user.</p>
+                )}
+              </section>
+            </section>
+
             <section className="p-5 lg:w-[70%]">
-              <section className="h-full w-full flex-col">
+              <section className="h-full w-full flex-col bg-red-400">
                 {isFetching && (
                   <section className="h-full w-full flex flex-col items-center justify-center">
                     <LoadingSpinner />

@@ -11,6 +11,7 @@ import {
   IStack,
   ITechie,
   IUser,
+  ITask,
 } from "@/types";
 
 const useEndpoints = () => {
@@ -54,7 +55,7 @@ const useEndpoints = () => {
     }
   };
   const getSpecificUser = (user_id: any) =>
-    authAxios.get<ITechie>(`api/v1/users/profile/${user_id}`);
+    authAxios.get<any>(`api/v1/users/profile/${user_id}`);
 
   const getProjects = () => authAxios.get<IProjectResponse>(`api/v1/projects/`);
   const postProjects = <T>(payload: T) =>
@@ -92,6 +93,12 @@ const useEndpoints = () => {
     }
   };
 
+  const applicantTask = (task_id: any) => authAxios.get<any>(`/api/v1/applicant/task/${task_id}`)
+  
+  const taskSubmissions = (id:any) => authAxios.get(`/api/v1/applicant/submission/${id}/users`)
+
+
+
   return {
     getUserProfile,
     updateUserProfile,
@@ -111,6 +118,8 @@ const useEndpoints = () => {
     getSkills,
     getStacks,
     userLogin,
+    applicantTask,
+    taskSubmissions,
   };
 };
 

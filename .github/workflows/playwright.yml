@@ -1,4 +1,5 @@
 name: Playwright Tests
+
 on:
   push:
     branches: [main, master]
@@ -9,17 +10,50 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+
     steps:
+      # Checkout code
       - uses: actions/checkout@v4
+
+      # Setup Node 18
       - uses: actions/setup-node@v4
         with:
           node-version: 18
+
+      # Install dependencies
       - name: Install dependencies
         run: yarn
+
+      # Install system dependencies for Playwright browsers
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libnss3 \
+            libatk1.0-0 \
+            libatk-bridge2.0-0 \
+            libcups2 \
+            libx11-xcb1 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxrandr2 \
+            libgbm1 \
+            libpango-1.0-0 \
+            libglib2.0-0 \
+            libasound2 \
+            libxss1 \
+            libffi-dev \
+            libx264-dev
+
+      # Install Playwright browsers
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
+
+      # Run Playwright tests
       - name: Run Playwright tests
         run: yarn playwright test
+
+      # Upload Playwright report
       - uses: actions/upload-artifact@v4
         if: always()
         with:

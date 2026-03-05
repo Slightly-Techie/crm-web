@@ -24,27 +24,6 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      # Install system dependencies for Playwright browsers
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libnss3 \
-            libatk1.0-0 \
-            libatk-bridge2.0-0 \
-            libcups2 \
-            libx11-xcb1 \
-            libxcomposite1 \
-            libxdamage1 \
-            libxrandr2 \
-            libgbm1 \
-            libpango-1.0-0 \
-            libglib2.0-0 \
-            libasound2t64 \
-            libxss1 \
-            libffi-dev \
-            libx264-dev
-
       # Install Playwright browsers
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps

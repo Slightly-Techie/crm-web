@@ -68,8 +68,6 @@ function TeamSelectionPage() {
 
   const handleSubmit = async () => {
     if (formValues) {
-      console.log("formValues", formValues);
-
       // Assuming you have stack IDs in your selectedTeam
       // const stackIds = selectedTeam.map((member) => member.stack.id);
       const { project_tools, stacks, ...otherFormValues } = formValues;
@@ -85,21 +83,15 @@ function TeamSelectionPage() {
       };
 
       try {
-        console.log("Submitting payload:", payload); // Log the payload
         const response = await postProjects(payload);
-        console.log("API response:", response); // Log the response
 
         // Check if the response is successful
         if (response.status === 200 || response.status === 201) {
           router.push("/community-projects"); // Redirect to projects page or any other page
-        } else {
-          console.error("Unexpected response status:", response.status);
         }
       } catch (error) {
-        console.error("Error creating project:", error);
+        // Error handled silently; toast could be added here
       }
-    } else {
-      console.error("Form values are null"); // Log if formValues is null
     }
   };
 

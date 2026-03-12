@@ -69,9 +69,6 @@ const ProjectDetail = ({ params }: any) => {
   const project = Project?.data;
 
   const stack = project.project_tools;
-  console.log("Project", project);
-  console.log("stack", stack);
-
   // const generateImageUrl = (toolName: string) => {
   //   return `https://cdn.simpleicons.org/${toolName.toLowerCase()}`; // Adjust the color as needed
   // };

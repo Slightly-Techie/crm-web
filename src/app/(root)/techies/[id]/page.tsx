@@ -15,7 +15,7 @@ import {
   AiOutlineLinkedin,
 } from "react-icons/ai";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 function Page() {
   // Get the user's ID from the route
@@ -50,12 +50,9 @@ function Page() {
   // console.log('Applicant>>', ApplicantSubmission)
   // console.log('first', ApplicantSubmission.task_id)
   // console.log('UserProfile', UserProfile)
-  console.log('UserProfile', UserProfile)
-  // const TaskId =  Number(ApplicantSubmission?.task_id)
-  // console.log('TaskId', TaskId)
-
-  const currentUserPosts = FeedPosts?.filter(
-    (item) => item.user.id === UserProfile?.id
+  const currentUserPosts = useMemo(
+    () => FeedPosts?.filter((item) => item.user.id === UserProfile?.id),
+    [FeedPosts, UserProfile?.id]
   );
 
   //   const {
@@ -86,8 +83,7 @@ function Page() {
       UserProfile.status.slice(1).toLowerCase()
     : "Unspecified";
 
-  const techTask = UserProfile?.technical_task
-  console.log('techTask', techTask)
+  const techTask = UserProfile?.technical_task;
     
 
   return (
@@ -111,13 +107,12 @@ function Page() {
                 <section className="flex flex-col gap-5 absolute z-[2] top-[125px] px-5">
                 <Image
                     className="w-12 md:w-20 h-12 md:h-20 aspect-square shrink-0 rounded-full object-cover"
-                    width={1000}
-                    height={1000}
+                    width={80}
+                    height={80}
                     src={profilePicUrl}
                     alt="profile"
                     placeholder="blur"
                     blurDataURL={`https://avatars.dicebear.com/api/initials/${UserProfile?.first_name} ${UserProfile?.last_name}.svg`}
-                    priority={true}
                     onError={handleImageError} // Sets fallback on error
                   />
                   <section>

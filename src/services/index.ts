@@ -88,8 +88,7 @@ const useEndpoints = () => {
       const response = await authAxios.post(`/api/v1/users/login`, data);
       return response.data;
     } catch (error) {
-      console.error("Login error:", error);
-      throw error; // Re-throw or handle the error as needed
+      throw error;
     }
   };
 

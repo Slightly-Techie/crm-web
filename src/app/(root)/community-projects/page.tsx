@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FaFilter, FaChevronDown, FaSearch } from "react-icons/fa";
 import StatusCheck from "@/components/projects/StatusCheck";
 import Link from "next/link";
@@ -32,7 +32,7 @@ function Page() {
     // Fetch user role using the existing service hook and React Query
     const session = useSession();
     useQuery({
-      queryKey: ["userProfile_role"],
+      queryKey: ["userProfile"],
       queryFn: () => getUserProfile().then((res) => res?.data),
       enabled: session.status === "authenticated",
       refetchOnWindowFocus: false,
@@ -57,18 +57,20 @@ function Page() {
 
   const projectList = Projects?.data.items;
 
-  const filteredItems = projectList?.filter((item) => {
-    const projectMatch = item?.name
-      ?.toLowerCase()
-      .includes(query.toLowerCase());
+  const filteredItems = useMemo(
+    () =>
+      projectList?.filter((item) => {
+        const projectMatch = item?.name
+          ?.toLowerCase()
+          .includes(query.toLowerCase());
 
-    const filterMatch =
-      selectedFilter === "all" || item.project_type === selectedFilter;
+        const filterMatch =
+          selectedFilter === "all" || item.project_type === selectedFilter;
 
-    return projectMatch && filterMatch;
-  });
-
-  console.log("filteredItems", filteredItems);
+        return projectMatch && filterMatch;
+      }),
+    [projectList, query, selectedFilter]
+  );
 
   // const handleStatusChange = (projectId: string, newStatus: string) => {
   //   setStatuses((prev) => ({

@@ -40,10 +40,9 @@ function Member({ data, onSelect, isSelected, className }: MemberProps) {
       {/* Top Section */}
       <Image
         className="rounded-full w-[60px] h-[60px] object-cover mb-5"
-        width={5000}
-        height={5000}
+        width={60}
+        height={60}
         src={profilePicUrl}
-        priority
         alt="profile"
       />
       <section>
@@ -65,4 +64,4 @@ function Member({ data, onSelect, isSelected, className }: MemberProps) {
   );
 }
 
-export default Member;
+export default React.memo(Member);

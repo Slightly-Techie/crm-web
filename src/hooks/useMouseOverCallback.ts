@@ -1,24 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import useEventListener from "./useEventListener";
 
 export default function useMouseOverCallback(
   elementRef: React.MutableRefObject<null>,
-  ...args: any[]
+  callback: () => void
 ) {
   const [isOver, setIsOver] = useState(false);
 
-  const handleClick = (event: MouseEvent) => {
+  const handleClick = useCallback(() => {
     if (!isOver) {
-      args[0]();
+      callback();
     }
-  };
+  }, [isOver, callback]);
 
-  const handleMouseOver = (event: MouseEvent) => {
+  const handleMouseOver = useCallback(() => {
     setIsOver(true);
-  };
-  const handleMouseOut = (event: MouseEvent) => {
+  }, []);
+
+  const handleMouseOut = useCallback(() => {
     setIsOver(false);
-  };
+  }, []);
 
   useEventListener("mouseover", handleMouseOver, elementRef);
   useEventListener("mouseout", handleMouseOut, elementRef);
@@ -28,7 +29,7 @@ export default function useMouseOverCallback(
     return () => {
       document.removeEventListener("click", handleClick);
     };
-  });
+  }, [handleClick]);
 
   return { isOver };
 }

@@ -57,8 +57,6 @@ const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
   const [skillOptions, setSkillOptions] = useState<OptionType[]>([]);
   const [stackOptions, setStackOptions] = useState<OptionType[]>([]);
 
-  console.log("StackedOption", stackOptions);
-
   const {
     data: Skills,
     isLoading,
@@ -69,16 +67,12 @@ const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
     refetchOnWindowFocus: false,
     retry: 3,
   });
-  console.log("Skills", Skills);
-
   const { data: Stacks } = useQuery({
     queryKey: ["stacks"],
     queryFn: () => getStacks(),
     refetchOnWindowFocus: false,
     retry: 3,
   });
-  console.log("Stacks", Stacks);
-
   useEffect(() => {
     if (Skills && Skills.data) {
       const formattedOptions = Skills.data.items.map((skill: any) => ({
@@ -93,7 +87,6 @@ const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
         value: stack.id, // Assuming `id` is the unique identifier for stacks
         label: stack.name,
       }));
-      console.log("StackOptions", formattedStackOptions);
       setStackOptions(formattedStackOptions);
     }
   }, [Skills, Stacks]);
@@ -101,10 +94,8 @@ const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
   const handleNext = (data: ProjectFields) => {
     // Extract selected tool IDs from the form data
     const selectedTools = getSkillsArray(data.project_tools);
-    console.log("SelectedTools >>", selectedTools); // Debug: Check if IDs are present
 
     const selectedStacks = getStacksArray(data.stacks);
-    console.log("SelectedStacks >>", selectedStacks); // Debug: Check if IDs are present
 
     // Filter and map the skills options based on selected tools IDs
     const selectedOptions: ISkill[] = skillOptions
@@ -114,8 +105,6 @@ const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
       ) // Compare as strings
       .filter((skill): skill is ISkill => skill !== undefined); // Filter out undefined values
 
-    console.log("selectedOptions", selectedOptions); // Debug: Verify filtered skills
-
     // Filter and map the stacks options based on selected stacks IDs
     const selectedStackOptions: IStack[] = stackOptions
       .filter((option) => selectedStacks.includes(option.value.toString())) // Ensure IDs match
@@ -124,16 +113,12 @@ const EditPage: React.FC<EditProps> = ({ ProjectSubmitHandler }) => {
       ) // Compare as strings
       .filter((stack): stack is IStack => stack !== undefined); // Filter out undefined values
 
-    console.log("selectedStackOptions", selectedStackOptions); // Debug: Verify filtered skills
-
     // Prepare the payload with the selected skill options
     const payload: ProjectFields = {
       ...data,
       project_tools: selectedOptions, // Include selected skills
       stacks: selectedStackOptions,
     };
-
-    console.log("payload", payload); // Debug: Check final payload
 
     setFormValues(payload); // Store form values in context
     router.push(`/community-projects/team-selection`); // Navigate to the next page

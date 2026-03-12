@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import Image from "next/image";
-import { REGEXVALIDATION } from "@/constants";
+import { API_URL, REGEXVALIDATION } from "@/constants";
 import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
@@ -47,7 +47,7 @@ export default function Login() {
       const serializedData = new URLSearchParams(newData).toString();
 
       const response = await fetch(
-        "https://crm-api.fly.dev/api/v1/users/login",
+        `${API_URL}/api/v1/users/login`,
         {
           method: "POST",
           headers: {
@@ -63,10 +63,9 @@ export default function Login() {
       // console.log("Response User_Status:", responseBody.user_status);
 
       const token = responseBody?.token;
-      // console.log("token:", token);
-        // Assume the token is in responseBody
-      if (token) {
-        sessionStorage.setItem("authToken", token);  // Use localStorage if you want the token to persist
+      // Validate token is a non-empty string with JWT structure (header.payload.signature)
+      if (token && typeof token === "string" && token.split(".").length === 3) {
+        sessionStorage.setItem("authToken", token);
       }
 
       // const test = sessionStorage.getItem("authToken");
@@ -91,7 +90,7 @@ export default function Login() {
 
         // Check user status and redirect accordingly
         if (userStatus === "CONTACTED") {
-          router.push("/assesment/[email]");
+          router.push(`/assesment/${encodeURIComponent(data.email)}`);
         } else if (userStatus === "ACCEPTED") {
           router.push(callbackUrl);
         } else {

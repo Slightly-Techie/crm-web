@@ -13,6 +13,7 @@ function CreatePost() {
   const { createNewPost } = usePostFeeds();
   const [postText, setPostText] = React.useState("");
   const [selectedFile, setSelectedFile] = React.useState<string | null>();
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [preview, setPreview] = React.useState<string>("");
   const [newFile, setNewFile] = React.useState<Blob | null>();
 
@@ -62,6 +63,10 @@ function CreatePost() {
     setSelectedFile(null);
     setPreview("");
     setNewFile(null);
+    // Reset the file input value so the same file can be re-selected
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   }
 
   const { user } = useAppSelector((state) => state.auth);
@@ -138,7 +143,7 @@ function CreatePost() {
           className="hidden relative h-[0.1px] -z-50"
           accept="image/*"
           onChange={(e) => onSelectFile(e)}
-          key={selectedFile} // Add a unique key to the input element
+          ref={fileInputRef}
         />
         <button
           className="h-9 w-20 flex items-center justify-center bg-secondary bg-primary-dark dark:bg-st-edgeDark text-primary-light font-tt-hoves font-semibold rounded-[4px]"

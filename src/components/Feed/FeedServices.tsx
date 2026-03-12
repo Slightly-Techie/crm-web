@@ -2,6 +2,7 @@ import useAxiosAuth from "../../hooks/useAxiosAuth";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { IPost } from "@/types";
 import useEndpoints from "@/services";
+import { toast } from "react-hot-toast";
 
 export function useFetchFeeds(): {
   isFetching: boolean;
@@ -36,7 +37,12 @@ export function usePostFeeds() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["feed-data"]);
+        queryClient.invalidateQueries({ queryKey: ["feed-data"] });
+      },
+      onError: (error: any) => {
+        const message =
+          error?.response?.data?.message || "Failed to create post. Please try again.";
+        toast.error(message);
       },
     }
   );

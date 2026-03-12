@@ -10,6 +10,7 @@ import React, { useState } from "react";
 // import UpdateProjectModal from "@/components/admin/add-project/Modal";
 import Member from "@/components/techies/Member"; // Import the Member component
 import { IProject, IStack, ITechie } from "@/types";
+import toast from "react-hot-toast";
 
 const ProjectDetail = ({ params }: any) => {
   const [isAdmin] = useState<boolean>(true);
@@ -35,11 +36,14 @@ const ProjectDetail = ({ params }: any) => {
   const { mutate: deleteProject, isLoading: isDeleting } = useMutation({
     mutationFn: (projectId: string) => deleteProjectById(projectId),
     onSuccess: () => {
-      queryClient.invalidateQueries(["projects"]);
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
       router.push("/community-projects");
     },
-    onError: (error) => {
-      console.error("Error deleting project:", error);
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.message ||
+        "Failed to delete project. Please try again.";
+      toast.error(message);
     },
   });
 
@@ -65,9 +69,6 @@ const ProjectDetail = ({ params }: any) => {
   const project = Project?.data;
 
   const stack = project.project_tools;
-  console.log("Project", project);
-  console.log("stack", stack);
-
   // const generateImageUrl = (toolName: string) => {
   //   return `https://cdn.simpleicons.org/${toolName.toLowerCase()}`; // Adjust the color as needed
   // };

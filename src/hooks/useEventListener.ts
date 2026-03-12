@@ -42,9 +42,10 @@ function useEventListener<
   // Create a ref that stores handler
   const savedHandler = useRef(handler);
 
-  // useIsomorphicLayoutEffect(() => {
-  //   savedHandler.current = handler;
-  // }, [handler]);
+  // Update ref when handler changes so the latest handler is always called
+  useEffect(() => {
+    savedHandler.current = handler;
+  }, [handler]);
 
   useEffect(() => {
     // Define the listening target

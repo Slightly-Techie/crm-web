@@ -107,6 +107,7 @@ export type NewUserFields = {
   linkedin_profile: string;
   portfolio_url: string;
   stack?: IStack[];
+  custom_stack?: string;
   profile_pic_url?: string;
   skills: string[];
   is_active: boolean;

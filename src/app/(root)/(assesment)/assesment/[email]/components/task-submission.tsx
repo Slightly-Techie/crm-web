@@ -24,28 +24,28 @@ function TaskSubmissionForm() {
   } = useForm<TaskSubmissionFormData>({ mode: "onSubmit" });
 
   const submitAssignment = async (data: TaskSubmissionFormData) => {
-    console.log("Submitting data:", data); // Log the data being sent
     try {
       const response = await axiosAuth.post(
         `/api/v1/applicant/submission/`,
         data
       );
-      console.log("Response:", response); // Log the response
       return response.data;
     } catch (error) {
-      console.error("Submission Error:", error);
-      throw error; // Re-throw error to be caught by useMutation
+      throw error;
     }
   };
 
   const { mutate } = useMutation(submitAssignment, {
     onSuccess: () => {
       toast.success("Assessment submitted successfully!");
-      queryClient.invalidateQueries(["announcements"]);
+      queryClient.invalidateQueries({ queryKey: ["tasksubmission"] });
       setIsRequestSent(false);
     },
-    onError: () => {
-      toast.error("Failed to submit assessment. Please try again.");
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.message ||
+        "Failed to submit assessment. Please try again.";
+      toast.error(message);
       setIsRequestSent(false);
     },
   });

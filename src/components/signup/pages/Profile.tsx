@@ -159,9 +159,10 @@ function Profile({ register, errors }: ProfileFormType) {
             If &apos;Other&apos;, please specify
           </label>
           <input
-            {...register("stack")}
+            {...register("custom_stack")}
             className="w-full border-[1px] mt-2 px-2 text-[#000] dark:text-white border-[#33333380] input__transparent py-2 focus:outline-none focus:border-[1px] focus:bor333-[#fff] dark:border-[#8a8a8a]"
             type="text"
+            placeholder="Enter your stack"
           />
         </div>
       )}

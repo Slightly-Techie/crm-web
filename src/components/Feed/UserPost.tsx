@@ -16,18 +16,16 @@ function UserPost({ post }: UserPostProps) {
           <div>
             <Image
               className="w-12 h-12 aspect-square object-cover shrink-0 rounded-full"
-              width={1000}
-              height={1000}
+              width={48}
+              height={48}
               src={
-                (post.user.profile_pic_url === "string"
-                  ? `https://api.dicebear.com/7.x/initials/jpg?seed=${post.user.first_name} ${post.user.last_name}`
-                  : `${post.user.profile_pic_url}`) ||
-                `https://api.dicebear.com/7.x/initials/jpg?seed=${post.user.first_name} ${post.user.last_name}`
+                post.user.profile_pic_url && post.user.profile_pic_url !== "string"
+                  ? post.user.profile_pic_url
+                  : `https://api.dicebear.com/7.x/initials/jpg?seed=${post.user.first_name} ${post.user.last_name}`
               }
               alt="profile"
               placeholder="blur"
               blurDataURL={`https://avatars.dicebear.com/api/initials/${post.user?.first_name} ${post.user?.last_name}.svg`}
-              priority={true}
             />
           </div>
           <div className="flex flex-col text-black dark:text-white">

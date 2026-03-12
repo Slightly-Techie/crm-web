@@ -105,12 +105,7 @@ function Navbar() {
     refetchOnWindowFocus: false,
   });
 
-  const { data: role } = useQuery({
-    queryKey: ["user_profile"],
-    enabled: session.status === "authenticated",
-    queryFn: () => getUserProfile().then((res) => res?.data?.role?.name),
-    refetchOnWindowFocus: false,
-  });
+  const role = query.data?.data?.role?.name;
 
   return (
     <header>
@@ -159,8 +154,8 @@ function Navbar() {
                 <section className="flex gap-3 items-center mb-5">
                   <Image
                     className="w-10 h-10 aspect-square object-cover shrink-0 rounded-full"
-                    width={1000}
-                    height={1000}
+                    width={40}
+                    height={40}
                     src={
                       user?.profile_pic_url
                         ? user?.profile_pic_url
@@ -169,7 +164,6 @@ function Navbar() {
                     alt="profile"
                     placeholder="blur"
                     blurDataURL={`https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`}
-                    priority={true}
                   />
                   <section>
                     <p className=" text-left font-semibold text-sm text-white">
@@ -259,18 +253,16 @@ function Navbar() {
                   {user && (
                     <Image
                       className="w-10 h-10 aspect-square object-cover shrink-0 rounded-full"
-                      width={1000}
-                      height={1000}
+                      width={40}
+                      height={40}
                       src={
-                        (user?.profile_pic_url === ""
-                          ? `https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`
-                          : `${user?.profile_pic_url}`) ||
-                        `https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`
+                        user?.profile_pic_url
+                          ? user.profile_pic_url
+                          : `https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`
                       }
                       alt={user?.username as string}
                       placeholder="blur"
                       blurDataURL={`https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`}
-                      priority={true}
                     />
                   )}
                   <section>

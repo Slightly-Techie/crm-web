@@ -8,11 +8,13 @@ import { getTimeElapsedOrDate } from "@/utils";
 const Announcements = () => {
   const { isFetching, isFetchingError, Announcements } =
     useFetchAnnouncements(6);
-  const [currentLimit, setCurrentLimit] = useState(3);
+  const INITIAL_LIMIT = 3;
+  const [currentLimit, setCurrentLimit] = useState(INITIAL_LIMIT);
   const paginatedData = Announcements && Announcements.slice(0, currentLimit);
-  const showMore = () => {
-    if (paginatedData.length === Announcements.length) {
-      setCurrentLimit((prevLimit) => prevLimit - 3);
+  const isShowingAll = paginatedData?.length === Announcements?.length;
+  const toggleShowMore = () => {
+    if (isShowingAll) {
+      setCurrentLimit(INITIAL_LIMIT);
       return;
     }
     setCurrentLimit((prevLimit) => prevLimit + 3);
@@ -71,13 +73,11 @@ const Announcements = () => {
           )}
           {Announcements.length > 3 && (
             <button
-              onClick={showMore}
+              onClick={toggleShowMore}
               className="w-full flex items-center justify-center font-bold p-3 dark:hover:bg-st-subTextDark hover:bg-st-text/90 dark:bg-primary-light bg-primary-dark duration-100 rounded-md dark:text-st-surfaceDark text-st-surface"
             >
               <p className="text-sm text-secondary dark:text-primary">
-                {paginatedData.length === Announcements.length
-                  ? "Show Less"
-                  : "Show More"}
+                {isShowingAll ? "Show Less" : "Show More"}
               </p>
             </button>
           )}

@@ -39,7 +39,7 @@ function Page() {
   const {
     data: role,
   } = useQuery({
-    queryKey: ["user_profile"],
+    queryKey: ["userProfile"],
     enabled: session.status === "authenticated",
     queryFn: () => getUserProfile().then(res=>res?.data?.role?.name),
     refetchOnWindowFocus: false,

@@ -23,7 +23,9 @@ export const authOptions: NextAuthOptions = {
           .post("/api/v1/users/login", formData)
           .then((res) => res.data)
           .catch((err) => {
-            throw new Error(err.response.data.detail);
+            throw new Error(
+              err?.response?.data?.detail || "Login failed. Please try again."
+            );
           });
 
         // Ensure the returned user includes the token

@@ -46,10 +46,10 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 30 * 60, // 30 minutes
+    maxAge: 24 * 60 * 60, // 24 hours
   },
   jwt: {
-    maxAge: 30 * 60, // 30 minutes
+    maxAge: 24 * 60 * 60, // 24 hours
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -59,14 +59,18 @@ export const authOptions: NextAuthOptions = {
       }
 
       // Decode and check token expiration
-      const tokenParts: {
-        exp: number;
-        sub: string;
-      } = jwtDecode(token.token as string);
+      try {
+        const tokenParts: {
+          exp: number;
+          sub: string;
+        } = jwtDecode(token.token as string);
 
-      // If the token is still valid, return it
-      if (Date.now() < tokenParts.exp * 1000) {
-        return token;
+        // If the token is still valid, return it
+        if (Date.now() < tokenParts.exp * 1000) {
+          return token;
+        }
+      } catch {
+        // jwtDecode failed — token is missing or malformed
       }
 
       // Return token with expiration error if invalid

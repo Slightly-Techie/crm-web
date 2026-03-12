@@ -177,10 +177,10 @@ function Navbar() {
               }
               MenuItemsContent={
                 <section className="text-white flex flex-col justify-center gap-5 p-2 z-100 bg-black">
-                  <a href="/techie/me" className="flex items-center gap-3">
+                  <Link href="/techie/me" className="flex items-center gap-3">
                     <AiOutlineUser size={20} />
                     <p className="font-bold text-sm">Profile</p>
-                  </a>
+                  </Link>
                   <button
                     onClick={() => signOut()}
                     className="flex items-center gap-3"

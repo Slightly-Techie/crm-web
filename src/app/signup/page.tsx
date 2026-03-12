@@ -12,13 +12,14 @@ import { RiArrowLeftLine } from "react-icons/ri";
 import { useQuery } from "@tanstack/react-query";
 import { getStacks } from "@/services";
 import { useRouter } from "next/navigation";
+import { useRef } from "react";
 
 export type Status = "onsubmit" | "success" | "error" | "progress";
 
-let NEW_USER_DATA: Partial<NewUserFields> = INITIAL_USER_DATA;
-
 export default function Signup() {
   const router = useRouter();
+  const userDataRef = useRef<Partial<NewUserFields>>({ ...INITIAL_USER_DATA });
+
   const { data: Stacks } = useQuery({
     queryKey: ["stacks"],
     queryFn: () => getStacks(),
@@ -37,69 +38,35 @@ export default function Signup() {
   const { createNewUser, status, setStatus, errMessage } = usePostNewSignUp();
   const isClosed = false;
 
-  const serializePayload = (payload: Record<string, any>) =>
-    Object.keys(payload)
-      .map(
-        (key) =>
-          `${encodeURIComponent(key)}=${encodeURIComponent(payload[key])}`
-      )
-      .join("&");
-
   const onSubmit = async (data: Partial<NewUserFields>) => {
-    NEW_USER_DATA = { ...NEW_USER_DATA, ...data };
+    userDataRef.current = { ...userDataRef.current, ...data };
     if (currentFormIndex === 3) {
-      const { years_of_experience, skills } = NEW_USER_DATA;
+      const { years_of_experience, skills } = userDataRef.current;
       const validatedSkills = getSkillsArray(skills);
-      NEW_USER_DATA = {
-        ...NEW_USER_DATA,
+      userDataRef.current = {
+        ...userDataRef.current,
         years_of_experience: Number(years_of_experience),
-        // skills: validatedSkills,
       };
 
-      if (NEW_USER_DATA) {
+      if (userDataRef.current) {
         const {
           stack,
           skills,
           stack_id,
           profile_pic_url,
-          ...otherNEW_USER_DATA
-        } = NEW_USER_DATA;
-        // console.log("Stack>>>", stack);
-        const selectedId = Number(stack); 
+          ...otherUserData
+        } = userDataRef.current;
+        const selectedId = Number(stack);
         const selectedStack = Stacks?.data.find(
           (stack) => stack.id === selectedId
         );
-        console.log("selectedStack", selectedStack);
-        console.log("selectedId", selectedId);
-        
-        
-        // If a matching stack is found, you can use it
-        // if (selectedStack) {
-        //   console.log("Selected Stack:", selectedStack);
-        // You can now use selectedStack for your payload or any other logic
+
         const payload = {
-          ...otherNEW_USER_DATA,
-          // stack: [selectedStack],
+          ...otherUserData,
           stack_id: selectedId,
         };
-        console.log("Data payload", payload);
-        
-        // const response = await fetch(
-        //   "https://crm-api.fly.dev/api/v1/users/register",
-        //   {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify(payload),
-        //   }
-        // );
         createNewUser(payload);
-        // } else {
-        //   console.log("No matching stack found for the selected ID.");
-        // }
       }
-      // router.push("/login");
       return;
     }
     next();
@@ -122,10 +89,11 @@ export default function Signup() {
           <SubmitStatus
             status={status}
             message={
-              status === "success" ? NEW_USER_DATA.first_name : errMessage
+              status === "success" ? userDataRef.current.first_name : errMessage
             }
             resetForm={() => {
               resetForm();
+              userDataRef.current = { ...INITIAL_USER_DATA };
               setStatus("progress");
             }}
           />

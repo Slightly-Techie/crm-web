@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "@/components/loadingSpinner";
 import PageTitle from "@/components/PageTitle";
 import { format } from "date-fns";
+import { API_URL } from "@/constants";
 import axios from "axios";
 
 function Page() {
@@ -34,13 +35,10 @@ function Page() {
       const fetchUserData = async () => {
         try {
           const token = sessionStorage.getItem("authToken");
-          // or wherever you store your token
-          // console.log("token", token);
-          
 
         if (token) {
           const response = await axios.get(
-            `https://crm-api.fly.dev/api/v1/users/me`,
+            `${API_URL}/users/me`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

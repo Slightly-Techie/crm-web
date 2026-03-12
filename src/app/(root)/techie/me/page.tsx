@@ -162,10 +162,13 @@ export default function Techie() {
     setEditMode(false);
   };
 
+  // Derive image from query data (not local state) so it works with cached queries
+  const profileData = query.data?.data;
   const imageURL =
     preview ||
+    profileData?.profile_pic_url ||
     user.profile_pic_url ||
-    `https://avatars.dicebear.com/api/initials/${user.first_name} ${user.last_name}.svg`;
+    `https://avatars.dicebear.com/api/initials/${profileData?.first_name ?? user.first_name} ${profileData?.last_name ?? user.last_name}.svg`;
 
   return (
     <>

@@ -63,10 +63,9 @@ export default function Login() {
       // console.log("Response User_Status:", responseBody.user_status);
 
       const token = responseBody?.token;
-      // console.log("token:", token);
-        // Assume the token is in responseBody
-      if (token) {
-        sessionStorage.setItem("authToken", token);  // Use localStorage if you want the token to persist
+      // Validate token is a non-empty string with JWT structure (header.payload.signature)
+      if (token && typeof token === "string" && token.split(".").length === 3) {
+        sessionStorage.setItem("authToken", token);
       }
 
       // const test = sessionStorage.getItem("authToken");

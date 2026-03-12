@@ -16,7 +16,6 @@ interface AllUsersResponse {
 
 export function useApplicantHooks() {
   const [users, setUsers] = useState<undefined | ITechie[]>();
-  const [currentUser, setCurrentUser] = useState<number>();
   const [filter, setFilter] = useState("");
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(0);
@@ -42,14 +41,13 @@ export function useApplicantHooks() {
 
   const mutation = useMutation({
     mutationFn: (userId: number) => {
-      setCurrentUser(userId);
       return authAxios.put(`/api/v1/users/profile/${userId}/activate`);
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["allUsers"] });
     },
-    onSuccess: () => {
-      const user = newData?.find((user) => user.id === currentUser);
+    onSuccess: (_data, userId) => {
+      const user = newData?.find((user) => user.id === userId);
       toast.success(`${user?.first_name}'s account has been activated!`);
     },
   });

@@ -44,8 +44,11 @@ function TaskSubmissionForm() {
       queryClient.invalidateQueries(["announcements"]);
       setIsRequestSent(false);
     },
-    onError: () => {
-      toast.error("Failed to submit assessment. Please try again.");
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.message ||
+        "Failed to submit assessment. Please try again.";
+      toast.error(message);
       setIsRequestSent(false);
     },
   });

@@ -217,7 +217,7 @@ describe("Login Page", () => {
     const user = userEvent.setup();
     vi.spyOn(globalThis, "fetch").mockResolvedValueOnce({
       json: async () => ({
-        token: "valid-jwt-token",
+        token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.validSig",
         user_status: "ACCEPTED",
       }),
     } as Response);
@@ -244,7 +244,7 @@ describe("Login Page", () => {
     );
 
     await waitFor(() => {
-      expect(sessionStorage.getItem("authToken")).toBe("valid-jwt-token");
+      expect(sessionStorage.getItem("authToken")).toBe("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIn0.validSig");
     });
   });
 

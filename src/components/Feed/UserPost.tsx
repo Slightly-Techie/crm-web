@@ -19,10 +19,9 @@ function UserPost({ post }: UserPostProps) {
               width={1000}
               height={1000}
               src={
-                (post.user.profile_pic_url === "string"
-                  ? `https://api.dicebear.com/7.x/initials/jpg?seed=${post.user.first_name} ${post.user.last_name}`
-                  : `${post.user.profile_pic_url}`) ||
-                `https://api.dicebear.com/7.x/initials/jpg?seed=${post.user.first_name} ${post.user.last_name}`
+                post.user.profile_pic_url && post.user.profile_pic_url !== "string"
+                  ? post.user.profile_pic_url
+                  : `https://api.dicebear.com/7.x/initials/jpg?seed=${post.user.first_name} ${post.user.last_name}`
               }
               alt="profile"
               placeholder="blur"

@@ -35,7 +35,7 @@ export function usePostAnnouncment() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["announcements"]);
+        queryClient.invalidateQueries({ queryKey: ["announcements"] });
       },
     }
   );
@@ -54,7 +54,7 @@ export function usePostAnnouncment() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["announcements"]);
+        queryClient.invalidateQueries({ queryKey: ["announcements"] });
       },
     }
   );

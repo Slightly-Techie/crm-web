@@ -35,7 +35,7 @@ const ProjectDetail = ({ params }: any) => {
   const { mutate: deleteProject, isLoading: isDeleting } = useMutation({
     mutationFn: (projectId: string) => deleteProjectById(projectId),
     onSuccess: () => {
-      queryClient.invalidateQueries(["projects"]);
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
       router.push("/community-projects");
     },
     onError: (error) => {

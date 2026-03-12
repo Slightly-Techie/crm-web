@@ -262,10 +262,9 @@ function Navbar() {
                       width={1000}
                       height={1000}
                       src={
-                        (user?.profile_pic_url === ""
-                          ? `https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`
-                          : `${user?.profile_pic_url}`) ||
-                        `https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`
+                        user?.profile_pic_url
+                          ? user.profile_pic_url
+                          : `https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`
                       }
                       alt={user?.username as string}
                       placeholder="blur"

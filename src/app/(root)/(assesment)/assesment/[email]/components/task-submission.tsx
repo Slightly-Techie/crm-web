@@ -41,7 +41,7 @@ function TaskSubmissionForm() {
   const { mutate } = useMutation(submitAssignment, {
     onSuccess: () => {
       toast.success("Assessment submitted successfully!");
-      queryClient.invalidateQueries(["announcements"]);
+      queryClient.invalidateQueries({ queryKey: ["announcements"] });
       setIsRequestSent(false);
     },
     onError: (error: any) => {

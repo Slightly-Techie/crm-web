@@ -37,7 +37,7 @@ export function usePostFeeds() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["feed-data"]);
+        queryClient.invalidateQueries({ queryKey: ["feed-data"] });
       },
       onError: (error: any) => {
         const message =

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Search from "@/assets/icons/search.png";
 import Member from "./Member";
 import { useQuery } from "@tanstack/react-query";
@@ -46,14 +46,16 @@ function Team() {
     setSearchKeyword(value);
   };
 
-  // Filtering logic for techies
-  const filteredTechies = TechiesData?.items?.filter(
-    (techie) =>
-      techie.first_name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-      techie.last_name.toLowerCase().includes(searchKeyword.toLowerCase())
-  );
-
-  const techies = searchKeyword ? filteredTechies : TechiesData?.items;
+  // Filtering logic for techies - memoized to avoid filtering on every render
+  const techies = useMemo(() => {
+    if (!searchKeyword) return TechiesData?.items;
+    const keyword = searchKeyword.toLowerCase();
+    return TechiesData?.items?.filter(
+      (techie) =>
+        techie.first_name.toLowerCase().includes(keyword) ||
+        techie.last_name.toLowerCase().includes(keyword)
+    );
+  }, [TechiesData?.items, searchKeyword]);
 
   return (
     <section className="w-full h-full">

@@ -70,8 +70,8 @@ function Page() {
 
   // State to handle fallback for profile image
   const [profilePicUrl, setProfilePicUrl] = useState(
-    UserProfile?.profile_pic_url && UserProfile?.profile_pic_url !== "string"
-      ? UserProfile.profile_pic_url || `https://api.dicebear.com/7.x/initials/jpg?seed=${UserProfile?.first_name} ${UserProfile?.last_name}`
+    UserProfile?.profile_pic_url && UserProfile.profile_pic_url !== "string"
+      ? UserProfile.profile_pic_url
       : `https://api.dicebear.com/7.x/initials/jpg?seed=${UserProfile?.first_name} ${UserProfile?.last_name}`
   );
 
@@ -244,7 +244,7 @@ function Page() {
                     There is an error fetching posts
                   </h1>
                 )}
-                {currentUserPosts?.length! > 1 && (
+                {(currentUserPosts?.length ?? 0) > 0 && (
                   <>
                     <section className="  border-b border-b-neutral-600 my-6 pb-2">
                       <h2 className="text-xl">

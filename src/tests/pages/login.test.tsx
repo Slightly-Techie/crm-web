@@ -138,7 +138,7 @@ describe("Login Page", () => {
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith(
-        `${API_URL}/users/login`,
+        `${API_URL}/api/v1/users/login`,
         expect.any(Object)
       );
     });

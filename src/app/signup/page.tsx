@@ -51,6 +51,7 @@ export default function Signup() {
       if (userDataRef.current) {
         const {
           stack,
+          custom_stack,
           skills,
           stack_id,
           profile_pic_url,

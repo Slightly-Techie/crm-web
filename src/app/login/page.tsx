@@ -47,7 +47,7 @@ export default function Login() {
       const serializedData = new URLSearchParams(newData).toString();
 
       const response = await fetch(
-        `${API_URL}/users/login`,
+        `${API_URL}/api/v1/users/login`,
         {
           method: "POST",
           headers: {

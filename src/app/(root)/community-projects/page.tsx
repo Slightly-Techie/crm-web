@@ -8,8 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "@/components/loadingSpinner";
 import PageTitle from "@/components/PageTitle";
 import { format } from "date-fns";
-import { API_URL } from "@/constants";
-import axios from "axios";
+import { useSession } from "next-auth/react";
 
 function Page() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
@@ -30,41 +29,17 @@ function Page() {
     retry: 3,
   });
 
-    // Fetch the currently logged-in user's data
-    useEffect(() => {
-      const fetchUserData = async () => {
-        try {
-          const token = sessionStorage.getItem("authToken");
-
-        if (token) {
-          const response = await axios.get(
-            `${API_URL}/users/me`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          const userData = response.data;
-          // console.log("User data", userData);
-          // console.log("role ID", userData.role.id);
-          
-          
-  
-          // Check the user's role and set isAdmin accordingly
-          if (userData.role.id === 1) {
-            setIsAdmin(true);
-          } else if (userData.role.id === 2) {
-            setIsAdmin(false);
-          }
-        }
-        } catch (error) {
-          console.error("Failed to fetch user data", error);
-        }
-      };
-  
-      fetchUserData();
-    }, []);
+    // Fetch user role using the existing service hook and React Query
+    const session = useSession();
+    useQuery({
+      queryKey: ["userProfile_role"],
+      queryFn: () => getUserProfile().then((res) => res?.data),
+      enabled: session.status === "authenticated",
+      refetchOnWindowFocus: false,
+      onSuccess(data) {
+        setIsAdmin(data?.role?.id === 1);
+      },
+    });
   
 
   useEffect(() => {
@@ -163,7 +138,7 @@ function Page() {
             {isLoading && <LoadingSpinner />}
 
             {Projects &&
-              (filteredItems?.length! > 0 ? (
+              ((filteredItems?.length ?? 0) > 0 ? (
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead className="text-xs uppercase">
                     <tr>

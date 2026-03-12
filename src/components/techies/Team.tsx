@@ -89,7 +89,10 @@ function Team() {
             <section className="flex items-center justify-between h-full">
               <p className="text-sm text-slate-700 dark:text-[#F1F3F7]">
                 Showing{" "}
-                {1 + (paginationDetails.page - 1) * paginationDetails.size} to{" "}
+                {paginationDetails.total === 0
+                  ? 0
+                  : 1 + (paginationDetails.page - 1) * paginationDetails.size}{" "}
+                to{" "}
                 {paginationDetails.page === paginationDetails.pages
                   ? paginationDetails.total
                   : paginationDetails.size * paginationDetails.page}{" "}

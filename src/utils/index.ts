@@ -133,19 +133,20 @@ export function getSkillsArray(
 export function getStacksArray(
   inputValue: string | ProjectTool[] | number[] | IStack[] | undefined
 ) {
-  let stacksArray: string[] = [];
-  if (inputValue) {
-    const result = Array.isArray(inputValue)
-      ? inputValue.join(",")
-      : inputValue;
-    for (let value of result.split(",")) {
-      const format = value.trim();
-      if (!format.length) continue;
-      else {
-        stacksArray = [...stacksArray, format];
-      }
-    }
-    return stacksArray;
-  }
-  return [];
+  if (!inputValue) return [];
+
+  const result = Array.isArray(inputValue)
+    ? inputValue.join(",")
+    : inputValue;
+
+  return result
+    .split(",")
+    .map((value) => value.trim())
+    .filter(
+      (value) =>
+        value.length > 0 &&
+        value !== "NaN" &&
+        value !== "undefined" &&
+        value !== "null"
+    );
 }

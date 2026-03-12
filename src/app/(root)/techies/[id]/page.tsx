@@ -68,16 +68,17 @@ function Page() {
 
   // console.log('Applicant Task', ApplicantTask)
 
-  // State to handle fallback for profile image
-  const [profilePicUrl, setProfilePicUrl] = useState(
-    UserProfile?.profile_pic_url && UserProfile.profile_pic_url !== "string"
+  // Derive profile image URL from query data; use error state for fallback on load failure
+  const [imgError, setImgError] = useState(false);
+
+  const fallbackUrl = `https://api.dicebear.com/7.x/initials/jpg?seed=${UserProfile?.first_name ?? ""} ${UserProfile?.last_name ?? ""}`;
+  const profilePicUrl =
+    !imgError && UserProfile?.profile_pic_url && UserProfile.profile_pic_url !== "string"
       ? UserProfile.profile_pic_url
-      : `https://api.dicebear.com/7.x/initials/jpg?seed=${UserProfile?.first_name} ${UserProfile?.last_name}`
-  );
+      : fallbackUrl;
 
   const handleImageError = () => {
-    // Set fallback image if the provided URL fails
-    setProfilePicUrl(`https://avatars.dicebear.com/api/initials/${UserProfile?.first_name} ${UserProfile?.last_name}.svg`);
+    setImgError(true);
   };
 
   const formattedStatus = UserProfile?.status

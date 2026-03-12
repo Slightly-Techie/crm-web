@@ -10,6 +10,7 @@ import React, { useState } from "react";
 // import UpdateProjectModal from "@/components/admin/add-project/Modal";
 import Member from "@/components/techies/Member"; // Import the Member component
 import { IProject, IStack, ITechie } from "@/types";
+import toast from "react-hot-toast";
 
 const ProjectDetail = ({ params }: any) => {
   const [isAdmin] = useState<boolean>(true);
@@ -38,8 +39,11 @@ const ProjectDetail = ({ params }: any) => {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
       router.push("/community-projects");
     },
-    onError: (error) => {
-      console.error("Error deleting project:", error);
+    onError: (error: any) => {
+      const message =
+        error?.response?.data?.message ||
+        "Failed to delete project. Please try again.";
+      toast.error(message);
     },
   });
 

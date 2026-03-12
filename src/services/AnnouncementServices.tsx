@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { AnnouncementDataResponse } from "@/types";
 import useEndpoints from "@/services";
 import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 export function useFetchAnnouncements(limit?: number): {
   isFetching: boolean;
@@ -36,6 +37,13 @@ export function usePostAnnouncment() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["announcements"] });
+        toast.success("Announcement deleted successfully.");
+      },
+      onError: (error: any) => {
+        const message =
+          error?.response?.data?.message ||
+          "Failed to delete announcement. Please try again.";
+        toast.error(message);
       },
     }
   );
@@ -55,6 +63,12 @@ export function usePostAnnouncment() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["announcements"] });
+      },
+      onError: (error: any) => {
+        const message =
+          error?.response?.data?.message ||
+          "Failed to save announcement. Please try again.";
+        toast.error(message);
       },
     }
   );

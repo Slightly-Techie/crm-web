@@ -23,7 +23,7 @@ vi.mock("next/navigation", () => ({
 // Mock next/image
 vi.mock("next/image", () => ({
   default: (props: Record<string, unknown>) => {
-    const { priority, fill, ...rest } = props;
+    const { priority, fill, blurDataURL, placeholder, ...rest } = props;
     return <img {...rest} />;
   },
 }));

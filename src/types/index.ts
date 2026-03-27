@@ -242,3 +242,50 @@ export interface ITask {
   created_at: string;
   updated_at: string;
 }
+
+// Org Chart Types
+
+export interface ManagerInfo {
+  id: number;
+  first_name: string;
+  last_name: string;
+  username: string;
+  profile_pic_url: string | null;
+}
+
+export interface SubordinateResponse {
+  id: number;
+  first_name: string;
+  last_name: string;
+  username: string;
+  email: string | null;
+  profile_pic_url: string | null;
+  role: { id: number; name: string } | null;
+  stack: IStack | null;
+  manager_id: number | null;
+}
+
+export interface OrgChartNode {
+  id: number;
+  first_name: string;
+  last_name: string;
+  username: string;
+  profile_pic_url: string | null;
+  role: { id: number; name: string } | null;
+  stack: IStack | null;
+  manager_id: number | null;
+  subordinates: OrgChartNode[];
+}
+
+export interface UpdateManagerRequest {
+  manager_id: number | null;
+}
+
+export interface BulkAssignSubordinatesRequest {
+  user_ids: number[];
+}
+
+export interface BulkAssignSubordinatesResponse {
+  updated: SubordinateResponse[];
+  not_found: number[];
+}

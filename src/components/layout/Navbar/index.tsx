@@ -17,6 +17,7 @@ import {
 import { BsChatLeft } from "react-icons/bs";
 import { GoSignOut } from "react-icons/go";
 import { FiTarget } from "react-icons/fi";
+import { HiOutlineUserGroup } from "react-icons/hi";
 import DropDown from "@/components/DropDown";
 import ThemeSwitcher from "@/components/theme/theme";
 import { signOut, useSession } from "next-auth/react";
@@ -71,6 +72,12 @@ const Navlinks = [
         name: "Community Projects",
         link: "/community-projects",
         icon: <FiTarget size={20} />,
+      },
+      {
+        id: "c5",
+        name: "Org Chart",
+        link: "/admin/org-chart",
+        icon: <HiOutlineUserGroup size={20} />,
       },
       // {
       //   id: "c5",
@@ -127,8 +134,8 @@ function Navbar() {
                     </p>
                     <section className="flex flex-col gap-y-5">
                       {link.links.map((item) => {
-                        if (role === "user" && item.name === "Applicants") {
-                          return <></>;
+                        if (role === "user" && (item.name === "Applicants" || item.name === "Org Chart")) {
+                          return null;
                         }
                         return (
                           <Link href={item.link} key={item.id}>

@@ -1,6 +1,7 @@
 import CreatePost from "@/components/Feed/CreatePost";
 import Posts from "@/components/Feed/Posts";
 import Announcements from "@/components/Feed/new/announcements";
+import MyTeamPanel from "@/components/org-chart/MyTeamPanel";
 import PageTitle from "@/components/PageTitle";
 
 export default function FeedPage() {
@@ -13,8 +14,9 @@ export default function FeedPage() {
           <Posts />
         </section>
       </section>
-      <section className="hidden lg:flex px-2 h-screen overflow-y-scroll scrollbar pt-[7vh]">
+      <section className="hidden lg:flex flex-col px-2 h-screen overflow-y-scroll scrollbar pt-[7vh]">
         <Announcements />
+        <MyTeamPanel />
       </section>
     </div>
   );

@@ -12,6 +12,12 @@ import {
   ITechie,
   IUser,
   ITask,
+  ManagerInfo,
+  SubordinateResponse,
+  OrgChartNode,
+  UpdateManagerRequest,
+  BulkAssignSubordinatesRequest,
+  BulkAssignSubordinatesResponse,
 } from "@/types";
 
 const useEndpoints = () => {
@@ -96,7 +102,36 @@ const useEndpoints = () => {
   
   const taskSubmissions = (id:any) => authAxios.get(`/api/v1/applicant/submission/${id}/users`)
 
+  // Org Chart endpoints
 
+  // Self-scoped (any accepted user)
+  const getMyManager = () =>
+    authAxios.get<ManagerInfo | null>(`/api/v1/users/me/manager`);
+
+  const getMySubordinates = () =>
+    authAxios.get<SubordinateResponse[]>(`/api/v1/users/me/subordinates`);
+
+  // Admin-only
+  const getOrgChart = (maxDepth: number = 5) =>
+    authAxios.get<OrgChartNode[]>(`/api/v1/users/org-chart?max_depth=${maxDepth}`);
+
+  const getUserOrgChart = (userId: number, maxDepth: number = 5) =>
+    authAxios.get<OrgChartNode>(`/api/v1/users/${userId}/org-chart?max_depth=${maxDepth}`);
+
+  const getUserSubordinates = (userId: number) =>
+    authAxios.get<SubordinateResponse[]>(`/api/v1/users/${userId}/subordinates`);
+
+  const updateUserManager = (userId: number, data: UpdateManagerRequest) =>
+    authAxios.patch<SubordinateResponse>(`/api/v1/users/${userId}/manager`, data);
+
+  const bulkAssignSubordinates = (managerId: number, data: BulkAssignSubordinatesRequest) =>
+    authAxios.post<BulkAssignSubordinatesResponse>(
+      `/api/v1/users/assign-subordinates?manager_id=${managerId}`,
+      data
+    );
+
+  const deleteUser = (userId: number) =>
+    authAxios.delete(`/api/v1/users/${userId}`);
 
   return {
     getUserProfile,
@@ -119,6 +154,14 @@ const useEndpoints = () => {
     userLogin,
     applicantTask,
     taskSubmissions,
+    getMyManager,
+    getMySubordinates,
+    getOrgChart,
+    getUserOrgChart,
+    getUserSubordinates,
+    updateUserManager,
+    bulkAssignSubordinates,
+    deleteUser,
   };
 };
 

@@ -2,6 +2,7 @@ import { NextAuthOptions, Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "./axios";
 import jwtDecode from "jwt-decode";
+import { getApiErrorMessage } from "@/utils";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -23,9 +24,7 @@ export const authOptions: NextAuthOptions = {
           .post("/api/v1/users/login", formData)
           .then((res) => res.data)
           .catch((err) => {
-            throw new Error(
-              err?.response?.data?.detail || "Login failed. Please try again."
-            );
+            throw new Error(getApiErrorMessage(err, "Login failed. Please try again."));
           });
 
         // Ensure the returned user includes the token

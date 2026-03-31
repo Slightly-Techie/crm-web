@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useEndpoints from "@/services";
 import { OrgChartNode } from "@/types";
-import PageTitle from "@/components/PageTitle";
 import LoadingSpinner from "@/components/loadingSpinner";
 import OrgChartNodeCard from "./components/OrgChartNodeCard";
 import AssignManagerModal from "./components/AssignManagerModal";
@@ -12,7 +11,7 @@ import BulkAssignModal from "./components/BulkAssignModal";
 import DeleteUserDialog from "./components/DeleteUserDialog";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { AiOutlineSearch } from "react-icons/ai";
+import { getApiErrorMessage } from "@/utils";
 
 // Recursively filter the tree, keeping nodes that match + their ancestors
 function filterTree(
@@ -59,7 +58,6 @@ function filterTree(
 export default function OrgChartPage() {
   const { getOrgChart, updateUserManager } = useEndpoints();
   const router = useRouter();
-  const [maxDepth, setMaxDepth] = useState(5);
   const [search, setSearch] = useState("");
   const [modalState, setModalState] = useState<{
     type: "assign-manager" | "manage-team" | "delete" | null;
@@ -71,8 +69,8 @@ export default function OrgChartPage() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["orgChart", maxDepth],
-    queryFn: () => getOrgChart(maxDepth).then((res) => res.data),
+    queryKey: ["orgChart"],
+    queryFn: () => getOrgChart().then((res) => res.data),
     refetchOnWindowFocus: false,
   });
 
@@ -103,12 +101,8 @@ export default function OrgChartPage() {
           toast.success(
             `${node.first_name} ${node.last_name} removed from hierarchy`
           );
-          // Re-fetch handled by React Query invalidation isn't automatic here,
-          // but the queryClient is available in the modal components
         } catch (error: any) {
-          toast.error(
-            error?.response?.data?.detail || "Failed to remove manager."
-          );
+          toast.error(getApiErrorMessage(error, "Failed to remove manager."));
         }
         break;
       case "delete":
@@ -120,82 +114,121 @@ export default function OrgChartPage() {
   const closeModal = () => setModalState({ type: null, node: null });
 
   return (
-    <main>
-      <PageTitle title="Organizational Chart" />
-      <section className="pt-[7vh]">
-        {/* Controls */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-5">
-          <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-            Organization Structure
-          </h1>
-          <div className="flex items-center gap-3 flex-wrap">
-            <div className="flex items-center gap-2 border dark:border-gray-700 rounded-md px-3 py-1.5 bg-white dark:bg-gray-900">
-              <AiOutlineSearch size={16} className="text-gray-400 shrink-0" />
-              <input
-                type="text"
-                placeholder="Search by name, username, stack..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="bg-transparent focus:outline-none text-sm text-gray-900 dark:text-white placeholder-gray-400 w-[220px]"
-              />
+    <main className="flex-1 flex flex-col min-w-0 bg-surface-container-lowest">
+      <div className="p-8">
+        <div className="max-w-7xl mx-auto space-y-8">
+          {/* Header */}
+          <section className="space-y-4">
+            <div>
+              <nav className="flex gap-2 text-xs font-semibold text-on-surface-variant/60 uppercase tracking-widest mb-2">
+                <span>Admin</span>
+                <span>/</span>
+                <span className="text-primary">Organization</span>
+              </nav>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-on-surface font-headline tracking-tighter">
+                Organization Structure
+              </h2>
+              <p className="text-on-surface-variant mt-3 text-lg">
+                Manage the organizational hierarchy and reporting relationships across the network.
+              </p>
             </div>
-            <div className="flex items-center gap-2">
-              <label className="text-sm text-gray-600 dark:text-gray-400">
-                Depth:
-              </label>
-              <select
-                value={maxDepth}
-                onChange={(e) => setMaxDepth(Number(e.target.value))}
-                className="border dark:border-gray-700 rounded-md px-3 py-1.5 text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-                  <option key={n} value={n}>
-                    {n} level{n !== 1 ? "s" : ""}
-                  </option>
-                ))}
-              </select>
+
+            {/* Controls */}
+            <div className="flex items-center gap-3 pt-4">
+              <div className="flex items-center gap-3 border border-outline rounded-lg px-4 py-2.5 bg-surface-container-lowest w-full md:w-96">
+                <span className="material-symbols-outlined text-on-surface-variant shrink-0">search</span>
+                <input
+                  type="text"
+                  placeholder="Search by name, username, stack..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="bg-transparent focus:outline-none text-sm text-on-surface placeholder-on-surface-variant font-body w-full"
+                />
+              </div>
             </div>
+          </section>
+
+          {/* Chart */}
+          <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/20">
+            {isLoading && (
+              <div className="flex justify-center items-center py-20">
+                <LoadingSpinner />
+              </div>
+            )}
+
+            {isError && (
+              <div className="bg-error-container border border-error rounded-xl p-6 text-center m-6">
+                <p className="text-on-error-container font-medium">
+                  Failed to load the organizational chart.
+                </p>
+              </div>
+            )}
+
+            {orgChartData && displayData.length === 0 && (
+              <div className="p-12 text-center">
+                <span className="material-symbols-outlined text-6xl text-on-surface-variant mb-4 block">
+                  apartment
+                </span>
+                <p className="text-on-surface-variant font-medium">
+                  {search.trim().length >= 2
+                    ? "No matching users found."
+                    : "No users in the organisation yet."}
+                </p>
+              </div>
+            )}
+
+            {displayData.length > 0 && (
+              <div className="flex flex-col items-center gap-8 p-8">
+                {/* Show root nodes (users without managers) on same level */}
+                {displayData.length > 1 ? (
+                  <div className="flex flex-col items-center w-full overflow-x-auto">
+                    <div className="flex items-center gap-2 mb-6">
+                      <span className="w-2 h-2 rounded-full bg-primary" />
+                      <span className="text-xs font-bold uppercase tracking-widest text-primary">
+                        Leadership ({displayData.length})
+                      </span>
+                      <span className="w-2 h-2 rounded-full bg-primary" />
+                    </div>
+
+                    {/* Horizontal connector for multiple roots */}
+                    <div className="relative mb-6" style={{ width: `${Math.min(displayData.length, 5) * 280}px` }}>
+                      <div className="absolute top-0 left-1/2 w-px h-4 bg-outline -translate-x-1/2" />
+                      <div className="w-full h-px bg-outline mt-4" />
+                    </div>
+
+                    {/* Root nodes in a row */}
+                    <div className="flex flex-wrap justify-center gap-6 max-w-full">
+                      {displayData.map((rootNode) => (
+                        <div key={rootNode.id} className="flex flex-col items-center">
+                          <div className="w-px h-6 bg-outline" />
+                          <OrgChartNodeCard
+                            node={rootNode}
+                            onNodeClick={handleNodeClick}
+                            onContextAction={handleContextAction}
+                            highlightIds={matchIds}
+                            defaultExpandDepth={search.trim().length >= 2 ? 20 : 1}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  displayData.map((rootNode) => (
+                    <OrgChartNodeCard
+                      key={rootNode.id}
+                      node={rootNode}
+                      onNodeClick={handleNodeClick}
+                      onContextAction={handleContextAction}
+                      highlightIds={matchIds}
+                      defaultExpandDepth={search.trim().length >= 2 ? 20 : 2}
+                    />
+                  ))
+                )}
+              </div>
+            )}
           </div>
         </div>
-
-        {/* Chart */}
-        <div className="p-5 overflow-x-auto">
-          {isLoading && <LoadingSpinner />}
-
-          {isError && (
-            <div className="text-center py-16">
-              <p className="text-red-500">
-                Failed to load the organizational chart.
-              </p>
-            </div>
-          )}
-
-          {orgChartData && displayData.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-gray-500 dark:text-gray-400 text-lg">
-                {search.trim().length >= 2
-                  ? "No matching users found."
-                  : "No users in the organisation yet."}
-              </p>
-            </div>
-          )}
-
-          {displayData.length > 0 && (
-            <div className="flex flex-col items-center gap-8">
-              {displayData.map((rootNode) => (
-                <OrgChartNodeCard
-                  key={rootNode.id}
-                  node={rootNode}
-                  onNodeClick={handleNodeClick}
-                  onContextAction={handleContextAction}
-                  highlightIds={matchIds}
-                  defaultExpandDepth={search.trim().length >= 2 ? 20 : 2}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+      </div>
 
       {/* Modals */}
       {modalState.type === "assign-manager" && modalState.node && (

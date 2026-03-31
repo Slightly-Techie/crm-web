@@ -51,29 +51,41 @@ export default function Announcement() {
   }
   return (
     <div>
-      <PageTitle title="Create Announcements" />
-      <div className="w-full right-0 grid h-full lg:grid-cols-announcement">
-        <CreateAnnouncement
-          existingPost={currentPost}
-          submitHandler={handleNewAnnouncement}
-        />
-        <div className=" w-full lg:w-4/5 mx-auto h-full ">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-2 min-h-screen gap-8 p-8">
+        {/* Left Column - Create/Edit Form */}
+        <div className="bg-surface-container-lowest rounded-xl p-6 h-fit sticky top-24">
+          <CreateAnnouncement
+            existingPost={currentPost}
+            submitHandler={handleNewAnnouncement}
+          />
+        </div>
+
+        {/* Right Column - Announcements List */}
+        <div className="space-y-4">
           {isFetching && (
-            <div className="h-full w-full flex flex-col items-center justify-center">
+            <div className="flex justify-center items-center py-20">
               <LoadingSpinner />
             </div>
           )}
           {isFetchingError && (
-            <h1 className="h-full w-full flex flex-col items-center justify-center">
-              There is an error fetching posts
-            </h1>
+            <div className="bg-error-container border border-error rounded-xl p-6 text-center">
+              <p className="text-on-error-container font-medium">
+                Error loading announcements
+              </p>
+            </div>
           )}
           {Announcements && (
-            <div className="h-full py-4 ">
-              <h3 className="text-st-text py-4 dark:text-st-surface text-left text-xl font-">
-                {Announcements.length} New Announcements
-              </h3>
-              <div className=" flex flex-col gap-4">
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-2xl font-bold font-headline text-on-surface">
+                  {Announcements.length} Announcements
+                </h3>
+                <p className="text-on-surface-variant text-sm mt-1 font-body">
+                  Manage your announcements
+                </p>
+              </div>
+
+              <div className="space-y-3">
                 {paginatedAnnouncement.map((item) => {
                   return (
                     <ViewAnnouncement
@@ -85,16 +97,15 @@ export default function Announcement() {
                   );
                 })}
               </div>
+
               {Announcements.length > 3 && (
                 <button
-                  className="py-3 w-full flex items-center justify-center bg-[#1E1E1E] my-4 text-white hover:bg-st-edgeDark hover:dark:bg-st-grayDarktext-lg rounded-lg"
+                  className="w-full py-3 px-4 bg-primary text-on-primary font-semibold rounded-lg hover:shadow-md transition-all hover:-translate-y-0.5 font-headline text-sm"
                   onClick={showMoreAnnouncements}
                 >
-                  <p className=" text-base text-secondary dark:text-primary">
-                    {paginatedAnnouncement.length === Announcements.length
-                      ? "Show Less"
-                      : "Show More"}
-                  </p>
+                  {paginatedAnnouncement.length === Announcements.length
+                    ? "Show Less"
+                    : "Show More"}
                 </button>
               )}
             </div>

@@ -7,13 +7,38 @@ const useRefreshToken = () => {
 
   const refresh = async (): Promise<string> => {
     try {
+      const currentRefreshToken = sessionData?.user?.refresh_token;
+      if (
+        !currentRefreshToken ||
+        typeof currentRefreshToken !== "string" ||
+        currentRefreshToken.split(".").length !== 3
+      ) {
+        throw new Error("Missing or invalid refresh token");
+      }
+
       const { data } = await axios.post(`${API_URL}/api/v1/users/refresh`, {
-        refresh_token: sessionData?.user.refresh_token,
+        refresh_token: currentRefreshToken,
       });
 
-      update(data);
+      const newAccessToken = data?.token;
+      if (
+        !newAccessToken ||
+        typeof newAccessToken !== "string" ||
+        newAccessToken.split(".").length !== 3
+      ) {
+        throw new Error("Invalid access token received from refresh endpoint");
+      }
 
-      return data.token;
+      await update({
+        ...sessionData,
+        user: {
+          ...sessionData?.user,
+          token: newAccessToken,
+          refresh_token: data?.refresh_token ?? currentRefreshToken,
+        },
+      } as any);
+
+      return newAccessToken;
     } catch (error) {
       signOut();
       throw error;

@@ -2,17 +2,13 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-
 import Image from "next/image";
 import { API_URL, REGEXVALIDATION } from "@/constants";
 import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import LoadingSpinner from "@/components/loadingSpinner";
-import ThemeSwitcher from "../../components/theme/theme";
 import LeftImage from "@/assets/images/Left.png";
-import useEndpoints from "@/services";
-import { IUser } from "@/types";
 
 interface FormInputs {
   email: string;
@@ -25,14 +21,13 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormInputs>({ mode: "onSubmit" });
-  const [showPassword, setShowPassword] = useState<boolean>();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [responseError, setResponseError] = useState<string | undefined>();
   const [isRequestSent, setIsRequestSent] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const callback = searchParams?.get("callbackUrl");
   const callbackUrl = callback ?? "/";
-  const { userLogin } = useEndpoints();
 
   const onSubmit = handleSubmit(async (data: FormInputs) => {
     try {
@@ -43,34 +38,22 @@ export default function Login() {
         password: data.password,
       };
 
-      // Serialize data into a query string format
       const serializedData = new URLSearchParams(newData).toString();
 
-      const response = await fetch(
-        `${API_URL}/api/v1/users/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: serializedData,
-        }
-      );
-      // console.log("Login Response >>", response);
+      const response = await fetch(`${API_URL}/api/v1/users/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: serializedData,
+      });
+
       const responseBody = await response.json();
-      // console.log("Response Status:", response.status);
-      // console.log("Response Body:", responseBody);
-      // console.log("Response User_Status:", responseBody.user_status);
 
       const token = responseBody?.token;
-      // Validate token is a non-empty string with JWT structure (header.payload.signature)
       if (token && typeof token === "string" && token.split(".").length === 3) {
         sessionStorage.setItem("authToken", token);
       }
-
-      // const test = sessionStorage.getItem("authToken");
-      // console.log(test);
-      
 
       const result = await signIn("credentials", {
         email: data.email,
@@ -78,17 +61,10 @@ export default function Login() {
         callbackUrl: callbackUrl,
         redirect: false,
       });
-      // console.log("Result", result);
-      // console.log("Data", data);
+
       if (result?.ok && !result?.error) {
-        // setIsRequestSent(false);
-        /**
-         * setIsRequestSent is removed intentionally to avoid rendering the signup form again while
-         * compiling the root page when the result is ok
-         */
         const userStatus = responseBody.user_status;
 
-        // Check user status and redirect accordingly
         if (userStatus === "CONTACTED") {
           router.push(`/assesment/${encodeURIComponent(data.email)}`);
         } else if (userStatus === "ACCEPTED") {
@@ -110,132 +86,137 @@ export default function Login() {
   });
 
   return (
-    <div className="w-screen dark:bg-[#020202]">
-      <div className="grid lg:grid-cols-2 bg-[#fff] dark:bg-[#020202] mx-auto">
-        <div className="lg:h-screen lg:block sticky top-0 bg-[#fff] dark:bg-[#020202] lg:bg-[#020202]">
+    <div className="w-screen min-h-screen bg-white">
+      <div className="grid lg:grid-cols-2 min-h-screen">
+        {/* Left Side - Original Image */}
+        <div className="lg:h-screen lg:block sticky top-0 bg-white lg:bg-surface-dark">
           <Image
             src={LeftImage}
-            alt=""
-            className="hidden lg:block w-full object-cover h-screen "
+            alt="Collaborative workspace"
+            className="hidden lg:block w-full object-cover h-screen"
           />
         </div>
-        <div className="w-full">
+
+        {/* Right Panel - Login Form */}
+        <div className="w-full flex items-center justify-center p-6 sm:p-12 bg-white">
           {isRequestSent ? (
             <LoadingSpinner />
           ) : (
-            <div className="flex flex-col justify-center items-center h-full">
-              <form
-                className="flex flex-col justify-center items-center w-[20rem] py-8"
-                onSubmit={onSubmit}
-              >
-                <div className="w-full">
-                  <h3 className="text-[20px] font-bold">
-                    Login To Your Account
-                  </h3>
+            <div className="w-full max-w-md space-y-8">
+              {/* Mobile Logo */}
+              <div className="lg:hidden flex items-center justify-center gap-2.5 mb-8">
+                <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                    <path d="M2 17L12 22L22 17"/>
+                    <path d="M2 12L12 17L22 12"/>
+                  </svg>
                 </div>
-                <div className="mt-8 mb-5">
+                <span className="font-display font-bold text-xl text-on-surface">ST Network</span>
+              </div>
+
+              {/* Header */}
+              <div className="text-center lg:text-left">
+                <h2 className="font-display font-bold text-3xl text-on-surface mb-2">Welcome back</h2>
+                <p className="text-on-surface-variant text-base">Sign in to your account to continue</p>
+              </div>
+
+              {/* Form */}
+              <form className="space-y-5" onSubmit={onSubmit}>
+                {/* Email */}
+                <div>
+                  <label className="block text-sm font-semibold text-on-surface mb-2" htmlFor="email">
+                    Email address
+                  </label>
                   <input
                     {...register("email", {
                       required: true,
-                      min: 2,
-                      max: 25,
                       pattern: REGEXVALIDATION.email,
                     })}
-                    style={{ borderColor: errors.email ? "#b92828" : "" }}
-                    className=" border-st-edge dark:border-st-subTextDark bg-transparent rounded-sm border-[1.8px] h-[40px] w-[20rem] placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
-                    type="email"
+                    className="auth-input w-full px-4 py-3.5 bg-surface-container-low border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-on-surface placeholder:text-on-surface-variant"
+                    id="email"
                     name="email"
-                    placeholder="Johndoe@slightytechie.io"
+                    placeholder="you@company.com"
+                    type="email"
                   />
                   {errors.email && (
-                    <p className="text-[#b92828] text-[12px]">
-                      Email must be valid
-                    </p>
+                    <p className="text-red-600 text-xs mt-1">Email must be valid</p>
                   )}
                 </div>
-                <>
-                  <div className="flex items-center justify-between bg-transparent dark:border-st-edge rounded-sm border-[1.8px] h-[40px] w-[20rem] pl-4 ">
+
+                {/* Password */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-semibold text-on-surface" htmlFor="password">
+                      Password
+                    </label>
+                    <Link href="/users/forgot-password" className="text-sm font-semibold text-primary hover:text-primary-container transition-colors">
+                      Forgot password?
+                    </Link>
+                  </div>
+                  <div className="relative">
                     <input
                       {...register("password", {
                         required: true,
-                        min: 8,
-                        max: 25,
+                        minLength: 8,
                       })}
-                      style={{ borderColor: errors.password ? "#b92828" : "" }}
-                      className="placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] w-[85%] focus:outline-none dark:focus:border-white bg-transparent focus:border-st-text"
-                      type={showPassword ? "text" : "password"}
+                      className="auth-input w-full px-4 py-3.5 bg-surface-container-low border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-on-surface placeholder:text-on-surface-variant pr-12"
+                      id="password"
                       name="password"
                       placeholder="Enter your password"
+                      type={showPassword ? "text" : "password"}
                     />
-                    <div className="w-[10%]">
-                      {showPassword ? (
-                        <AiOutlineEyeInvisible
-                          className="cursor-pointer ease duration-500"
-                          onClick={() => setShowPassword(!showPassword)}
-                        />
-                      ) : (
-                        <AiOutlineEye
-                          className="cursor-pointer ease duration-500"
-                          onClick={() => setShowPassword(!showPassword)}
-                        />
-                      )}
-                    </div>
+                    <button
+                      type="button"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+                    </button>
                   </div>
                   {errors.password && (
-                    <p className="text-[#b92828] text-[12px] text-center">
-                      Password must be at least 8 characters, can contain at
-                      least one uppercase, lowercase, a number and a special
-                      character
+                    <p className="text-red-600 text-xs mt-1">
+                      Password must be at least 8 characters
                     </p>
                   )}
                   {responseError && (
-                    <p className="text-[#b92828] text-[12px] pt-1">
-                      {responseError}
-                    </p>
+                    <p className="text-red-600 text-xs mt-1">{responseError}</p>
                   )}
-                </>
-                <p className="my-2  text-st-textDark dark:text-st-subTextDark text-sm ">
-                  Forgot your{" "}
-                  <Link
-                    className="font-bold hover:text-st-gray-400"
-                    href="/users/forgot-password"
-                  >
-                    <u>password?</u>
-                  </Link>
-                </p>
+                </div>
 
+                {/* Remember Me */}
+                <div className="flex items-center">
+                  <input
+                    className="h-5 w-5 rounded-md border-2 border-outline-variant text-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    id="remember"
+                    name="remember"
+                    type="checkbox"
+                  />
+                  <label className="ml-3 text-sm font-medium text-on-surface-variant" htmlFor="remember">
+                    Keep me signed in
+                  </label>
+                </div>
+
+                {/* Sign In Button */}
                 <button
-                  className=" bg-primary-dark text-primary-light hover:bg-st-cardDark font-monalisa rounded-sm dark:bg-white text-st-bg text-sm dark:text-black hover:dark:bg-st-edge py-2 flex items-center justify-center w-full "
+                  className="w-full bg-gradient-to-r from-primary to-primary-container text-white py-4 px-6 rounded-xl font-semibold text-base shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
                   type="submit"
                   disabled={isRequestSent}
                 >
-                  Login to your account
+                  Sign in to dashboard
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
                 </button>
-
-                <div className="w-full pt-4">
-                  <label htmlFor="remember-checkbox" className="text-sm">
-                    Remember me
-                  </label>
-                  <input
-                    type="checkbox"
-                    id="remember-checkbox"
-                    className="ml-2"
-                    // checked={persist}
-                    // onChange={() => setPersist(!persist)}
-                  />
-                </div>
-                <p className="my-7 text-[12px]">
-                  Not registered?{" "}
-                  <Link href="/signup">
-                    <u className="font-bold hover:text-st-gray-400">
-                      create account
-                    </u>
-                  </Link>
-                </p>
               </form>
-              <div className="mt-12">
-                <ThemeSwitcher />
-              </div>
+
+              {/* Sign Up Link */}
+              <p className="text-center text-sm text-on-surface-variant pt-4">
+                Not a member yet?
+                <Link href="/signup" className="font-semibold text-primary hover:text-primary-container transition-colors ml-1">
+                  Create an account
+                </Link>
+              </p>
             </div>
           )}
         </div>

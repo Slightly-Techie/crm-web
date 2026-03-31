@@ -150,3 +150,47 @@ export function getStacksArray(
         value !== "null"
     );
 }
+
+function readValidationDetail(detail: unknown): string | null {
+  if (!Array.isArray(detail) || detail.length === 0) return null;
+
+  const first = detail[0];
+  if (typeof first === "string" && first.trim().length > 0) {
+    return first;
+  }
+
+  if (!first || typeof first !== "object") return null;
+
+  const firstRecord = first as { loc?: unknown[]; msg?: unknown };
+  const msg = firstRecord.msg;
+  if (typeof msg !== "string" || msg.trim().length === 0) return null;
+
+  const loc = Array.isArray(firstRecord.loc) ? firstRecord.loc : [];
+  const fieldCandidate = loc[1] || loc[0] || "field";
+  const field = typeof fieldCandidate === "string" ? fieldCandidate : "field";
+  return `${field}: ${msg}`;
+}
+
+export function getApiErrorMessage(error: any, fallback = "Something went wrong"): string {
+  const detail = error?.response?.data?.detail;
+  const message = error?.response?.data?.message;
+
+  if (typeof message === "string" && message.trim().length > 0) {
+    return message;
+  }
+
+  if (typeof detail === "string" && detail.trim().length > 0) {
+    return detail;
+  }
+
+  const parsedDetail = readValidationDetail(detail);
+  if (parsedDetail) {
+    return parsedDetail;
+  }
+
+  if (detail && typeof detail === "object") {
+    return fallback;
+  }
+
+  return fallback;
+}

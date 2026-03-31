@@ -5,6 +5,7 @@ import useAxiosAuth from "./useAxiosAuth";
 import { toast } from "react-hot-toast";
 import useEndpoints from "@/services";
 import useDebouncedSearch from "./useDebouncedSearch";
+import { useSession } from "next-auth/react";
 
 interface AllUsersResponse {
   items: ITechie[];
@@ -20,15 +21,17 @@ export function useApplicantHooks() {
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(0);
   const authAxios = useAxiosAuth();
+  const { status } = useSession();
   const queryClient = useQueryClient();
   const { searchApplicant } = useEndpoints();
   const { debounce, result } = useDebouncedSearch(searchApplicant, 400);
   const query = useQuery({
-    queryKey: ["allUsers"],
+    queryKey: ["allUsers", page],
     queryFn: () =>
       authAxios.get<AllUsersResponse>(
         `/api/v1/users/?active=false&page=${page}&size=50`
       ),
+    enabled: status === "authenticated",
     onSuccess(res) {
       setUsers(res.data?.items);
       setPages(res?.data?.pages);
@@ -56,10 +59,6 @@ export function useApplicantHooks() {
     setFilter(value);
     debounce(value);
   };
-
-  useEffect(() => {
-    query.refetch();
-  }, [page, query]);
 
   const tableData = newData?.map(
     ({

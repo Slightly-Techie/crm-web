@@ -1,10 +1,18 @@
-import LoadingSpinner from "@/components/loadingSpinner";
 import React from "react";
 
 const Loading = () => {
   return (
-    <div className="w-full h-full">
-      <LoadingSpinner />
+    <div className="w-full h-full p-4 md:p-8">
+      <div className="mx-auto max-w-7xl animate-pulse space-y-6">
+        <div className="h-8 w-64 rounded-lg bg-surface-container-high" />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="h-24 rounded-xl bg-surface-container-high" />
+          <div className="h-24 rounded-xl bg-surface-container-high" />
+          <div className="h-24 rounded-xl bg-surface-container-high" />
+          <div className="h-24 rounded-xl bg-surface-container-high" />
+        </div>
+        <div className="h-72 rounded-xl bg-surface-container-high" />
+      </div>
     </div>
   );
 };

@@ -31,7 +31,16 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  output: 'standalone'
+  output: 'standalone',
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.watchOptions = {
+        ...config.watchOptions,
+        ignored: ["**/stitch/**"],
+      };
+    }
+    return config;
+  },
 };
 
 module.exports = nextConfig;

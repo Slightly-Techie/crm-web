@@ -10,6 +10,7 @@ export default function ViewAnnouncement({
   title,
   content,
   id,
+  image_url,
   created_at,
   handleDelete,
   handleEdit,
@@ -23,6 +24,16 @@ export default function ViewAnnouncement({
         </div>
       </div>
       <p className="  text-st-text dark:text-st-surface">{content}</p>
+      {image_url && (
+        <div className="rounded-lg overflow-hidden border border-st-gray dark:border-st-grayDark">
+          <img
+            src={image_url}
+            alt={title || "Announcement image"}
+            className="w-full h-44 object-cover"
+            loading="lazy"
+          />
+        </div>
+      )}
       <div className="w-fit ml-auto flex gap-4 justify-between">
         <div className="flex gap-2">
           <button

@@ -20,7 +20,7 @@ const queryClient = new QueryClient({
 export const Providers = ({ children }: Props) => {
   return (
     <Provider store={store}>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
         <QueryClientProvider client={queryClient}>
           <SessionProvider>{children}</SessionProvider>
         </QueryClientProvider>

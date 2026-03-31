@@ -32,13 +32,16 @@ function AddProject() {
     }
   );
   return (
-    <div className=" dark:text-st-surface text-st-surfaceDark dark:bg-primary-dark mt-[100px]">
-      <PageTitle title="Create A New Project" />
+    <div className="w-full min-h-screen bg-surface-container-lowest">
       {isLoading ? (
-        <LoadingSpinner />
+        <div className="flex justify-center items-center py-20">
+          <LoadingSpinner />
+        </div>
       ) : (
-        <div className=" lg:ml-[300px] justify-center">
-          <EditPage ProjectSubmitHandler={CreateNewProject} />
+        <div className="p-8">
+          <div className="max-w-4xl mx-auto">
+            <EditPage ProjectSubmitHandler={CreateNewProject} />
+          </div>
         </div>
       )}
     </div>

@@ -250,7 +250,7 @@ function Team() {
 
                   <div className="flex gap-2">
                     {Array.from({ length: Math.min(paginationDetails.pages, 5) }, (_, i) => {
-                      let pageNum;
+                      let pageNum: number;
                       if (paginationDetails.pages <= 5) {
                         pageNum = i + 1;
                       } else if (currentPage <= 3) {

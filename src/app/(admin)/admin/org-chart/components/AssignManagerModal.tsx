@@ -25,7 +25,7 @@ export default function AssignManagerModal({
   const { data: searchResults, isFetching } = useQuery({
     queryKey: ["searchTechie", search],
     queryFn: () => searchTechie(search),
-    enabled: true,
+    enabled: search.trim().length >= 2,
     refetchOnWindowFocus: false,
   });
 

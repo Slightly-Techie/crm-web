@@ -173,7 +173,7 @@ const useEndpoints = () => {
     authAxios.get<SubordinateResponse[]>(`/api/v1/users/me/subordinates`);
 
   // Admin-only
-  const getOrgChart = (maxDepth: number = 20) =>
+  const getOrgChart = (maxDepth: number = 5) =>
     authAxios.get<OrgChartNode[]>(`/api/v1/users/org-chart?max_depth=${maxDepth}`);
 
   const getUserOrgChart = (userId: number, maxDepth: number = 5) =>

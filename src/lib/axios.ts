@@ -5,18 +5,12 @@ import { authOptions } from "./auth";
 
 export default axios.create({
   baseURL: API_URL,
-  headers: {
-    "ngrok-skip-browser-warning": "true",
-  },
   // withCredentials: true,
 });
 
 export const getServerSideAxios = () => {
   const defaultOptions = {
     baseURL: API_URL,
-    headers: {
-      "ngrok-skip-browser-warning": "true",
-    },
   };
 
   const instance = axios.create(defaultOptions);

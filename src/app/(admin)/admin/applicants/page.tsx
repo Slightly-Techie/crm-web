@@ -540,13 +540,13 @@ export default function Applicants() {
                         {APPLICANT_STATUS_OPTIONS.map((statusOption) => {
                           const statusLabel = STATUS_LABELS[statusOption]?.label ?? statusOption;
                           const isCurrentStatus =
-                            (activeApplicant.user_status || activeApplicant.status) === statusOption;
+                            (activeApplicant?.user_status || activeApplicant?.status) === statusOption;
 
                           return (
                             <button
                               key={statusOption}
                               onClick={() => handleStatusChange(statusOption)}
-                              disabled={isCurrentStatus || updateStatusMutation.status === 'pending'}
+                              disabled={isCurrentStatus || updateStatusMutation.status === 'loading'}
                               className="w-full text-left pl-8 pr-4 py-2 text-sm hover:bg-surface-container-high text-on-surface disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               {statusLabel}

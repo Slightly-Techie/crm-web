@@ -1,6 +1,6 @@
 import { NewUserFields } from "@/types";
 
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://unalacritous-glory-bedfast.ngrok-free.dev";
+export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const REGEXVALIDATION = {
   name: /^[a-zA-Z]+$/,

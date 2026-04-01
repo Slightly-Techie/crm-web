@@ -428,10 +428,10 @@ export default function SettingsPage() {
                     <div className="flex items-center justify-between py-3">
                       <div>
                         <p className="text-sm font-medium text-on-surface">Account Status</p>
-                        <p className="text-xs text-on-surface-variant">{user?.user_status || "Active"}</p>
+                        <p className="text-xs text-on-surface-variant">{user?.status || "Active"}</p>
                       </div>
                       <span className="px-2 py-1 bg-secondary-container/50 text-on-secondary-container text-xs rounded-full font-semibold uppercase">
-                        {user?.user_status || "ACCEPTED"}
+                        {user?.status || "ACCEPTED"}
                       </span>
                     </div>
                   </div>

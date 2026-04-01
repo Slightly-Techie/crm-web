@@ -70,6 +70,15 @@
   background: transparent;
 }
 
+/* Keep signin input values readable when browser autofill is applied */
+.auth-input:-webkit-autofill,
+.auth-input:-webkit-autofill:hover,
+.auth-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #1b1c1c;
+  box-shadow: 0 0 0 1000px #f6f3f2 inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 /* invalid form inputs */
 small {
   color: rgb(255, 85, 85);

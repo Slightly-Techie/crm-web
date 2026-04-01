@@ -6,17 +6,15 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { AiOutlineSearch, AiOutlineClose, AiOutlineCheck } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineCheck } from "react-icons/ai";
+import { getApiErrorMessage } from "@/utils";
 
 interface BulkAssignModalProps {
   manager: OrgChartNode;
   onClose: () => void;
 }
 
-export default function BulkAssignModal({
-  manager,
-  onClose,
-}: BulkAssignModalProps) {
+export default function BulkAssignModal({ manager, onClose }: BulkAssignModalProps) {
   const [search, setSearch] = useState("");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const { searchTechie, bulkAssignSubordinates } = useEndpoints();
@@ -30,24 +28,20 @@ export default function BulkAssignModal({
   });
 
   const mutation = useMutation({
-    mutationFn: () =>
-      bulkAssignSubordinates(manager.id, { user_ids: selectedIds }),
+    mutationFn: () => bulkAssignSubordinates(manager.id, { user_ids: selectedIds }),
     onSuccess: (res) => {
       const notFound = res.data.not_found;
-      if (notFound.length > 0) {
+      if (notFound?.length > 0) {
         toast.error(`${notFound.length} user(s) could not be found`);
       }
       toast.success(
-        `${res.data.updated.length} user(s) assigned to ${manager.first_name} ${manager.last_name}`
+        `${res.data.updated?.length ?? selectedIds.length} user(s) assigned to ${manager.first_name} ${manager.last_name}`
       );
       queryClient.invalidateQueries({ queryKey: ["orgChart"] });
       onClose();
     },
     onError: (error: any) => {
-      const message =
-        error?.response?.data?.detail ||
-        "Failed to assign subordinates.";
-      toast.error(message);
+      toast.error(getApiErrorMessage(error, "Failed to assign subordinates."));
     },
   });
 
@@ -57,128 +51,131 @@ export default function BulkAssignModal({
     );
   };
 
-  const users = searchResults?.items ?? [];
+  const users = (searchResults as any)?.items ?? [];
   const filteredUsers = users.filter((u: any) => u.id !== manager.id);
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50">
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl w-full max-w-md mx-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4">
+      <div className="bg-surface-container-lowest rounded-2xl shadow-xl w-full max-w-md border border-outline">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b dark:border-gray-700">
+        <div className="flex items-center justify-between p-6 border-b border-outline">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Manage Team
-            </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Assign subordinates to {manager.first_name} {manager.last_name}
+            <h2 className="text-lg font-headline font-semibold text-on-surface">Manage Team</h2>
+            <p className="text-sm text-on-surface-variant mt-0.5">
+              Assign members to{" "}
+              <span className="font-semibold text-primary">
+                {manager.first_name} {manager.last_name}
+              </span>
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="p-2 rounded-lg hover:bg-surface-container-high transition-colors text-on-surface-variant"
           >
-            <AiOutlineClose size={20} className="text-gray-500" />
+            <AiOutlineClose size={18} />
           </button>
         </div>
 
         {/* Search */}
         <div className="p-4">
-          <div className="flex items-center gap-2 border dark:border-gray-700 rounded-md px-3 py-2">
-            <AiOutlineSearch size={18} className="text-gray-400" />
+          <div className="flex items-center gap-2 border border-outline rounded-lg px-3 py-2.5 bg-surface-container-lowest focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+            <span className="material-symbols-outlined text-on-surface-variant text-base">search</span>
             <input
               type="text"
-              placeholder="Search users to add..."
+              placeholder="Search accepted members..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-transparent focus:outline-none text-sm text-gray-900 dark:text-white placeholder-gray-400"
+              className="flex-1 bg-transparent focus:outline-none text-sm text-on-surface placeholder-on-surface-variant"
               autoFocus
             />
+            {isFetching && (
+              <span className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin shrink-0" />
+            )}
           </div>
           {selectedIds.length > 0 && (
-            <p className="text-xs text-blue-600 dark:text-blue-400 mt-2">
-              {selectedIds.length} user{selectedIds.length !== 1 ? "s" : ""} selected
+            <p className="text-xs text-primary font-semibold mt-2">
+              {selectedIds.length} member{selectedIds.length !== 1 ? "s" : ""} selected
             </p>
           )}
         </div>
 
-        {/* Results */}
-        <div className="max-h-[300px] overflow-y-auto px-4">
-          {isFetching && (
-            <p className="text-sm text-gray-500 text-center py-4">
-              Searching...
-            </p>
-          )}
-          {!isFetching && search.length >= 2 && filteredUsers.length === 0 && (
-            <p className="text-sm text-gray-500 text-center py-4">
-              No users found
-            </p>
-          )}
+        {/* Results list */}
+        <div className="max-h-[280px] overflow-y-auto px-4 space-y-1 pb-2">
           {search.length < 2 && (
-            <p className="text-sm text-gray-400 text-center py-4">
+            <p className="text-sm text-on-surface-variant text-center py-6">
               Type at least 2 characters to search
             </p>
           )}
-          <div className="flex flex-col gap-1">
-            {filteredUsers.map((user: any) => {
-              const isSelected = selectedIds.includes(user.id);
-              const picUrl =
-                user.profile_pic_url && user.profile_pic_url !== "string"
-                  ? user.profile_pic_url
-                  : `https://api.dicebear.com/7.x/initials/jpg?seed=${user.first_name} ${user.last_name}`;
-              return (
-                <button
-                  key={user.id}
-                  onClick={() => toggleUser(user.id)}
-                  className={`flex items-center gap-3 p-2 rounded-md transition-colors text-left w-full ${
-                    isSelected
-                      ? "bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800"
-                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
-                  }`}
-                >
-                  <Image
-                    className="w-8 h-8 rounded-full object-cover shrink-0"
-                    width={32}
-                    height={32}
-                    src={picUrl}
-                    alt={`${user.first_name} ${user.last_name}`}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                      {user.first_name} {user.last_name}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                      @{user.username}
-                      {user.stack?.name && ` · ${user.stack.name}`}
-                    </p>
+          {!isFetching && search.length >= 2 && filteredUsers.length === 0 && (
+            <p className="text-sm text-on-surface-variant text-center py-6">No members found</p>
+          )}
+          {filteredUsers.map((user: any) => {
+            const isSelected = selectedIds.includes(user.id);
+            const picUrl =
+              user.profile_pic_url && user.profile_pic_url !== "string"
+                ? user.profile_pic_url
+                : `https://api.dicebear.com/7.x/initials/jpg?seed=${user.first_name} ${user.last_name}`;
+            return (
+              <button
+                key={user.id}
+                onClick={() => toggleUser(user.id)}
+                className={`flex items-center gap-3 p-2.5 rounded-xl transition-colors text-left w-full ${
+                  isSelected
+                    ? "bg-primary/10 border border-primary/30"
+                    : "hover:bg-surface-container-high border border-transparent"
+                }`}
+              >
+                <Image
+                  className="w-9 h-9 rounded-full object-cover shrink-0 ring-2 ring-secondary-container"
+                  width={36}
+                  height={36}
+                  src={picUrl}
+                  alt={`${user.first_name} ${user.last_name}`}
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-on-surface truncate">
+                    {user.first_name} {user.last_name}
+                  </p>
+                  <p className="text-xs text-on-surface-variant truncate">
+                    @{user.username}
+                    {user.stack?.name && ` · ${user.stack.name}`}
+                  </p>
+                </div>
+                {isSelected && (
+                  <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center shrink-0">
+                    <AiOutlineCheck size={12} className="text-on-primary" />
                   </div>
-                  {isSelected && (
-                    <AiOutlineCheck
-                      size={18}
-                      className="text-blue-600 dark:text-blue-400 shrink-0"
-                    />
-                  )}
-                </button>
-              );
-            })}
-          </div>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t dark:border-gray-700 flex justify-end gap-2">
+        <div className="p-4 border-t border-outline flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm rounded-md border dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+            disabled={mutation.isLoading}
+            className="px-4 py-2.5 text-sm rounded-lg border border-outline text-on-surface hover:bg-surface-container-high transition-colors font-medium disabled:opacity-50"
           >
             Cancel
           </button>
           <button
             onClick={() => mutation.mutate()}
             disabled={selectedIds.length === 0 || mutation.isLoading}
-            className="px-4 py-2 text-sm rounded-md bg-primary-dark text-white dark:bg-primary-light dark:text-black hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-5 py-2.5 text-sm rounded-lg bg-primary text-on-primary font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
-            {mutation.isLoading
-              ? "Assigning..."
-              : `Assign ${selectedIds.length} user${selectedIds.length !== 1 ? "s" : ""}`}
+            {mutation.isLoading ? (
+              <>
+                <span className="w-4 h-4 border-2 border-on-primary border-t-transparent rounded-full animate-spin" />
+                Assigning...
+              </>
+            ) : (
+              <>
+                <span className="material-symbols-outlined text-base">group_add</span>
+                Assign {selectedIds.length > 0 ? `${selectedIds.length} ` : ""}member{selectedIds.length !== 1 ? "s" : ""}
+              </>
+            )}
           </button>
         </div>
       </div>

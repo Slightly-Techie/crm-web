@@ -10,8 +10,12 @@ const useAxiosAuth = () => {
   useEffect(() => {
     const requestIntercept = axiosAuth.interceptors.request.use(
       (config) => {
-        if (!config.headers.Authorization) {
-          config.headers.Authorization = `Bearer ${session?.user?.token}`;
+        const accessToken = session?.user?.token;
+        const isValidToken =
+          typeof accessToken === "string" && accessToken.split(".").length === 3;
+
+        if (!config.headers.Authorization && isValidToken) {
+          config.headers.Authorization = `Bearer ${accessToken}`;
         }
         return config;
       },
@@ -22,7 +26,11 @@ const useAxiosAuth = () => {
       (response) => response,
       async (error) => {
         const prevRequest = error?.config;
-        if (error?.response?.status === 401 && !prevRequest?.sent) {
+        const hasRefreshToken =
+          typeof session?.user?.refresh_token === "string" &&
+          session.user.refresh_token.split(".").length === 3;
+
+        if (error?.response?.status === 401 && !prevRequest?.sent && hasRefreshToken) {
           prevRequest.sent = true;
           try {
             const newAccessToken = await refresh();
@@ -30,7 +38,7 @@ const useAxiosAuth = () => {
             return axiosAuth(prevRequest);
           } catch (refreshError) {
             signOut();
-            return Promise.reject(refreshError);
+            throw refreshError;
           }
         } else if (error?.response?.status === 401 && prevRequest?.sent) {
           signOut();

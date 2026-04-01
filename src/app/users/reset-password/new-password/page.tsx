@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { REGEXVALIDATION } from "@/constants";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -9,6 +10,7 @@ import { logToConsole } from "@/utils";
 import { useState } from "react";
 import { Status } from "@/types";
 import { Oval } from "react-loader-spinner";
+
 type NewPassword = Record<"password" | "password_confirmation", string>;
 
 export default function CreateNewPassword() {
@@ -19,26 +21,27 @@ export default function CreateNewPassword() {
     handleSubmit,
     reset,
   } = useForm<NewPassword>({ mode: "onSubmit" });
-  const [password, password_confirmation] = watch([
-    "password",
-    "password_confirmation",
-  ]);
 
+  const [password, passwordConfirmation] = watch(["password", "password_confirmation"]);
   const [status, setStatus] = useState<Status>("progress");
 
   const router = useRouter();
-
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
-  const passwordMatch = password && password === password_confirmation;
+  const passwordMatch = password && password === passwordConfirmation;
 
   const onSubmit = async (data: NewPassword) => {
+    if (!token) {
+      toast.error("Invalid reset token");
+      return;
+    }
+
     setStatus("onsubmit");
     try {
       const payload = {
         new_password: data.password,
-        token: token,
+        token,
       };
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/reset-password`,
@@ -48,7 +51,7 @@ export default function CreateNewPassword() {
       toast.success(res.data.message);
       setTimeout(() => {
         router.push("/login");
-      }, 800);
+      }, 900);
     } catch (err) {
       toast.error("Something went wrong, try again");
       setStatus("error");
@@ -58,17 +61,30 @@ export default function CreateNewPassword() {
   };
 
   return (
-    <>
-      <section className=" text-st-surface justify-between">
-        <h3 className=" font-medium text-2xl">Reset Password ✅</h3>
-        <p className=" text-white/40 font-light">
-          Your email has been verified, create your new password.
+    <div className="space-y-6">
+      <div className="text-center lg:text-left">
+        <h2 className="font-display font-bold text-3xl text-on-surface mb-2">Create new password</h2>
+        <p className="text-on-surface-variant text-base">
+          Set a strong password to secure your account.
         </p>
-      </section>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className=" my-4">
-          <label className=" text-st-surface" htmlFor="">
-            New Password
+      </div>
+
+      {status === "success" && (
+        <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-4 text-sm text-green-700">
+          Password reset successful. Redirecting to login...
+        </div>
+      )}
+
+      {status === "error" && (
+        <div className="rounded-xl border border-error/30 bg-error/10 p-4 text-sm text-error">
+          Unable to reset password. Please try again.
+        </div>
+      )}
+
+      <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <label className="block text-sm font-semibold text-on-surface mb-2" htmlFor="password">
+            New password
           </label>
           <input
             {...register("password", {
@@ -77,19 +93,21 @@ export default function CreateNewPassword() {
               required: true,
               pattern: REGEXVALIDATION.password,
             })}
-            className="w-full border mt-2 px-2 text-[#f1f3f7] dark:border-st-grayDark input__transparent py-2 focus:outline-none focus:border rounded-md dark:focus:border-st-surface"
+            id="password"
+            className="w-full px-4 py-3.5 bg-surface-container-low border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-on-surface"
             type="password"
+            placeholder="Enter new password"
           />
           {errors.password && (
-            <small className=" break-words">
-              Password should be at least 8 characters and must contain an
-              uppercase letter, lowercase letter, a number and a symbol
-            </small>
+            <p className="text-red-600 text-xs mt-1 break-words">
+              Password should be at least 8 characters and must contain uppercase, lowercase, number, and symbol.
+            </p>
           )}
         </div>
-        <div className=" my-4">
-          <label className=" text-st-surface" htmlFor="">
-            Confirm New Password
+
+        <div>
+          <label className="block text-sm font-semibold text-on-surface mb-2" htmlFor="password_confirmation">
+            Confirm new password
           </label>
           <input
             {...register("password_confirmation", {
@@ -99,10 +117,11 @@ export default function CreateNewPassword() {
               max: 25,
               validate: (val: string) => {
                 if (watch("password") !== val) {
-                  return "Your passwords do no match";
+                  return "Your passwords do not match";
                 }
               },
             })}
+            id="password_confirmation"
             style={{
               borderColor: errors.password_confirmation
                 ? "#b92828"
@@ -110,21 +129,30 @@ export default function CreateNewPassword() {
                 ? "#21c129"
                 : "",
             }}
-            className="w-full border mt-2 px-2 text-[#f1f3f7] dark:border-st-grayDark input__transparent py-2 focus:outline-none focus:border rounded-md dark:focus:border-st-surface"
+            className="w-full px-4 py-3.5 bg-surface-container-low border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-on-surface"
             type="password"
+            placeholder="Re-enter new password"
           />
           {errors.password_confirmation && (
-            <small>Passwords do not match</small>
+            <p className="text-red-600 text-xs mt-1">Passwords do not match</p>
           )}
         </div>
-        <button className="w-full flex items-center justify-center font-bold p-2 dark:hover:bg-st-subTextDark hover:bg-primary-light/90 bg-primary-light duration-100 rounded-md text-st-surfaceDark ">
+
+        <button
+          className="w-full bg-gradient-to-r from-primary to-primary-container text-white py-4 px-6 rounded-xl font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all flex items-center justify-center"
+          disabled={status === "onsubmit"}
+        >
           {status === "onsubmit" ? (
             <Oval width={20} height={20} strokeWidth={4} color="#42f5ad" />
           ) : (
-            "Submit"
+            "Reset password"
           )}
         </button>
+
+        <Link href="/login" className="block text-center text-sm font-semibold text-primary hover:underline">
+          Back to login
+        </Link>
       </form>
-    </>
+    </div>
   );
 }

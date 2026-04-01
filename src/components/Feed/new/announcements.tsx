@@ -5,6 +5,21 @@ import React, { useState } from "react";
 import LoadingSpinner from "@/components/loadingSpinner";
 import { getTimeElapsedOrDate } from "@/utils";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
+
+const resolveImageUrl = (url?: string) => {
+  if (!url) return "";
+  const normalizedUrl = url.trim();
+  if (!normalizedUrl) return "";
+  if (normalizedUrl.startsWith("http://") || normalizedUrl.startsWith("https://")) {
+    return normalizedUrl;
+  }
+  if (!API_BASE_URL) {
+    return normalizedUrl;
+  }
+  return `${API_BASE_URL.replace(/\/$/, "")}/${normalizedUrl.replace(/^\//, "")}`;
+};
+
 const Announcements = () => {
   const { isFetching, isFetchingError, Announcements } =
     useFetchAnnouncements(6);
@@ -67,6 +82,17 @@ const Announcements = () => {
                   <p className=" text-[#626979] dark:text-st-subTextDark">
                     {item.content}
                   </p>
+
+                  {item.image_url && (
+                    <div className="mt-4 rounded-md overflow-hidden border border-st-gray dark:border-st-grayDark">
+                      <img
+                        src={resolveImageUrl(item.image_url)}
+                        alt={item.title || "Announcement image"}
+                        className="w-full h-44 object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
                 </div>
               );
             })

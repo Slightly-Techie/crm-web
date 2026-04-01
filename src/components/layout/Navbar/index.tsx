@@ -1,305 +1,332 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import useEndpoints from "@/services";
 import { ITechie } from "@/types";
 import { action } from "@/redux";
 import { useAppDispatch } from "@/hooks";
-import { AiOutlineMenu } from "react-icons/ai";
-import {
-  AiOutlineUser,
-  AiOutlineBell,
-  AiOutlineHome,
-  AiOutlineHourglass,
-} from "react-icons/ai";
-import { BsChatLeft } from "react-icons/bs";
-import { GoSignOut } from "react-icons/go";
-import { FiTarget } from "react-icons/fi";
-import { HiOutlineUserGroup } from "react-icons/hi";
-import DropDown from "@/components/DropDown";
-import ThemeSwitcher from "@/components/theme/theme";
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { signOut, useSession } from "next-auth/react";
 
 const Navlinks = [
-  {
-    title: "DASHBOARD",
-    links: [
-      {
-        id: "d1",
-        name: "Overview",
-        link: "/",
-        icon: <AiOutlineHome size={20} />,
-      },
-      {
-        id: "d2",
-        name: "Applicants",
-        link: "/admin/applicants",
-        icon: <AiOutlineHourglass size={20} />,
-      },
-      {
-        id: "d3",
-        name: "Feed",
-        link: "/",
-        icon: <BsChatLeft size={20} />,
-      },
-    ],
-  },
-  {
-    title: "COMMUNITY",
-    links: [
-      {
-        id: "c1",
-        name: "Techies",
-        link: "/techies",
-        icon: <AiOutlineUser size={20} />,
-      },
-      // {
-      //   id: "c2",
-      //   name: "Leaderboard",
-      //   link: "/leaderboard",
-      //   icon: <BsBarChart size={20} />,
-      // },
-      {
-        id: "c3",
-        name: "Announcements",
-        link: "/announcements",
-        icon: <AiOutlineBell size={20} />,
-      },
-      {
-        id: "c4",
-        name: "Community Projects",
-        link: "/community-projects",
-        icon: <FiTarget size={20} />,
-      },
-      {
-        id: "c5",
-        name: "Org Chart",
-        link: "/admin/org-chart",
-        icon: <HiOutlineUserGroup size={20} />,
-      },
-      // {
-      //   id: "c5",
-      //   name: "Marketplace",
-      //   link: "/marketplace",
-      //   icon: <BsCart2 size={20} />,
-      // },
-      // {
-      //   id: "c6",
-      //   name: "Points System",
-      //   link: "/points-system",
-      //   icon: <LuPuzzle size={20} />,
-      // },
-    ],
-  },
+  { id: "d1", name: "Dashboard", link: "/", icon: "dashboard" },
+  { id: "c1", name: "Directory", link: "/techies", icon: "groups" },
+  { id: "projects", name: "Projects", link: "/community-projects", icon: "assignment" },
+  { id: "d3", name: "Feed", link: "/feed", icon: "rss_feed" },
+  { id: "c3", name: "Announcements", link: "/announcements", icon: "campaign" },
+  { id: "team", name: "My Team", link: "/org-chart", icon: "account_tree" },
+  { id: "c5", name: "Full Org Chart", link: "/admin/org-chart", icon: "corporate_fare", adminOnly: true },
+  { id: "d2", name: "Applicants", link: "/admin/applicants", icon: "hourglass_empty", adminOnly: true },
+  { id: "admin-settings", name: "Admin Settings", link: "/admin/settings", icon: "tune", adminOnly: true },
 ];
 
 function Navbar() {
   const { getUserProfile } = useEndpoints();
   const session = useSession();
   const dispatch = useAppDispatch();
+  const pathname = usePathname();
+  const router = useRouter();
   const [navToggle, setNavToggle] = useState<boolean>(false);
-  const [user, setUser] = useState<undefined | ITechie>();
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
+  const mobileProfileMenuRef = useRef<HTMLDivElement>(null);
   const query = useQuery({
     queryKey: ["userProfile"],
-    queryFn: getUserProfile,
-    onSuccess({ data }) {
-      setUser(data);
+    queryFn: () => getUserProfile().then((res) => res.data),
+    onSuccess(data) {
       dispatch(action.auth.setUser(data));
     },
     enabled: session.status === "authenticated",
+    refetchOnMount: true,
     refetchOnWindowFocus: false,
+    retry: 1,
   });
 
-  const role = query.data?.data?.role?.name;
+  const role = query.data?.role?.name;
+  const currentUser = query.data;
+
+  useEffect(() => {
+    setIsProfileMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!isProfileMenuOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (
+        profileMenuRef.current?.contains(target) ||
+        mobileProfileMenuRef.current?.contains(target)
+      ) {
+        return;
+      }
+      setIsProfileMenuOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isProfileMenuOpen]);
+
+  const isActiveLink = (link: string) => {
+    if (link === "/") {
+      return pathname === "/";
+    }
+    return pathname.startsWith(link);
+  };
 
   return (
-    <header>
-      <nav className="hidden xl:block xl:w-[20vw] sticky top-0 h-screen p-4 z-[50] border-l border-r border-r-neutral-700 border-l-neutral-700 bg-primary-dark text-white">
-        <section className="flex flex-col justify-between items-center h-full">
-          {/* Top Section */}
-          <section className="w-full">
-            <Link href={"/"}>
-              <button className="bg-gray-600 p-2 mx-auto rounded-sm text-[white]">
-                <h1 className="font-bold text-lg">ST</h1>
-              </button>
-            </Link>
-            <section>
-              {Navlinks.map((link) => {
-                return (
-                  <section key={link.title} className="my-5">
-                    <p className="text-complementary font-bold text-xs mb-3 text-[#9EA1AB]">
-                      {link.title}
-                    </p>
-                    <section className="flex flex-col gap-y-5">
-                      {link.links.map((item) => {
-                        if (role === "user" && (item.name === "Applicants" || item.name === "Org Chart")) {
-                          return null;
-                        }
-                        return (
-                          <Link href={item.link} key={item.id}>
-                            <section className="flex items-center text-white gap-3">
-                              {item.icon}
-                              <p className=" text-white text-sm">{item.name}</p>
-                            </section>
-                          </Link>
-                        );
-                      })}
-                    </section>
-                  </section>
-                );
-              })}
-            </section>
-          </section>
-          {/* Bottom Section */}
-          <section className="w-full">
-            <ThemeSwitcher />
-            <br />
-            <DropDown
-              MenuButtonContent={
-                <section className="flex gap-3 items-center mb-5">
+    <>
+      {/* Desktop Sidebar - Fixed */}
+      <aside className="h-screen w-64 fixed left-0 top-0 hidden lg:flex flex-col bg-stone-50 border-r border-stone-100 z-50 overflow-y-auto">
+        <div className="p-6">
+          <h1 className="text-lg font-black text-emerald-900 font-headline">ST Network</h1>
+        </div>
+
+        <nav className="flex flex-col gap-y-1 p-4 flex-1 font-body text-sm font-medium">
+          {Navlinks.map((item) => {
+            if (item.adminOnly && role === "user") return null;
+
+            const isActive = isActiveLink(item.link);
+
+            return (
+              <Link href={item.link} key={item.id}>
+                <div
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                    isActive
+                      ? "bg-emerald-50 text-emerald-900"
+                      : "text-stone-600 hover:bg-stone-100"
+                  }`}
+                >
+                  <span className="material-symbols-outlined">{item.icon}</span>
+                  {item.name}
+                </div>
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Footer Actions */}
+        <div className="p-4 border-t border-stone-100">
+          <div className="space-y-3">
+            {session.status === "authenticated" && query.isLoading && (
+              <div className="animate-pulse rounded-xl border border-stone-200 bg-stone-50 p-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-full bg-stone-200" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-3 w-24 rounded bg-stone-200" />
+                    <div className="h-2.5 w-16 rounded bg-stone-200" />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {session.status === "authenticated" && !query.isLoading && (
+              <div className="relative" ref={profileMenuRef}>
+                <button
+                  type="button"
+                  onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+                  className="w-full flex items-center gap-3 px-3 py-3 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition-all"
+                >
                   <Image
-                    className="w-10 h-10 aspect-square object-cover shrink-0 rounded-full"
-                    width={40}
-                    height={40}
+                    className="w-9 h-9 rounded-full object-cover flex-shrink-0"
+                    width={36}
+                    height={36}
                     src={
-                      user?.profile_pic_url
-                        ? user?.profile_pic_url
-                        : `https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`
+                      currentUser?.profile_pic_url ||
+                      `https://api.dicebear.com/7.x/initials/jpg?seed=${currentUser?.first_name ?? "User"} ${currentUser?.last_name ?? ""}`
                     }
-                    alt="profile"
-                    placeholder="blur"
-                    blurDataURL={`https://avatars.dicebear.com/api/initials/${user?.first_name} ${user?.last_name}.svg`}
+                    alt={currentUser?.username || "User profile"}
                   />
-                  <section>
-                    <p className=" text-left font-semibold text-sm text-white">
-                      {user?.first_name} {user?.last_name}
+                  <div className="flex-1 min-w-0 text-left">
+                    <p className="font-semibold text-xs text-on-surface truncate">
+                      {currentUser ? `${currentUser.first_name} ${currentUser.last_name}` : "Signed in user"}
                     </p>
-                    <p className="text-complementary text-sm text-st-subTextDark">
-                      {user?.email}
+                    <p className="text-[10px] text-on-surface-variant truncate">
+                      {currentUser?.stack?.name || "Techie"}
                     </p>
-                  </section>
-                </section>
-              }
-              MenuItemsContent={
-                <section className="text-white flex flex-col justify-center gap-5 p-2 z-100 bg-black">
-                  <Link href="/techie/me" className="flex items-center gap-3">
-                    <AiOutlineUser size={20} />
-                    <p className="font-bold text-sm">Profile</p>
-                  </Link>
-                  <button
-                    onClick={() => signOut()}
-                    className="flex items-center gap-3"
-                  >
-                    <GoSignOut size={20} />
-                    <p className="font-bold text-sm">Log Out</p>
-                  </button>
-                </section>
-              }
-            />
-          </section>
-        </section>
-      </nav>
-      {/* Navbar- Mobile */}
-      <section className="block lg:hidden fixed top-0 left-0 z-50 w-full bg-primary-dark h-[7vh]">
-        <section className="flex justify-between items-center p-5 w-full h-full">
-          <Link href={"/"}>
-            <button className="bg-gray-600 p-1 mx-auto rounded-sm text-white">
-              <h1 className="font-bold text-xs">ST</h1>
-            </button>
-          </Link>
-          <section
-            className="border p-1 rounded"
+                  </div>
+                  <span className="material-symbols-outlined text-on-surface-variant text-base">
+                    {isProfileMenuOpen ? "expand_more" : "expand_less"}
+                  </span>
+                </button>
+
+                {isProfileMenuOpen && (
+                  <div className="absolute bottom-full mb-2 left-0 w-full rounded-xl border border-stone-200 bg-white shadow-lg py-1">
+                    <Link
+                      href="/settings"
+                      className="flex items-center gap-2 px-3 py-2 text-sm text-on-surface hover:bg-stone-50"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                    >
+                      <span className="material-symbols-outlined text-base">settings</span>
+                      <span>Settings</span>
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => signOut()}
+                      className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50"
+                    >
+                      <span className="material-symbols-outlined text-base">logout</span>
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </aside>
+
+
+
+      {/* Mobile Menu Button */}
+      <div className="block lg:hidden fixed top-0 left-0 right-0 z-[9999] bg-white border-b border-stone-100 h-16">
+        <div className="flex justify-between items-center px-4 h-full">
+          <h1 className="text-lg font-black text-emerald-900 font-headline">ST Network</h1>
+          <button
+            className="p-2 rounded-lg hover:bg-stone-50 transition-colors"
             onClick={() => setNavToggle(!navToggle)}
           >
-            <AiOutlineMenu size={15} />
-          </section>
-        </section>
-      </section>
-      {/* Mobile Nav Toggle */}
-      <section
-        className={
-          navToggle
-            ? "fixed z-[50] mt-[7vh] ease duration-500 h-[93vh] top-0 left-0 w-screen bg-white dark:bg-primary-dark p-5"
-            : "fixed z-[50] mt-[7vh] ease duration-500 h-[93vh] top-0 left-[-100vw] w-screen bg-white dark:bg-primary-dark p-5"
-        }
+            <AiOutlineMenu size={24} className="text-on-surface" />
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Sidebar */}
+      <div
+        className={`fixed z-[9998] top-0 left-0 w-64 h-screen bg-white border-r border-stone-100 shadow-xl transition-transform duration-300 ease-in-out lg:hidden ${
+          navToggle ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
-        <section className="flex flex-col justify-between h-full">
-          {/* Top Section */}
-          <section>
-            {Navlinks.map((link) => {
+        <div className="flex flex-col h-full overflow-y-auto">
+          {/* Mobile Sidebar Header */}
+          <div className="flex justify-between items-center px-4 h-16 border-b border-stone-100">
+            <h1 className="text-lg font-black text-emerald-900 font-headline">ST Network</h1>
+            <button
+              className="p-2 rounded-lg hover:bg-stone-50 transition-colors"
+              onClick={() => setNavToggle(false)}
+            >
+              <AiOutlineClose size={20} className="text-on-surface" />
+            </button>
+          </div>
+
+          <nav className="flex flex-col gap-y-1 font-body text-sm font-medium p-4">
+            {Navlinks.map((item) => {
+              if (item.adminOnly && role === "user") return null;
+
+              const isActive = isActiveLink(item.link);
+
               return (
-                <section key={link.title} className="my-5">
-                  <p className="text-complementary font-bold text-sm mb-3">
-                    {link.title}
-                  </p>
-                  <section className="flex flex-col gap-y-5">
-                    {link.links.map((item) => {
-                      return (
-                        <Link href={item.link} key={item.id}>
-                          <section className="flex items-center gap-3">
-                            {item.icon}
-                            <p className=" text-sm">{item.name}</p>
-                          </section>
-                        </Link>
-                      );
-                    })}
-                  </section>
-                </section>
+                <Link href={item.link} key={item.id} onClick={() => setNavToggle(false)}>
+                  <div
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                      isActive
+                        ? "bg-emerald-50 text-emerald-900"
+                        : "text-stone-600 hover:bg-stone-100"
+                    }`}
+                  >
+                    <span className="material-symbols-outlined">{item.icon}</span>
+                    {item.name}
+                  </div>
+                </Link>
               );
             })}
-          </section>
-          {/* Bottom Section */}
-          <section className="w-full">
-            <ThemeSwitcher />
-            <br />
-            <DropDown
-              MenuButtonContent={
-                <section className="flex gap-3 items-center mb-5">
-                  {user && (
-                    <Image
-                      className="w-10 h-10 aspect-square object-cover shrink-0 rounded-full"
-                      width={40}
-                      height={40}
-                      src={
-                        user?.profile_pic_url
-                          ? user.profile_pic_url
-                          : `https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`
-                      }
-                      alt={user?.username as string}
-                      placeholder="blur"
-                      blurDataURL={`https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`}
-                    />
-                  )}
-                  <section>
-                    <p className="font-semibold text-sm">
-                      {user?.first_name} {user?.last_name}
-                    </p>
-                    <p className="text-complementary text-sm">{user?.email}</p>
-                  </section>
-                </section>
-              }
-              MenuItemsContent={
-                <section className="text-white flex flex-col justify-center gap-5 p-2">
-                  <section className="flex items-center gap-3">
-                    <AiOutlineUser size={20} />
-                    <p className="font-bold text-sm">Profile</p>
-                  </section>
+          </nav>
+
+          {/* Mobile User Profile */}
+          {session.status === "authenticated" && (
+            <div
+              className="mt-auto border-t border-stone-100 px-4 pb-4 pt-2"
+              ref={mobileProfileMenuRef}
+            >
+              {/* Drop-up menu — renders above the button */}
+              {isProfileMenuOpen && (
+                <div className="rounded-xl border border-stone-200 bg-white overflow-hidden mb-1 shadow-lg">
                   <button
-                    onClick={() => signOut()}
-                    className="flex items-center gap-3 cursor-pointer"
+                    type="button"
+                    onClick={() => { setNavToggle(false); setIsProfileMenuOpen(false); router.push("/settings"); }}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-on-surface hover:bg-stone-50"
                   >
-                    <GoSignOut size={20} />
-                    Log Out
+                    <span className="material-symbols-outlined text-base">settings</span>
+                    <span>Settings</span>
                   </button>
-                </section>
-              }
-            />
-          </section>
-        </section>
-      </section>
-    </header>
+                  <div className="border-t border-stone-100" />
+                  <button
+                    type="button"
+                    onClick={() => { setNavToggle(false); setIsProfileMenuOpen(false); signOut(); }}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50"
+                  >
+                    <span className="material-symbols-outlined text-base">logout</span>
+                    <span className="font-medium">Log Out</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Profile row button */}
+              <button
+                type="button"
+                onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+                className="w-full flex items-center gap-3 px-3 py-3 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition-all"
+              >
+                <Image
+                  className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                  width={40}
+                  height={40}
+                  src={
+                    currentUser?.profile_pic_url ||
+                    `https://api.dicebear.com/7.x/initials/jpg?seed=${currentUser?.first_name ?? "User"} ${currentUser?.last_name ?? ""}`
+                  }
+                  alt={currentUser?.username || "User profile"}
+                />
+                <div className="flex-1 min-w-0 text-left">
+                  <p className="font-semibold text-sm text-on-surface truncate">
+                    {currentUser ? `${currentUser.first_name} ${currentUser.last_name}` : "Signed in user"}
+                  </p>
+                  <p className="text-xs text-on-surface-variant truncate">
+                    {currentUser?.stack?.name || currentUser?.email || ""}
+                  </p>
+                </div>
+                <span className="material-symbols-outlined text-on-surface-variant text-base">
+                  {isProfileMenuOpen ? "expand_more" : "expand_less"}
+                </span>
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile Overlay */}
+      {navToggle && (
+        <button
+          type="button"
+          className="fixed inset-0 bg-black/50 z-[9990] lg:hidden"
+          onClick={() => setNavToggle(false)}
+          aria-label="Close navigation menu"
+        />
+      )}
+
+      <style jsx global>{`
+        .material-symbols-outlined {
+          font-family: 'Material Symbols Outlined';
+          font-weight: normal;
+          font-style: normal;
+          font-size: 24px;
+          line-height: 1;
+          letter-spacing: normal;
+          text-transform: none;
+          display: inline-block;
+          white-space: nowrap;
+          word-wrap: normal;
+          direction: ltr;
+          font-feature-settings: 'liga';
+          -webkit-font-smoothing: antialiased;
+        }
+      `}</style>
+    </>
   );
 }
 

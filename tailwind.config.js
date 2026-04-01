@@ -15,10 +15,62 @@ module.exports = {
         signup: "url('/src/assets/images/Left.png')",
       },
       colors: {
-        primary: {
-          light: "#f5f5f5",
-          dark: "#020202",
-        },
+        // Stitch Design System Colors
+        "primary": "#154212",
+        "on-primary": "#ffffff",
+        "primary-container": "#2d5a27",
+        "on-primary-container": "#9dd090",
+        "primary-fixed": "#bcf0ae",
+        "primary-fixed-dim": "#a1d494",
+        "on-primary-fixed": "#002201",
+        "on-primary-fixed-variant": "#23501e",
+
+        "secondary": "#4b6547",
+        "on-secondary": "#ffffff",
+        "secondary-container": "#cdebc5",
+        "on-secondary-container": "#516b4d",
+        "secondary-fixed": "#cdebc5",
+        "secondary-fixed-dim": "#b2ceaa",
+        "on-secondary-fixed": "#092009",
+        "on-secondary-fixed-variant": "#344d31",
+
+        "tertiary": "#303c34",
+        "on-tertiary": "#ffffff",
+        "tertiary-container": "#47534a",
+        "on-tertiary-container": "#b9c6bb",
+        "tertiary-fixed": "#d9e6da",
+        "tertiary-fixed-dim": "#bdcabe",
+        "on-tertiary-fixed": "#131e17",
+        "on-tertiary-fixed-variant": "#3e4a41",
+
+        "error": "#ba1a1a",
+        "on-error": "#ffffff",
+        "error-container": "#ffdad6",
+        "on-error-container": "#93000a",
+
+        "background": "#fbf9f8",
+        "on-background": "#1b1c1c",
+        "surface": "#fbf9f8",
+        "on-surface": "#1b1c1c",
+        "surface-variant": "#e4e2e1",
+        "on-surface-variant": "#42493e",
+
+        "surface-container-lowest": "#ffffff",
+        "surface-container-low": "#f6f3f2",
+        "surface-container": "#f0eded",
+        "surface-container-high": "#eae8e7",
+        "surface-container-highest": "#e4e2e1",
+        "surface-bright": "#fbf9f8",
+        "surface-dim": "#dcd9d9",
+
+        "outline": "#72796e",
+        "outline-variant": "#c2c9bb",
+        "inverse-surface": "#303030",
+        "inverse-on-surface": "#f3f0f0",
+        "inverse-primary": "#a1d494",
+        "surface-tint": "#3b6934",
+
+        // Legacy colors (keeping for compatibility)
         st: {
           gray: "#E8E8E8",
           grayDark: "#c7c7c73b",
@@ -40,6 +92,9 @@ module.exports = {
       },
       fontFamily: {
         "mona-sans": ["var(--font-mona-sans)", "Mona Sans", "sans-serif"],
+        "headline": ["Public Sans", "system-ui", "sans-serif"],
+        "body": ["Inter", "system-ui", "sans-serif"],
+        "label": ["Inter", "system-ui", "sans-serif"],
       },
     },
   },

@@ -15,13 +15,29 @@ type ResponseError = {
 };
 
 type BadRequest = {
-  detail: string;
+  detail: string | ErrorObj[] | Record<string, unknown>;
 };
 
 function usePostNewSignUp() {
   const [status, setStatus] = React.useState<Status>("progress");
   const [errMessage, setErrMessage] = React.useState("");
   const axiosAuth = useAxiosAuth();
+
+  const toReadableMessage = (detail: unknown): string => {
+    if (typeof detail === "string") return detail;
+    if (Array.isArray(detail)) {
+      const first = detail[0];
+      if (first?.msg) {
+        const errField = first?.loc?.[1] || first?.loc?.[0] || "field";
+        return `${errField}: ${first.msg}`;
+      }
+      return "Validation failed. Please check your inputs.";
+    }
+    if (detail && typeof detail === "object") {
+      return "Request failed. Please check your inputs and try again.";
+    }
+    return "An error occurred";
+  };
 
   const { mutate: createNewUser, error } = useMutation<
     void,
@@ -34,19 +50,12 @@ function usePostNewSignUp() {
       setStatus("success");
       return res.data;
     } catch (errorObj) {
-      let errMsg: string;
       const err = errorObj as AxiosError;
-      if (err.response?.status === 400) {
-        const error = err as AxiosError<BadRequest>;
-        errMsg = error.response?.data.detail as string;
-      } else {
-        const error = errorObj as AxiosError<ResponseError>;
-        const errObj = error.response?.data.detail[0];
-        const errField = errObj?.loc[1] || "";
-        errMsg = `${errField}: ${errObj?.msg}`;
-      }
+      const error = err as AxiosError<BadRequest | ResponseError>;
+      const detail = error.response?.data?.detail;
+      const errMsg = toReadableMessage(detail);
       setStatus("error");
-      setErrMessage(errMsg || "An error occured");
+      setErrMessage(errMsg || "An error occurred");
     }
   });
 

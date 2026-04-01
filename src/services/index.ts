@@ -177,10 +177,10 @@ const useEndpoints = () => {
     authAxios.get<OrgChartNode[]>(`/api/v1/users/org-chart?max_depth=${maxDepth}`);
 
   const getUserOrgChart = (userId: number, maxDepth: number = 5) =>
-    authAxios.get<OrgChartNode>(`/api/v1/users/${userId}/org-chart?max_depth=${maxDepth}`);
+    authAxios.get<OrgChartNode>(`/api/v1/users/view/${userId}/org-chart?max_depth=${maxDepth}`);
 
   const getUserSubordinates = (userId: number) =>
-    authAxios.get<SubordinateResponse[]>(`/api/v1/users/${userId}/subordinates`);
+    authAxios.get<SubordinateResponse[]>(`/api/v1/users/view/${userId}/subordinates`);
 
   const updateUserManager = (userId: number, data: UpdateManagerRequest) =>
     authAxios.patch<SubordinateResponse>(`/api/v1/users/${userId}/manager`, data);

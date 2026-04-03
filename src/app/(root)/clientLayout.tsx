@@ -43,7 +43,7 @@ function ClientLayout({ children }: { children: React.ReactNode }) {
       // Reset when not on task-submission page
       backListenerRef.current = false;
     }
-  }, [pathname]);
+  }, [pathname, status, isContactedUser]);
 
   return (
     <>

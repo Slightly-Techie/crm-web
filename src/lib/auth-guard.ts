@@ -60,8 +60,8 @@ export function getRouteForUserStatus(user: AuthUser, currentPath: string): stri
     return null;
   }
 
-  // PRIORITY 5: REJECTED, NO_SHOW - show rejection message
-  if (["REJECTED", "NO_SHOW"].includes(user.status)) {
+  // PRIORITY 5: REJECTED, NO SHOW - show rejection message
+  if (["REJECTED", "NO SHOW"].includes(user.status)) {
     if (currentPath !== "/application-status") {
       return "/application-status";
     }
@@ -121,11 +121,6 @@ export function getStatusMessage(status: UserStatus): {
 } {
   // Status can come with spaces or underscores - normalize to spaces
   const normalizedStatus = (status as string)?.replace(/_/g, " ")?.toUpperCase()?.trim() as UserStatus;
-
-  // Debug: log the status
-  if (typeof window !== "undefined") {
-    console.log("getStatusMessage called with status:", status, "normalized:", normalizedStatus);
-  }
 
   switch (normalizedStatus) {
     case "INTERVIEWED":

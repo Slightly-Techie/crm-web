@@ -55,6 +55,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
   const [toolSearch, setToolSearch] = useState("");
   const [managerSearch, setManagerSearch] = useState("");
   const [cachedSelectedManager, setCachedSelectedManager] = useState<ITechie | null>(null);
+  const [cachedTools, setCachedTools] = useState<Record<number, any>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Fetch stacks
@@ -103,12 +104,17 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
       const projectId = projectRes.data.id;
 
       if (formData.members.length > 0) {
+        const failedMembers: string[] = [];
         for (const member of formData.members) {
           try {
             await addMemberToProject(projectId, member.id, member.role);
           } catch (err) {
-            console.error(`Failed to add member ${member.id}:`, err);
+            failedMembers.push(`${member.first_name} ${member.last_name}`);
           }
+        }
+
+        if (failedMembers.length > 0) {
+          toast.error(`Failed to add: ${failedMembers.join(", ")}`);
         }
       }
 
@@ -324,7 +330,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
               {formData.project_tools.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-4">
                   {formData.project_tools
-                    .map((id) => toolsData?.items?.find((t: any) => t.id === id))
+                    .map((id) => cachedTools[id] || toolsData?.items?.find((t: any) => t.id === id))
                     .filter(Boolean)
                     .map((tool: any) => (
                       <div key={tool.id} className="flex items-center gap-2 px-3 py-2 bg-primary/10 text-primary rounded-lg text-sm font-medium group">
@@ -355,7 +361,10 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
                     availableTools.map((tool: any) => (
                       <div
                         key={tool.id}
-                        onClick={() => setFormData({ ...formData, project_tools: [...new Set([...formData.project_tools, tool.id])] })}
+                        onClick={() => {
+                          setCachedTools({ ...cachedTools, [tool.id]: tool });
+                          setFormData({ ...formData, project_tools: [...new Set([...formData.project_tools, tool.id])] });
+                        }}
                         className="flex items-center justify-between p-3 rounded-lg bg-surface-container hover:bg-surface-container-high cursor-pointer"
                       >
                         <div className="flex items-center gap-2">

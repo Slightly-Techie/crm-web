@@ -27,18 +27,18 @@ export default async function RootLayout({
     return <ClientLayout>{children}</ClientLayout>;
   }
 
-  // PRIORITY 3: REJECTED or NO_SHOW - go to application status
-  if (user.status === "REJECTED" || user.status === "NO_SHOW") {
+  // PRIORITY 3: REJECTED or NO SHOW - go to application status
+  if (user.status === "REJECTED" || user.status === "NO SHOW") {
     redirect("/application-status");
   }
 
-  // PRIORITY 4: TO_CONTACT - go to application received
-  if (user.status === "TO_CONTACT") {
+  // PRIORITY 4: TO CONTACT - go to application received
+  if (user.status === "TO CONTACT") {
     redirect("/application-received");
   }
 
-  // PRIORITY 5: INTERVIEWED, IN_REVIEW, TO_BE_ONBOARDED - go to waiting
-  if (["INTERVIEWED", "IN_REVIEW", "TO_BE_ONBOARDED"].includes(user.status)) {
+  // PRIORITY 5: INTERVIEWED, IN REVIEW, TO BE ONBOARDED - go to waiting
+  if (["INTERVIEWED", "IN REVIEW", "TO BE ONBOARDED"].includes(user.status)) {
     redirect("/waiting");
   }
 

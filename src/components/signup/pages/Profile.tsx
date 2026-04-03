@@ -18,11 +18,6 @@ type ProfileFormType = {
 };
 
 function Profile({ register, errors, watch }: ProfileFormType) {
-  const firstNameValue = watch?.("first_name") || "";
-  const lastNameValue = watch?.("last_name") || "";
-  const usernameValue = watch?.("username") || "";
-  const phoneValue = watch?.("phone_number") || "";
-
   return (
     <>
       {/* First Name */}

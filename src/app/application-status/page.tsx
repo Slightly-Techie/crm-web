@@ -14,7 +14,7 @@ export default function ApplicationStatusPage() {
   }
 
   const isRejected = user?.status === "REJECTED";
-  const isNoShow = user?.status === "NO_SHOW";
+  const isNoShow = user?.status === "NO SHOW";
 
   return (
     <div className="min-h-screen bg-surface flex items-center justify-center p-4">

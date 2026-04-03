@@ -15,8 +15,7 @@ export default function CreateAnnouncement({
 }: CreateAnnouncementProps) {
   const [formTitle, setFormTitle] = useState("");
   const [formContent, setFormContent] = useState("");
-  const [formImageFile, setFormImageFile] = useState<File | null>(null);
-  const [formImagePreview, setFormImagePreview] = useState<string>("");
+  const [formImageUrl, setFormImageUrl] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
@@ -24,7 +23,7 @@ export default function CreateAnnouncement({
     if (existingPost) {
       setFormTitle(existingPost.title);
       setFormContent(existingPost.content);
-      setFormImagePreview(existingPost.image_url || "");
+      setFormImageUrl(existingPost.image_url || "");
     }
   }, [existingPost]);
 
@@ -50,26 +49,8 @@ export default function CreateAnnouncement({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (!file.type.startsWith("image/")) {
-        toast.error("Please select a valid image file");
-        return;
-      }
-
-      setFormImageFile(file);
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setFormImagePreview(event.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const clearImage = () => {
-    setFormImageFile(null);
-    setFormImagePreview("");
+    setFormImageUrl("");
   };
 
   function onSubmit() {
@@ -84,7 +65,7 @@ export default function CreateAnnouncement({
     const data: any = {
       title: formTitle.trim(),
       content: formContent.trim(),
-      image_url: formImagePreview || null,
+      image_url: formImageUrl.trim() || undefined,
     };
 
     // If editing, include the ID so the hook knows to use PUT instead of POST
@@ -101,8 +82,7 @@ export default function CreateAnnouncement({
       }
       setFormTitle("");
       setFormContent("");
-      setFormImageFile(null);
-      setFormImagePreview("");
+      setFormImageUrl("");
       setErrors({});
     } catch (err: any) {
       const errorMessage = err?.response?.data?.detail || err?.message || "Failed to save announcement";
@@ -183,10 +163,10 @@ export default function CreateAnnouncement({
         </div>
 
         {/* Image Upload */}
-        {formImagePreview && (
+        {formImageUrl && (
           <div className="space-y-2">
             <div className="relative w-full rounded-lg overflow-hidden border border-outline">
-              <img src={formImagePreview} alt="Preview" className="w-full h-48 object-cover" />
+              <img src={formImageUrl} alt="Preview" className="w-full h-48 object-cover" />
               <button
                 type="button"
                 onClick={clearImage}
@@ -200,14 +180,15 @@ export default function CreateAnnouncement({
 
         <div className="space-y-1.5">
           <label htmlFor="announcement-image" className="light:text-st-gray dark:text-st-surface text-st-text text-sm font-medium">
-            Image <span className="text-gray-400 font-normal">(optional)</span>
+            Image URL <span className="text-gray-400 font-normal">(optional)</span>
           </label>
           <input
             id="announcement-image"
-            onChange={handleImageChange}
-            type="file"
-            accept="image/*"
-            className="w-full px-3 py-2.5 rounded-lg border border-st-edgeDark bg-transparent text-st-textDark dark:text-st-surface cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary/90"
+            onChange={(e) => setFormImageUrl(e.target.value)}
+            value={formImageUrl}
+            type="url"
+            placeholder="https://example.com/image.jpg"
+            className="w-full px-3 py-2.5 rounded-lg border border-st-edgeDark bg-transparent text-st-textDark dark:text-st-surface focus:outline-none transition-colors focus:border-primary-dark"
           />
         </div>
 

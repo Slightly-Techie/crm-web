@@ -16,7 +16,7 @@ export default function ApplicationReceivedPage() {
       router.push("/task-submission");
     } else if (user?.status === "ACCEPTED" && user?.is_active) {
       router.push("/");
-    } else if (["INTERVIEWED", "IN_REVIEW", "TO_BE_ONBOARDED"].includes(user?.status)) {
+    } else if (["INTERVIEWED", "IN REVIEW", "TO BE ONBOARDED"].includes(user?.status)) {
       router.push("/waiting");
     }
   }, [user, router]);

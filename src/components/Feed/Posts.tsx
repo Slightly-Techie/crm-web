@@ -11,8 +11,8 @@ function Posts() {
     <>
       <div className="h-full w-full flex-col">
         {isFetching && (
-          <div className="h-full w-full flex flex-col items-center justify-center">
-            <LoadingSpinner />
+          <div className="h-full w-full flex flex-col items-center justify-center py-32">
+            <LoadingSpinner fullScreen={false} />
           </div>
         )}
         {isFetchingError && (

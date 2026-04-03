@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
+import { FaXTwitter, FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa6";
 
 function Page() { // NOSONAR
   const { id } = useParams();
@@ -91,7 +92,7 @@ function Page() { // NOSONAR
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
-        <LoadingSpinner />
+        <LoadingSpinner fullScreen={false} />
       </div>
     );
   }
@@ -126,7 +127,7 @@ function Page() { // NOSONAR
       </div>
 
       {/* Profile Header */}
-      <div className="max-w-6xl mx-auto px-4 md:px-8 -mt-20 md:-mt-24 relative z-10 w-full">
+      <div className="max-w-6xl mx-auto px-4 md:px-8 -mt-16 md:-mt-20 relative z-10 w-full">
         <div className="flex flex-col md:flex-row items-end gap-6 mb-8">
           {/* Avatar */}
           <div className="w-28 h-28 md:w-40 md:h-40 rounded-2xl border-4 border-surface-container-lowest bg-surface-container-lowest overflow-hidden shadow-lg flex-shrink-0">
@@ -141,10 +142,10 @@ function Page() { // NOSONAR
           </div>
 
           {/* Name & Actions */}
-          <div className="flex-1 mb-2 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div className="flex-1 mb-2 flex flex-col md:flex-row md:items-end md:justify-between gap-4 pt-2">
             <div>
               <div className="flex flex-wrap items-center gap-3 mb-1">
-                <h1 className="text-2xl md:text-3xl font-extrabold font-headline text-on-surface">
+                <h1 className="text-2xl md:text-3xl font-extrabold font-headline text-on-surface drop-shadow-sm">
                   {UserProfile.first_name} {UserProfile.last_name}
                 </h1>
                 <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${statusBadgeClass}`}>
@@ -249,30 +250,30 @@ function Page() { // NOSONAR
                   <div className="flex gap-3 flex-wrap">
                     {UserProfile.portfolio_url && (
                       <a href={UserProfile.portfolio_url} target="_blank" rel="noopener noreferrer"
-                        className="w-10 h-10 rounded-full bg-surface-container hover:bg-primary hover:text-white transition-all flex items-center justify-center text-on-surface-variant"
+                        className="w-10 h-10 rounded-full bg-surface-container hover:bg-primary transition-all flex items-center justify-center text-on-surface-variant hover:text-on-primary"
                         title="Portfolio">
-                        <span className="material-symbols-outlined text-sm">language</span>
+                        <FaGlobe className="text-base" />
                       </a>
                     )}
                     {UserProfile.github_profile && (
                       <a href={UserProfile.github_profile} target="_blank" rel="noopener noreferrer"
-                        className="w-10 h-10 rounded-full bg-surface-container hover:bg-primary hover:text-white transition-all flex items-center justify-center text-on-surface-variant"
+                        className="w-10 h-10 rounded-full bg-surface-container hover:bg-[#333] transition-all flex items-center justify-center text-on-surface-variant hover:text-white"
                         title="GitHub">
-                        <span className="material-symbols-outlined text-sm">code</span>
+                        <FaGithub className="text-base" />
                       </a>
                     )}
                     {UserProfile.linkedin_profile && (
                       <a href={UserProfile.linkedin_profile} target="_blank" rel="noopener noreferrer"
-                        className="w-10 h-10 rounded-full bg-surface-container hover:bg-primary hover:text-white transition-all flex items-center justify-center text-on-surface-variant"
+                        className="w-10 h-10 rounded-full bg-surface-container hover:bg-[#0A66C2] transition-all flex items-center justify-center text-on-surface-variant hover:text-white"
                         title="LinkedIn">
-                        <span className="material-symbols-outlined text-sm">work</span>
+                        <FaLinkedin className="text-base" />
                       </a>
                     )}
                     {UserProfile.twitter_profile && (
                       <a href={UserProfile.twitter_profile} target="_blank" rel="noopener noreferrer"
-                        className="w-10 h-10 rounded-full bg-surface-container hover:bg-primary hover:text-white transition-all flex items-center justify-center text-on-surface-variant"
+                        className="w-10 h-10 rounded-full bg-surface-container hover:bg-black transition-all flex items-center justify-center text-on-surface-variant hover:text-white"
                         title="Twitter / X">
-                        <span className="material-symbols-outlined text-sm">chat_bubble</span>
+                        <FaXTwitter className="text-base" />
                       </a>
                     )}
                   </div>

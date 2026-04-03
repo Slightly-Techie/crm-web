@@ -175,8 +175,8 @@ function TeamSelectionPage() {
             </section>
           )}
           {isLoading && (
-            <section className="flex items-center justify-center w-full h-full">
-              <LoadingSpinner />
+            <section className="flex items-center justify-center w-full h-full py-32">
+              <LoadingSpinner fullScreen={false} />
             </section>
           )}
           {techies && (

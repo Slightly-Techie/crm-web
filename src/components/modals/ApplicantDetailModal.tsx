@@ -240,18 +240,41 @@ export default function ApplicantDetailModal({
             <h3 className="text-sm font-bold uppercase tracking-wider text-on-surface-variant">
               Application Status
             </h3>
-            <div className="flex items-center justify-between p-4 rounded-lg bg-surface-container-high">
-              <div>
-                <p className="text-xs text-on-surface-variant">Current Status</p>
-                <p className="text-sm font-bold text-on-surface mt-1">
-                  {applicant.status || applicant.user_status || "Pending"}
-                </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-high">
+                <span className="material-symbols-outlined text-primary">event</span>
+                <div className="flex-1">
+                  <p className="text-xs text-on-surface-variant">Signup Date</p>
+                  <p className="text-sm font-medium text-on-surface">
+                    {applicant.created_at
+                      ? new Date(applicant.created_at).toLocaleDateString(undefined, {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })
+                      : "Unknown"}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs text-on-surface-variant">Account Active</p>
-                <p className="text-sm font-bold text-on-surface mt-1">
-                  {applicant.is_active ? "Yes" : "No"}
-                </p>
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-high">
+                <span className="material-symbols-outlined text-primary">pending_actions</span>
+                <div className="flex-1">
+                  <p className="text-xs text-on-surface-variant">Current Status</p>
+                  <p className="text-sm font-bold text-on-surface">
+                    {applicant.status || applicant.user_status || "Pending"}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-high">
+                <span className="material-symbols-outlined text-primary">
+                  {applicant.is_active ? "check_circle" : "cancel"}
+                </span>
+                <div className="flex-1">
+                  <p className="text-xs text-on-surface-variant">Account Active</p>
+                  <p className="text-sm font-bold text-on-surface">
+                    {applicant.is_active ? "Yes" : "No"}
+                  </p>
+                </div>
               </div>
             </div>
           </div>

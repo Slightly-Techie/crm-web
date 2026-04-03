@@ -63,8 +63,8 @@ export default function Announcement() {
         {/* Right Column - Announcements List */}
         <div className="space-y-4">
           {isFetching && (
-            <div className="flex justify-center items-center py-20">
-              <LoadingSpinner />
+            <div className="flex justify-center items-center py-32">
+              <LoadingSpinner fullScreen={false} />
             </div>
           )}
           {isFetchingError && (

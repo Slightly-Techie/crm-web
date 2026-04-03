@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { API_URL, REGEXVALIDATION } from "@/constants";
@@ -33,51 +33,18 @@ export default function Login() {
     try {
       setIsRequestSent(true);
 
-      const newData = {
-        username: data.email,
-        password: data.password,
-      };
-
-      const serializedData = new URLSearchParams(newData).toString();
-
-      const response = await fetch(`${API_URL}/api/v1/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: serializedData,
-      });
-
-      const responseBody = await response.json();
-
-      const token = responseBody?.token;
-      if (token && typeof token === "string" && token.split(".").length === 3) {
-        sessionStorage.setItem("authToken", token);
-      }
-
       const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
-        callbackUrl: callbackUrl,
+        callbackUrl: "/",
         redirect: false,
       });
 
       if (result?.ok && !result?.error) {
-        const userStatus = responseBody.user_status;
-
-        if (userStatus === "CONTACTED") {
-          router.push(`/assesment/${encodeURIComponent(data.email)}`);
-        } else if (userStatus === "ACCEPTED") {
-          router.push(callbackUrl);
-        } else {
-          setIsRequestSent(false);
-          setResponseError("There is something wrong with your login.");
-        }
+        router.push("/");
       } else {
-        if (result?.error) {
-          setIsRequestSent(false);
-          setResponseError(result?.error);
-        }
+        setIsRequestSent(false);
+        setResponseError(result?.error || "Login failed. Please try again.");
       }
     } catch (error) {
       setIsRequestSent(false);
@@ -86,7 +53,7 @@ export default function Login() {
   });
 
   return (
-    <div className="w-screen min-h-screen bg-white">
+    <div className="w-full min-h-screen bg-white overflow-x-hidden">
       <div className="grid lg:grid-cols-2 min-h-screen">
         {/* Left Side - Original Image */}
         <div className="lg:h-screen lg:block sticky top-0 bg-white lg:bg-surface-dark">
@@ -98,11 +65,13 @@ export default function Login() {
         </div>
 
         {/* Right Panel - Login Form */}
-        <div className="w-full flex items-center justify-center p-6 sm:p-12 bg-white">
+        <div className="w-full min-h-screen flex items-center justify-center p-6 sm:p-12 bg-white">
           {isRequestSent ? (
-            <LoadingSpinner />
+            <div className="w-full h-screen flex items-center justify-center">
+              <LoadingSpinner />
+            </div>
           ) : (
-            <div className="w-full max-w-md space-y-8">
+            <div className="w-full max-w-md space-y-8 mx-auto">
               {/* Mobile Logo */}
               <div className="lg:hidden flex items-center justify-center gap-2.5 mb-8">
                 <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">

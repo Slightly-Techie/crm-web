@@ -176,6 +176,7 @@ export default function MeetingsPage() {
   const { data: meetingsData, isLoading, isError } = useQuery({
     queryKey: ["allMeetings"],
     queryFn: () => getAllMeetings().then((r) => r.data),
+    enabled: sessionStatus === "authenticated",
     refetchOnWindowFocus: false,
   });
 
@@ -261,8 +262,8 @@ export default function MeetingsPage() {
 
       <div className="p-4 md:p-8 max-w-5xl mx-auto space-y-8">
         {isLoading && (
-          <div className="flex justify-center py-20">
-            <LoadingSpinner />
+          <div className="flex justify-center items-center py-32">
+            <LoadingSpinner fullScreen={false} />
           </div>
         )}
 

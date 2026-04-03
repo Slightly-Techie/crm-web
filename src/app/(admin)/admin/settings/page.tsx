@@ -6,7 +6,7 @@ import useEndpoints from "@/services";
 import toast from "react-hot-toast";
 import { AiOutlineClose } from "react-icons/ai";
 
-type Tab = "meetings" | "challenges" | "skills" | "tags" | "totm";
+type Tab = "meetings" | "challenges" | "skills" | "totm" | "submissions" | "emailTemplates";
 
 const RECURRENCE_OPTIONS = [
   { value: "none", label: "No recurrence" },
@@ -33,6 +33,12 @@ const emptyChallengeForm = {
   deadline: "",
 };
 
+const emptyEmailTemplateForm = {
+  template_name: "",
+  subject: "",
+  html_content: "",
+};
+
 export default function AdminSettingsPage() {
   const [activeTab, setActiveTab] = useState<Tab>("meetings");
   const {
@@ -50,6 +56,11 @@ export default function AdminSettingsPage() {
     getAllTechieOTM,
     createTechieOTM,
     getTechiesList,
+    getAllSubmissions,
+    getAllEmailTemplates,
+    createEmailTemplate,
+    updateEmailTemplate,
+    deleteEmailTemplate,
   } = useEndpoints();
   const queryClient = useQueryClient();
 
@@ -70,6 +81,15 @@ export default function AdminSettingsPage() {
   const [totmUserId, setTotmUserId] = useState("");
   const [totmPoints, setTotmPoints] = useState("");
   const [totmSearch, setTotmSearch] = useState("");
+
+  // Submission states
+  const [selectedSubmission, setSelectedSubmission] = useState<any>(null);
+  const [showSubmissionModal, setShowSubmissionModal] = useState(false);
+
+  // Email Template states
+  const [editingTemplate, setEditingTemplate] = useState<any>(null);
+  const [showTemplateForm, setShowTemplateForm] = useState(false);
+  const [templateForm, setTemplateForm] = useState({ ...emptyEmailTemplateForm });
 
   // Fetch data
   const { data: meetingsData } = useQuery({
@@ -107,6 +127,18 @@ export default function AdminSettingsPage() {
     queryFn: () => getTechiesList({ page: 1 }),
     enabled: activeTab === "totm",
     refetchOnWindowFocus: false,
+  });
+
+  const { data: submissionsData } = useQuery({
+    queryKey: ["adminSubmissions"],
+    queryFn: () => getAllSubmissions().then((res) => res.data),
+    enabled: activeTab === "submissions",
+  });
+
+  const { data: templatesData } = useQuery({
+    queryKey: ["emailTemplates"],
+    queryFn: () => getAllEmailTemplates().then((res) => res.data),
+    enabled: activeTab === "emailTemplates",
   });
 
   // Helpers to open forms
@@ -286,10 +318,73 @@ export default function AdminSettingsPage() {
     onError: () => toast.error("Failed to nominate"),
   });
 
+  // Email Template mutations
+  const createTemplateMutation = useMutation({
+    mutationFn: createEmailTemplate,
+    onSuccess: () => {
+      toast.success("Email template created!");
+      queryClient.invalidateQueries({ queryKey: ["emailTemplates"] });
+      setShowTemplateForm(false);
+      setTemplateForm({ ...emptyEmailTemplateForm });
+    },
+    onError: () => toast.error("Failed to create template"),
+  });
+
+  const updateTemplateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number; data: any }) => updateEmailTemplate(id, data),
+    onSuccess: () => {
+      toast.success("Email template updated!");
+      queryClient.invalidateQueries({ queryKey: ["emailTemplates"] });
+      setShowTemplateForm(false);
+      setEditingTemplate(null);
+    },
+    onError: () => toast.error("Failed to update template"),
+  });
+
+  const deleteTemplateMutation = useMutation({
+    mutationFn: deleteEmailTemplate,
+    onSuccess: () => {
+      toast.success("Email template deleted!");
+      queryClient.invalidateQueries({ queryKey: ["emailTemplates"] });
+    },
+    onError: () => toast.error("Failed to delete template"),
+  });
+
+  const openNewTemplate = () => {
+    setEditingTemplate(null);
+    setTemplateForm({ ...emptyEmailTemplateForm });
+    setShowTemplateForm(true);
+  };
+
+  const openEditTemplate = (t: any) => {
+    setEditingTemplate(t);
+    setTemplateForm({
+      template_name: t.template_name || "",
+      subject: t.subject || "",
+      html_content: t.html_content || "",
+    });
+    setShowTemplateForm(true);
+  };
+
+  const handleTemplateSubmit = () => {
+    const payload: any = {
+      template_name: templateForm.template_name,
+      subject: templateForm.subject,
+      html_content: templateForm.html_content,
+    };
+    if (editingTemplate) {
+      updateTemplateMutation.mutate({ id: editingTemplate.id, data: payload });
+    } else {
+      createTemplateMutation.mutate(payload);
+    }
+  };
+
   const meetings: any[] = Array.isArray(meetingsData) ? meetingsData : (meetingsData as any)?.items || [];
   const challenges: any[] = Array.isArray(challengesData) ? challengesData : (challengesData as any)?.items || [];
   const skills: any[] = Array.isArray(skillsPool) ? skillsPool : [];
   const totmList: any[] = Array.isArray(totmHistory) ? totmHistory : [];
+  const submissions: any[] = Array.isArray(submissionsData) ? submissionsData : (submissionsData as any)?.items || [];
+  const templates: any[] = Array.isArray(templatesData) ? templatesData : (templatesData as any)?.items || [];
   const allMembers: any[] = membersData?.items || [];
   const filteredMembers = totmSearch
     ? allMembers.filter((m: any) =>
@@ -320,8 +415,9 @@ export default function AdminSettingsPage() {
             { id: "meetings", label: "Meetings", icon: "video_call" },
             { id: "challenges", label: "Challenges", icon: "code" },
             { id: "skills", label: "Skills", icon: "psychology" },
-            { id: "tags", label: "Tags", icon: "label" },
             { id: "totm", label: "Techie OTM", icon: "star" },
+            { id: "submissions", label: "Submissions", icon: "assignment" },
+            { id: "emailTemplates", label: "Email Templates", icon: "mail" },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -479,7 +575,6 @@ export default function AdminSettingsPage() {
               ))}
               {meetings.length === 0 && !showMeetingForm && (
                 <div className="text-center py-12 text-on-surface-variant">
-                  <span className="material-symbols-outlined text-6xl mb-4 block">video_call_off</span>
                   <p>No meetings yet</p>
                 </div>
               )}
@@ -706,26 +801,15 @@ export default function AdminSettingsPage() {
           </div>
         )}
 
-        {/* ── TAGS TAB ── */}
-        {activeTab === "tags" && (
-          <div className="text-center py-12 text-on-surface-variant">
-            <span className="material-symbols-outlined text-6xl mb-4 block">label</span>
-            <p className="font-medium">Tags are user-managed</p>
-            <p className="text-sm mt-1">Each member creates their own tags on their Settings page.</p>
-          </div>
-        )}
-
         {/* ── TECHIE OTM TAB ── */}
         {activeTab === "totm" && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-xl font-bold text-on-surface mb-1">Techie of the Month</h2>
-              <p className="text-sm text-on-surface-variant">Nominate a member and award points.</p>
+              <h2 className="text-xl font-bold text-on-surface mb-1">Nominate Techie of the Month</h2>
+              <p className="text-sm text-on-surface-variant">Recognize outstanding members for their contributions.</p>
             </div>
 
-            {/* Nominate form */}
             <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-4">
-              <h3 className="font-semibold text-on-surface">Nominate a Member</h3>
               <div>
                 <label className="block text-sm font-medium text-on-surface mb-1">Search Member</label>
                 <input
@@ -814,6 +898,307 @@ export default function AdminSettingsPage() {
                 </div>
               )}
             </div>
+          </div>
+        )}
+
+        {/* ── SUBMISSIONS TAB ── */}
+        {activeTab === "submissions" && (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-xl font-bold text-on-surface mb-1">Technical Task Submissions</h2>
+              <p className="text-sm text-on-surface-variant">Review technical task submissions from applicants.</p>
+            </div>
+
+            {submissions.length > 0 ? (
+              <div className="overflow-x-auto rounded-xl border border-outline">
+                <table className="w-full text-sm">
+                  <thead className="bg-surface-container-high">
+                    <tr>
+                      <th className="text-left px-4 py-3 font-semibold text-on-surface">Applicant</th>
+                      <th className="text-left px-4 py-3 font-semibold text-on-surface">Stack</th>
+                      <th className="text-left px-4 py-3 font-semibold text-on-surface">Experience</th>
+                      <th className="text-left px-4 py-3 font-semibold text-on-surface">Submitted</th>
+                      <th className="text-center px-4 py-3 font-semibold text-on-surface">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-outline">
+                    {submissions.map((sub: any) => (
+                      <tr key={sub.id} className="hover:bg-surface-container-high/50 transition-colors">
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <img
+                              src={sub.user?.profile_pic_url || `https://api.dicebear.com/7.x/initials/jpg?seed=${sub.user?.first_name} ${sub.user?.last_name}`}
+                              alt={sub.user?.first_name}
+                              className="w-8 h-8 rounded-full object-cover"
+                            />
+                            <div>
+                              <p className="font-medium text-on-surface">{sub.user?.first_name} {sub.user?.last_name}</p>
+                              <p className="text-xs text-on-surface-variant">@{sub.user?.username}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 text-on-surface">
+                          {sub.technical_task?.stack?.name || "N/A"}
+                        </td>
+                        <td className="px-4 py-3 text-on-surface capitalize">
+                          {sub.technical_task?.experience_level?.replace(/_/g, " ") || "N/A"}
+                        </td>
+                        <td className="px-4 py-3 text-on-surface-variant text-xs">
+                          {new Date(sub.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          <button
+                            onClick={() => {
+                              setSelectedSubmission(sub);
+                              setShowSubmissionModal(true);
+                            }}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors"
+                          >
+                            <span className="material-symbols-outlined text-sm">visibility</span>
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="bg-surface-container-lowest border border-outline rounded-xl text-center py-12">
+                <span className="material-symbols-outlined text-6xl mb-4 block text-on-surface-variant">assignment</span>
+                <p className="text-on-surface-variant">No submissions yet</p>
+              </div>
+            )}
+
+            {/* Submission Details Modal */}
+            {showSubmissionModal && selectedSubmission && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                <div className="bg-surface-container-lowest rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                  <div className="sticky top-0 bg-surface-container-high px-6 py-4 border-b border-outline flex justify-between items-center">
+                    <h3 className="font-bold text-on-surface">Submission Details</h3>
+                    <button
+                      onClick={() => {
+                        setShowSubmissionModal(false);
+                        setSelectedSubmission(null);
+                      }}
+                      className="p-1 hover:bg-surface-container-highest rounded-lg transition-colors"
+                    >
+                      <AiOutlineClose />
+                    </button>
+                  </div>
+
+                  <div className="p-6 space-y-6">
+                    {/* Applicant Info */}
+                    <div>
+                      <h4 className="font-semibold text-on-surface mb-3">Applicant Information</h4>
+                      <div className="flex items-center gap-3 bg-surface-container-high p-4 rounded-lg">
+                        <img
+                          src={selectedSubmission.user?.profile_pic_url || `https://api.dicebear.com/7.x/initials/jpg?seed=${selectedSubmission.user?.first_name} ${selectedSubmission.user?.last_name}`}
+                          alt={selectedSubmission.user?.first_name}
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
+                        <div>
+                          <p className="font-medium text-on-surface">{selectedSubmission.user?.first_name} {selectedSubmission.user?.last_name}</p>
+                          <p className="text-sm text-on-surface-variant">@{selectedSubmission.user?.username}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Challenge Info */}
+                    <div>
+                      <h4 className="font-semibold text-on-surface mb-3">Challenge</h4>
+                      <div className="space-y-2 bg-surface-container-high p-4 rounded-lg">
+                        <div>
+                          <p className="text-xs text-on-surface-variant">Stack</p>
+                          <p className="text-on-surface">{selectedSubmission.technical_task?.stack?.name || "N/A"}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-on-surface-variant">Experience Level</p>
+                          <p className="text-on-surface capitalize">{selectedSubmission.technical_task?.experience_level?.replace(/_/g, " ") || "N/A"}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-on-surface-variant">Task Content</p>
+                          <p className="text-on-surface">{selectedSubmission.technical_task?.content || "N/A"}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Submission Content */}
+                    <div>
+                      <h4 className="font-semibold text-on-surface mb-3">Submission</h4>
+                      <div className="space-y-3 bg-surface-container-high p-4 rounded-lg">
+                        {selectedSubmission.github_link && (
+                          <div>
+                            <p className="text-xs text-on-surface-variant mb-1">GitHub Repository</p>
+                            <a
+                              href={selectedSubmission.github_link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-primary hover:underline text-sm flex items-center gap-1"
+                            >
+                              <span className="material-symbols-outlined text-base">link</span>
+                              View Repository
+                            </a>
+                          </div>
+                        )}
+                        {selectedSubmission.live_demo_url && (
+                          <div>
+                            <p className="text-xs text-on-surface-variant mb-1">Live Demo</p>
+                            <a
+                              href={selectedSubmission.live_demo_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-primary hover:underline text-sm flex items-center gap-1"
+                            >
+                              <span className="material-symbols-outlined text-base">launch</span>
+                              View Live Demo
+                            </a>
+                          </div>
+                        )}
+                        {selectedSubmission.description && (
+                          <div>
+                            <p className="text-xs text-on-surface-variant mb-1">Description</p>
+                            <p className="text-on-surface text-sm">{selectedSubmission.description}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Submission Date */}
+                    <div>
+                      <p className="text-xs text-on-surface-variant">Submitted on</p>
+                      <p className="text-on-surface">
+                        {new Date(selectedSubmission.created_at).toLocaleDateString("en-US", {
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit"
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── EMAIL TEMPLATES TAB ── */}
+        {activeTab === "emailTemplates" && (
+          <div className="space-y-6">
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-xl font-bold text-on-surface mb-1">Email Templates</h2>
+                <p className="text-sm text-on-surface-variant">Create and manage email templates for applicants.</p>
+              </div>
+              <button
+                onClick={openNewTemplate}
+                className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-semibold text-sm hover:bg-primary/90 transition-colors"
+              >
+                <span className="material-symbols-outlined text-lg">add</span>
+                New Template
+              </button>
+            </div>
+
+            {showTemplateForm && (
+              <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-bold text-on-surface">
+                    {editingTemplate ? "Edit Email Template" : "New Email Template"}
+                  </h3>
+                  <button onClick={() => { setShowTemplateForm(false); setEditingTemplate(null); }} className="p-1 hover:bg-surface-container-high rounded-lg">
+                    <AiOutlineClose />
+                  </button>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-on-surface mb-1">Template Name</label>
+                  <input
+                    type="text"
+                    value={templateForm.template_name}
+                    onChange={(e) => setTemplateForm({ ...templateForm, template_name: e.target.value })}
+                    className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                    placeholder="e.g. Welcome Email, Interview Confirmation"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-on-surface mb-1">Subject</label>
+                  <input
+                    type="text"
+                    value={templateForm.subject}
+                    onChange={(e) => setTemplateForm({ ...templateForm, subject: e.target.value })}
+                    className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                    placeholder="e.g. Welcome to Slightly Techie!"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-on-surface mb-1">HTML Content</label>
+                  <textarea
+                    value={templateForm.html_content}
+                    onChange={(e) => setTemplateForm({ ...templateForm, html_content: e.target.value })}
+                    rows={10}
+                    className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface font-mono text-xs focus:ring-2 focus:ring-primary/20 outline-none resize-none"
+                    placeholder="<html><body>Your email template here...</body></html>"
+                  />
+                </div>
+                <div className="flex gap-3 justify-end">
+                  <button
+                    onClick={() => { setShowTemplateForm(false); setEditingTemplate(null); }}
+                    className="px-4 py-2 rounded-lg border border-outline text-on-surface hover:bg-surface-container-high transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleTemplateSubmit}
+                    disabled={!templateForm.template_name || !templateForm.subject || !templateForm.html_content || createTemplateMutation.status === "loading" || updateTemplateMutation.status === "loading"}
+                    className="px-4 py-2 bg-primary text-on-primary rounded-lg font-semibold text-sm hover:bg-primary/90 disabled:opacity-50 transition-colors"
+                  >
+                    {createTemplateMutation.status === "loading" || updateTemplateMutation.status === "loading" ? "Saving..." : editingTemplate ? "Update Template" : "Create Template"}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {templates.length > 0 ? (
+              <div className="space-y-3">
+                {templates.map((template: any) => (
+                  <div key={template.id} className="bg-surface-container-lowest border border-outline rounded-xl p-4 hover:bg-surface-container-high/50 transition-colors">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-on-surface">{template.template_name}</h3>
+                        <p className="text-sm text-on-surface-variant mt-1">Subject: {template.subject}</p>
+                        <p className="text-xs text-on-surface-variant mt-2 line-clamp-2">{template.html_content?.replace(/<[^>]*>/g, "") || "No content"}</p>
+                      </div>
+                      <div className="flex gap-2 whitespace-nowrap">
+                        <button
+                          onClick={() => openEditTemplate(template)}
+                          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors"
+                        >
+                          <span className="material-symbols-outlined text-sm">edit</span>
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (confirm(`Delete "${template.template_name}"?`)) {
+                              deleteTemplateMutation.mutate(template.id);
+                            }
+                          }}
+                          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg bg-error/20 text-error hover:bg-error/30 transition-colors"
+                        >
+                          <span className="material-symbols-outlined text-sm">delete</span>
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-surface-container-lowest border border-outline rounded-xl text-center py-12">
+                <span className="material-symbols-outlined text-6xl mb-4 block text-on-surface-variant">mail</span>
+                <p className="text-on-surface-variant">No email templates yet. Create one to get started.</p>
+              </div>
+            )}
           </div>
         )}
       </div>

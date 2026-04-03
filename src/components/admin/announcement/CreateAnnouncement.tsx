@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { isNonWhitespace, logToConsole } from "@/utils";
-import { AnnouncementData } from "@/types";
+import { AnnouncementData, AnnouncementDataResponse } from "@/types";
 import toast from "react-hot-toast";
 
 type CreateAnnouncementProps = {
-  existingPost: AnnouncementData | null;
-  submitHandler: (obj: AnnouncementData) => void;
+  existingPost: AnnouncementDataResponse | null;
+  submitHandler: (obj: AnnouncementData & { id?: number }) => void;
 };
 
 export default function CreateAnnouncement({
@@ -15,41 +15,103 @@ export default function CreateAnnouncement({
 }: CreateAnnouncementProps) {
   const [formTitle, setFormTitle] = useState("");
   const [formContent, setFormContent] = useState("");
-  const [formImageUrl, setFormImageUrl] = useState("");
+  const [formImageFile, setFormImageFile] = useState<File | null>(null);
+  const [formImagePreview, setFormImagePreview] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     if (existingPost) {
       setFormTitle(existingPost.title);
       setFormContent(existingPost.content);
-      setFormImageUrl(existingPost.image_url || "");
+      setFormImagePreview(existingPost.image_url || "");
     }
   }, [existingPost]);
 
+  // Real-time validation
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!isNonWhitespace(formTitle)) {
+      newErrors.title = "Title is required";
+    } else if (formTitle.length < 3) {
+      newErrors.title = "Title must be at least 3 characters";
+    } else if (formTitle.length > 200) {
+      newErrors.title = "Title must be less than 200 characters";
+    }
+
+    if (!isNonWhitespace(formContent)) {
+      newErrors.content = "Content is required";
+    } else if (formContent.length < 10) {
+      newErrors.content = "Content must be at least 10 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        toast.error("Please select a valid image file");
+        return;
+      }
+
+      setFormImageFile(file);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setFormImagePreview(event.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const clearImage = () => {
+    setFormImageFile(null);
+    setFormImagePreview("");
+  };
+
   function onSubmit() {
-    if (!isNonWhitespace(formTitle) || !isNonWhitespace(formContent)) return;
-    const data = {
-      ...existingPost,
-      title: formTitle,
-      content: formContent,
-      image_url: formImageUrl.trim() || undefined,
-      edited: existingPost ? true : false,
+    if (!validateForm()) {
+      toast.error("Please fix the errors in the form");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    // Build data object
+    const data: any = {
+      title: formTitle.trim(),
+      content: formContent.trim(),
+      image_url: formImagePreview || null,
     };
+
+    // If editing, include the ID so the hook knows to use PUT instead of POST
+    if (existingPost && (existingPost as AnnouncementDataResponse).id) {
+      data.id = (existingPost as AnnouncementDataResponse).id;
+    }
+
     try {
       submitHandler(data);
       if (existingPost) {
-        toast.success("Announcement Edited!");
+        toast.success("Announcement updated successfully!");
       } else {
-        toast.success("Announcement Created!");
+        toast.success("Announcement created successfully!");
       }
       setFormTitle("");
       setFormContent("");
-      setFormImageUrl("");
-    } catch (err) {
+      setFormImageFile(null);
+      setFormImagePreview("");
+      setErrors({});
+    } catch (err: any) {
+      const errorMessage = err?.response?.data?.detail || err?.message || "Failed to save announcement";
+      toast.error(errorMessage);
       logToConsole(err);
+    } finally {
+      setIsSubmitting(false);
     }
   }
-
-
 
   return (
     <form
@@ -57,50 +119,115 @@ export default function CreateAnnouncement({
         e.preventDefault();
         onSubmit();
       }}
-      className=" pl-2 w-full h-fit lg:w-full lg:mx-auto lg:sticky lg:top-16 self-start"
+      className="pl-2 w-full h-fit lg:w-full lg:mx-auto lg:sticky lg:top-16 self-start"
     >
-     
-      <div className=" p-4  light:bg-st-edgeDark rounded-sm">
-        <div className=" my-4 ">
-          <label htmlFor="announcement-title" className=" light:text-st-gray dark:text-st-surface  text-st-text">
-            Title
+      <div className="p-4 light:bg-st-edgeDark rounded-sm space-y-4">
+        {/* Title */}
+        <div className="space-y-1.5">
+          <label htmlFor="announcement-title" className="light:text-st-gray dark:text-st-surface text-st-text text-sm font-medium">
+            Title <span className="text-error">*</span>
           </label>
           <input
             id="announcement-title"
-            onChange={(e) => setFormTitle(e.target.value)}
+            onChange={(e) => {
+              setFormTitle(e.target.value);
+              if (errors.title) setErrors({ ...errors, title: "" });
+            }}
             value={formTitle}
-            className="w-full bg-transparent text-st-textDark border mt-2 px-2 dark:text-st-surface   py-3 rounded-lg focus:outline-none  border-st-edgeDark focus:border-primary-dark focus:dark:border-st-surface "
+            className={`w-full bg-transparent text-st-textDark border mt-1 px-3 dark:text-st-surface py-2.5 rounded-lg focus:outline-none transition-colors ${
+              errors.title
+                ? "border-error focus:border-error"
+                : "border-st-edgeDark focus:border-primary-dark dark:focus:border-st-surface"
+            }`}
             type="text"
+            placeholder="Announcement title"
+            maxLength={200}
           />
+          {errors.title && (
+            <p className="text-error text-xs flex items-center gap-1">
+              <span className="material-symbols-outlined text-sm">error</span>
+              {errors.title}
+            </p>
+          )}
+          <p className="text-xs text-on-surface-variant">{formTitle.length}/200</p>
         </div>
-        <div className="my-4">
-          <label htmlFor="announcement-content" className=" light:text-st-gray dark:text-st-surface  text-st-text">
-            Content
+
+        {/* Content */}
+        <div className="space-y-1.5">
+          <label htmlFor="announcement-content" className="light:text-st-gray dark:text-st-surface text-st-text text-sm font-medium">
+            Content <span className="text-error">*</span>
           </label>
           <textarea
             id="announcement-content"
-            onChange={(e) => setFormContent(e.target.value)}
+            onChange={(e) => {
+              setFormContent(e.target.value);
+              if (errors.content) setErrors({ ...errors, content: "" });
+            }}
             value={formContent}
             cols={30}
             rows={6}
-            className="w-full bg-transparent text-st-textDark border-[1px] mt-2 px-2 dark:text-st-surface   py-3 rounded-lg focus:outline-none  border-st-edgeDark  focus:border-primary-dark focus:dark:border-st-surface   "
+            className={`w-full bg-transparent text-st-textDark border-[1px] mt-1 px-3 dark:text-st-surface py-2.5 rounded-lg focus:outline-none transition-colors ${
+              errors.content
+                ? "border-error focus:border-error"
+                : "border-st-edgeDark focus:border-primary-dark dark:focus:border-st-surface"
+            }`}
+            placeholder="Write your announcement here..."
           />
+          {errors.content && (
+            <p className="text-error text-xs flex items-center gap-1">
+              <span className="material-symbols-outlined text-sm">error</span>
+              {errors.content}
+            </p>
+          )}
+          <p className="text-xs text-on-surface-variant">{formContent.length} characters</p>
         </div>
-        <div className="my-4">
-          <label htmlFor="announcement-image-url" className=" light:text-st-gray dark:text-st-surface  text-st-text">
-            Image URL (optional)
+
+        {/* Image Upload */}
+        {formImagePreview && (
+          <div className="space-y-2">
+            <div className="relative w-full rounded-lg overflow-hidden border border-outline">
+              <img src={formImagePreview} alt="Preview" className="w-full h-48 object-cover" />
+              <button
+                type="button"
+                onClick={clearImage}
+                className="absolute top-2 right-2 p-1.5 bg-error hover:bg-error/90 rounded-full text-white transition-colors"
+              >
+                <span className="material-symbols-outlined text-sm">close</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="space-y-1.5">
+          <label htmlFor="announcement-image" className="light:text-st-gray dark:text-st-surface text-st-text text-sm font-medium">
+            Image <span className="text-gray-400 font-normal">(optional)</span>
           </label>
           <input
-            id="announcement-image-url"
-            onChange={(e) => setFormImageUrl(e.target.value)}
-            value={formImageUrl}
-            className="w-full bg-transparent text-st-textDark border mt-2 px-2 dark:text-st-surface py-3 rounded-lg focus:outline-none border-st-edgeDark focus:border-primary-dark focus:dark:border-st-surface"
-            type="url"
-            placeholder="https://..."
+            id="announcement-image"
+            onChange={handleImageChange}
+            type="file"
+            accept="image/*"
+            className="w-full px-3 py-2.5 rounded-lg border border-st-edgeDark bg-transparent text-st-textDark dark:text-st-surface cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary/90"
           />
         </div>
-        <button className="py-3 w-full flex items-center justify-center bg-[#1E1E1E] text-white hover:bg-st-edgeDark hover:dark:bg-st-grayDark rounded-lg">
-          {existingPost ? "Save Announcement" : "Post Announcement"}
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full py-3 flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors"
+        >
+          {isSubmitting ? (
+            <>
+              <span className="material-symbols-outlined animate-spin">progress_activity</span>
+              Saving...
+            </>
+          ) : (
+            <>
+              <span className="material-symbols-outlined">send</span>
+              {existingPost ? "Save Changes" : "Post Announcement"}
+            </>
+          )}
         </button>
       </div>
     </form>

@@ -1,6 +1,8 @@
-import TaskSubmissionForm from "./components/task-submission";
+"use client";
 
-function AssesmentPage() {
+import TaskSubmissionForm from "../assesment/[email]/components/task-submission";
+
+function TaskSubmissionPage() {
   return (
     <div className="min-h-screen bg-surface flex items-center justify-center p-4 md:p-8">
       <div className="max-w-2xl w-full bg-surface-container-lowest border border-outline rounded-2xl p-6 md:p-12 shadow-sm">
@@ -33,36 +35,9 @@ function AssesmentPage() {
 
         {/* Form */}
         <TaskSubmissionForm />
-
-        {/* Thank You Message */}
-        <div className="mt-8 p-6 bg-primary/5 border border-primary/20 rounded-xl">
-          <div className="flex items-start gap-3">
-            <span className="material-symbols-outlined text-primary text-2xl">check_circle</span>
-            <div>
-              <h3 className="font-semibold text-on-surface mb-1">What Happens Next?</h3>
-              <p className="text-sm text-on-surface-variant">
-                Thank you for completing and submitting your project! Our team will carefully evaluate your work.
-                You will be contacted via email regarding your acceptance status. This typically takes 3-5 business days.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Contact Info */}
-        <div className="mt-6 pt-6 border-t border-outline text-center">
-          <p className="text-sm text-on-surface-variant">
-            Questions or issues? Contact us at{" "}
-            <a
-              href="mailto:info@slightlytechie.com"
-              className="text-primary hover:underline font-medium"
-            >
-              info@slightlytechie.com
-            </a>
-          </p>
-        </div>
       </div>
     </div>
   );
 }
 
-export default AssesmentPage;
+export default TaskSubmissionPage;

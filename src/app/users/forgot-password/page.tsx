@@ -44,8 +44,8 @@ export default function ForgotPassword() {
 
   if (status === "loading") {
     return (
-      <div className="flex justify-center py-12">
-        <LoadingSpinner />
+      <div className="flex justify-center items-center py-32">
+        <LoadingSpinner fullScreen={false} />
       </div>
     );
   }

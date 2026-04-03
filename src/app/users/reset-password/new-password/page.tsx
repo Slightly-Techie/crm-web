@@ -10,6 +10,7 @@ import { logToConsole } from "@/utils";
 import { useState } from "react";
 import { Status } from "@/types";
 import { Oval } from "react-loader-spinner";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 type NewPassword = Record<"password" | "password_confirmation", string>;
 
@@ -24,6 +25,8 @@ export default function CreateNewPassword() {
 
   const [password, passwordConfirmation] = watch(["password", "password_confirmation"]);
   const [status, setStatus] = useState<Status>("progress");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -86,18 +89,27 @@ export default function CreateNewPassword() {
           <label className="block text-sm font-semibold text-on-surface mb-2" htmlFor="password">
             New password
           </label>
-          <input
-            {...register("password", {
-              min: 8,
-              max: 25,
-              required: true,
-              pattern: REGEXVALIDATION.password,
-            })}
-            id="password"
-            className="w-full px-4 py-3.5 bg-surface-container-low border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-on-surface"
-            type="password"
-            placeholder="Enter new password"
-          />
+          <div className="relative">
+            <input
+              {...register("password", {
+                min: 8,
+                max: 25,
+                required: true,
+                pattern: REGEXVALIDATION.password,
+              })}
+              id="password"
+              className="w-full px-4 py-3.5 pr-12 bg-surface-container-low border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-on-surface"
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter new password"
+            />
+            <button
+              type="button"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+            </button>
+          </div>
           {errors.password && (
             <p className="text-red-600 text-xs mt-1 break-words">
               Password should be at least 8 characters and must contain uppercase, lowercase, number, and symbol.
@@ -109,30 +121,39 @@ export default function CreateNewPassword() {
           <label className="block text-sm font-semibold text-on-surface mb-2" htmlFor="password_confirmation">
             Confirm new password
           </label>
-          <input
-            {...register("password_confirmation", {
-              required: true,
-              pattern: REGEXVALIDATION.password,
-              min: 8,
-              max: 25,
-              validate: (val: string) => {
-                if (watch("password") !== val) {
-                  return "Your passwords do not match";
-                }
-              },
-            })}
-            id="password_confirmation"
-            style={{
-              borderColor: errors.password_confirmation
-                ? "#b92828"
-                : passwordMatch
-                ? "#21c129"
-                : "",
-            }}
-            className="w-full px-4 py-3.5 bg-surface-container-low border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-on-surface"
-            type="password"
-            placeholder="Re-enter new password"
-          />
+          <div className="relative">
+            <input
+              {...register("password_confirmation", {
+                required: true,
+                pattern: REGEXVALIDATION.password,
+                min: 8,
+                max: 25,
+                validate: (val: string) => {
+                  if (watch("password") !== val) {
+                    return "Your passwords do not match";
+                  }
+                },
+              })}
+              id="password_confirmation"
+              style={{
+                borderColor: errors.password_confirmation
+                  ? "#b92828"
+                  : passwordMatch
+                  ? "#21c129"
+                  : "",
+              }}
+              className="w-full px-4 py-3.5 pr-12 bg-surface-container-low border-2 border-outline-variant rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-on-surface"
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Re-enter new password"
+            />
+            <button
+              type="button"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+            </button>
+          </div>
           {errors.password_confirmation && (
             <p className="text-red-600 text-xs mt-1">Passwords do not match</p>
           )}

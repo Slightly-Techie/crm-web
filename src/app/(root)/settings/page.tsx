@@ -7,6 +7,7 @@ import useEndpoints from "@/services";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { FaXTwitter, FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa6";
 
 type Section = "profile" | "account" | "skills" | "tags" | "team";
 
@@ -111,6 +112,8 @@ export default function SettingsPage() {
       stacks = stackPayload;
     }
   }
+
+  // Show all assigned subordinates - they are the user's actual team
   const subordinates: any[] = subordinatesData || [];
 
   const { register, handleSubmit, reset } = useForm<any>({
@@ -354,25 +357,62 @@ export default function SettingsPage() {
                 {/* Social Links */}
                 <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-4">
                   <h2 className="font-bold font-headline text-on-surface">Social Links</h2>
-                  {[
-                    { field: "github_profile", label: "GitHub", icon: "code", placeholder: "https://github.com/username" },
-                    { field: "linkedin_profile", label: "LinkedIn", icon: "work", placeholder: "https://linkedin.com/in/username" },
-                    { field: "twitter_profile", label: "Twitter / X", icon: "tag", placeholder: "https://twitter.com/username" },
-                    { field: "portfolio_url", label: "Portfolio", icon: "language", placeholder: "https://yoursite.com" },
-                  ].map(({ field, label, icon, placeholder }) => (
-                    <div key={field} className="space-y-1.5">
-                      <label className="text-sm font-medium text-on-surface flex items-center gap-2">
-                        <span className="material-symbols-outlined text-base text-on-surface-variant">{icon}</span>
-                        {label}
-                      </label>
-                      <input
-                        {...register(field as any)}
-                        defaultValue={(user as any)?.[field] || ""}
-                        placeholder={placeholder}
-                        className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
-                      />
-                    </div>
-                  ))}
+
+                  {/* GitHub */}
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium text-on-surface flex items-center gap-2">
+                      <FaGithub className="text-base text-on-surface-variant" />
+                      GitHub
+                    </label>
+                    <input
+                      {...register("github_profile")}
+                      defaultValue={user?.github_profile || ""}
+                      placeholder="https://github.com/username"
+                      className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
+                    />
+                  </div>
+
+                  {/* LinkedIn */}
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium text-on-surface flex items-center gap-2">
+                      <FaLinkedin className="text-base text-on-surface-variant" />
+                      LinkedIn
+                    </label>
+                    <input
+                      {...register("linkedin_profile")}
+                      defaultValue={user?.linkedin_profile || ""}
+                      placeholder="https://linkedin.com/in/username"
+                      className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
+                    />
+                  </div>
+
+                  {/* Twitter/X */}
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium text-on-surface flex items-center gap-2">
+                      <FaXTwitter className="text-base text-on-surface-variant" />
+                      Twitter / X
+                    </label>
+                    <input
+                      {...register("twitter_profile")}
+                      defaultValue={user?.twitter_profile || ""}
+                      placeholder="https://twitter.com/username"
+                      className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
+                    />
+                  </div>
+
+                  {/* Portfolio */}
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium text-on-surface flex items-center gap-2">
+                      <FaGlobe className="text-base text-on-surface-variant" />
+                      Portfolio
+                    </label>
+                    <input
+                      {...register("portfolio_url")}
+                      defaultValue={user?.portfolio_url || ""}
+                      placeholder="https://yoursite.com"
+                      className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex justify-end gap-3">

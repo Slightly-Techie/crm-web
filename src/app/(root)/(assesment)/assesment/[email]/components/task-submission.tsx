@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
+import { signOut } from "next-auth/react";
 
 interface TaskSubmissionFormData {
   github_link: string;
@@ -21,6 +22,7 @@ function TaskSubmissionForm() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<TaskSubmissionFormData>({ mode: "onSubmit" });
 
   const submitAssignment = async (data: TaskSubmissionFormData) => {
@@ -37,67 +39,97 @@ function TaskSubmissionForm() {
 
   const { mutate } = useMutation(submitAssignment, {
     onSuccess: () => {
-      toast.success("Assessment submitted successfully!");
+      toast.success("Assessment submitted successfully! Our team will review your submission.");
       queryClient.invalidateQueries({ queryKey: ["tasksubmission"] });
+      reset();
       setIsRequestSent(false);
+
+      setTimeout(async () => {
+        await signOut({ redirect: true, callbackUrl: "/login" });
+      }, 2000);
     },
     onError: (error: any) => {
       const message =
+        error?.response?.data?.detail ||
         error?.response?.data?.message ||
         "Failed to submit assessment. Please try again.";
-      toast.error(message);
+      toast.error(message, { duration: 6000 });
       setIsRequestSent(false);
     },
   });
 
   const onSubmit: SubmitHandler<TaskSubmissionFormData> = async (data) => {
     setIsRequestSent(true);
-    mutate(data); // Trigger mutation with form data
+    mutate(data);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="mt-8 mb-5">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <div>
+        <label htmlFor="github_link" className="block text-sm font-semibold text-on-surface mb-2">
+          GitHub Repository URL <span className="text-error">*</span>
+        </label>
         <input
           {...register("github_link", { required: true, minLength: 2 })}
-          style={{ borderColor: errors.github_link ? "#b92828" : "" }}
-          className="border-st-edge dark:border-st-subTextDark bg-transparent rounded-sm border-[1.8px] h-[40px] w-full placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
+          id="github_link"
           type="url"
-          name="github_link"
-          placeholder="Your GitHub submission link"
+          placeholder="https://github.com/username/repository"
+          className={`w-full px-4 py-3 bg-surface-container border rounded-lg focus:outline-none focus:ring-2 text-on-surface placeholder:text-on-surface-variant transition-all ${
+            errors.github_link
+              ? "border-error focus:ring-error"
+              : "border-outline focus:ring-primary focus:border-transparent"
+          }`}
         />
         {errors.github_link && (
-          <p className="text-[#b92828] text-[12px]">
-            Field must not be empty and should be at least 2 characters long
+          <p className="text-error text-xs mt-1 flex items-center gap-1">
+            <span className="material-symbols-outlined text-sm">error</span>
+            Please enter a valid GitHub repository URL
           </p>
         )}
       </div>
 
-      <div className="mb-5">
+      <div>
+        <label htmlFor="live_demo_url" className="block text-sm font-semibold text-on-surface mb-2">
+          Live Demo URL (Optional)
+        </label>
         <input
           {...register("live_demo_url")}
-          className="border-st-edge dark:border-st-subTextDark bg-transparent rounded-sm border-[1.8px] h-[40px] w-full placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450]"
+          id="live_demo_url"
           type="url"
-          name="live_demo_url"
-          placeholder="Live demo URL (optional)"
+          placeholder="https://your-demo.netlify.app"
+          className="w-full px-4 py-3 bg-surface-container border border-outline rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-on-surface placeholder:text-on-surface-variant"
         />
       </div>
 
-      <div className="mb-5">
+      <div>
+        <label htmlFor="description" className="block text-sm font-semibold text-on-surface mb-2">
+          Additional Notes (Optional)
+        </label>
         <textarea
           {...register("description")}
-          className="border-st-edge dark:border-st-subTextDark bg-transparent rounded-sm border-[1.8px] h-[80px] w-full placeholder:text-[14px] dark:placeholder:text-st-edgeDark placeholder:text-[#5D6675] pl-4 focus:outline-none dark:focus:border-white focus:border-[#3D4450] resize-none"
-          name="description"
-          placeholder="Additional info (optional)"
+          id="description"
+          rows={4}
+          placeholder="Any additional information about your submission..."
+          className="w-full px-4 py-3 bg-surface-container border border-outline rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-on-surface placeholder:text-on-surface-variant resize-none"
         />
       </div>
 
       <button
-        className="bg-primary-dark text-primary-light hover:bg-st-cardDark font-monalisa rounded-sm dark:bg-white text-st-bg text-sm dark:text-black hover:dark:bg-st-edge py-2 flex items-center justify-center w-full"
         type="submit"
         disabled={isRequestSent}
+        className="w-full px-6 py-3 bg-primary hover:bg-primary/90 text-on-primary rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
-        Submit assessment
+        {isRequestSent ? (
+          <>
+            <span className="material-symbols-outlined animate-spin">progress_activity</span>
+            Submitting...
+          </>
+        ) : (
+          <>
+            <span className="material-symbols-outlined">send</span>
+            Submit Assessment
+          </>
+        )}
       </button>
     </form>
   );

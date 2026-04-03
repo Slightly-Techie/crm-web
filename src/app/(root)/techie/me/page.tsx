@@ -245,7 +245,7 @@ export default function ProfilePage() {
                           type="tel"
                           {...register("phone_number")}
                           defaultValue={user.phone_number || ""}
-                          placeholder="+1 (555) 000-0000"
+                          placeholder="0244000000"
                           className="w-full bg-surface-container-high border-none rounded-lg py-2 px-3 text-sm focus:ring-2 focus:ring-primary/20 text-on-surface"
                         />
                       ) : (

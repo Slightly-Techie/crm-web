@@ -38,10 +38,10 @@ const useEndpoints = () => {
   };
 
   const searchTechie = async (query: string) => {
-    const { data } = await authAxios.get(
+    const response = await authAxios.get<IGetAllTechiesResponse>(
       `/api/v1/users/?active=true&p=${query}`
     );
-    return data;
+    return response.data;
   };
 
   const searchApplicant = async (query: string, page: number = 1) => {
@@ -115,6 +115,12 @@ const useEndpoints = () => {
   const updateProjectById = (projectId: any, data: any) =>
     authAxios.put(`/api/v1/projects/${projectId}`, data);
 
+  const updateProjectTools = (projectId: number, projectTools: number[]) =>
+    authAxios.put(`/api/v1/projects/${projectId}`, { project_tools: projectTools });
+
+  const removeProjectImage = (projectId: number) =>
+    authAxios.put(`/api/v1/projects/${projectId}`, { image_url: null });
+
   // const getProjectById = (projectId: string) =>
   //   axios.get(`api/v1/projects/${projectId}`);
 
@@ -122,8 +128,10 @@ const useEndpoints = () => {
 
   const getMySkills = () => authAxios.get<any[]>(`/api/v1/skills/`);
 
-  const searchSkills = (name: string) =>
-    authAxios.get<any[]>(`/api/v1/skills/search?name=${encodeURIComponent(name)}`);
+  const searchSkills = async (name: string) => {
+    const response = await authAxios.get<ISkill[]>(`/api/v1/skills/search?name=${encodeURIComponent(name)}`);
+    return { items: response.data };
+  };
 
   const addSkill = (skillIds: number[]) =>
     authAxios.post(`/api/v1/skills/`, skillIds);
@@ -160,8 +168,20 @@ const useEndpoints = () => {
   };
 
   const applicantTask = (task_id: any) => authAxios.get<any>(`/api/v1/applicant/task/${task_id}`)
-  
+
   const taskSubmissions = (id:any) => authAxios.get(`/api/v1/applicant/submission/${id}/users`)
+
+  // Technical Task Submissions
+  const getAllSubmissions = () => authAxios.get('/api/v1/applicant/submission/')
+  const getSubmission = (id: number) => authAxios.get(`/api/v1/applicant/submission/${id}`)
+  const updateSubmission = (id: number, data: any) => authAxios.put(`/api/v1/applicant/submission/${id}`, data)
+
+  // Email Templates
+  const getAllEmailTemplates = () => authAxios.get('/api/v1/email-templates/')
+  const getEmailTemplate = (id: number) => authAxios.get(`/api/v1/email-templates/${id}`)
+  const createEmailTemplate = (data: any) => authAxios.post('/api/v1/email-templates/', data)
+  const updateEmailTemplate = (id: number, data: any) => authAxios.put(`/api/v1/email-templates/${id}`, data)
+  const deleteEmailTemplate = (id: number) => authAxios.delete(`/api/v1/email-templates/${id}`)
 
   // Org Chart endpoints
 
@@ -272,6 +292,8 @@ const useEndpoints = () => {
     removeMemberFromProject,
     deleteProjectById,
     updateProjectById,
+    updateProjectTools,
+    removeProjectImage,
     getSkills,
     getMySkills,
     searchSkills,
@@ -310,6 +332,14 @@ const useEndpoints = () => {
     createChallenge,
     updateChallenge,
     deleteChallenge,
+    getAllSubmissions,
+    getSubmission,
+    updateSubmission,
+    getAllEmailTemplates,
+    getEmailTemplate,
+    createEmailTemplate,
+    updateEmailTemplate,
+    deleteEmailTemplate,
   };
 };
 

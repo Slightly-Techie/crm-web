@@ -34,13 +34,14 @@ export default function Signup() {
     resetForm,
     currentForm,
     currentFormIndex,
+    LAST_FORM_INDEX,
   } = useNavigateForms();
   const { createNewUser, status, setStatus, errMessage } = usePostNewSignUp();
   const isClosed = false;
 
   const onSubmit = async (data: Partial<NewUserFields>) => {
     userDataRef.current = { ...userDataRef.current, ...data };
-    if (currentFormIndex === 3) {
+    if (currentFormIndex === LAST_FORM_INDEX) {
       const { years_of_experience, skills } = userDataRef.current;
       const validatedSkills = getSkillsArray(skills);
       userDataRef.current = {
@@ -74,62 +75,103 @@ export default function Signup() {
   };
 
   return (
-    <div className="w-screen dark:bg-[#020202]">
-      <div className="grid lg:grid-cols-2 bg-[#fff] dark:bg-[#020202] mx-auto">
-        <div className="lg:h-screen lg:block sticky top-0 bg-[#fff] dark:bg-[#020202] lg:bg-[#020202]">
-          <Image
-            src={LeftImage}
-            alt=""
-            className="hidden lg:block w-full object-cover h-screen "
-          />
-        </div>
+    <div className="w-full min-h-screen bg-white overflow-x-hidden">
+      {isClosed ? (
+        <ClosedSignup />
+      ) : status !== "progress" ? (
+        <SubmitStatus
+          status={status}
+          message={
+            status === "success" ? userDataRef.current.first_name : errMessage
+          }
+          resetForm={() => {
+            resetForm();
+            userDataRef.current = { ...INITIAL_USER_DATA };
+            setStatus("progress");
+          }}
+        />
+      ) : (
+        <div className="grid lg:grid-cols-2 min-h-screen">
+          {/* Left Side - Image */}
+          <div className="lg:h-screen lg:block sticky top-0 bg-white lg:bg-surface-dark">
+            <Image
+              src={LeftImage}
+              alt="Collaborative workspace"
+              className="hidden lg:block w-full object-cover h-screen"
+            />
+          </div>
 
-        {isClosed ? (
-          <ClosedSignup />
-        ) : status !== "progress" ? (
-          <SubmitStatus
-            status={status}
-            message={
-              status === "success" ? userDataRef.current.first_name : errMessage
-            }
-            resetForm={() => {
-              resetForm();
-              userDataRef.current = { ...INITIAL_USER_DATA };
-              setStatus("progress");
-            }}
-          />
-        ) : (
-          <div className="p-8 w-full md:w-[30rem] lg:w-5/6 mx-auto my-auto flex flex-col gap-4 justify-center h-full">
-            <section className=" text-[#000] dark:text-[#f1f3f7]  text-[1.5rem] font-bold flex items-center gap-4">
-              {currentFormIndex !== 0 && (
-                <button
-                  onClick={previous}
-                  type="button"
-                  className="px-2 py-2 bg-[#fff] border border-[#333] hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7]  dark:text-[#000] rounded-full"
-                >
-                  <RiArrowLeftLine />
-                </button>
-              )}
-              <div>
-                <h3>Welcome to CRM🎉</h3>
-                <p className="text-[#777] text-[20px] font-normal">
-                  Create your account
-                </p>
+          {/* Right Panel - Signup Form */}
+          <div className="w-full min-h-screen flex items-center justify-center p-6 sm:p-12 bg-white">
+            <div className="w-full max-w-md space-y-6 mx-auto">
+              {/* Mobile Logo */}
+              <div className="lg:hidden flex items-center justify-center gap-2.5 mb-8">
+                <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                    <path d="M2 17L12 22L22 17"/>
+                    <path d="M2 12L12 17L22 12"/>
+                  </svg>
+                </div>
+                <span className="font-display font-bold text-xl text-on-surface">ST Network</span>
               </div>
-            </section>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              {currentForm.element}
-              <section className="flex gap-4 mb-8">
-                {currentFormIndex <= 3 && (
-                  <button className="px-8 py-2 bg-[#001] hover:bg-[#333] dark:bg-[#F1F3F7] dark:hover:bg-[#ffffff] text-[#f1f3f7] dark:text-[#000] rounded-lg w-full">
-                    {currentFormIndex === 3 ? "Submit" : "Proceed"}
+
+              {/* Header with Progress */}
+              <div className="text-center lg:text-left">
+                {currentFormIndex !== 0 && (
+                  <button
+                    onClick={previous}
+                    type="button"
+                    className="mb-4 inline-flex items-center gap-2 text-on-surface-variant hover:text-on-surface transition-colors"
+                  >
+                    <RiArrowLeftLine className="text-xl" />
+                    <span className="text-sm font-medium">Back</span>
                   </button>
                 )}
-              </section>
-            </form>
+                <h2 className="font-display font-bold text-3xl text-on-surface mb-2">
+                  Welcome to ST Network 🎉
+                </h2>
+                <p className="text-on-surface-variant text-base mb-4">
+                  {currentForm.category} - Step {currentFormIndex + 1} of 3
+                </p>
+                {/* Progress Bar */}
+                <div className="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-primary to-primary-container transition-all duration-300"
+                    style={{ width: `${((currentFormIndex + 1) / 3) * 100}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Form */}
+              <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+                {currentForm.element}
+
+                {/* Submit Button */}
+                {currentFormIndex <= LAST_FORM_INDEX && (
+                  <button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-primary to-primary-container text-white py-4 px-6 rounded-xl font-semibold text-base shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 active:scale-[0.99] transition-all flex items-center justify-center gap-2"
+                  >
+                    {currentFormIndex === LAST_FORM_INDEX ? "Create account" : "Continue"}
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </button>
+                )}
+              </form>
+
+              {/* Sign In Link */}
+              <p className="text-center text-sm text-on-surface-variant pt-4">
+                Already have an account?
+                <a href="/login" className="font-semibold text-primary hover:text-primary-container transition-colors ml-1">
+                  Sign in
+                </a>
+              </p>
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

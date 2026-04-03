@@ -17,15 +17,11 @@ function useNavigateForms() {
   const Forms = [
     {
       category: "Profile",
-      element: <Profile register={register} errors={errors} />,
+      element: <Profile register={register} errors={errors} watch={watch} />,
     },
     {
-      category: "Skills",
+      category: "Skills & Experience",
       element: <Skills register={register} errors={errors} />,
-    },
-    {
-      category: "Social",
-      element: <Social register={register} errors={errors} />,
     },
     {
       category: "Create Password",
@@ -34,11 +30,12 @@ function useNavigateForms() {
       ),
     },
   ];
+  const LAST_FORM_INDEX = Forms.length - 1;
 
   const currentForm = Forms[currentFormIndex];
 
   const next = () => {
-    if (currentFormIndex === 3) return;
+    if (currentFormIndex === LAST_FORM_INDEX) return;
     setCurrentFormIndex((prev) => prev + 1);
   };
 
@@ -58,6 +55,7 @@ function useNavigateForms() {
     currentForm,
     handleSubmit,
     currentFormIndex,
+    LAST_FORM_INDEX,
   };
 }
 

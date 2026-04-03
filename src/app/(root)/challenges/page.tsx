@@ -287,7 +287,7 @@ export default function ChallengesPage() {
 
         {/* All Challenges */}
         {isLoading && (
-          <div className="flex justify-center py-12"><LoadingSpinner /></div>
+          <div className="flex justify-center items-center py-32"><LoadingSpinner fullScreen={false} /></div>
         )}
         {isError && (
           <div className="bg-error-container border border-error rounded-xl p-4 text-center">

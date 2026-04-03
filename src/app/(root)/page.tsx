@@ -20,43 +20,43 @@ export default function DashboardPage() {
 
   const isAuthed = sessionStatus === "authenticated";
 
-  const { data: userProfile } = useQuery({
+  const { data: userProfile, isLoading: isUserProfileLoading } = useQuery({
     queryKey: ["userProfile"],
     queryFn: () => getUserProfile().then((res) => res.data),
     enabled: isAuthed,
     refetchOnMount: true,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     retry: 1,
   });
 
   const user = userProfile;
 
-  const { data: feedsData } = useQuery({
+  const { data: feedsData, isLoading: isFeedsLoading } = useQuery({
     queryKey: ["recentFeeds"],
     queryFn: () => getFeedsWithPagination(1),
     enabled: isAuthed,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
   });
 
-  const { data: techiesData } = useQuery({
+  const { data: techiesData, isLoading: isTechiesLoading } = useQuery({
     queryKey: ["techies", 1],
     queryFn: () => getTechiesList({ page: 1 }),
     enabled: isAuthed,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
   });
 
-  const { data: announcementsData } = useQuery({
+  const { data: announcementsData, isLoading: isAnnouncementsLoading } = useQuery({
     queryKey: ["announcements", "dashboard"],
     queryFn: () => getAnnouncements(3),
     enabled: isAuthed,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
   });
 
   const { data: techieOTMData } = useQuery({
     queryKey: ["techieOTM", "latest"],
     queryFn: () => getLatestTechieOTM().then((res) => res.data),
     enabled: isAuthed,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     retry: false,
     onError: () => {},
   });
@@ -65,7 +65,7 @@ export default function DashboardPage() {
     queryKey: ["activeMeeting"],
     queryFn: () => getActiveMeeting().then((res) => res.data),
     enabled: isAuthed,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     retry: false,
   });
 
@@ -73,7 +73,7 @@ export default function DashboardPage() {
     queryKey: ["latestChallenge"],
     queryFn: () => getLatestChallenge().then((res) => res.data),
     enabled: isAuthed,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     retry: false,
   });
 
@@ -93,33 +93,49 @@ export default function DashboardPage() {
         {/* Left Column */}
         <div className="hidden lg:block lg:col-span-1 space-y-6">
           {/* User Profile Card */}
-          <div
-            className="relative rounded-xl overflow-hidden border border-outline min-h-60 flex flex-col items-center justify-center"
-            style={{ background: "linear-gradient(135deg, #154212 0%, #2d5a27 100%)" }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60" />
-            <div className="relative px-4 md:px-6 py-8 md:py-10 space-y-4 flex flex-col items-center justify-center w-full">
-              <div className="w-24 h-24 rounded-2xl overflow-hidden ring-4 ring-white shadow-xl">
-                <Image
-                  className="w-full h-full object-cover"
-                  width={96}
-                  height={96}
-                  src={user?.profile_pic_url || `https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`}
-                  alt="profile"
-                />
+          {isUserProfileLoading ? (
+            <div
+              className="relative rounded-xl overflow-hidden border border-outline min-h-60 flex flex-col items-center justify-center animate-pulse"
+              style={{ background: "linear-gradient(135deg, #154212 0%, #2d5a27 100%)" }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60" />
+              <div className="relative px-4 md:px-6 py-8 md:py-10 space-y-4 flex flex-col items-center justify-center w-full">
+                <div className="w-24 h-24 rounded-2xl bg-white/20" />
+                <div className="space-y-2 w-full px-4">
+                  <div className="h-6 bg-white/20 rounded w-3/4 mx-auto" />
+                  <div className="h-4 bg-white/20 rounded w-1/2 mx-auto" />
+                </div>
               </div>
-              <div className="text-center space-y-1">
-                <h3 className="text-xl font-bold font-headline text-white">{user?.first_name} {user?.last_name}</h3>
-                <p className="text-sm text-white/80 font-body">{user?.stack?.name || "Stack not set"}</p>
-                {user?.role?.name === "admin" && (
-                  <span className="inline-block px-2 py-0.5 bg-white/20 text-white text-[10px] font-bold uppercase rounded-full tracking-wider">Admin</span>
-                )}
-              </div>
-              <Link href="/techie/me" className="block w-full text-center text-sm font-semibold text-white hover:underline pt-1">
-                View My Profile →
-              </Link>
             </div>
-          </div>
+          ) : (
+            <div
+              className="relative rounded-xl overflow-hidden border border-outline min-h-60 flex flex-col items-center justify-center"
+              style={{ background: "linear-gradient(135deg, #154212 0%, #2d5a27 100%)" }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60" />
+              <div className="relative px-4 md:px-6 py-8 md:py-10 space-y-4 flex flex-col items-center justify-center w-full">
+                <div className="w-24 h-24 rounded-2xl overflow-hidden ring-4 ring-white shadow-xl">
+                  <Image
+                    className="w-full h-full object-cover"
+                    width={96}
+                    height={96}
+                    src={user?.profile_pic_url || `https://api.dicebear.com/7.x/initials/jpg?seed=${user?.first_name} ${user?.last_name}`}
+                    alt="profile"
+                  />
+                </div>
+                <div className="text-center space-y-1">
+                  <h3 className="text-xl font-bold font-headline text-white">{user?.first_name} {user?.last_name}</h3>
+                  {user?.stack?.name && <p className="text-sm text-white/80 font-body">{user.stack.name}</p>}
+                  {user?.role?.name === "admin" && (
+                    <span className="inline-block px-2 py-0.5 bg-white/20 text-white text-[10px] font-bold uppercase rounded-full tracking-wider">Admin</span>
+                  )}
+                </div>
+                <Link href="/techie/me" className="block w-full text-center text-sm font-semibold text-white hover:underline pt-1">
+                  View My Profile →
+                </Link>
+              </div>
+            </div>
+          )}
 
           {/* My Circle */}
           <div className="bg-surface-container-lowest border border-outline rounded-xl p-5 space-y-3">
@@ -297,7 +313,23 @@ export default function DashboardPage() {
               <h3 className="text-lg font-bold font-headline text-on-surface">Recent Activity</h3>
               <Link href="/feed" className="text-sm font-semibold text-primary hover:underline">View all →</Link>
             </div>
-            {recentFeeds.length > 0 ? (
+            {isFeedsLoading ? (
+              <>
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="bg-surface-container-lowest border border-outline rounded-xl p-4 md:p-5 animate-pulse">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-surface-container-high flex-shrink-0" />
+                      <div className="flex-1 space-y-2">
+                        <div className="h-4 bg-surface-container-high rounded w-1/3" />
+                        <div className="h-3 bg-surface-container-high rounded w-1/4" />
+                        <div className="h-4 bg-surface-container-high rounded w-full mt-2" />
+                        <div className="h-4 bg-surface-container-high rounded w-5/6" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </>
+            ) : recentFeeds.length > 0 ? (
               recentFeeds.slice(0, 3).map((post: any) => (
                 <div key={post.id} className="bg-surface-container-lowest border border-outline rounded-xl p-4 md:p-5">
                   <div className="flex items-start gap-3">
@@ -354,18 +386,36 @@ export default function DashboardPage() {
               <h4 className="font-bold font-headline text-on-surface text-sm">The Network</h4>
               <Link href="/techies" className="text-xs text-primary font-semibold hover:underline">View all</Link>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="flex -space-x-2">
-                {["A", "B", "C", "D"].map((l, i) => (
-                  <div key={i} className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-primary-container ring-2 ring-white flex items-center justify-center text-white text-xs font-bold">
-                    {l}
-                  </div>
-                ))}
+            {isTechiesLoading ? (
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-2">
+                  <div className="w-9 h-9 rounded-full bg-surface-container-high animate-pulse ring-2 ring-white" />
+                  <div className="w-9 h-9 rounded-full bg-surface-container-high animate-pulse ring-2 ring-white" />
+                  <div className="w-9 h-9 rounded-full bg-surface-container-high animate-pulse ring-2 ring-white" />
+                  <div className="w-9 h-9 rounded-full bg-surface-container-high animate-pulse ring-2 ring-white" />
+                </div>
+                <span className="text-sm text-on-surface-variant font-body">Loading...</span>
               </div>
-              <span className="text-sm text-on-surface-variant font-body">
-                {activeMembersTotal > 0 ? `${activeMembersTotal} members` : "Loading..."}
-              </span>
-            </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-2">
+                  {techiesData?.items?.slice(0, 4).map((techie: any, i: number) => (
+                    <div key={i} className="w-9 h-9 rounded-full ring-2 ring-white flex items-center justify-center text-white text-xs font-bold overflow-hidden flex-shrink-0">
+                      <Image
+                        className="w-full h-full object-cover"
+                        width={36}
+                        height={36}
+                        src={techie.profile_pic_url || `https://api.dicebear.com/7.x/initials/jpg?seed=${techie.first_name} ${techie.last_name}`}
+                        alt={techie.first_name}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <span className="text-sm text-on-surface-variant font-body">
+                  {activeMembersTotal > 0 ? `${activeMembersTotal} members` : "No members yet"}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Techie of the Month */}
@@ -439,15 +489,25 @@ export default function DashboardPage() {
               <h4 className="text-sm font-bold uppercase tracking-wider font-headline text-on-surface">Announcements</h4>
               <Link href="/announcements" className="text-xs text-primary font-semibold hover:underline">View all</Link>
             </div>
-            {recentAnnouncements.slice(0, 4).map((announcement: any) => (
-              <Link href="/announcements" key={announcement.id}>
-                <div className="bg-surface-container-lowest border border-outline rounded-lg p-3 hover:bg-surface-container-high transition-colors cursor-pointer mb-2">
-                  <p className="text-xs font-semibold text-on-surface line-clamp-1">{announcement.title}</p>
-                  <p className="text-xs text-on-surface-variant mt-0.5 line-clamp-2">{announcement.content}</p>
-                </div>
-              </Link>
-            ))}
-            {recentAnnouncements.length === 0 && (
+            {isAnnouncementsLoading ? (
+              <>
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="bg-surface-container-lowest border border-outline rounded-lg p-3 animate-pulse">
+                    <div className="h-4 bg-surface-container-high rounded w-3/4 mb-2" />
+                    <div className="h-3 bg-surface-container-high rounded w-full" />
+                  </div>
+                ))}
+              </>
+            ) : recentAnnouncements.length > 0 ? (
+              recentAnnouncements.slice(0, 4).map((announcement: any) => (
+                <Link href="/announcements" key={announcement.id}>
+                  <div className="bg-surface-container-lowest border border-outline rounded-lg p-3 hover:bg-surface-container-high transition-colors cursor-pointer mb-2">
+                    <p className="text-xs font-semibold text-on-surface line-clamp-1">{announcement.title}</p>
+                    <p className="text-xs text-on-surface-variant mt-0.5 line-clamp-2">{announcement.content}</p>
+                  </div>
+                </Link>
+              ))
+            ) : (
               <div className="bg-surface-container-lowest border border-outline rounded-lg p-3 text-center">
                 <p className="text-xs text-on-surface-variant">No announcements yet</p>
               </div>

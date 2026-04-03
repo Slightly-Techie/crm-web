@@ -14,7 +14,7 @@ function Page() {
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
   const [editProject, setEditProject] = useState<any>(null);
   const [selectedFilter, setSelectedFilter] = useState<"all" | "COMMUNITY" | "PAID">("all");
-  const { getProjects, getUserProfile, deleteProjectById } = useEndpoints();
+  const { getProjects, getUserProfile, deleteProjectById, getProjectById } = useEndpoints();
   const queryClient = useQueryClient();
 
   const {
@@ -24,7 +24,8 @@ function Page() {
   } = useQuery({
     queryKey: ["projects"],
     queryFn: () => getProjects(),
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
     retry: 3,
   });
 
@@ -33,7 +34,7 @@ function Page() {
     queryKey: ["userProfile"],
     queryFn: () => getUserProfile().then((res) => res?.data),
     enabled: session.status === "authenticated",
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
   });
 
   const isAdmin = userProfileData?.role?.name === "admin";
@@ -55,10 +56,17 @@ function Page() {
     }
   };
 
-  const handleEdit = (e: React.MouseEvent, project: any) => {
+  const handleEdit = async (e: React.MouseEvent, project: any) => {
     e.preventDefault();
     e.stopPropagation();
-    setEditProject(project);
+    try {
+      // Fetch full project details to ensure we have manager_id and project_tools
+      const fullProject = await getProjectById(project.id);
+      setEditProject(fullProject?.data || project);
+    } catch {
+      // Fallback to list project data if fetch fails
+      setEditProject(project);
+    }
   };
 
   const projects = projectsData?.data?.items || [];
@@ -144,8 +152,8 @@ function Page() {
 
         {/* Loading State */}
         {isLoading && (
-          <div className="flex justify-center items-center py-20">
-            <LoadingSpinner />
+          <div className="flex justify-center items-center py-32">
+            <LoadingSpinner fullScreen={false} />
           </div>
         )}
 
@@ -271,9 +279,6 @@ function Page() {
               </div>
             ) : (
               <div className="text-center py-20">
-                <span className="material-symbols-outlined text-6xl text-on-surface-variant mb-4 block">
-                  project_management
-                </span>
                 <p className="text-on-surface-variant font-medium">No projects found</p>
               </div>
             )}

@@ -75,8 +75,15 @@ export default function OrgChartPage() {
   });
 
   const { filtered: displayData, matchIds } = useMemo(() => {
-    if (!orgChartData || search.trim().length < 2)
-      return { filtered: orgChartData ?? [], matchIds: new Set<number>() };
+    if (!orgChartData) return { filtered: [], matchIds: new Set<number>() };
+
+    // NOTE: Backend now filters server-side to only return ACCEPTED + is_active users
+    // No frontend filtering needed - backend handles this via filter_active=True
+
+    // Apply search filter if query exists
+    if (search.trim().length < 2) {
+      return { filtered: orgChartData, matchIds: new Set<number>() };
+    }
     return filterTree(orgChartData, search.trim());
   }, [orgChartData, search]);
 
@@ -151,8 +158,8 @@ export default function OrgChartPage() {
           {/* Chart */}
           <div className="bg-surface-container-lowest rounded-xl border border-outline-variant/20">
             {isLoading && (
-              <div className="flex justify-center items-center py-20">
-                <LoadingSpinner />
+              <div className="flex justify-center items-center py-32">
+                <LoadingSpinner fullScreen={false} />
               </div>
             )}
 

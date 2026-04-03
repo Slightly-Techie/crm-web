@@ -50,14 +50,27 @@ export function usePostAnnouncment() {
 
   const { mutate: createNewAnnouncement } = useMutation(
     async (data: Partial<AnnouncementDataResponse>) => {
-      if (data.edited) {
+      // Check if editing based on presence of id
+      if (data.id) {
+        // For PUT, only send the fields the backend expects
+        const updateData = {
+          title: data.title,
+          content: data.content,
+          image_url: data.image_url,
+        };
         const res = await axiosAuth.put(
           `/api/v1/announcements/${data.id}`,
-          data
+          updateData
         );
         return res.data;
       }
-      const res = await axiosAuth.post("/api/v1/announcements/", data);
+      // For POST, send only the fields the backend expects
+      const createData = {
+        title: data.title,
+        content: data.content,
+        image_url: data.image_url,
+      };
+      const res = await axiosAuth.post("/api/v1/announcements/", createData);
       return res.data;
     },
     {
@@ -66,6 +79,7 @@ export function usePostAnnouncment() {
       },
       onError: (error: any) => {
         const message =
+          error?.response?.data?.detail ||
           error?.response?.data?.message ||
           "Failed to save announcement. Please try again.";
         toast.error(message);

@@ -38,8 +38,8 @@ const Announcements = () => {
   return (
     <div className="w-full h-fit flex flex-col p-5">
       {isFetching && (
-        <div className="h-full w-full flex p-4 flex-col items-center justify-center">
-          <LoadingSpinner />
+        <div className="h-full w-full flex p-4 flex-col items-center justify-center py-32">
+          <LoadingSpinner fullScreen={false} />
         </div>
       )}
       {isFetchingError && (

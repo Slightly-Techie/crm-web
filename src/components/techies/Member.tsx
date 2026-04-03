@@ -26,7 +26,7 @@ function Member({ data, onSelect, isSelected, className }: MemberProps) {
   } ${className}`;
 
   const cardContent = (
-    <div className="flex flex-col items-center text-center">
+    <div className="flex flex-col items-center text-center w-full">
       {/* Avatar */}
       <div className="relative mb-4">
         <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-secondary-container/30">
@@ -41,10 +41,10 @@ function Member({ data, onSelect, isSelected, className }: MemberProps) {
       </div>
 
       {/* Name and Title */}
-      <h3 className="font-headline font-bold text-lg text-on-surface leading-tight">
+      <h3 className="font-headline font-bold text-lg text-on-surface leading-tight w-full text-center">
         {data.first_name} {data.last_name}
       </h3>
-      <p className="text-sm text-primary font-medium mt-1">{stackName} Engineer</p>
+      <p className="text-sm text-primary font-medium mt-1 w-full text-center">{stackName} Engineer</p>
 
       {/* Location */}
       <p className="text-xs text-on-surface-variant mt-2 flex items-center justify-center gap-1">

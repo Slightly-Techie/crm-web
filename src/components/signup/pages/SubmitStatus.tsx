@@ -19,20 +19,29 @@ const Error = ({
   resetForm: () => void;
 }) => {
   return (
-    <div className="w-full h-full flex text-black dark:text-white items-center justify-center p-8 md:w-[35rem] font-tt-hoves mx-auto">
-      <div className="w-full md:w-96 flex flex-col border border-[#757575] p-8">
-        <h1 className="text-lg text-[#000] dark:text-[#f3f1f7] text-center font-medium">
-          There was an <mark className="text-[#ff7676]">error</mark> submitting
-          your request{" "}
-        </h1>
-        <div className="w-full h-full grid place-content-center p-2">
-          {message && (
-            <p className="text-[1.2rem] text-[#000] dark:text-[#f3f1f7] text-center ">
-              {message}
-            </p>
-          )}
+    <div className="w-full min-h-screen flex items-center justify-center p-6 bg-white dark:bg-surface">
+      <div className="max-w-md w-full bg-surface-container-lowest border border-outline rounded-2xl p-8 shadow-sm">
+        <div className="flex justify-center mb-4">
+          <div className="w-16 h-16 bg-error/10 rounded-full flex items-center justify-center">
+            <span className="material-symbols-outlined text-error text-5xl">error</span>
+          </div>
         </div>
-        <button className="" type="button" onClick={resetForm}>
+
+        <h1 className="text-2xl font-bold text-on-surface text-center mb-2 font-headline">
+          Registration Failed
+        </h1>
+
+        {message && (
+          <div className="bg-error/5 border border-error/20 rounded-lg p-4 mb-6">
+            <p className="text-on-surface text-center">{message}</p>
+          </div>
+        )}
+
+        <button
+          type="button"
+          onClick={resetForm}
+          className="w-full bg-primary text-on-primary font-semibold py-3 px-4 rounded-lg hover:bg-primary/90 transition-colors"
+        >
           Try Again
         </button>
       </div>
@@ -44,45 +53,90 @@ const Success = ({ name = "" }) => {
   const formattedDate = formatDate(date);
 
   return (
-    <div className="w-full h-full flex items-center justify-center text-black dark:text-white p-8 xl:w-[40rem]  font-tt-hoves mx-auto">
-      <div className="relative w-full flex flex-col gap-20 px-4">
-        <div className="flex flex-col gap-1 items-center text-center md:text-start md:items-start">
-          <h3 className="text-black dark:text-white  py-4 text-3xl md:text-4xl lg:text-5xl font-semibold">
+    <div className="min-h-screen bg-surface flex items-center justify-center p-2 md:p-4">
+      <div className="max-w-3xl w-full bg-surface-container-lowest border border-outline rounded-2xl p-8 md:p-12 shadow-sm">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-primary/10 rounded-full mb-4">
+            <span className="material-symbols-outlined text-primary text-5xl">celebration</span>
+          </div>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-on-surface mb-3 font-headline">
             You are the real MVP, {name}!
-          </h3>
-          <h3 className="text-[#777] text-4xl">Thank you for signing up. 🎉</h3>
+          </h1>
+          <p className="text-xl md:text-2xl text-on-surface-variant">
+            Thank you for signing up 🎉
+          </p>
         </div>
-        <div>
-          <p className="text-black dark:text-white text-2xl">
+
+        {/* Main Content */}
+        <div className="bg-surface-container border border-outline rounded-xl p-6 md:p-8 mb-6">
+          <h2 className="text-xl md:text-2xl font-bold text-on-surface mb-3">
             Your application is being reviewed
+          </h2>
+          <p className="text-on-surface-variant mb-6 leading-relaxed">
+            We are currently reviewing your account information and will get in touch with you shortly.
+            In the meantime, keep an eye on your email inbox. We'll be sending you an email with the
+            next steps to join the network.
           </p>
-          <p className="text-[#777] text-sm mt-1">
-            We are currently reviewing your account information and will get in
-            touch with you shortly. In the meantime, keep an eye on your email
-            inbox. We&apos;ll be sending you an email with the next steps to
-            join the network.
-          </p>
-          <div className="w-full h-28 flex flex-row border-t border-black/80 dark:border-[#D4D1D180] mt-3 border-dashed py-4">
-            <div className="w-10 h-full">
-              <Image src={CheckIcon} alt="check-icon" />
+
+          {/* Status Steps */}
+          <div className="space-y-4">
+            {/* Step 1: Completed */}
+            <div className="flex gap-4 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <div className="flex-shrink-0">
+                <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                  <span className="material-symbols-outlined text-on-primary text-xl">check</span>
+                </div>
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-on-surface mb-1">Application Submitted</h3>
+                <p className="text-sm text-on-surface-variant mb-2">{formattedDate}</p>
+                <p className="text-sm text-on-surface">
+                  We're reviewing your account information.
+                </p>
+              </div>
             </div>
-            <div className="flex flex-col justify-between">
-              <p className="text-[15px]">Application Submitted</p>
-              <p className="text-sm text-[#757575]">{formattedDate}</p>
-              <p className="text-black dark:text-white/80 text-sm">
-                We&apos;re reviewing your account information.{" "}
-              </p>
+
+            {/* Step 2: Pending */}
+            <div className="flex gap-4 p-4 bg-surface-container-high border border-outline rounded-lg">
+              <div className="flex-shrink-0">
+                <div className="w-10 h-10 bg-surface-container border-2 border-outline rounded-full flex items-center justify-center">
+                  <span className="material-symbols-outlined text-on-surface-variant text-xl">schedule</span>
+                </div>
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-on-surface mb-1">Account Activation</h3>
+                <p className="text-sm text-on-surface-variant">Pending review</p>
+              </div>
             </div>
           </div>
-          <div className="w-full h-28 flex flex-row items-center border-black/80 dark:border-[#D4D1D180] border-dashed py-4">
-            <div className="w-10">
-              <PendingIcon className="dark:invert" />
-            </div>
-            <div className="flex flex-col gap-1">
-              <p className="text-[15px]">Account Activation</p>
-              <p className="text-sm text-[#757575]">Pending</p>
-            </div>
-          </div>
+        </div>
+
+        {/* Info Box */}
+        <div className="bg-surface-container border border-outline rounded-xl p-6">
+          <h3 className="font-semibold text-on-surface mb-3 flex items-center gap-2">
+            <span className="material-symbols-outlined text-primary">info</span>
+            What happens next?
+          </h3>
+          <ul className="list-disc list-inside space-y-2 text-sm text-on-surface-variant">
+            <li>Check your email for a technical task (if applicable)</li>
+            <li>Complete and submit the task within the deadline</li>
+            <li>Our team will review your submission</li>
+            <li>You'll receive an email with the outcome</li>
+          </ul>
+        </div>
+
+        {/* Contact */}
+        <div className="mt-8 pt-6 border-t border-outline text-center">
+          <p className="text-sm text-on-surface-variant">
+            Questions? Contact us at{" "}
+            <a
+              href="mailto:info@slightlytechie.com"
+              className="text-primary hover:underline font-medium"
+            >
+              info@slightlytechie.com
+            </a>
+          </p>
         </div>
       </div>
     </div>
@@ -91,7 +145,7 @@ const Success = ({ name = "" }) => {
 
 const Loader = () => {
   return (
-    <div className="w-full h-full grid place-content-center p-2 overflow-hidden">
+    <div className="w-full min-h-screen flex items-center justify-center bg-white">
       <LoadingSpinner />
     </div>
   );

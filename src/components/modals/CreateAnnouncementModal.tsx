@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -11,6 +10,7 @@ import { getApiErrorMessage } from "@/utils";
 interface AnnouncementFormData {
   title: string;
   content: string;
+  image_url?: string;
 }
 
 interface CreateAnnouncementModalProps {
@@ -24,41 +24,36 @@ export default function CreateAnnouncementModal({
 }: CreateAnnouncementModalProps) {
   const axiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<AnnouncementFormData>({
     defaultValues: {
       title: "",
       content: "",
+      image_url: "",
     },
   });
 
+  const imageUrlValue = watch("image_url");
+
   const mutation = useMutation({
     mutationFn: async (data: AnnouncementFormData) => {
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("content", data.content);
-      if (selectedFile) {
-        formData.append("image_url", selectedFile);
-      }
-      return axiosAuth.post("/api/v1/announcements/", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const payload = {
+        title: data.title.trim(),
+        content: data.content.trim(),
+        image_url: data.image_url?.trim() || null,
+      };
+      return axiosAuth.post("/api/v1/announcements/", payload);
     },
     onSuccess: () => {
       toast.success("Announcement created successfully!");
       queryClient.invalidateQueries({ queryKey: ["announcements"] });
       reset();
-      setSelectedFile(null);
-      setPreviewUrl(null);
       onClose();
     },
     onError: (error: any) => {
@@ -66,23 +61,6 @@ export default function CreateAnnouncementModal({
       toast.error(message);
     },
   });
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const removeImage = () => {
-    setSelectedFile(null);
-    setPreviewUrl(null);
-  };
 
   if (!isOpen) return null;
 
@@ -158,42 +136,27 @@ export default function CreateAnnouncementModal({
             )}
           </div>
 
-          {/* Image Upload Field */}
+          {/* Image URL Field */}
           <div className="space-y-2">
             <label className="block text-sm font-body font-medium text-on-surface">
-              Image (Optional)
+              Image URL <span className="text-gray-400 font-normal">(optional)</span>
             </label>
-
-            {!previewUrl ? (
-              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-outline rounded-lg cursor-pointer hover:border-primary transition-colors bg-surface-container-lowest">
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <span className="material-symbols-outlined text-4xl text-on-surface-variant mb-2">upload</span>
-                  <p className="text-xs text-on-surface-variant">
-                    <span className="font-semibold">Click to upload</span> or drag and drop
-                  </p>
-                  <p className="text-xs text-on-surface-variant mt-1">PNG, JPG, GIF up to 10MB</p>
-                </div>
-                <input
-                  type="file"
-                  className="hidden"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                />
-              </label>
-            ) : (
-              <div className="relative w-full h-48 rounded-lg overflow-hidden border border-outline">
+            <input
+              type="url"
+              placeholder="https://example.com/image.jpg"
+              {...register("image_url")}
+              className="w-full px-4 py-3 rounded-lg border border-outline bg-surface-container-lowest text-on-surface placeholder-on-surface-variant focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
+            />
+            {imageUrlValue && (
+              <div className="relative w-full h-32 rounded-lg overflow-hidden border border-outline">
                 <img
-                  src={previewUrl}
+                  src={imageUrlValue}
                   alt="Preview"
                   className="w-full h-full object-cover"
+                  onError={() => {
+                    // If image fails to load, don't show it
+                  }}
                 />
-                <button
-                  type="button"
-                  onClick={removeImage}
-                  className="absolute top-2 right-2 p-1.5 bg-error text-white rounded-lg hover:bg-error/90 transition-colors"
-                >
-                  <AiOutlineClose size={16} />
-                </button>
               </div>
             )}
           </div>

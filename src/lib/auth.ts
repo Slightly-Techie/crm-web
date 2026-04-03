@@ -31,8 +31,14 @@ export const authOptions: NextAuthOptions = {
         if (user && user.token) {
           return {
             ...user,
+            id: user.id,
+            email: user.email,
+            username: user.username,
+            is_active: user.is_active,
             token: user.token,
             refresh_token: user.refresh_token,
+            status: user.user_status, // Map user_status to status
+            role: user.role, // Explicitly include role
           };
         }
 
@@ -54,7 +60,19 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       // If the user object exists, it's a sign-in, so merge the token
       if (user) {
-        return { ...token, ...user }; // Pass the token into the JWT
+        const userData = user as any;
+        return {
+          ...token,
+          ...userData,
+          // Ensure critical fields are present
+          id: userData.id,
+          email: userData.email,
+          username: userData.username,
+          is_active: userData.is_active,
+          status: userData.status, // This should be mapped from user_status
+          role: userData.role,
+          token: userData.token,
+        };
       }
 
       // Decode and check token expiration

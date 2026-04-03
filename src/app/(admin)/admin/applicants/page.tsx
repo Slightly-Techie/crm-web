@@ -362,8 +362,8 @@ export default function Applicants() {
 
           {/* Loading */}
           {isLoading && (
-            <div className="flex justify-center items-center py-20">
-              <LoadingSpinner />
+            <div className="flex justify-center items-center py-32">
+              <LoadingSpinner fullScreen={false} />
             </div>
           )}
 

@@ -68,6 +68,12 @@ function Team() {
   const techies = useMemo(() => {
     let filtered = TechiesData?.items || [];
 
+    // CRITICAL: Only show ACCEPTED + is_active users in Directory
+    // All others should appear in Applicants page only
+    filtered = filtered.filter(
+      (techie) => techie.status === "ACCEPTED" && techie.is_active === true
+    );
+
     // Filter by search keyword
     if (searchKeyword) {
       const keyword = searchKeyword.toLowerCase();
@@ -169,8 +175,8 @@ function Team() {
 
           {/* Authentication Loading State */}
           {sessionStatus === "loading" && (
-            <div className="flex justify-center items-center py-20">
-              <LoadingSpinner />
+            <div className="flex justify-center items-center py-32">
+              <LoadingSpinner fullScreen={false} />
             </div>
           )}
 
@@ -193,8 +199,8 @@ function Team() {
 
           {/* Loading State */}
           {sessionStatus === "authenticated" && isLoading && (
-            <div className="flex justify-center items-center py-20">
-              <LoadingSpinner />
+            <div className="flex justify-center items-center py-32">
+              <LoadingSpinner fullScreen={false} />
             </div>
           )}
 

@@ -56,6 +56,7 @@ export interface ITechie {
   status?: keyof typeof UserStatusEnum;
   username?: string;
   stack_id?: number | null;
+  team?: "TEAM LEAD" | "FULL STACK" | "FRONTEND" | "BACKEND" | "DEVOPS" | "DESIGNER" | "MOBILE";
   role?: {
     id: number;
     name: "user" | "admin";
@@ -274,6 +275,8 @@ export interface OrgChartNode {
   role: { id: number; name: string } | null;
   stack: IStack | null;
   manager_id: number | null;
+  status: string;
+  is_active: boolean;
   subordinates: OrgChartNode[];
 }
 

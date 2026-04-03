@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -29,6 +29,7 @@ function Navbar() {
   const dispatch = useAppDispatch();
   const pathname = usePathname();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [navToggle, setNavToggle] = useState<boolean>(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
@@ -44,6 +45,11 @@ function Navbar() {
     refetchOnWindowFocus: false,
     retry: 1,
   });
+
+  const handleSignOut = async () => {
+    queryClient.clear();
+    await signOut({ redirect: true, callbackUrl: "/login" });
+  };
 
   const role = query.data?.role?.name;
   const currentUser = query.data;
@@ -144,11 +150,13 @@ function Navbar() {
                   />
                   <div className="flex-1 min-w-0 text-left">
                     <p className="font-semibold text-xs text-on-surface truncate">
-                      {currentUser ? `${currentUser.first_name} ${currentUser.last_name}` : "Signed in user"}
+                      {currentUser && `${currentUser.first_name} ${currentUser.last_name}`}
                     </p>
-                    <p className="text-[10px] text-on-surface-variant truncate">
-                      {currentUser?.stack?.name || "Techie"}
-                    </p>
+                    {currentUser?.stack?.name && (
+                      <p className="text-[10px] text-on-surface-variant truncate">
+                        {currentUser.stack.name}
+                      </p>
+                    )}
                   </div>
                   <span className="material-symbols-outlined text-on-surface-variant text-base">
                     {isProfileMenuOpen ? "expand_more" : "expand_less"}
@@ -167,7 +175,7 @@ function Navbar() {
                     </Link>
                     <button
                       type="button"
-                      onClick={() => signOut()}
+                      onClick={() => handleSignOut()}
                       className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50"
                     >
                       <span className="material-symbols-outlined text-base">logout</span>
@@ -238,7 +246,22 @@ function Navbar() {
           </nav>
 
           {/* Mobile User Profile */}
-          {session.status === "authenticated" && (
+          {session.status === "authenticated" && query.isLoading && (
+            <div className="mt-auto border-t border-stone-100 px-4 pb-4 pt-2">
+              <div className="animate-pulse rounded-xl border border-stone-200 bg-stone-50 p-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-stone-200 flex-shrink-0" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-3 w-24 rounded bg-stone-200" />
+                    <div className="h-2.5 w-16 rounded bg-stone-200" />
+                  </div>
+                  <div className="h-5 w-5 rounded bg-stone-200" />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {session.status === "authenticated" && !query.isLoading && (
             <div
               className="mt-auto border-t border-stone-100 px-4 pb-4 pt-2"
               ref={mobileProfileMenuRef}
@@ -257,7 +280,7 @@ function Navbar() {
                   <div className="border-t border-stone-100" />
                   <button
                     type="button"
-                    onClick={() => { setNavToggle(false); setIsProfileMenuOpen(false); signOut(); }}
+                    onClick={() => { setNavToggle(false); setIsProfileMenuOpen(false); handleSignOut(); }}
                     className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50"
                   >
                     <span className="material-symbols-outlined text-base">logout</span>
@@ -284,11 +307,13 @@ function Navbar() {
                 />
                 <div className="flex-1 min-w-0 text-left">
                   <p className="font-semibold text-sm text-on-surface truncate">
-                    {currentUser ? `${currentUser.first_name} ${currentUser.last_name}` : "Signed in user"}
+                    {currentUser && `${currentUser.first_name} ${currentUser.last_name}`}
                   </p>
-                  <p className="text-xs text-on-surface-variant truncate">
-                    {currentUser?.stack?.name || currentUser?.email || ""}
-                  </p>
+                  {currentUser?.stack?.name && (
+                    <p className="text-xs text-on-surface-variant truncate">
+                      {currentUser.stack.name}
+                    </p>
+                  )}
                 </div>
                 <span className="material-symbols-outlined text-on-surface-variant text-base">
                   {isProfileMenuOpen ? "expand_more" : "expand_less"}

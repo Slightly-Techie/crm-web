@@ -1,23 +1,25 @@
 "use client";
 
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useEndpoints from "@/services";
 import Image from "next/image";
 import Link from "next/link";
 import LoadingSpinner from "@/components/loadingSpinner";
+import RemoveSubordinateDialog from "@/components/modals/RemoveSubordinateDialog";
 
-function MemberCard({ member, role, highlight = false }: { member: any; role?: string; highlight?: boolean }) {
+function MemberCard({ member, role, highlight = false, onRemove }: { member: any; role?: string; highlight?: boolean; onRemove?: () => void }) {
   const src =
     member.profile_pic_url ||
     `https://api.dicebear.com/7.x/initials/jpg?seed=${member.first_name} ${member.last_name}`;
 
   return (
-    <Link href={`/techies/${member.id}`}>
-      <div className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all hover:shadow-md cursor-pointer w-36 ${
-        highlight
-          ? "border-primary bg-primary/5 shadow-lg shadow-primary/10"
-          : "border-outline bg-surface-container-lowest hover:border-primary/40"
-      }`}>
+    <article className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all hover:shadow-md w-36 ${
+      highlight
+        ? "border-primary bg-primary/5 shadow-lg shadow-primary/10"
+        : "border-outline bg-surface-container-lowest hover:border-primary/40"
+    }`}>
+      <Link href={`/techies/${member.id}`} className="flex flex-col items-center gap-2 w-full cursor-pointer hover:no-underline focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
         <div className={`relative w-14 h-14 rounded-2xl overflow-hidden ring-2 ${highlight ? "ring-primary" : "ring-secondary-container"}`}>
           <Image className="w-full h-full object-cover" width={56} height={56} src={src} alt={member.first_name} />
         </div>
@@ -37,8 +39,23 @@ function MemberCard({ member, role, highlight = false }: { member: any; role?: s
             {role}
           </span>
         )}
-      </div>
-    </Link>
+      </Link>
+
+      {onRemove && !highlight && !role && (
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            onRemove();
+          }}
+          className="mt-2 w-full py-1.5 px-3 rounded-lg bg-error/10 text-error hover:bg-error/20 transition-colors text-xs font-semibold flex items-center justify-center gap-1"
+          title="Remove from team"
+          aria-label={`Remove ${member.first_name} ${member.last_name} from team`}
+        >
+          <span className="material-symbols-outlined text-sm">person_remove</span>
+          Remove
+        </button>
+      )}
+    </article>
   );
 }
 
@@ -52,6 +69,8 @@ function Connector({ vertical = false }: { vertical?: boolean }) {
 
 export default function MyTeamPage() {
   const { getUserProfile, getMyManager, getMySubordinates } = useEndpoints();
+  const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
+  const [selectedSubordinate, setSelectedSubordinate] = useState<any>(null);
 
   const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ["userProfile"],
@@ -73,7 +92,14 @@ export default function MyTeamPage() {
   });
 
   const isLoading = userLoading || managerLoading || subLoading;
+
+  // Show all assigned subordinates - they are the user's actual team
   const subs: any[] = subordinates as any[];
+
+  const handleRemoveSubordinate = (subordinate: any) => {
+    setSelectedSubordinate(subordinate);
+    setRemoveDialogOpen(true);
+  };
 
   return (
     <main className="flex-1 flex flex-col min-w-0 overflow-x-hidden bg-surface-container-lowest">
@@ -94,8 +120,8 @@ export default function MyTeamPage() {
         </div>
 
         {isLoading && (
-          <div className="flex justify-center py-20">
-            <LoadingSpinner />
+          <div className="flex justify-center items-center py-32">
+            <LoadingSpinner fullScreen={false} />
           </div>
         )}
 
@@ -147,7 +173,10 @@ export default function MyTeamPage() {
                   {subs.slice(0, 8).map((sub: any) => (
                     <div key={sub.id} className="flex flex-col items-center">
                       <div className="w-px h-4 bg-outline" />
-                      <MemberCard member={sub} />
+                      <MemberCard
+                        member={sub}
+                        onRemove={() => handleRemoveSubordinate(sub)}
+                      />
                     </div>
                   ))}
                   {subs.length > 8 && (
@@ -186,6 +215,16 @@ export default function MyTeamPage() {
           </div>
         )}
       </div>
+
+      {/* Remove Subordinate Dialog */}
+      <RemoveSubordinateDialog
+        subordinate={selectedSubordinate}
+        isOpen={removeDialogOpen}
+        onClose={() => setRemoveDialogOpen(false)}
+        onSuccess={() => {
+          setSelectedSubordinate(null);
+        }}
+      />
     </main>
   );
 }

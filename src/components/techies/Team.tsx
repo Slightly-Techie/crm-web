@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Member from "./Member";
 import { useQuery } from "@tanstack/react-query";
 import useEndpoints from "@/services";
@@ -6,11 +6,20 @@ import LoadingSpinner from "../loadingSpinner";
 import { useSession } from "next-auth/react";
 
 function Team() {
-  const { getTechiesList, getStacks } = useEndpoints();
+  const { getTechiesList, searchTechie, getStacks } = useEndpoints();
   const { status: sessionStatus } = useSession();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStack, setSelectedStack] = useState<string>("all");
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchKeyword.trim());
+      setCurrentPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchKeyword]);
 
   // Fetch stacks for filter
   const { data: stacksData } = useQuery({
@@ -36,13 +45,17 @@ function Team() {
     isError,
     error,
   } = useQuery({
-    queryKey: ["techies", currentPage, selectedStack],
+    queryKey: ["techies", currentPage, selectedStack, debouncedSearch],
     queryFn: async () => {
+      if (debouncedSearch) {
+        return await searchTechie(debouncedSearch);
+      }
       return await getTechiesList({ page: currentPage });
     },
     refetchOnWindowFocus: false,
     retry: 3,
     enabled: sessionStatus === "authenticated",
+    keepPreviousData: true,
   });
 
   const handleSearch = (value: string) => {
@@ -74,17 +87,7 @@ function Team() {
       (techie) => techie.status === "ACCEPTED" && techie.is_active === true
     );
 
-    // Filter by search keyword
-    if (searchKeyword) {
-      const keyword = searchKeyword.toLowerCase();
-      filtered = filtered.filter(
-        (techie) =>
-          techie.first_name.toLowerCase().includes(keyword) ||
-          techie.last_name.toLowerCase().includes(keyword)
-      );
-    }
-
-    // Filter by stack
+    // Filter by stack (client-side since backend doesn't filter by stack in search)
     if (selectedStack && selectedStack !== "all") {
       filtered = filtered.filter(
         (techie) => techie.stack?.id === Number.parseInt(selectedStack)
@@ -92,7 +95,7 @@ function Team() {
     }
 
     return filtered;
-  }, [TechiesData?.items, searchKeyword, selectedStack]);
+  }, [TechiesData?.items, selectedStack]);
 
   return (
     <div className="w-full h-full">

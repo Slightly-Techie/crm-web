@@ -44,12 +44,11 @@ const useEndpoints = () => {
     return response.data;
   };
 
-  const searchApplicant = async (query: string, page: number = 1) => {
-    const response = await authAxios.get<IGetAllTechiesResponse>(
-      query
-        ? `/api/v1/users/?active=false&p=${query}&page=${page}`
-        : `/api/v1/users/?active=false&page=${page}`
-    );
+  const searchApplicant = async (query: string, page: number = 1, status: string = "") => {
+    const params = new URLSearchParams({ active: "false", page: String(page) });
+    if (query) params.set("p", query);
+    if (status) params.set("status", status);
+    const response = await authAxios.get<IGetAllTechiesResponse>(`/api/v1/users/?${params.toString()}`);
     return response.data;
   };
 
@@ -220,6 +219,12 @@ const useEndpoints = () => {
   const deleteAnnouncement = (id: any) =>
     authAxios.delete(`/api/v1/announcements/${id}`);
 
+  const uploadAnnouncementImage = (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    return authAxios.post<{ url: string }>(`/api/v1/announcements/image`, formData);
+  };
+
   const getLatestTechieOTM = () =>
     authAxios.get(`/api/v1/users/techieotm/latest`);
 
@@ -319,6 +324,7 @@ const useEndpoints = () => {
     deleteUser,
     updateAnnouncement,
     deleteAnnouncement,
+    uploadAnnouncementImage,
     getLatestTechieOTM,
     getAllTechieOTM,
     createTechieOTM,

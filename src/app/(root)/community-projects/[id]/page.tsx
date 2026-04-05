@@ -17,7 +17,7 @@ import { TEAM_ROLES, type TeamRole } from "@/constants/projects";
 
 const ProjectDetail = ({ params }: any) => {
   const { id } = params;
-  const { getProjectById, deleteProjectById, getUserProfile, searchTechie, addMemberToProject, removeMemberFromProject, updateProjectTools, removeProjectImage, searchSkills, updateProjectById } = useEndpoints();
+  const { getProjectById, deleteProjectById, getUserProfile, searchTechie, addMemberToProject, removeMemberFromProject, updateProjectTools, removeProjectImage, searchSkills, updateProjectById, getStacks } = useEndpoints();
   const queryClient = useQueryClient();
   const router = useRouter();
   const session = useSession();
@@ -26,6 +26,8 @@ const ProjectDetail = ({ params }: any) => {
   const [selectedMemberRole, setSelectedMemberRole] = useState<TeamRole>("FULL STACK");
   const [skillSearch, setSkillSearch] = useState("");
   const [isAddingSkill, setIsAddingSkill] = useState(false);
+  const [isEditingStacks, setIsEditingStacks] = useState(false);
+  const [localStackIds, setLocalStackIds] = useState<number[]>([]);
   const [managerSearch, setManagerSearch] = useState("");
   const [isAssigningManager, setIsAssigningManager] = useState(false);
 
@@ -86,6 +88,25 @@ const ProjectDetail = ({ params }: any) => {
     queryFn: () => searchSkills(skillSearch),
     enabled: canManageProject && skillSearch.trim().length >= 1,
     refetchOnWindowFocus: true,
+  });
+
+  const { data: allStacksData } = useQuery({
+    queryKey: ["stacks"],
+    queryFn: () => getStacks().then((res) => res.data),
+    enabled: canManageProject,
+  });
+
+  const { mutate: updateStacks, isLoading: isUpdatingStacks } = useMutation({
+    mutationFn: (stackIds: number[]) => updateProjectById(Number(id), { stacks: stackIds }),
+    onSuccess: () => {
+      toast.success("Tech stacks updated.");
+      queryClient.invalidateQueries({ queryKey: ["projects", id] });
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      setIsEditingStacks(false);
+    },
+    onError: (error: any) => {
+      toast.error(getApiErrorMessage(error, "Failed to update stacks."));
+    },
   });
 
   const { mutate: addSkill, isLoading: isAddingSkillLoading } = useMutation({
@@ -236,7 +257,7 @@ const ProjectDetail = ({ params }: any) => {
           <select
             value={selectedMemberRole}
             onChange={(e) => setSelectedMemberRole(e.target.value as TeamRole)}
-            className="w-full px-3 py-2 rounded-lg border border-outline bg-surface-container-lowest text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+            className="w-full px-3 py-2 rounded-lg border border-outline/50 bg-surface-container-lowest text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
           >
             {TEAM_ROLES.map((role) => (
               <option key={role.value} value={role.value}>
@@ -322,7 +343,7 @@ const ProjectDetail = ({ params }: any) => {
         </div>
 
         {/* Header Card */}
-        <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 md:p-8">
+        <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 md:p-8">
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
             <div className="flex items-start gap-4">
               <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${
@@ -374,7 +395,7 @@ const ProjectDetail = ({ params }: any) => {
 
           {/* Description */}
           {project.description && (
-            <div className="mt-6 pt-6 border-t border-outline">
+            <div className="mt-6 pt-6 border-t border-outline/25">
               <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-3">About</h2>
               <p className="text-on-surface leading-relaxed">{project.description}</p>
             </div>
@@ -383,7 +404,7 @@ const ProjectDetail = ({ params }: any) => {
 
         {/* Manager Assignment (Admins Only) */}
         {isAdmin && (
-          <div className="bg-surface-container-lowest border border-outline rounded-xl p-6">
+          <div className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">
                 Project Manager
@@ -391,7 +412,7 @@ const ProjectDetail = ({ params }: any) => {
             </div>
             <div className="space-y-3">
               {project.manager_id && project.manager ? (
-                <div className="flex items-center justify-between p-3 rounded-lg bg-surface-container border border-outline">
+                <div className="flex items-center justify-between p-3 rounded-lg bg-surface-container">
                   <div className="flex items-center gap-3 min-w-0">
                     <img
                       src={project.manager?.profile_pic_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${project.manager?.username}`}
@@ -427,13 +448,13 @@ const ProjectDetail = ({ params }: any) => {
               )}
 
               {isAssigningManager && (
-                <div className="space-y-3 pt-3 border-t border-outline">
+                <div className="space-y-3 pt-3 border-t border-outline/25">
                   <input
                     type="text"
                     placeholder="Search by name or username..."
                     value={managerSearch}
                     onChange={(e) => setManagerSearch(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-outline bg-surface-container-lowest text-sm text-on-surface"
+                    className="w-full px-3 py-2 rounded-lg border border-outline/50 bg-surface-container-lowest text-sm text-on-surface"
                   />
                   {managerSearch.length >= 2 && (
                     <div className="space-y-2 max-h-40 overflow-y-auto">
@@ -474,24 +495,83 @@ const ProjectDetail = ({ params }: any) => {
         )}
 
         {/* Tech Stack */}
-        {project.stacks && project.stacks.length > 0 && (
-          <div className="bg-surface-container-lowest border border-outline rounded-xl p-6">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">Tech Stack</h2>
-            <div className="flex flex-wrap gap-2">
-              {project.stacks.map((stack: any) => (
-                <span
-                  key={stack.id || stack.name}
-                  className="px-3 py-1.5 bg-secondary-container text-on-secondary-container rounded-lg text-sm font-semibold"
-                >
-                  {stack.name}
-                </span>
-              ))}
-            </div>
+        <div className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Tech Stack</h2>
+            {canManageProject && !isEditingStacks && (
+              <button
+                onClick={() => {
+                  setLocalStackIds((project.stacks || []).map((s: any) => s.id));
+                  setIsEditingStacks(true);
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
+              >
+                <span className="material-symbols-outlined text-sm">edit</span>
+                Edit
+              </button>
+            )}
           </div>
-        )}
+
+          {!isEditingStacks ? (
+            project.stacks && project.stacks.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {project.stacks.map((stack: any) => (
+                  <span
+                    key={stack.id || stack.name}
+                    className="px-3 py-1.5 bg-secondary-container text-on-secondary-container rounded-lg text-sm font-semibold"
+                  >
+                    {stack.name}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-on-surface-variant">No tech stacks assigned yet</p>
+            )
+          ) : (
+            <div className="space-y-3">
+              <div className="space-y-2 max-h-48 overflow-y-auto">
+                {(allStacksData || []).map((stack: any) => (
+                  <label
+                    key={stack.id}
+                    className="flex items-center gap-3 p-3 rounded-lg bg-surface-container cursor-pointer hover:bg-surface-container-high transition-colors"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={localStackIds.includes(stack.id)}
+                      onChange={(e) =>
+                        setLocalStackIds(
+                          e.target.checked
+                            ? [...localStackIds, stack.id]
+                            : localStackIds.filter((sid) => sid !== stack.id)
+                        )
+                      }
+                      className="w-4 h-4 rounded accent-primary"
+                    />
+                    <span className="text-sm text-on-surface">{stack.name}</span>
+                  </label>
+                ))}
+              </div>
+              <div className="flex gap-2 pt-2">
+                <button
+                  onClick={() => setIsEditingStacks(false)}
+                  className="flex-1 px-3 py-2 rounded-lg border border-outline text-on-surface hover:bg-surface-container-high transition-colors text-sm font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => updateStacks(localStackIds)}
+                  disabled={isUpdatingStacks}
+                  className="flex-1 px-3 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary/90 transition-colors text-sm font-medium disabled:opacity-50"
+                >
+                  {isUpdatingStacks ? "Saving..." : "Save"}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Skills Section */}
-        <div className="bg-surface-container-lowest border border-outline rounded-xl p-6">
+        <div className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">
               Tools & Skills
@@ -514,14 +594,9 @@ const ProjectDetail = ({ params }: any) => {
                   key={skill.id}
                   className="flex items-center gap-2 px-3 py-2 bg-primary/10 text-primary rounded-lg text-sm font-medium group"
                 >
-                  {skill.image_url && (
-                    <img
-                      src={skill.image_url}
-                      alt={skill.name}
-                      className="w-4 h-4 rounded"
-                    />
-                  )}
-                  <span>{skill.name}</span>
+                  {skill.image_url
+                    ? <img src={skill.image_url} alt={skill.name} className="w-5 h-5 rounded object-cover flex-shrink-0" title={skill.name} />
+                    : <span>{skill.name}</span>}
                   {canManageProject && (
                     <button
                       onClick={(e) => {
@@ -543,13 +618,13 @@ const ProjectDetail = ({ params }: any) => {
           )}
 
           {isAddingSkill && canManageProject && (
-            <div className="mt-4 pt-4 border-t border-outline">
+            <div className="mt-4 pt-4 border-t border-outline/25">
               <input
                 type="text"
                 placeholder="Search skills..."
                 value={skillSearch}
                 onChange={(e) => setSkillSearch(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg border border-outline bg-surface-container-lowest text-sm text-on-surface mb-3"
+                className="w-full px-3 py-2 rounded-lg border border-outline/50 bg-surface-container-lowest text-sm text-on-surface mb-3"
               />
               {skillSearch.trim().length >= 1 && (skillsData?.items || []).length > 0 && (
                 <div className="space-y-2 mb-4 max-h-40 overflow-y-auto">
@@ -590,7 +665,7 @@ const ProjectDetail = ({ params }: any) => {
 
         {/* Team Members */}
         {project.members && project.members.length > 0 && (
-          <div className="bg-surface-container-lowest border border-outline rounded-xl p-6">
+          <div className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-6">
             <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">
               Team ({project.members.length})
             </h2>
@@ -601,7 +676,7 @@ const ProjectDetail = ({ params }: any) => {
                   <Link
                     key={member.id}
                     href={`/techies/${member.id}`}
-                    className="flex flex-col items-center gap-2 p-3 rounded-xl border border-outline hover:border-primary/40 hover:bg-primary/5 transition-all group"
+                    className="flex flex-col items-center gap-2 p-3 rounded-xl bg-surface-container-low hover:bg-primary/5 hover:shadow-md transition-all duration-200 group"
                   >
                     <Image
                       className="w-12 h-12 rounded-xl object-cover"
@@ -641,14 +716,14 @@ const ProjectDetail = ({ params }: any) => {
         )}
 
         {project.members?.length === 0 && (
-          <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 text-center">
+          <div className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-6 text-center">
             <span className="material-symbols-outlined text-4xl text-on-surface-variant block mb-2">group</span>
             <p className="text-sm text-on-surface-variant">No team members assigned yet.</p>
           </div>
         )}
 
         {canManageProject && (
-          <div className="bg-surface-container-lowest border border-outline rounded-xl p-6">
+          <div className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-6">
             <h2 className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">Manage Team</h2>
 
             <div className="mb-4">
@@ -656,7 +731,7 @@ const ProjectDetail = ({ params }: any) => {
                 value={memberSearch}
                 onChange={(e) => setMemberSearch(e.target.value)}
                 placeholder="Search users by name"
-                className="w-full px-3 py-2 rounded-lg border border-outline bg-surface-container-lowest text-sm text-on-surface"
+                className="w-full px-3 py-2 rounded-lg border border-outline/50 bg-surface-container-lowest text-sm text-on-surface"
               />
             </div>
 

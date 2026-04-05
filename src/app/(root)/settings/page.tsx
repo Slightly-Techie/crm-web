@@ -1,21 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { SEARCH_DEBOUNCE_MS } from "@/lib/constants";
 import { useForm } from "react-hook-form";
 import useEndpoints from "@/services";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import { getApiErrorMessage } from "@/utils";
 import Link from "next/link";
 import { FaXTwitter, FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa6";
 
 type Section = "profile" | "account" | "skills" | "tags" | "team";
 
 export default function SettingsPage() {
-  const { getUserProfile, updateUserProfile, updateProfilePicture, getMyManager, getMySubordinates, getStacks, getMySkills, addSkill, removeSkill, getMyTags, createTag, deleteTag, getAllSkillsFlat } = useEndpoints();
+  const { getUserProfile, updateUserProfile, updateProfilePicture, getMyManager, getMySubordinates, getStacks, getMySkills, addSkill, removeSkill, searchSkills, getMyTags, createTag, deleteTag, getAllSkillsFlat } = useEndpoints();
   const [activeSection, setActiveSection] = useState<Section>("profile");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
+  const avatarInputRef = useRef<HTMLInputElement>(null);
   const [saving, setSaving] = useState(false);
   const [skillFilter, setSkillFilter] = useState("");
   const [newTag, setNewTag] = useState("");
@@ -52,12 +55,24 @@ export default function SettingsPage() {
     refetchOnWindowFocus: false,
   });
 
-  const { data: allSkillsData } = useQuery({
-    queryKey: ["skillsPool"],
-    queryFn: () => getAllSkillsFlat().then((res) => {
-      const d = res.data as any;
-      return Array.isArray(d) ? d : d?.items || [];
-    }),
+  const [debouncedSkillFilter, setDebouncedSkillFilter] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSkillFilter(skillFilter.trim()), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+  }, [skillFilter]);
+
+  const { data: allSkillsData, isFetching: isSearchingSkills } = useQuery({
+    queryKey: ["skillsPool", debouncedSkillFilter],
+    queryFn: () => {
+      if (debouncedSkillFilter.length >= 1) {
+        return searchSkills(debouncedSkillFilter).then((res) => res.items || []);
+      }
+      return getAllSkillsFlat().then((res) => {
+        const d = res.data as any;
+        return Array.isArray(d) ? d : d?.items || [];
+      });
+    },
     refetchOnWindowFocus: false,
     enabled: activeSection === "skills",
   });
@@ -71,7 +86,7 @@ export default function SettingsPage() {
   const addSkillMutation = useMutation({
     mutationFn: (skillId: number) => addSkill([skillId]),
     onSuccess: () => { toast.success("Skill added!"); refetchSkills(); },
-    onError: () => toast.error("Failed to add skill."),
+    onError: (error: any) => toast.error(getApiErrorMessage(error, "Failed to add skill.")),
   });
 
   const removeSkillMutation = useMutation({
@@ -96,9 +111,7 @@ export default function SettingsPage() {
   const allPoolSkills: any[] = Array.isArray(allSkillsData) ? allSkillsData : [];
   const myTags: any[] = Array.isArray(myTagsData) ? myTagsData : (myTagsData as any)?.tags || [];
   const mySkillIds = new Set(mySkills.map((s: any) => s.id));
-  const filteredPoolSkills = skillFilter.trim()
-    ? allPoolSkills.filter((s: any) => s.name.toLowerCase().includes(skillFilter.toLowerCase()))
-    : allPoolSkills;
+  const filteredPoolSkills = allPoolSkills;
 
   const user = userData;
   let stacks: any[] = [];
@@ -157,6 +170,12 @@ export default function SettingsPage() {
     const reader = new FileReader();
     reader.onloadend = () => setPreview(reader.result as string);
     reader.readAsDataURL(file);
+  };
+
+  const clearAvatarSelection = () => {
+    setSelectedFile(null);
+    setPreview("");
+    if (avatarInputRef.current) avatarInputRef.current.value = "";
   };
 
   const onSubmit = async (data: any) => {
@@ -232,7 +251,7 @@ export default function SettingsPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* Sidebar nav */}
           <aside className="md:col-span-1">
-            <nav className="space-y-1 bg-surface-container-lowest border border-outline rounded-xl p-2">
+            <nav className="space-y-1 bg-surface-container-lowest shadow-sm rounded-xl p-2">
               {navItems.map((item) => (
                 <button
                   key={item.id}
@@ -247,7 +266,7 @@ export default function SettingsPage() {
                   {item.label}
                 </button>
               ))}
-              <div className="pt-2 mt-2 border-t border-outline">
+              <div className="pt-2 mt-2 border-t border-outline/20">
                 <Link
                   href="/techie/me"
                   className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface-variant hover:bg-surface-container-high transition-colors"
@@ -264,21 +283,42 @@ export default function SettingsPage() {
             {/* Profile Section */}
             {activeSection === "profile" && !(isUserLoading || isStacksLoading) && (
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-6">
+                <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 space-y-6">
                   <h2 className="font-bold font-headline text-on-surface">Profile Information</h2>
 
                   {/* Avatar */}
                   <div className="flex items-center gap-5">
-                    <div className="relative w-20 h-20 rounded-2xl overflow-hidden ring-2 ring-secondary-container flex-shrink-0">
+                    <div className="relative w-20 h-20 rounded-2xl overflow-hidden ring-2 ring-secondary-container flex-shrink-0 group">
                       <Image className="w-full h-full object-cover" width={80} height={80} src={profileImage} alt="avatar" />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <label className="cursor-pointer p-1.5 bg-white/90 rounded-full" title="Change photo">
+                          <span className="material-symbols-outlined text-sm text-on-surface">photo_camera</span>
+                          <input ref={avatarInputRef} type="file" accept="image/*" onChange={onSelectFile} className="hidden" />
+                        </label>
+                      </div>
                     </div>
-                    <div>
-                      <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-outline text-sm font-medium text-on-surface hover:bg-surface-container-high transition-colors">
-                        <span className="material-symbols-outlined text-base">upload</span>
-                        Change Photo
-                        <input type="file" accept="image/*" onChange={onSelectFile} className="hidden" />
-                      </label>
-                      <p className="text-xs text-on-surface-variant mt-1">JPG, PNG or GIF · Max 5MB</p>
+                    <div className="space-y-1">
+                      {selectedFile ? (
+                        <div className="flex items-center gap-2">
+                          <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-outline/40 text-sm font-medium text-on-surface hover:bg-surface-container-high transition-colors">
+                            <span className="material-symbols-outlined text-base">swap_horiz</span>
+                            Replace
+                            <input ref={avatarInputRef} type="file" accept="image/*" onChange={onSelectFile} className="hidden" />
+                          </label>
+                          <button type="button" onClick={clearAvatarSelection} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-error/40 text-sm font-medium text-error hover:bg-error/10 transition-colors">
+                            <span className="material-symbols-outlined text-base">delete</span>
+                            Remove
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-outline/40 text-sm font-medium text-on-surface hover:bg-surface-container-high transition-colors">
+                          <span className="material-symbols-outlined text-base">upload</span>
+                          Change Photo
+                          <input ref={avatarInputRef} type="file" accept="image/*" onChange={onSelectFile} className="hidden" />
+                        </label>
+                      )}
+                      <p className="text-xs text-on-surface-variant">JPG, PNG or GIF · Max 5MB</p>
+                      {selectedFile && <p className="text-xs text-primary font-medium">New photo staged — will save with profile</p>}
                     </div>
                   </div>
 
@@ -289,7 +329,7 @@ export default function SettingsPage() {
                       <input
                         {...register("first_name")}
                         defaultValue={user?.first_name}
-                        className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
+                        className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -297,7 +337,7 @@ export default function SettingsPage() {
                       <input
                         {...register("last_name")}
                         defaultValue={user?.last_name}
-                        className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
+                        className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                       />
                     </div>
                   </div>
@@ -310,7 +350,7 @@ export default function SettingsPage() {
                       defaultValue={user?.bio || ""}
                       rows={3}
                       placeholder="Tell the network a bit about yourself..."
-                      className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors resize-none text-sm"
+                      className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors resize-none text-sm"
                     />
                   </div>
 
@@ -321,7 +361,7 @@ export default function SettingsPage() {
                       <select
                         {...register("stack_id")}
                         defaultValue={user?.stack?.id || ""}
-                        className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
+                        className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                       >
                         <option value="">Select stack</option>
                         {stacks.map((s: any) => (
@@ -337,7 +377,7 @@ export default function SettingsPage() {
                         type="number"
                         min={0}
                         max={50}
-                        className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
+                        className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                       />
                     </div>
                   </div>
@@ -349,13 +389,13 @@ export default function SettingsPage() {
                       {...register("phone_number")}
                       defaultValue={user?.phone_number || ""}
                       placeholder="+1 234 567 8900"
-                      className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
+                      className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                     />
                   </div>
                 </div>
 
                 {/* Social Links */}
-                <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-4">
+                <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 space-y-4">
                   <h2 className="font-bold font-headline text-on-surface">Social Links</h2>
 
                   {/* GitHub */}
@@ -368,7 +408,7 @@ export default function SettingsPage() {
                       {...register("github_profile")}
                       defaultValue={user?.github_profile || ""}
                       placeholder="https://github.com/username"
-                      className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
+                      className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                     />
                   </div>
 
@@ -382,7 +422,7 @@ export default function SettingsPage() {
                       {...register("linkedin_profile")}
                       defaultValue={user?.linkedin_profile || ""}
                       placeholder="https://linkedin.com/in/username"
-                      className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
+                      className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                     />
                   </div>
 
@@ -396,7 +436,7 @@ export default function SettingsPage() {
                       {...register("twitter_profile")}
                       defaultValue={user?.twitter_profile || ""}
                       placeholder="https://twitter.com/username"
-                      className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
+                      className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                     />
                   </div>
 
@@ -410,7 +450,7 @@ export default function SettingsPage() {
                       {...register("portfolio_url")}
                       defaultValue={user?.portfolio_url || ""}
                       placeholder="https://yoursite.com"
-                      className="w-full px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
+                      className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                     />
                   </div>
                 </div>
@@ -440,23 +480,23 @@ export default function SettingsPage() {
             {/* Account Section */}
             {activeSection === "account" && (
               <div className="space-y-4">
-                <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-4">
+                <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 space-y-4">
                   <h2 className="font-bold font-headline text-on-surface">Account Details</h2>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between py-3 border-b border-outline">
+                    <div className="flex items-center justify-between py-3 border-b border-outline/20">
                       <div>
                         <p className="text-sm font-medium text-on-surface">Email address</p>
                         <p className="text-xs text-on-surface-variant">{user?.email || "—"}</p>
                       </div>
                       <span className="px-2 py-1 bg-surface-container-high text-on-surface-variant text-xs rounded-md">Read-only</span>
                     </div>
-                    <div className="flex items-center justify-between py-3 border-b border-outline">
+                    <div className="flex items-center justify-between py-3 border-b border-outline/20">
                       <div>
                         <p className="text-sm font-medium text-on-surface">Username</p>
                         <p className="text-xs text-on-surface-variant">@{user?.username || "—"}</p>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between py-3 border-b border-outline">
+                    <div className="flex items-center justify-between py-3 border-b border-outline/20">
                       <div>
                         <p className="text-sm font-medium text-on-surface">Account Role</p>
                         <p className="text-xs text-on-surface-variant capitalize">{user?.role?.name || "user"}</p>
@@ -477,14 +517,14 @@ export default function SettingsPage() {
                   </div>
                 </div>
 
-                <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-4">
+                <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 space-y-4">
                   <h2 className="font-bold font-headline text-on-surface">Password</h2>
                   <p className="text-sm text-on-surface-variant">
                     To change your password, use the forgot password flow from the login page.
                   </p>
                   <Link
                     href="/users/forgot-password"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-outline text-sm font-medium text-on-surface hover:bg-surface-container-high transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-outline/40 text-sm font-medium text-on-surface hover:bg-surface-container-high transition-colors"
                   >
                     <span className="material-symbols-outlined text-base">lock_reset</span>
                     Reset Password
@@ -496,7 +536,7 @@ export default function SettingsPage() {
             {/* Skills Section */}
             {activeSection === "skills" && (
               <div className="space-y-4">
-                <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-5">
+                <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 space-y-5">
                   <div>
                     <h2 className="font-bold font-headline text-on-surface">My Skills</h2>
                     <p className="text-sm text-on-surface-variant mt-0.5">
@@ -512,9 +552,12 @@ export default function SettingsPage() {
                         {mySkills.map((skill: any) => (
                           <span
                             key={skill.id}
-                            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium"
+                            title={skill.image_url ? skill.name : undefined}
                           >
-                            {skill.name}
+                            {skill.image_url
+                              ? <img src={skill.image_url} alt={skill.name} className="w-5 h-5 rounded object-cover flex-shrink-0" />
+                              : skill.name}
                             <button
                               onClick={() => removeSkillMutation.mutate(skill.id)}
                               className="hover:text-error transition-colors"
@@ -531,12 +574,17 @@ export default function SettingsPage() {
                   {/* Pool picker */}
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-widest text-on-surface-variant mb-2">Add from pool</p>
-                    <input
-                      value={skillFilter}
-                      onChange={(e) => setSkillFilter(e.target.value)}
-                      placeholder="Filter skills..."
-                      className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm mb-3"
-                    />
+                    <div className="relative mb-3">
+                      <input
+                        value={skillFilter}
+                        onChange={(e) => setSkillFilter(e.target.value)}
+                        placeholder="Search skills..."
+                        className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm pr-10"
+                      />
+                      {isSearchingSkills && (
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                      )}
+                    </div>
                     {filteredPoolSkills.length > 0 ? (
                       <div className="flex flex-wrap gap-2">
                         {filteredPoolSkills.map((skill: any) => {
@@ -564,7 +612,7 @@ export default function SettingsPage() {
                       </div>
                     ) : (
                       <p className="text-sm text-on-surface-variant">
-                        {skillFilter ? `No skills matching "${skillFilter}"` : "No skills in pool yet."}
+                        {skillFilter.trim() ? `No skills matching "${skillFilter}"` : "No skills in pool yet."}
                       </p>
                     )}
                   </div>
@@ -575,7 +623,7 @@ export default function SettingsPage() {
             {/* Tags Section */}
             {activeSection === "tags" && (
               <div className="space-y-4">
-                <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-4">
+                <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 space-y-4">
                   <div>
                     <h2 className="font-bold font-headline text-on-surface">My Tags</h2>
                     <p className="text-sm text-on-surface-variant mt-1">
@@ -617,7 +665,7 @@ export default function SettingsPage() {
                         }
                       }}
                       placeholder="e.g. open-source, backend, ai..."
-                      className="flex-1 px-4 py-2.5 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
+                      className="flex-1 px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                     />
                     <button
                       onClick={() => { if (newTag.trim()) createTagMutation.mutate(newTag.trim()); }}
@@ -636,7 +684,7 @@ export default function SettingsPage() {
             {activeSection === "team" && (
               <div className="space-y-4">
                 {/* Manager */}
-                <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-4">
+                <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 space-y-4">
                   <h2 className="font-bold font-headline text-on-surface">My Manager</h2>
                   {managerData ? (
                     <Link href={`/techies/${managerData.id}`} className="flex items-center gap-4 p-4 rounded-xl bg-surface-container-high hover:bg-surface-container-highest transition-colors">
@@ -670,7 +718,7 @@ export default function SettingsPage() {
                 </div>
 
                 {/* Direct reports */}
-                <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-4">
+                <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 space-y-4">
                   <div className="flex items-center justify-between">
                     <h2 className="font-bold font-headline text-on-surface">
                       My Direct Reports {subordinates.length > 0 && <span className="text-on-surface-variant font-normal">({subordinates.length})</span>}
@@ -714,7 +762,7 @@ export default function SettingsPage() {
             )}
 
             {(isUserLoading || isStacksLoading) && activeSection === "profile" && (
-              <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 mt-4">
+              <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 mt-4">
                 <div className="animate-pulse space-y-3">
                   <div className="h-4 w-40 bg-surface-container-high rounded" />
                   <div className="h-12 w-full bg-surface-container-high rounded" />

@@ -15,6 +15,7 @@ function Page() { // NOSONAR
   const { getSpecificUser, getUserSubordinates, getProjects, getFeedsWithPagination } = useEndpoints();
   const { status: sessionStatus } = useSession();
   const [imgError, setImgError] = useState(false);
+  const [showAllReports, setShowAllReports] = useState(false);
   const userId = Number(Array.isArray(id) ? id[0] : id);
   const isAuthed = sessionStatus === "authenticated" && Number.isFinite(userId) && userId > 0;
 
@@ -286,12 +287,19 @@ function Page() { // NOSONAR
               <div className="bg-surface-container-low rounded-xl p-6">
                 <h4 className="font-headline font-bold text-on-surface mb-4 text-base">Skills & Technologies</h4>
                 <div className="flex flex-wrap gap-2">
-                  {UserProfile.skills.map((skill: any) => (
-                    <span key={`${typeof skill === "string" ? skill : skill?.name || "skill"}-${UserProfile.id}`}
-                      className="px-3 py-1.5 bg-surface-container-lowest text-on-surface text-xs font-semibold rounded-lg shadow-sm border border-outline-variant/10">
-                      {typeof skill === "string" ? skill : skill.name}
-                    </span>
-                  ))}
+                  {UserProfile.skills.map((skill: any) => {
+                    const name = typeof skill === "string" ? skill : skill.name;
+                    const img = typeof skill === "object" ? skill.image_url : null;
+                    return (
+                      <span key={`${name}-${UserProfile.id}`}
+                        className="inline-flex items-center justify-center px-3 py-1.5 bg-surface-container-lowest text-on-surface text-xs font-semibold rounded-lg shadow-sm border border-outline-variant/10"
+                        title={img ? name : undefined}>
+                        {img
+                          ? <img src={img} alt={name} className="w-5 h-5 rounded object-cover" />
+                          : name}
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -395,12 +403,22 @@ function Page() { // NOSONAR
                 <p className="text-sm text-on-surface-variant mb-5">No manager assigned</p>
               )}
 
-              <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-2">
-                Direct Reports ({subordinatesData?.length || 0})
-              </p>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">
+                  Direct Reports ({subordinatesData?.length || 0})
+                </p>
+                {subordinatesData && subordinatesData.length > 6 && (
+                  <button
+                    onClick={() => setShowAllReports((v) => !v)}
+                    className="text-xs text-primary font-semibold hover:underline"
+                  >
+                    {showAllReports ? "Show less" : `Show all ${subordinatesData.length}`}
+                  </button>
+                )}
+              </div>
               {subordinatesData && subordinatesData.length > 0 ? (
-                <div className="space-y-2">
-                  {subordinatesData.slice(0, 5).map((sub: any) => {
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {(showAllReports ? subordinatesData : subordinatesData.slice(0, 6)).map((sub: any) => {
                     const subPicUrl =
                       sub.profile_pic_url && sub.profile_pic_url !== "string"
                         ? sub.profile_pic_url
@@ -413,9 +431,9 @@ function Page() { // NOSONAR
                         className="flex items-center gap-3 p-3 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors"
                       >
                         <Image
-                          className="w-10 h-10 rounded-full object-cover"
-                          width={40}
-                          height={40}
+                          className="w-9 h-9 rounded-full object-cover shrink-0"
+                          width={36}
+                          height={36}
                           src={subPicUrl}
                           alt={`${sub.first_name} ${sub.last_name}`}
                         />
@@ -423,7 +441,10 @@ function Page() { // NOSONAR
                           <p className="text-sm font-semibold text-on-surface truncate">
                             {sub.first_name} {sub.last_name}
                           </p>
-                          <p className="text-xs text-on-surface-variant truncate">@{sub.username}</p>
+                          <p className="text-xs text-on-surface-variant truncate">
+                            @{sub.username}
+                            {sub.stack?.name && ` · ${sub.stack.name}`}
+                          </p>
                         </div>
                       </Link>
                     );

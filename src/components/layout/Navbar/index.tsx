@@ -10,6 +10,7 @@ import { action } from "@/redux";
 import { useAppDispatch } from "@/hooks";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { signOut, useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
 
 const Navlinks = [
   { id: "d1", name: "Dashboard", link: "/", icon: "dashboard" },
@@ -18,10 +19,31 @@ const Navlinks = [
   { id: "d3", name: "Feed", link: "/feed", icon: "rss_feed" },
   { id: "c3", name: "Announcements", link: "/announcements", icon: "campaign" },
   { id: "team", name: "My Team", link: "/org-chart", icon: "account_tree" },
-  { id: "c5", name: "Full Org Chart", link: "/admin/org-chart", icon: "corporate_fare", adminOnly: true },
+  { id: "c5", name: "Full Org Chart", link: "/full-org-chart", icon: "corporate_fare" },
   { id: "d2", name: "Applicants", link: "/admin/applicants", icon: "hourglass_empty", adminOnly: true },
   { id: "admin-settings", name: "Admin Settings", link: "/admin/settings", icon: "tune", adminOnly: true },
 ];
+
+function ThemeToggle({ className = "" }: { className?: string }) {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return <div className={`w-9 h-9 ${className}`} />;
+  const isDark = theme === "dark";
+  return (
+    <button
+      type="button"
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      className={`flex items-center justify-center w-9 h-9 rounded-lg transition-colors hover:bg-surface-container text-on-surface-variant ${className}`}
+      title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-label="Toggle theme"
+    >
+      <span className="material-symbols-outlined text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>
+        {isDark ? "light_mode" : "dark_mode"}
+      </span>
+    </button>
+  );
+}
 
 function Navbar() {
   const { getUserProfile } = useEndpoints();
@@ -60,7 +82,6 @@ function Navbar() {
 
   useEffect(() => {
     if (!isProfileMenuOpen) return;
-
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
       if (
@@ -71,43 +92,35 @@ function Navbar() {
       }
       setIsProfileMenuOpen(false);
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isProfileMenuOpen]);
 
   const isActiveLink = (link: string) => {
-    if (link === "/") {
-      return pathname === "/";
-    }
+    if (link === "/") return pathname === "/";
     return pathname.startsWith(link);
   };
 
   return (
     <>
-      {/* Desktop Sidebar - Fixed */}
-      <aside className="h-screen w-64 fixed left-0 top-0 hidden lg:flex flex-col bg-stone-50 border-r border-stone-100 z-50 overflow-y-auto">
-        <div className="p-6">
-          <h1 className="text-lg font-black text-emerald-900 font-headline">ST Network</h1>
+      {/* Desktop Sidebar */}
+      <aside className="h-screen w-64 fixed left-0 top-0 hidden lg:flex flex-col bg-surface-container-low border-r border-outline/20 z-50 overflow-y-auto">
+        <div className="flex items-center justify-between px-6 py-5">
+          <h1 className="text-lg font-black text-primary font-headline">ST Network</h1>
+          <ThemeToggle />
         </div>
 
         <nav className="flex flex-col gap-y-1 p-4 flex-1 font-body text-sm font-medium">
           {Navlinks.map((item) => {
-            if (item.adminOnly && role === "user") return null;
-
+            if (item.adminOnly && role !== "admin") return null;
             const isActive = isActiveLink(item.link);
-
             return (
               <Link href={item.link} key={item.id}>
-                <div
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                    isActive
-                      ? "bg-emerald-50 text-emerald-900"
-                      : "text-stone-600 hover:bg-stone-100"
-                  }`}
-                >
+                <div className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                  isActive
+                    ? "bg-primary/10 text-primary"
+                    : "text-on-surface-variant hover:bg-surface-container"
+                }`}>
                   <span className="material-symbols-outlined">{item.icon}</span>
                   {item.name}
                 </div>
@@ -116,106 +129,99 @@ function Navbar() {
           })}
         </nav>
 
-        {/* Footer Actions */}
-        <div className="p-4 border-t border-stone-100">
-          <div className="space-y-3">
-            {session.status === "authenticated" && query.isLoading && (
-              <div className="animate-pulse rounded-xl border border-stone-200 bg-stone-50 p-3">
-                <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-full bg-stone-200" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-3 w-24 rounded bg-stone-200" />
-                    <div className="h-2.5 w-16 rounded bg-stone-200" />
-                  </div>
+        <div className="p-4 border-t border-outline/20">
+          {session.status === "authenticated" && query.isLoading && (
+            <div className="animate-pulse rounded-xl border border-outline/20 bg-surface-container p-3">
+              <div className="flex items-center gap-3">
+                <div className="h-9 w-9 rounded-full bg-surface-container-high" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-3 w-24 rounded bg-surface-container-high" />
+                  <div className="h-2.5 w-16 rounded bg-surface-container-high" />
                 </div>
               </div>
-            )}
+            </div>
+          )}
 
-            {session.status === "authenticated" && !query.isLoading && (
-              <div className="relative" ref={profileMenuRef}>
-                <button
-                  type="button"
-                  onClick={() => setIsProfileMenuOpen((prev) => !prev)}
-                  className="w-full flex items-center gap-3 px-3 py-3 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition-all"
-                >
-                  <Image
-                    className="w-9 h-9 rounded-full object-cover flex-shrink-0"
-                    width={36}
-                    height={36}
-                    src={
-                      currentUser?.profile_pic_url ||
-                      `https://api.dicebear.com/7.x/initials/jpg?seed=${currentUser?.first_name ?? "User"} ${currentUser?.last_name ?? ""}`
-                    }
-                    alt={currentUser?.username || "User profile"}
-                  />
-                  <div className="flex-1 min-w-0 text-left">
-                    <p className="font-semibold text-xs text-on-surface truncate">
-                      {currentUser && `${currentUser.first_name} ${currentUser.last_name}`}
-                    </p>
-                    {currentUser?.stack?.name && (
-                      <p className="text-[10px] text-on-surface-variant truncate">
-                        {currentUser.stack.name}
-                      </p>
-                    )}
-                  </div>
-                  <span className="material-symbols-outlined text-on-surface-variant text-base">
-                    {isProfileMenuOpen ? "expand_more" : "expand_less"}
-                  </span>
-                </button>
+          {session.status === "authenticated" && !query.isLoading && (
+            <div className="relative" ref={profileMenuRef}>
+              <button
+                type="button"
+                onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+                className="w-full flex items-center gap-3 px-3 py-3 rounded-xl border border-outline/20 bg-surface-container hover:bg-surface-container-high transition-all"
+              >
+                <Image
+                  className="w-9 h-9 rounded-full object-cover flex-shrink-0"
+                  width={36}
+                  height={36}
+                  src={
+                    currentUser?.profile_pic_url ||
+                    `https://api.dicebear.com/7.x/initials/jpg?seed=${currentUser?.first_name ?? "User"} ${currentUser?.last_name ?? ""}`
+                  }
+                  alt={currentUser?.username || "User profile"}
+                />
+                <div className="flex-1 min-w-0 text-left">
+                  <p className="font-semibold text-xs text-on-surface truncate">
+                    {currentUser && `${currentUser.first_name} ${currentUser.last_name}`}
+                  </p>
+                  {currentUser?.stack?.name && (
+                    <p className="text-[10px] text-on-surface-variant truncate">{currentUser.stack.name}</p>
+                  )}
+                </div>
+                <span className="material-symbols-outlined text-on-surface-variant text-base">
+                  {isProfileMenuOpen ? "expand_more" : "expand_less"}
+                </span>
+              </button>
 
-                {isProfileMenuOpen && (
-                  <div className="absolute bottom-full mb-2 left-0 w-full rounded-xl border border-stone-200 bg-white shadow-lg py-1">
-                    <Link
-                      href="/settings"
-                      className="flex items-center gap-2 px-3 py-2 text-sm text-on-surface hover:bg-stone-50"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                    >
-                      <span className="material-symbols-outlined text-base">settings</span>
-                      <span>Settings</span>
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => handleSignOut()}
-                      className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50"
-                    >
-                      <span className="material-symbols-outlined text-base">logout</span>
-                      <span>Logout</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
+              {isProfileMenuOpen && (
+                <div className="absolute bottom-full mb-2 left-0 w-full rounded-xl border border-outline/20 bg-surface-container-lowest shadow-lg py-1">
+                  <Link
+                    href="/settings"
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-on-surface hover:bg-surface-container"
+                    onClick={() => setIsProfileMenuOpen(false)}
+                  >
+                    <span className="material-symbols-outlined text-base">settings</span>
+                    <span>Settings</span>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => handleSignOut()}
+                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-error hover:bg-error/10"
+                  >
+                    <span className="material-symbols-outlined text-base">logout</span>
+                    <span>Logout</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </aside>
 
-
-
-      {/* Mobile Menu Button */}
-      <div className="block lg:hidden fixed top-0 left-0 right-0 z-[9999] bg-white border-b border-stone-100 h-16">
+      {/* Mobile Top Bar */}
+      <div className="block lg:hidden fixed top-0 left-0 right-0 z-[9999] bg-surface-container-low border-b border-outline/20 h-16">
         <div className="flex justify-between items-center px-4 h-full">
-          <h1 className="text-lg font-black text-emerald-900 font-headline">ST Network</h1>
-          <button
-            className="p-2 rounded-lg hover:bg-stone-50 transition-colors"
-            onClick={() => setNavToggle(!navToggle)}
-          >
-            <AiOutlineMenu size={24} className="text-on-surface" />
-          </button>
+          <h1 className="text-lg font-black text-primary font-headline">ST Network</h1>
+          <div className="flex items-center gap-1">
+            <ThemeToggle />
+            <button
+              className="p-2 rounded-lg hover:bg-surface-container transition-colors"
+              onClick={() => setNavToggle(!navToggle)}
+            >
+              <AiOutlineMenu size={24} className="text-on-surface" />
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Mobile Sidebar */}
-      <div
-        className={`fixed z-[9998] top-0 left-0 w-64 h-screen bg-white border-r border-stone-100 shadow-xl transition-transform duration-300 ease-in-out lg:hidden ${
-          navToggle ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
+      <div className={`fixed z-[9998] top-0 left-0 w-64 h-screen bg-surface-container-low border-r border-outline/20 shadow-xl transition-transform duration-300 ease-in-out lg:hidden ${
+        navToggle ? "translate-x-0" : "-translate-x-full"
+      }`}>
         <div className="flex flex-col h-full overflow-y-auto">
-          {/* Mobile Sidebar Header */}
-          <div className="flex justify-between items-center px-4 h-16 border-b border-stone-100">
-            <h1 className="text-lg font-black text-emerald-900 font-headline">ST Network</h1>
+          <div className="flex justify-between items-center px-4 h-16 border-b border-outline/20">
+            <h1 className="text-lg font-black text-primary font-headline">ST Network</h1>
             <button
-              className="p-2 rounded-lg hover:bg-stone-50 transition-colors"
+              className="p-2 rounded-lg hover:bg-surface-container transition-colors"
               onClick={() => setNavToggle(false)}
             >
               <AiOutlineClose size={20} className="text-on-surface" />
@@ -224,19 +230,15 @@ function Navbar() {
 
           <nav className="flex flex-col gap-y-1 font-body text-sm font-medium p-4">
             {Navlinks.map((item) => {
-              if (item.adminOnly && role === "user") return null;
-
+              if (item.adminOnly && role !== "admin") return null;
               const isActive = isActiveLink(item.link);
-
               return (
                 <Link href={item.link} key={item.id} onClick={() => setNavToggle(false)}>
-                  <div
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                      isActive
-                        ? "bg-emerald-50 text-emerald-900"
-                        : "text-stone-600 hover:bg-stone-100"
-                    }`}
-                  >
+                  <div className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                    isActive
+                      ? "bg-primary/10 text-primary"
+                      : "text-on-surface-variant hover:bg-surface-container"
+                  }`}>
                     <span className="material-symbols-outlined">{item.icon}</span>
                     {item.name}
                   </div>
@@ -245,43 +247,37 @@ function Navbar() {
             })}
           </nav>
 
-          {/* Mobile User Profile */}
           {session.status === "authenticated" && query.isLoading && (
-            <div className="mt-auto border-t border-stone-100 px-4 pb-4 pt-2">
-              <div className="animate-pulse rounded-xl border border-stone-200 bg-stone-50 p-3">
+            <div className="mt-auto border-t border-outline/20 px-4 pb-4 pt-2">
+              <div className="animate-pulse rounded-xl border border-outline/20 bg-surface-container p-3">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-stone-200 flex-shrink-0" />
+                  <div className="h-10 w-10 rounded-full bg-surface-container-high flex-shrink-0" />
                   <div className="flex-1 space-y-2">
-                    <div className="h-3 w-24 rounded bg-stone-200" />
-                    <div className="h-2.5 w-16 rounded bg-stone-200" />
+                    <div className="h-3 w-24 rounded bg-surface-container-high" />
+                    <div className="h-2.5 w-16 rounded bg-surface-container-high" />
                   </div>
-                  <div className="h-5 w-5 rounded bg-stone-200" />
                 </div>
               </div>
             </div>
           )}
 
           {session.status === "authenticated" && !query.isLoading && (
-            <div
-              className="mt-auto border-t border-stone-100 px-4 pb-4 pt-2"
-              ref={mobileProfileMenuRef}
-            >
-              {/* Drop-up menu — renders above the button */}
+            <div className="mt-auto border-t border-outline/20 px-4 pb-4 pt-2" ref={mobileProfileMenuRef}>
               {isProfileMenuOpen && (
-                <div className="rounded-xl border border-stone-200 bg-white overflow-hidden mb-1 shadow-lg">
+                <div className="rounded-xl border border-outline/20 bg-surface-container-lowest overflow-hidden mb-1 shadow-lg">
                   <button
                     type="button"
                     onClick={() => { setNavToggle(false); setIsProfileMenuOpen(false); router.push("/settings"); }}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-on-surface hover:bg-stone-50"
+                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-on-surface hover:bg-surface-container"
                   >
                     <span className="material-symbols-outlined text-base">settings</span>
                     <span>Settings</span>
                   </button>
-                  <div className="border-t border-stone-100" />
+                  <div className="border-t border-outline/20" />
                   <button
                     type="button"
                     onClick={() => { setNavToggle(false); setIsProfileMenuOpen(false); handleSignOut(); }}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50"
+                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-error hover:bg-error/10"
                   >
                     <span className="material-symbols-outlined text-base">logout</span>
                     <span className="font-medium">Log Out</span>
@@ -289,11 +285,10 @@ function Navbar() {
                 </div>
               )}
 
-              {/* Profile row button */}
               <button
                 type="button"
                 onClick={() => setIsProfileMenuOpen((prev) => !prev)}
-                className="w-full flex items-center gap-3 px-3 py-3 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition-all"
+                className="w-full flex items-center gap-3 px-3 py-3 rounded-xl border border-outline/20 bg-surface-container hover:bg-surface-container-high transition-all"
               >
                 <Image
                   className="w-10 h-10 rounded-full object-cover flex-shrink-0"
@@ -310,9 +305,7 @@ function Navbar() {
                     {currentUser && `${currentUser.first_name} ${currentUser.last_name}`}
                   </p>
                   {currentUser?.stack?.name && (
-                    <p className="text-xs text-on-surface-variant truncate">
-                      {currentUser.stack.name}
-                    </p>
+                    <p className="text-xs text-on-surface-variant truncate">{currentUser.stack.name}</p>
                   )}
                 </div>
                 <span className="material-symbols-outlined text-on-surface-variant text-base">
@@ -324,7 +317,6 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Overlay */}
       {navToggle && (
         <button
           type="button"

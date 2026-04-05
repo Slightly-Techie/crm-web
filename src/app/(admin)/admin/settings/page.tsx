@@ -449,7 +449,7 @@ export default function AdminSettingsPage() {
             </div>
 
             {showMeetingForm && (
-              <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-4">
+              <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 space-y-4">
                 <div className="flex justify-between items-center">
                   <h3 className="font-bold text-on-surface">
                     {editingMeeting ? "Edit Meeting" : "New Meeting"}
@@ -464,7 +464,7 @@ export default function AdminSettingsPage() {
                     type="text"
                     value={meetingForm.title}
                     onChange={(e) => setMeetingForm({ ...meetingForm, title: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                    className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
                     placeholder="Monday Team Sync"
                   />
                 </div>
@@ -474,7 +474,7 @@ export default function AdminSettingsPage() {
                     type="url"
                     value={meetingForm.meeting_url}
                     onChange={(e) => setMeetingForm({ ...meetingForm, meeting_url: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                    className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
                     placeholder="https://meet.google.com/abc-defg-hij"
                   />
                 </div>
@@ -485,7 +485,7 @@ export default function AdminSettingsPage() {
                       type="datetime-local"
                       value={meetingForm.scheduled_time}
                       onChange={(e) => setMeetingForm({ ...meetingForm, scheduled_time: e.target.value })}
-                      className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                      className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
                     />
                   </div>
                   <div>
@@ -493,7 +493,7 @@ export default function AdminSettingsPage() {
                     <select
                       value={meetingForm.recurrence}
                       onChange={(e) => setMeetingForm({ ...meetingForm, recurrence: e.target.value })}
-                      className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                      className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
                     >
                       {RECURRENCE_OPTIONS.map((opt) => (
                         <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -507,7 +507,7 @@ export default function AdminSettingsPage() {
                     value={meetingForm.description}
                     onChange={(e) => setMeetingForm({ ...meetingForm, description: e.target.value })}
                     rows={3}
-                    className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none resize-none"
+                    className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none resize-none"
                     placeholder="Weekly standup meeting..."
                   />
                 </div>
@@ -532,7 +532,7 @@ export default function AdminSettingsPage() {
 
             <div className="grid gap-4">
               {meetings.map((meeting: any) => (
-                <div key={meeting.id} className="bg-surface-container-lowest border border-outline rounded-xl p-5">
+                <div key={meeting.id} className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-5">
                   <div className="flex justify-between items-start gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -597,7 +597,7 @@ export default function AdminSettingsPage() {
             </div>
 
             {showChallengeForm && (
-              <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-4">
+              <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 space-y-4">
                 <div className="flex justify-between items-center">
                   <h3 className="font-bold text-on-surface">
                     {editingChallenge ? "Edit Challenge" : "New Challenge"}
@@ -612,7 +612,7 @@ export default function AdminSettingsPage() {
                     type="text"
                     value={challengeForm.title}
                     onChange={(e) => setChallengeForm({ ...challengeForm, title: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                    className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
                     placeholder="Two Sum"
                   />
                 </div>
@@ -622,7 +622,7 @@ export default function AdminSettingsPage() {
                     value={challengeForm.description}
                     onChange={(e) => setChallengeForm({ ...challengeForm, description: e.target.value })}
                     rows={3}
-                    className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none resize-none"
+                    className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none resize-none"
                     placeholder="Find two numbers that add up to target..."
                   />
                 </div>
@@ -632,7 +632,7 @@ export default function AdminSettingsPage() {
                     <select
                       value={challengeForm.challenge_type}
                       onChange={(e) => setChallengeForm({ ...challengeForm, challenge_type: e.target.value })}
-                      className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                      className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
                     >
                       <option value="LEETCODE">LeetCode</option>
                       <option value="SYSTEM_DESIGN">System Design</option>
@@ -644,7 +644,7 @@ export default function AdminSettingsPage() {
                     <select
                       value={challengeForm.difficulty}
                       onChange={(e) => setChallengeForm({ ...challengeForm, difficulty: e.target.value })}
-                      className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                      className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
                     >
                       <option value="Easy">Easy</option>
                       <option value="Medium">Medium</option>
@@ -658,7 +658,7 @@ export default function AdminSettingsPage() {
                     type="url"
                     value={challengeForm.challenge_url}
                     onChange={(e) => setChallengeForm({ ...challengeForm, challenge_url: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                    className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
                     placeholder="https://leetcode.com/problems/two-sum/"
                   />
                 </div>
@@ -668,7 +668,7 @@ export default function AdminSettingsPage() {
                     type="datetime-local"
                     value={challengeForm.deadline}
                     onChange={(e) => setChallengeForm({ ...challengeForm, deadline: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                    className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
                   />
                 </div>
                 <button
@@ -683,7 +683,7 @@ export default function AdminSettingsPage() {
 
             <div className="grid gap-4">
               {challenges.map((challenge: any) => (
-                <div key={challenge.id} className="bg-surface-container-lowest border border-outline rounded-xl p-5">
+                <div key={challenge.id} className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-5">
                   <div className="flex justify-between items-start gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -759,7 +759,7 @@ export default function AdminSettingsPage() {
                     createSkillMutation.mutate(newSkillName.trim());
                   }
                 }}
-                className="flex-1 px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                className="flex-1 px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
                 placeholder="e.g. React, Python, Figma..."
               />
               <button
@@ -777,7 +777,7 @@ export default function AdminSettingsPage() {
                 {skills.map((skill: any) => (
                   <div
                     key={skill.id}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high border border-outline text-sm font-medium text-on-surface"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high text-sm font-medium text-on-surface"
                   >
                     {skill.image_url && (
                       <img src={skill.image_url} alt={skill.name} className="w-4 h-4 rounded-full object-cover" />
@@ -809,18 +809,18 @@ export default function AdminSettingsPage() {
               <p className="text-sm text-on-surface-variant">Recognize outstanding members for their contributions.</p>
             </div>
 
-            <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-4">
+            <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-on-surface mb-1">Search Member</label>
                 <input
                   type="text"
                   value={totmSearch}
                   onChange={(e) => { setTotmSearch(e.target.value); setTotmUserId(""); }}
-                  className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
                   placeholder="Search by name or username..."
                 />
                 {totmSearch && filteredMembers.length > 0 && !totmUserId && (
-                  <div className="mt-1 border border-outline rounded-lg divide-y divide-outline overflow-hidden max-h-48 overflow-y-auto">
+                  <div className="mt-1 shadow-lg ring-1 ring-outline/10 rounded-lg divide-y divide-outline/15/15 overflow-hidden max-h-48 overflow-y-auto">
                     {filteredMembers.slice(0, 10).map((m: any) => (
                       <button
                         key={m.id}
@@ -853,7 +853,7 @@ export default function AdminSettingsPage() {
                   type="number"
                   value={totmPoints}
                   onChange={(e) => setTotmPoints(e.target.value)}
-                  className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                  className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
                   placeholder="e.g. 100"
                   min={1}
                 />
@@ -876,7 +876,7 @@ export default function AdminSettingsPage() {
               {totmList.length > 0 ? (
                 <div className="space-y-3">
                   {totmList.map((entry: any) => (
-                    <div key={entry.id} className="flex items-center gap-4 bg-surface-container-lowest border border-outline rounded-xl p-4">
+                    <div key={entry.id} className="flex items-center gap-4 bg-surface-container-lowest shadow-sm rounded-xl p-4">
                       <img
                         src={entry.user?.profile_pic_url || `https://api.dicebear.com/7.x/initials/jpg?seed=${entry.user?.first_name} ${entry.user?.last_name}`}
                         alt={entry.user?.first_name}
@@ -910,7 +910,7 @@ export default function AdminSettingsPage() {
             </div>
 
             {submissions.length > 0 ? (
-              <div className="overflow-x-auto rounded-xl border border-outline">
+              <div className="overflow-x-auto rounded-xl shadow-sm">
                 <table className="w-full text-sm">
                   <thead className="bg-surface-container-high">
                     <tr>
@@ -921,7 +921,7 @@ export default function AdminSettingsPage() {
                       <th className="text-center px-4 py-3 font-semibold text-on-surface">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-outline">
+                  <tbody className="divide-y divide-outline/15">
                     {submissions.map((sub: any) => (
                       <tr key={sub.id} className="hover:bg-surface-container-high/50 transition-colors">
                         <td className="px-4 py-3">
@@ -964,7 +964,7 @@ export default function AdminSettingsPage() {
                 </table>
               </div>
             ) : (
-              <div className="bg-surface-container-lowest border border-outline rounded-xl text-center py-12">
+              <div className="bg-surface-container-lowest shadow-sm rounded-xl text-center py-12">
                 <span className="material-symbols-outlined text-6xl mb-4 block text-on-surface-variant">assignment</span>
                 <p className="text-on-surface-variant">No submissions yet</p>
               </div>
@@ -974,7 +974,7 @@ export default function AdminSettingsPage() {
             {showSubmissionModal && selectedSubmission && (
               <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
                 <div className="bg-surface-container-lowest rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                  <div className="sticky top-0 bg-surface-container-high px-6 py-4 border-b border-outline flex justify-between items-center">
+                  <div className="sticky top-0 bg-surface-container-high px-6 py-4 border-b border-outline/20 flex justify-between items-center">
                     <h3 className="font-bold text-on-surface">Submission Details</h3>
                     <button
                       onClick={() => {
@@ -1102,7 +1102,7 @@ export default function AdminSettingsPage() {
             </div>
 
             {showTemplateForm && (
-              <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 space-y-4">
+              <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 space-y-4">
                 <div className="flex justify-between items-center">
                   <h3 className="font-bold text-on-surface">
                     {editingTemplate ? "Edit Email Template" : "New Email Template"}
@@ -1117,7 +1117,7 @@ export default function AdminSettingsPage() {
                     type="text"
                     value={templateForm.template_name}
                     onChange={(e) => setTemplateForm({ ...templateForm, template_name: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                    className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
                     placeholder="e.g. Welcome Email, Interview Confirmation"
                   />
                 </div>
@@ -1127,7 +1127,7 @@ export default function AdminSettingsPage() {
                     type="text"
                     value={templateForm.subject}
                     onChange={(e) => setTemplateForm({ ...templateForm, subject: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
+                    className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:ring-2 focus:ring-primary/20 outline-none"
                     placeholder="e.g. Welcome to Slightly Techie!"
                   />
                 </div>
@@ -1137,14 +1137,14 @@ export default function AdminSettingsPage() {
                     value={templateForm.html_content}
                     onChange={(e) => setTemplateForm({ ...templateForm, html_content: e.target.value })}
                     rows={10}
-                    className="w-full px-4 py-2 rounded-lg border border-outline bg-surface-container-lowest text-on-surface font-mono text-xs focus:ring-2 focus:ring-primary/20 outline-none resize-none"
+                    className="w-full px-4 py-2 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface font-mono text-xs focus:ring-2 focus:ring-primary/20 outline-none resize-none"
                     placeholder="<html><body>Your email template here...</body></html>"
                   />
                 </div>
                 <div className="flex gap-3 justify-end">
                   <button
                     onClick={() => { setShowTemplateForm(false); setEditingTemplate(null); }}
-                    className="px-4 py-2 rounded-lg border border-outline text-on-surface hover:bg-surface-container-high transition-colors"
+                    className="px-4 py-2 rounded-lg border border-outline/40 text-on-surface hover:bg-surface-container-high transition-colors"
                   >
                     Cancel
                   </button>
@@ -1162,7 +1162,7 @@ export default function AdminSettingsPage() {
             {templates.length > 0 ? (
               <div className="space-y-3">
                 {templates.map((template: any) => (
-                  <div key={template.id} className="bg-surface-container-lowest border border-outline rounded-xl p-4 hover:bg-surface-container-high/50 transition-colors">
+                  <div key={template.id} className="bg-surface-container-lowest shadow-sm rounded-xl p-4 hover:bg-surface-container-high/50 transition-colors">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-on-surface">{template.template_name}</h3>
@@ -1194,7 +1194,7 @@ export default function AdminSettingsPage() {
                 ))}
               </div>
             ) : (
-              <div className="bg-surface-container-lowest border border-outline rounded-xl text-center py-12">
+              <div className="bg-surface-container-lowest shadow-sm rounded-xl text-center py-12">
                 <span className="material-symbols-outlined text-6xl mb-4 block text-on-surface-variant">mail</span>
                 <p className="text-on-surface-variant">No email templates yet. Create one to get started.</p>
               </div>

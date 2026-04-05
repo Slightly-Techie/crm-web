@@ -95,7 +95,7 @@ export default function DashboardPage() {
           {/* User Profile Card */}
           {isUserProfileLoading ? (
             <div
-              className="relative rounded-xl overflow-hidden border border-outline min-h-60 flex flex-col items-center justify-center animate-pulse"
+              className="relative rounded-xl overflow-hidden shadow-md min-h-60 flex flex-col items-center justify-center animate-pulse"
               style={{ background: "linear-gradient(135deg, #154212 0%, #2d5a27 100%)" }}
             >
               <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60" />
@@ -109,7 +109,7 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div
-              className="relative rounded-xl overflow-hidden border border-outline min-h-60 flex flex-col items-center justify-center"
+              className="relative rounded-xl overflow-hidden shadow-md min-h-60 flex flex-col items-center justify-center"
               style={{ background: "linear-gradient(135deg, #154212 0%, #2d5a27 100%)" }}
             >
               <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60" />
@@ -138,7 +138,7 @@ export default function DashboardPage() {
           )}
 
           {/* My Circle */}
-          <div className="bg-surface-container-lowest border border-outline rounded-xl p-5 space-y-3">
+          <div className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-5 space-y-3">
             <div className="flex items-center justify-between">
               <h4 className="font-bold font-headline text-on-surface text-sm">My Circle</h4>
               <Link href="/org-chart" className="text-xs text-primary font-semibold hover:underline">View chart</Link>
@@ -146,7 +146,7 @@ export default function DashboardPage() {
             <p className="text-xs text-on-surface-variant">See your manager and direct reports in the organization tree.</p>
             <Link
               href="/org-chart"
-              className="flex items-center gap-2 w-full px-3 py-2.5 rounded-lg border border-outline hover:bg-surface-container-high transition-colors text-sm font-medium text-on-surface"
+              className="flex items-center gap-2 w-full px-3 py-2.5 rounded-lg border border-outline/40 hover:bg-surface-container-high transition-colors text-sm font-medium text-on-surface"
             >
               <span className="material-symbols-outlined text-primary">account_tree</span>
               Open My Team View
@@ -229,7 +229,7 @@ export default function DashboardPage() {
             )}
 
             {/* My Circle */}
-            <div className="bg-surface-container-lowest border border-outline rounded-xl p-4 space-y-2">
+            <div className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-4 space-y-2">
               <div className="flex items-center justify-between">
                 <h4 className="font-bold font-headline text-on-surface text-sm">My Circle</h4>
                 <Link href="/org-chart" className="text-xs text-primary font-semibold hover:underline">View chart</Link>
@@ -273,7 +273,7 @@ export default function DashboardPage() {
               </div>
             )}
             {latestChallengeData && (
-              <div className="bg-surface-container-lowest border border-outline rounded-xl p-4 space-y-3">
+              <div className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-primary text-lg">code</span>
@@ -298,7 +298,7 @@ export default function DashboardPage() {
                 </div>
                 {latestChallengeData.challenge_url && (
                   <a href={latestChallengeData.challenge_url} target="_blank" rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full px-3 py-2 rounded-lg border border-outline hover:bg-surface-container-high transition-colors text-sm font-medium text-on-surface">
+                    className="flex items-center justify-center gap-2 w-full px-3 py-2 rounded-lg border border-outline/40 hover:bg-surface-container-high transition-colors text-sm font-medium text-on-surface">
                     <span className="material-symbols-outlined text-primary">open_in_new</span>
                     View Challenge
                   </a>
@@ -316,7 +316,7 @@ export default function DashboardPage() {
             {isFeedsLoading ? (
               <>
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="bg-surface-container-lowest border border-outline rounded-xl p-4 md:p-5 animate-pulse">
+                  <div key={i} className="bg-surface-container-lowest shadow-sm rounded-xl p-4 md:p-5 animate-pulse">
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 rounded-full bg-surface-container-high flex-shrink-0" />
                       <div className="flex-1 space-y-2">
@@ -331,7 +331,7 @@ export default function DashboardPage() {
               </>
             ) : recentFeeds.length > 0 ? (
               recentFeeds.slice(0, 3).map((post: any) => (
-                <div key={post.id} className="bg-surface-container-lowest border border-outline rounded-xl p-4 md:p-5">
+                <div key={post.id} className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-4 md:p-5">
                   <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-secondary-container">
                       <Image
@@ -360,7 +360,18 @@ export default function DashboardPage() {
                       <p className="text-sm text-on-surface mt-2 leading-relaxed font-body line-clamp-2">
                         {post.content}
                       </p>
-                      <div className="mt-3 pt-3 border-t border-outline">
+                      {post.feed_pic_url && (
+                        <div className="mt-3 rounded-lg overflow-hidden">
+                          <Image
+                            src={post.feed_pic_url}
+                            alt="Post image"
+                            width={400}
+                            height={200}
+                            className="w-full object-cover max-h-40"
+                          />
+                        </div>
+                      )}
+                      <div className="mt-3 pt-3 border-t border-outline/20">
                         <p className="text-xs text-on-surface-variant">
                           {new Date(post.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                         </p>
@@ -370,7 +381,7 @@ export default function DashboardPage() {
                 </div>
               ))
             ) : (
-              <div className="bg-surface-container-lowest border border-outline rounded-xl p-6 text-center">
+              <div className="bg-surface-container-lowest shadow-sm rounded-xl p-6 text-center">
                 <span className="material-symbols-outlined text-4xl text-on-surface-variant mb-2 block">rss_feed</span>
                 <p className="text-on-surface-variant text-sm">No activity yet — be the first to post!</p>
               </div>
@@ -381,7 +392,7 @@ export default function DashboardPage() {
         {/* Right Column */}
         <div className="hidden lg:block lg:col-span-1 space-y-6">
           {/* Network stats */}
-          <div className="bg-surface-container-lowest border border-outline rounded-xl p-5 space-y-3">
+          <div className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-5 space-y-3">
             <div className="flex items-center justify-between">
               <h4 className="font-bold font-headline text-on-surface text-sm">The Network</h4>
               <Link href="/techies" className="text-xs text-primary font-semibold hover:underline">View all</Link>
@@ -446,7 +457,7 @@ export default function DashboardPage() {
 
           {/* Coding Challenge */}
           {latestChallengeData && (
-            <div className="bg-surface-container-lowest border border-outline rounded-xl p-5 space-y-3">
+            <div className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-5 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-primary text-lg">code</span>
@@ -492,7 +503,7 @@ export default function DashboardPage() {
             {isAnnouncementsLoading ? (
               <>
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="bg-surface-container-lowest border border-outline rounded-lg p-3 animate-pulse">
+                  <div key={i} className="bg-surface-container-lowest shadow-sm rounded-lg p-3 animate-pulse">
                     <div className="h-4 bg-surface-container-high rounded w-3/4 mb-2" />
                     <div className="h-3 bg-surface-container-high rounded w-full" />
                   </div>
@@ -501,14 +512,14 @@ export default function DashboardPage() {
             ) : recentAnnouncements.length > 0 ? (
               recentAnnouncements.slice(0, 4).map((announcement: any) => (
                 <Link href="/announcements" key={announcement.id}>
-                  <div className="bg-surface-container-lowest border border-outline rounded-lg p-3 hover:bg-surface-container-high transition-colors cursor-pointer mb-2">
+                  <div className="bg-surface-container-lowest shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 rounded-lg p-3 cursor-pointer mb-2">
                     <p className="text-xs font-semibold text-on-surface line-clamp-1">{announcement.title}</p>
                     <p className="text-xs text-on-surface-variant mt-0.5 line-clamp-2">{announcement.content}</p>
                   </div>
                 </Link>
               ))
             ) : (
-              <div className="bg-surface-container-lowest border border-outline rounded-lg p-3 text-center">
+              <div className="bg-surface-container-lowest shadow-sm rounded-lg p-3 text-center">
                 <p className="text-xs text-on-surface-variant">No announcements yet</p>
               </div>
             )}

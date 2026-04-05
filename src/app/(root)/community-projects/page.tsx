@@ -20,12 +20,14 @@ function Page() {
   const {
     data: projectsData,
     isLoading,
+    isFetching,
     isError,
   } = useQuery({
     queryKey: ["projects"],
     queryFn: () => getProjects(),
     refetchOnWindowFocus: true,
     refetchOnMount: true,
+    staleTime: 0,
     retry: 3,
   });
 
@@ -156,16 +158,22 @@ function Page() {
             <LoadingSpinner fullScreen={false} />
           </div>
         )}
+        {/* Show spinner on re-navigation when cache is stale (isLoading=false but no data yet) */}
+        {!isLoading && isFetching && filteredProjects.length === 0 && (
+          <div className="flex justify-center items-center py-32">
+            <LoadingSpinner fullScreen={false} />
+          </div>
+        )}
 
         {/* Error State */}
         {isError && (
-          <div className="bg-error-container border border-error rounded-xl p-6 text-center">
+          <div className="bg-error-container rounded-xl p-6 text-center shadow-sm">
             <p className="text-on-error-container font-medium">Failed to load projects</p>
           </div>
         )}
 
         {/* Project Grid */}
-        {!isLoading && !isError && (
+        {!isLoading && !isError && !(isFetching && filteredProjects.length === 0) && (
           <>
             {filteredProjects.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
@@ -174,7 +182,7 @@ function Page() {
                     key={project.id}
                     href={`/community-projects/${encodeURIComponent(project.id)}`}
                   >
-                    <div className="group relative bg-surface-container-lowest rounded-xl p-6 transition-all duration-300 hover:translate-y-[-4px] flex flex-col min-h-[420px] cursor-pointer">
+                    <div className="group relative bg-surface-container-lowest shadow-sm rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex flex-col min-h-[420px] cursor-pointer">
                       <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity pointer-events-none"></div>
                       <div className="relative z-10">
                         {/* Icon and Status */}
@@ -198,7 +206,7 @@ function Page() {
                         </p>
 
                         {/* Meta Information */}
-                        <div className="space-y-4 pt-4 border-t border-outline-variant/20">
+                        <div className="space-y-4 pt-4 border-t border-outline/15">
                           <div className="flex items-center justify-between">
                             <span className="text-xs font-medium text-on-surface-variant">Start Date</span>
                             <span className="text-xs font-bold text-on-surface">

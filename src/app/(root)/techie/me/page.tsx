@@ -56,7 +56,7 @@ export default function ProfilePage() {
   });
 
   const { data: projectsData } = useQuery({
-    queryKey: ["projects"],
+    queryKey: ["projects", "list"],
     queryFn: () => getProjects().then((res) => res.data),
     refetchOnWindowFocus: false,
     enabled: !!user,

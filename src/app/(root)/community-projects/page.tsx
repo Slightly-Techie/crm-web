@@ -23,8 +23,8 @@ function Page() {
     isFetching,
     isError,
   } = useQuery({
-    queryKey: ["projects"],
-    queryFn: () => getProjects(),
+    queryKey: ["projects", "list"],
+    queryFn: () => getProjects().then((r) => r.data),
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     staleTime: 0,
@@ -45,7 +45,7 @@ function Page() {
     mutationFn: (projectId: number) => deleteProjectById(projectId),
     onSuccess: () => {
       toast.success("Project deleted.");
-      queryClient.invalidateQueries({ queryKey: ["projects"] });
+      queryClient.invalidateQueries({ queryKey: ["projects", "list"] });
     },
     onError: () => toast.error("Failed to delete project."),
   });
@@ -71,7 +71,7 @@ function Page() {
     }
   };
 
-  const projects = projectsData?.data?.items || [];
+  const projects = projectsData?.items || [];
 
   const filteredProjects = projects.filter((project: any) => {
     if (selectedFilter === "all") return true;

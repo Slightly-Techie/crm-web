@@ -29,6 +29,7 @@ export default function FullOrgChartPage() {
     queryKey: ["orgChart"],
     queryFn: () => getOrgChart().then((res) => res.data),
     refetchOnWindowFocus: false,
+    enabled: sessionStatus === "authenticated",
   });
 
   const { data: userProfileData } = useQuery({

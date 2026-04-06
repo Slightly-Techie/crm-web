@@ -13,6 +13,7 @@ interface OrgChartNodeCardProps {
   onNodeClick?: (node: OrgChartNode) => void;
   onContextAction?: (action: string, node: OrgChartNode) => void;
   highlightIds?: Set<number>;
+  isAdmin?: boolean;
 }
 
 export default function OrgChartNodeCard({
@@ -22,6 +23,7 @@ export default function OrgChartNodeCard({
   onNodeClick,
   onContextAction,
   highlightIds,
+  isAdmin = false,
 }: OrgChartNodeCardProps) {
   const [expanded, setExpanded] = useState(depth < defaultExpandDepth);
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
@@ -134,15 +136,17 @@ export default function OrgChartNodeCard({
 
         {/* Actions */}
         <div className="flex flex-col items-center gap-1 shrink-0">
-          <div ref={menuRef} className="relative">
-            <button
-              onClick={handleMenuToggle}
-              data-org-menu-trigger="true"
-              className="p-1 rounded-lg hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors"
-            >
-              <BsThreeDotsVertical size={14} />
-            </button>
-          </div>
+          {isAdmin && (
+            <div ref={menuRef} className="relative">
+              <button
+                onClick={handleMenuToggle}
+                data-org-menu-trigger="true"
+                className="p-1 rounded-lg hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors"
+              >
+                <BsThreeDotsVertical size={14} />
+              </button>
+            </div>
+          )}
 
           {hasChildren && (
             <button
@@ -181,6 +185,7 @@ export default function OrgChartNodeCard({
                   onNodeClick={onNodeClick}
                   onContextAction={onContextAction}
                   highlightIds={highlightIds}
+                  isAdmin={isAdmin}
                 />
               </div>
             ))}

@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { SEARCH_DEBOUNCE_MS } from "@/lib/constants";
 import toast from "react-hot-toast";
 import useEndpoints from "@/services";
 import { AiOutlineClose } from "react-icons/ai";
 import { getApiErrorMessage } from "@/utils";
 import { PROJECT_TYPES, PRIORITIES } from "@/constants/projects";
-import { ITechie } from "@/types";
+import { ITechie, IStack } from "@/types";
 import Image from "next/image";
 
 interface EditProjectModalProps {
@@ -22,6 +23,7 @@ interface EditProjectModalProps {
     manager_id?: number;
     manager?: ITechie;
     project_tools?: any[];
+    stacks?: IStack[];
   } | null;
 }
 
@@ -32,11 +34,12 @@ interface FormData {
   project_priority: "LOW PRIORITY" | "MEDIUM PRIORITY" | "HIGH PRIORITY";
   manager_id: number | null;
   project_tools: number[];
+  stacks: number[];
 }
 
 export default function EditProjectModal({ isOpen, onClose, project }: EditProjectModalProps) {
   const queryClient = useQueryClient();
-  const { updateProjectById, searchTechie, searchSkills } = useEndpoints();
+  const { updateProjectById, searchTechie, searchSkills, getStacks } = useEndpoints();
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -45,21 +48,35 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
     project_priority: "MEDIUM PRIORITY",
     manager_id: null,
     project_tools: [],
+    stacks: [],
   });
 
   const [managerSearch, setManagerSearch] = useState("");
+  const [debouncedManagerSearch, setDebouncedManagerSearch] = useState("");
   const [toolSearch, setToolSearch] = useState("");
   const [isAssigningManager, setIsAssigningManager] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedManagerSearch(managerSearch.trim()), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+  }, [managerSearch]);
   const [isAddingTool, setIsAddingTool] = useState(false);
   const [cachedSelectedManager, setCachedSelectedManager] = useState<ITechie | null>(null);
   const [cachedTools, setCachedTools] = useState<Record<number, any>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Fetch all stacks
+  const { data: stacksData } = useQuery({
+    queryKey: ["stacks"],
+    queryFn: () => getStacks().then((res) => res.data),
+    enabled: isOpen,
+  });
+
   // Fetch managers
   const { data: managersData, isFetching: isSearchingManagers } = useQuery({
-    queryKey: ["edit-manager-search", managerSearch],
-    queryFn: () => searchTechie(managerSearch.trim()),
-    enabled: isOpen && isAssigningManager && managerSearch.trim().length >= 2,
+    queryKey: ["edit-manager-search", debouncedManagerSearch],
+    queryFn: () => searchTechie(debouncedManagerSearch),
+    enabled: isOpen && isAssigningManager && debouncedManagerSearch.length >= 2,
   });
 
   // Fetch tools
@@ -83,6 +100,11 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
         const currentToolIds = (project.project_tools || []).map((t: any) => t.id);
         if (JSON.stringify(formData.project_tools) !== JSON.stringify(currentToolIds)) {
           updatePayload.project_tools = formData.project_tools;
+        }
+
+        const currentStackIds = (project.stacks || []).map((s: any) => s.id);
+        if (JSON.stringify([...formData.stacks].sort()) !== JSON.stringify([...currentStackIds].sort())) {
+          updatePayload.stacks = formData.stacks;
         }
       }
 
@@ -115,6 +137,7 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
           (project.project_priority as "LOW PRIORITY" | "MEDIUM PRIORITY" | "HIGH PRIORITY") || "MEDIUM PRIORITY",
         manager_id: project.manager_id || null,
         project_tools: (project.project_tools || []).map((t: any) => t.id),
+        stacks: (project.stacks || []).map((s: IStack) => s.id),
       });
       // Cache tools for display even after search results update
       const toolsMap = (project.project_tools || []).reduce((acc: Record<number, any>, t: any) => {
@@ -246,6 +269,37 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
             </div>
           </div>
 
+          {/* Stacks Section */}
+          <div className="space-y-4 pt-4 border-t border-outline">
+            <h3 className="text-sm font-bold uppercase tracking-widest text-on-surface-variant">Tech Stacks</h3>
+            <div className="space-y-2 max-h-48 overflow-y-auto">
+              {(stacksData || []).map((stack: IStack) => (
+                <label
+                  key={stack.id}
+                  className="flex items-center gap-3 p-3 rounded-lg bg-surface-container cursor-pointer hover:bg-surface-container-high transition-colors"
+                >
+                  <input
+                    type="checkbox"
+                    checked={formData.stacks.includes(stack.id)}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        stacks: e.target.checked
+                          ? [...formData.stacks, stack.id]
+                          : formData.stacks.filter((id) => id !== stack.id),
+                      })
+                    }
+                    className="w-4 h-4 rounded accent-primary"
+                  />
+                  <span className="text-sm text-on-surface">{stack.name}</span>
+                </label>
+              ))}
+              {(stacksData || []).length === 0 && (
+                <p className="text-xs text-on-surface-variant">Loading stacks...</p>
+              )}
+            </div>
+          </div>
+
           {/* Manager Section */}
           <div className="space-y-4 pt-4 border-t border-outline">
             <div className="flex items-center justify-between">
@@ -298,7 +352,7 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                   className="w-full px-4 py-3 rounded-lg border border-outline bg-surface-container-lowest text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
 
-                {managerSearch.length >= 2 && (
+                {debouncedManagerSearch.length >= 2 && (
                   <div className="space-y-2 max-h-40 overflow-y-auto">
                     {isSearchingManagers ? (
                       <p className="text-xs text-on-surface-variant py-2">Searching...</p>
@@ -406,8 +460,8 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                               ...formData,
                               project_tools: [...new Set([...formData.project_tools, tool.id])],
                             });
-                            // Cache the tool
                             setCachedTools({ ...cachedTools, [tool.id]: tool });
+                            setToolSearch("");
                           }}
                         >
                           <div className="flex items-center gap-2">

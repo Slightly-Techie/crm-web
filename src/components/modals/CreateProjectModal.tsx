@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { SEARCH_DEBOUNCE_MS } from "@/lib/constants";
 import toast from "react-hot-toast";
 import useEndpoints from "@/services";
 import { AiOutlineClose } from "react-icons/ai";
@@ -51,9 +52,21 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
   });
 
   const [memberSearch, setMemberSearch] = useState("");
+  const [debouncedMemberSearch, setDebouncedMemberSearch] = useState("");
   const [selectedMemberRole, setSelectedMemberRole] = useState<TeamRole>("FULL STACK");
   const [toolSearch, setToolSearch] = useState("");
   const [managerSearch, setManagerSearch] = useState("");
+  const [debouncedManagerSearch, setDebouncedManagerSearch] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedMemberSearch(memberSearch.trim()), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+  }, [memberSearch]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedManagerSearch(managerSearch.trim()), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+  }, [managerSearch]);
   const [cachedSelectedManager, setCachedSelectedManager] = useState<ITechie | null>(null);
   const [cachedTools, setCachedTools] = useState<Record<number, any>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -74,16 +87,16 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
 
   // Fetch members
   const { data: membersData, isFetching: isSearchingMembers } = useQuery({
-    queryKey: ["member-search", memberSearch],
-    queryFn: () => searchTechie(memberSearch.trim()),
-    enabled: isOpen && currentStep === 4 && memberSearch.trim().length >= 2,
+    queryKey: ["member-search", debouncedMemberSearch],
+    queryFn: () => searchTechie(debouncedMemberSearch),
+    enabled: isOpen && currentStep === 4 && debouncedMemberSearch.length >= 2,
   });
 
   // Fetch managers
   const { data: managersData, isFetching: isSearchingManagers } = useQuery({
-    queryKey: ["manager-search", managerSearch],
-    queryFn: () => searchTechie(managerSearch.trim()),
-    enabled: isOpen && currentStep === 5 && managerSearch.trim().length >= 2,
+    queryKey: ["manager-search", debouncedManagerSearch],
+    queryFn: () => searchTechie(debouncedManagerSearch),
+    enabled: isOpen && currentStep === 5 && debouncedManagerSearch.length >= 2,
   });
 
   // Create project mutation
@@ -97,7 +110,6 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
         manager_id: formData.manager_id,
         stacks: formData.stacks,
         project_tools: formData.project_tools,
-        members: formData.members.map((m) => m.id),
       };
 
       const projectRes = await postProjects(createPayload);
@@ -196,6 +208,20 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
 
   const addedMemberIds = new Set(formData.members.map((m) => m.id));
   const availableMembers = (membersData?.items || []).filter((m: ITechie) => !addedMemberIds.has(m.id)).slice(0, 8);
+
+  const handleAddMember = (member: ITechie) => {
+    setFormData({
+      ...formData,
+      members: [...formData.members, {
+        id: member.id,
+        role: selectedMemberRole,
+        first_name: member.first_name,
+        last_name: member.last_name,
+        username: member.username,
+      }],
+    });
+    setMemberSearch("");
+  };
 
   const addedToolIds = new Set(formData.project_tools);
   const availableTools = (toolsData?.items || []).filter((t: any) => !addedToolIds.has(t.id)).slice(0, 8);
@@ -364,6 +390,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
                         onClick={() => {
                           setCachedTools({ ...cachedTools, [tool.id]: tool });
                           setFormData({ ...formData, project_tools: [...new Set([...formData.project_tools, tool.id])] });
+                          setToolSearch("");
                         }}
                         className="flex items-center justify-between p-3 rounded-lg bg-surface-container hover:bg-surface-container-high cursor-pointer"
                       >
@@ -437,7 +464,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
                   className="w-full px-4 py-3 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
 
-                {memberSearch.trim().length >= 2 && (
+                {debouncedMemberSearch.length >= 2 && (
                   <div className="space-y-2 max-h-60 overflow-y-auto">
                     {isSearchingMembers ? (
                       <p className="text-xs text-on-surface-variant py-4">Searching...</p>
@@ -452,7 +479,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
                             </div>
                           </div>
                           <button
-                            onClick={() => setFormData({ ...formData, members: [...formData.members, { id: member.id, role: selectedMemberRole, first_name: member.first_name, last_name: member.last_name, username: member.username }] })}
+                            onClick={() => handleAddMember(member)}
                             className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-on-primary hover:bg-primary/90"
                           >
                             Add
@@ -493,7 +520,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
                 className="w-full px-4 py-3 rounded-lg border border-outline bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
               />
 
-              {managerSearch.trim().length >= 2 && (
+              {debouncedManagerSearch.length >= 2 && (
                 <div className="space-y-2 max-h-60 overflow-y-auto">
                   {isSearchingManagers ? (
                     <p className="text-xs text-on-surface-variant py-4">Searching...</p>

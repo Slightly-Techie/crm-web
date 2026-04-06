@@ -2,6 +2,125 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Stitch Design System — CSS color tokens ─────────────────────────────── */
+/* Values are stored as space-separated RGB channels (for example, `21 66 18`) */
+/* instead of `rgb(...)`. This modern CSS pattern lets Tailwind and other      */
+/* consumers wrap them as `rgb(var(--color-*) / <alpha-value>)`, so opacity    */
+/* modifiers such as `bg-primary/10` work correctly.                           */
+@layer base {
+  :root {
+    --color-primary:                  21 66 18;
+    --color-on-primary:               255 255 255;
+    --color-primary-container:        45 90 39;
+    --color-on-primary-container:     157 208 144;
+    --color-primary-fixed:            188 240 174;
+    --color-primary-fixed-dim:        161 212 148;
+    --color-on-primary-fixed:         0 34 1;
+    --color-on-primary-fixed-variant: 35 80 30;
+
+    --color-secondary:                75 101 71;
+    --color-on-secondary:             255 255 255;
+    --color-secondary-container:      205 235 197;
+    --color-on-secondary-container:   81 107 77;
+    --color-secondary-fixed:          205 235 197;
+    --color-secondary-fixed-dim:      178 206 170;
+    --color-on-secondary-fixed:       9 32 9;
+    --color-on-secondary-fixed-variant: 52 77 49;
+
+    --color-tertiary:                 48 60 52;
+    --color-on-tertiary:              255 255 255;
+    --color-tertiary-container:       71 83 74;
+    --color-on-tertiary-container:    185 198 187;
+    --color-tertiary-fixed:           217 230 218;
+    --color-tertiary-fixed-dim:       189 202 190;
+    --color-on-tertiary-fixed:        19 30 23;
+    --color-on-tertiary-fixed-variant: 62 74 65;
+
+    --color-error:                    186 26 26;
+    --color-on-error:                 255 255 255;
+    --color-error-container:          255 218 214;
+    --color-on-error-container:       147 0 10;
+
+    --color-background:               251 249 248;
+    --color-on-background:            27 28 28;
+    --color-surface:                  251 249 248;
+    --color-on-surface:               27 28 28;
+    --color-surface-variant:          228 226 225;
+    --color-on-surface-variant:       66 73 62;
+
+    --color-surface-container-lowest:  255 255 255;
+    --color-surface-container-low:     246 243 242;
+    --color-surface-container:         240 237 237;
+    --color-surface-container-high:    234 232 231;
+    --color-surface-container-highest: 228 226 225;
+    --color-surface-bright:            251 249 248;
+    --color-surface-dim:               220 217 217;
+
+    --color-outline:                  114 121 110;
+    --color-outline-variant:          194 201 187;
+    --color-inverse-surface:          48 48 48;
+    --color-inverse-on-surface:       243 240 240;
+    --color-inverse-primary:          161 212 148;
+    --color-surface-tint:             59 105 52;
+  }
+
+  .dark {
+    --color-primary:                  161 212 148;
+    --color-on-primary:               0 34 1;
+    --color-primary-container:        35 80 30;
+    --color-on-primary-container:     188 240 174;
+    --color-primary-fixed:            188 240 174;
+    --color-primary-fixed-dim:        161 212 148;
+    --color-on-primary-fixed:         0 34 1;
+    --color-on-primary-fixed-variant: 35 80 30;
+
+    --color-secondary:                178 206 170;
+    --color-on-secondary:             29 54 27;
+    --color-secondary-container:      51 77 49;
+    --color-on-secondary-container:   205 235 197;
+    --color-secondary-fixed:          205 235 197;
+    --color-secondary-fixed-dim:      178 206 170;
+    --color-on-secondary-fixed:       9 32 9;
+    --color-on-secondary-fixed-variant: 52 77 49;
+
+    --color-tertiary:                 189 202 190;
+    --color-on-tertiary:              40 48 41;
+    --color-tertiary-container:       62 74 65;
+    --color-on-tertiary-container:    217 230 218;
+    --color-tertiary-fixed:           217 230 218;
+    --color-tertiary-fixed-dim:       189 202 190;
+    --color-on-tertiary-fixed:        19 30 23;
+    --color-on-tertiary-fixed-variant: 62 74 65;
+
+    --color-error:                    255 180 171;
+    --color-on-error:                 105 0 5;
+    --color-error-container:          147 0 10;
+    --color-on-error-container:       255 218 214;
+
+    --color-background:               19 21 19;
+    --color-on-background:            226 227 222;
+    --color-surface:                  19 21 19;
+    --color-on-surface:               226 227 222;
+    --color-surface-variant:          66 73 62;
+    --color-on-surface-variant:       194 201 187;
+
+    --color-surface-container-lowest:  14 15 14;
+    --color-surface-container-low:     27 28 26;
+    --color-surface-container:         31 32 30;
+    --color-surface-container-high:    41 43 40;
+    --color-surface-container-highest: 52 54 51;
+    --color-surface-bright:            56 58 55;
+    --color-surface-dim:               19 21 19;
+
+    --color-outline:                  140 147 136;
+    --color-outline-variant:          66 73 62;
+    --color-inverse-surface:          226 227 222;
+    --color-inverse-on-surface:       47 49 46;
+    --color-inverse-primary:          59 105 52;
+    --color-surface-tint:             161 212 148;
+  }
+}
+
 #text-animate {
   white-space: pre;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useEndpoints from "@/services";
 import LoadingSpinner from "@/components/loadingSpinner";
@@ -10,19 +10,22 @@ import { createPortal } from "react-dom";
 import toast from "react-hot-toast";
 import ApplicantDetailModal from "@/components/modals/ApplicantDetailModal";
 
-const STATUS_LABELS: Record<string, { label: string; color: string }> = {
-  "TO CONTACT": { label: "To Contact", color: "bg-blue-100 text-blue-700" },
-  "IN REVIEW": { label: "In Review", color: "bg-yellow-100 text-yellow-700" },
-  "INTERVIEWED": { label: "Interviewed", color: "bg-purple-100 text-purple-700" },
-  "ACCEPTED": { label: "Accepted", color: "bg-secondary-container text-on-secondary-container" },
-  "NO SHOW": { label: "No Show", color: "bg-orange-100 text-orange-700" },
-  "REJECTED": { label: "Rejected", color: "bg-error/10 text-error" },
-  "TO BE ONBOARDED": { label: "Onboarding", color: "bg-tertiary/10 text-tertiary" },
-  "CONTACTED": { label: "Contacted", color: "bg-primary/10 text-primary" },
-  "PENDING": { label: "Pending", color: "bg-surface-container-high text-on-surface-variant" },
+const STATUS_LABELS: Record<string, { label: string; color: string; dot: string }> = {
+  "TO CONTACT":     { label: "To Contact",  color: "bg-blue-100 text-blue-700",                          dot: "bg-blue-500" },
+  "IN REVIEW":      { label: "In Review",   color: "bg-yellow-100 text-yellow-700",                      dot: "bg-yellow-500" },
+  "INTERVIEWED":    { label: "Interviewed", color: "bg-purple-100 text-purple-700",                      dot: "bg-purple-500" },
+  "ACCEPTED":       { label: "Accepted",    color: "bg-secondary-container text-on-secondary-container", dot: "bg-secondary" },
+  "NO SHOW":        { label: "No Show",     color: "bg-orange-100 text-orange-700",                      dot: "bg-orange-500" },
+  "REJECTED":       { label: "Rejected",    color: "bg-error/10 text-error",                             dot: "bg-error" },
+  "TO BE ONBOARDED":{ label: "Onboarding",  color: "bg-tertiary/10 text-tertiary",                       dot: "bg-tertiary" },
+  "CONTACTED":      { label: "Contacted",   color: "bg-primary/10 text-primary",                         dot: "bg-primary" },
+  "PENDING":        { label: "Pending",     color: "bg-surface-container-high text-on-surface-variant",  dot: "bg-outline" },
 };
 
-const APPLICANT_STATUS_OPTIONS = ["TO CONTACT", "CONTACTED", "INTERVIEWED", "ACCEPTED", "REJECTED"] as const;
+const APPLICANT_STATUS_OPTIONS = [
+  "TO CONTACT", "IN REVIEW", "CONTACTED", "INTERVIEWED",
+  "NO SHOW", "TO BE ONBOARDED", "ACCEPTED", "REJECTED",
+] as const;
 
 function StatusBadge({ status }: Readonly<{ status?: string }>) {
   const s = STATUS_LABELS[status || "PENDING"] || STATUS_LABELS.PENDING;
@@ -46,17 +49,26 @@ type Applicant = {
   status?: string;
 };
 
+function isAlreadyActiveError(error: any): boolean {
+  const detail = error?.response?.data?.detail;
+  if (typeof detail === "string") return detail.toLowerCase().includes("already active");
+  if (Array.isArray(detail)) return detail.some((d: any) => String(d).toLowerCase().includes("already active"));
+  return false;
+}
+
 export default function Applicants() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [activeMenuId, setActiveMenuId] = useState<number | null>(null);
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
+  const [statusPanelPosition, setStatusPanelPosition] = useState<{ top: number; left: number } | null>(null);
   const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
-  const [isStatusMenuOpen, setIsStatusMenuOpen] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [showBatchActions, setShowBatchActions] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const statusPanelRef = useRef<HTMLDivElement>(null);
   const { searchApplicant, updateApplicantStatus, activateUser, batchUpdateApplicantStatus } = useEndpoints();
   const queryClient = useQueryClient();
 
@@ -69,10 +81,8 @@ export default function Applicants() {
         try {
           await activateUser(userId);
         } catch (error: any) {
-          // If error is "USER ALREADY ACTIVE", ignore it, otherwise throw
-          if (!error.response?.data?.detail?.includes("ALREADY ACTIVE")) {
-            throw error;
-          }
+          // Ignore "already active" — user may have been activated previously
+          if (!isAlreadyActiveError(error)) throw error;
         }
       }
     },
@@ -102,47 +112,38 @@ export default function Applicants() {
     },
   });
 
+  const closeAllMenus = useCallback(() => {
+    setActiveMenuId(null);
+    setMenuPosition(null);
+    setStatusPanelPosition(null);
+  }, []);
+
   useEffect(() => {
-    if (!activeMenuId) {
-      setIsStatusMenuOpen(false);
-      return;
-    }
+    if (!activeMenuId) return;
 
     const onPointerDown = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      const clickedTrigger = target.closest("[data-applicant-menu-trigger='true']");
-
-      if (clickedTrigger || menuRef.current?.contains(target)) {
-        return;
-      }
-
-      setActiveMenuId(null);
-      setMenuPosition(null);
-      setIsStatusMenuOpen(false);
-    };
-
-    const closeMenu = () => {
-      setActiveMenuId(null);
-      setMenuPosition(null);
-      setIsStatusMenuOpen(false);
+      if (
+        target.closest("[data-applicant-menu-trigger='true']") ||
+        menuRef.current?.contains(target) ||
+        statusPanelRef.current?.contains(target)
+      ) return;
+      closeAllMenus();
     };
 
     document.addEventListener("mousedown", onPointerDown);
-    window.addEventListener("scroll", closeMenu, true);
-    window.addEventListener("resize", closeMenu);
-
+    window.addEventListener("scroll", closeAllMenus, true);
+    window.addEventListener("resize", closeAllMenus);
     return () => {
       document.removeEventListener("mousedown", onPointerDown);
-      window.removeEventListener("scroll", closeMenu, true);
-      window.removeEventListener("resize", closeMenu);
+      window.removeEventListener("scroll", closeAllMenus, true);
+      window.removeEventListener("resize", closeAllMenus);
     };
-  }, [activeMenuId]);
+  }, [activeMenuId, closeAllMenus]);
 
   const handleMenuToggle = (applicantId: number, event: React.MouseEvent<HTMLButtonElement>) => {
     if (activeMenuId === applicantId) {
-      setActiveMenuId(null);
-      setMenuPosition(null);
-      setIsStatusMenuOpen(false);
+      closeAllMenus();
       return;
     }
 
@@ -164,17 +165,26 @@ export default function Applicants() {
     );
 
     setMenuPosition({ top, left });
+    setStatusPanelPosition(null);
     setActiveMenuId(applicantId);
-    setIsStatusMenuOpen(false);
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchKeyword);
+      setCurrentPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchKeyword]);
+
   const { data: applicantsData, isLoading, isError } = useQuery({
-    queryKey: ["applicants", currentPage, searchKeyword],
-    queryFn: () => searchApplicant(searchKeyword || "", currentPage),
+    queryKey: ["applicants", currentPage, debouncedSearch, statusFilter],
+    queryFn: () => searchApplicant(debouncedSearch, currentPage, statusFilter),
     refetchOnWindowFocus: false,
+    keepPreviousData: true,
   });
 
-  // Fetch all applicants for stats (page 1, no search)
+  // Fetch all applicants for stats (no search, no status filter)
   const { data: allApplicantsData } = useQuery({
     queryKey: ["applicants", "all-stats"],
     queryFn: () => searchApplicant("", 1),
@@ -189,9 +199,7 @@ export default function Applicants() {
     page: applicantsData?.page || 1,
   };
 
-  const filteredApplicants = statusFilter
-    ? applicants.filter((a: any) => (a.user_status || a.status) === statusFilter)
-    : applicants;
+  const filteredApplicants = applicants;
 
   let activeApplicant: Applicant | null = null;
   if (activeMenuId !== null) {
@@ -205,9 +213,7 @@ export default function Applicants() {
     }
 
     updateStatusMutation.mutate({ userId: activeApplicant.id, status });
-    setActiveMenuId(null);
-    setMenuPosition(null);
-    setIsStatusMenuOpen(false);
+    closeAllMenus();
   };
 
   const handleBatchStatusChange = (status: string) => {
@@ -239,7 +245,7 @@ export default function Applicants() {
   };
 
   const statsTotal = applicantsData?.total || 0;
-  const statsToContact = allApplicants.filter((a: any) => (a.user_status || a.status) === "TO_CONTACT").length;
+  const statsToContact = allApplicants.filter((a: any) => (a.user_status || a.status) === "TO CONTACT").length;
   const statsInterviewing = allApplicants.filter((a: any) => (a.user_status || a.status) === "INTERVIEWED").length;
   const statsContacted = allApplicants.filter((a: any) => (a.user_status || a.status) === "CONTACTED").length;
 
@@ -272,7 +278,7 @@ export default function Applicants() {
           {/* Stats Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {stats.map((stat) => (
-              <div key={stat.label} className="bg-surface-container-lowest border border-outline rounded-xl p-5 space-y-3">
+              <div key={stat.label} className="bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl p-5 space-y-3">
                 <div className={`w-10 h-10 rounded-xl ${stat.bg} flex items-center justify-center`}>
                   <span className={`material-symbols-outlined text-xl ${stat.color}`}>{stat.icon}</span>
                 </div>
@@ -291,8 +297,8 @@ export default function Applicants() {
                 <input
                   type="text"
                   value={searchKeyword}
-                  onChange={(e) => { setSearchKeyword(e.target.value); setCurrentPage(1); }}
-                  className="w-full pl-10 pr-4 py-2.5 bg-surface-container-lowest border border-outline rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                  onChange={(e) => setSearchKeyword(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-surface-container-lowest border border-outline/50 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                   placeholder="Search by name or email..."
                 />
                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">
@@ -301,7 +307,7 @@ export default function Applicants() {
               </div>
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
+                onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
                 className="px-4 py-2.5 bg-surface-container-lowest border border-outline rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none text-on-surface"
               >
                 <option value="">All Statuses</option>
@@ -337,21 +343,22 @@ export default function Applicants() {
             )}
 
             {showBatchActions && selectedIds.size > 0 && (
-              <div className="bg-surface-container-lowest border border-outline rounded-xl p-4">
+              <div className="bg-surface-container-lowest shadow-sm rounded-xl p-4">
                 <p className="text-sm font-semibold text-on-surface mb-3">
                   Update {selectedIds.size} applicant{selectedIds.size === 1 ? "" : "s"} to:
                 </p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+                <div className="flex flex-wrap gap-2">
                   {APPLICANT_STATUS_OPTIONS.map((statusOption) => {
-                    const statusLabel = STATUS_LABELS[statusOption]?.label ?? statusOption;
+                    const { label, dot } = STATUS_LABELS[statusOption];
                     return (
                       <button
                         key={statusOption}
                         onClick={() => handleBatchStatusChange(statusOption)}
-                        disabled={batchUpdateMutation.status === 'loading'}
-                        className="px-3 py-2 bg-surface-container-high hover:bg-primary/10 hover:text-primary border border-outline rounded-lg text-sm font-medium text-on-surface disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                        disabled={batchUpdateMutation.status === "loading"}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-container-high hover:bg-surface-container rounded-lg text-sm font-medium text-on-surface disabled:opacity-50 disabled:cursor-not-allowed transition-all border border-outline/20 hover:border-outline/40"
                       >
-                        {statusLabel}
+                        <span className={`w-2 h-2 rounded-full shrink-0 ${dot}`} />
+                        {label}
                       </button>
                     );
                   })}
@@ -378,16 +385,16 @@ export default function Applicants() {
           {!isLoading && !isError && (
             <>
               {filteredApplicants.length === 0 ? (
-                <div className="bg-surface-container-lowest rounded-xl p-12 text-center border border-outline">
+                <div className="bg-surface-container-lowest shadow-sm rounded-xl p-12 text-center">
                   <span className="material-symbols-outlined text-6xl text-on-surface-variant mb-4 block">person_search</span>
                   <p className="text-on-surface-variant font-medium">No applicants found</p>
                 </div>
               ) : (
-                <div className="bg-surface-container-lowest rounded-xl overflow-visible border border-outline">
+                <div className="bg-surface-container-lowest shadow-sm rounded-xl overflow-visible">
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="bg-surface-container-high border-b border-outline">
+                        <tr className="bg-surface-container-high border-b border-outline/20">
                           <th className="px-4 py-4 w-12">
                             <input
                               type="checkbox"
@@ -416,7 +423,7 @@ export default function Applicants() {
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-outline">
+                      <tbody className="divide-y divide-outline/15">
                         {filteredApplicants.map((applicant: Applicant) => {
                           const hasExperience =
                             applicant.years_of_experience !== null &&
@@ -500,61 +507,71 @@ export default function Applicants() {
                 createPortal(
                   <div
                     ref={menuRef}
-                    className="fixed w-44 rounded-xl border border-outline bg-surface-container-lowest shadow-lg z-[1000] py-1"
+                    className="fixed w-44 rounded-xl bg-surface-container-lowest shadow-xl z-[1000] py-1 ring-1 ring-outline/10"
                     style={{ top: `${menuPosition.top}px`, left: `${menuPosition.left}px` }}
                   >
                     <button
-                      onClick={() => {
-                        setSelectedApplicant(activeApplicant);
-                        setActiveMenuId(null);
-                        setMenuPosition(null);
-                        setIsStatusMenuOpen(false);
-                      }}
+                      onClick={() => { setSelectedApplicant(activeApplicant); closeAllMenus(); }}
                       className="w-full text-left px-4 py-2 text-sm hover:bg-surface-container-high text-on-surface"
                     >
-                      View applicant details
+                      View details
                     </button>
                     <a
                       href={`mailto:${activeApplicant.email}`}
                       className="block w-full px-4 py-2 text-sm hover:bg-surface-container-high text-on-surface"
-                      onClick={() => {
-                        setActiveMenuId(null);
-                        setMenuPosition(null);
-                        setIsStatusMenuOpen(false);
-                      }}
+                      onClick={closeAllMenus}
                     >
                       Send email
                     </a>
-                    <div className="my-1 border-t border-outline" />
+                    <div className="my-1 border-t border-outline/20" />
                     <button
-                      onClick={() => setIsStatusMenuOpen((prev) => !prev)}
+                      onClick={() => {
+                        if (statusPanelPosition) { setStatusPanelPosition(null); return; }
+                        if (!menuPosition) return;
+                        const panelW = 192;
+                        const gap = 6;
+                        const menuW = 176;
+                        const spaceRight = window.innerWidth - (menuPosition.left + menuW + gap + panelW);
+                        const left = spaceRight >= 0
+                          ? menuPosition.left + menuW + gap
+                          : menuPosition.left - panelW - gap;
+                        setStatusPanelPosition({ top: menuPosition.top, left: Math.max(gap, left) });
+                      }}
                       className="w-full text-left px-4 py-2 text-sm hover:bg-surface-container-high text-on-surface flex items-center justify-between"
                     >
                       <span>Change status</span>
-                      <span className="material-symbols-outlined text-base">
-                        {isStatusMenuOpen ? "expand_less" : "expand_more"}
-                      </span>
+                      <span className="material-symbols-outlined text-base">chevron_right</span>
                     </button>
-                    {isStatusMenuOpen && (
-                      <div className="pb-1">
-                        {APPLICANT_STATUS_OPTIONS.map((statusOption) => {
-                          const statusLabel = STATUS_LABELS[statusOption]?.label ?? statusOption;
-                          const isCurrentStatus =
-                            (activeApplicant?.user_status || activeApplicant?.status) === statusOption;
+                  </div>,
+                  document.body
+                )}
 
-                          return (
-                            <button
-                              key={statusOption}
-                              onClick={() => handleStatusChange(statusOption)}
-                              disabled={isCurrentStatus || updateStatusMutation.status === 'loading'}
-                              className="w-full text-left pl-8 pr-4 py-2 text-sm hover:bg-surface-container-high text-on-surface disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              {statusLabel}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
+              {activeApplicant && statusPanelPosition &&
+                createPortal(
+                  <div
+                    ref={statusPanelRef}
+                    className="fixed z-[1001] bg-surface-container-lowest rounded-xl shadow-xl ring-1 ring-outline/10 py-1 w-48"
+                    style={{ top: `${statusPanelPosition.top}px`, left: `${statusPanelPosition.left}px` }}
+                  >
+                    <p className="px-3 pt-1 pb-2 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant border-b border-outline/15">
+                      Set status
+                    </p>
+                    {APPLICANT_STATUS_OPTIONS.map((statusOption) => {
+                      const { label, dot } = STATUS_LABELS[statusOption];
+                      const isCurrent = (activeApplicant?.user_status || activeApplicant?.status) === statusOption;
+                      return (
+                        <button
+                          key={statusOption}
+                          onClick={() => handleStatusChange(statusOption)}
+                          disabled={isCurrent || updateStatusMutation.status === "loading"}
+                          className="w-full text-left px-3 py-2 text-sm hover:bg-surface-container-high text-on-surface flex items-center gap-2.5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          <span className={`w-2 h-2 rounded-full shrink-0 ${dot}`} />
+                          <span className="flex-1">{label}</span>
+                          {isCurrent && <span className="material-symbols-outlined text-xs text-primary">check</span>}
+                        </button>
+                      );
+                    })}
                   </div>,
                   document.body
                 )}
@@ -569,7 +586,7 @@ export default function Applicants() {
                     <button
                       onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                       disabled={currentPage === 1}
-                      className="px-4 py-2 rounded-lg bg-surface-container-lowest border border-outline hover:bg-surface-container-high disabled:opacity-40 disabled:cursor-not-allowed transition-all text-on-surface font-semibold text-sm"
+                      className="px-4 py-2 rounded-lg bg-surface-container-lowest border border-outline/40 hover:bg-surface-container-high disabled:opacity-40 disabled:cursor-not-allowed transition-all text-on-surface font-semibold text-sm"
                     >
                       Previous
                     </button>
@@ -605,7 +622,7 @@ export default function Applicants() {
                     <button
                       onClick={() => setCurrentPage((p) => Math.min(paginationDetails.pages, p + 1))}
                       disabled={currentPage === paginationDetails.pages}
-                      className="px-4 py-2 rounded-lg bg-surface-container-lowest border border-outline hover:bg-surface-container-high disabled:opacity-40 disabled:cursor-not-allowed transition-all text-on-surface font-semibold text-sm"
+                      className="px-4 py-2 rounded-lg bg-surface-container-lowest border border-outline/40 hover:bg-surface-container-high disabled:opacity-40 disabled:cursor-not-allowed transition-all text-on-surface font-semibold text-sm"
                     >
                       Next
                     </button>
@@ -623,7 +640,7 @@ export default function Applicants() {
                 aria-label="Close applicant details"
                 onClick={() => setSelectedApplicant(null)}
               />
-              <div className="relative w-full max-w-lg rounded-2xl border border-outline bg-surface-container-lowest p-6">
+              <div className="relative w-full max-w-lg rounded-2xl shadow-xl bg-surface-container-lowest p-6">
                 <div className="flex items-start gap-4">
                   <Image
                     className="w-14 h-14 rounded-full object-cover ring-2 ring-secondary-container"

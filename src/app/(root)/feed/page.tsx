@@ -88,7 +88,7 @@ export default function FeedPage() {
               {[0, 1].map((index) => (
                 <div
                   key={`feed-skeleton-${index + 1}`}
-                  className="bg-surface-container-lowest border border-outline rounded-xl p-4 md:p-6 animate-pulse"
+                  className="bg-surface-container-lowest shadow-sm rounded-xl p-4 md:p-6 animate-pulse"
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 rounded-full bg-surface-container-high" />
@@ -122,7 +122,7 @@ export default function FeedPage() {
               {feeds.map((post: any) => (
                 <div
                   key={post.id}
-                  className="bg-surface-container-lowest border border-outline rounded-xl p-4 md:p-6 hover:shadow-md transition-all"
+                  className="bg-surface-container-lowest shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 rounded-xl p-4 md:p-6"
                 >
                   {/* Post Header */}
                   <div className="flex items-start gap-3 mb-4">
@@ -183,7 +183,7 @@ export default function FeedPage() {
                           value={editContent}
                           onChange={(e) => setEditContent(e.target.value)}
                           rows={3}
-                          className="w-full px-3 py-2 rounded-lg border border-outline bg-surface-container-low text-on-surface text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary"
+                          className="w-full px-3 py-2 rounded-lg border border-outline/40 bg-surface-container-low text-on-surface text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary"
                         />
                         <div className="flex gap-2 justify-end">
                           <button
@@ -222,7 +222,7 @@ export default function FeedPage() {
                   </div>
 
                   {/* Post Actions */}
-                  <div className="flex items-center gap-4 mt-4 pt-4 border-t border-outline">
+                  <div className="flex items-center gap-4 mt-4 pt-4 border-t border-outline/20">
                     <p className="text-xs text-on-surface-variant">
                       {new Date(post.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                     </p>

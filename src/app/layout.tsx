@@ -31,7 +31,7 @@ export default function RootLayout({
       </head>
       <body
         suppressHydrationWarning={true}
-        className={`${inter.className} overflow-x-hidden bg-surface`}
+        className={`${inter.className} overflow-x-hidden bg-surface text-on-surface transition-colors duration-200`}
       >
         <Toaster />
         <Providers>

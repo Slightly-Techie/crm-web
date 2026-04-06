@@ -2,10 +2,11 @@
 
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { isMutationLoading } from "@/lib/queryUtils";
 import toast from "react-hot-toast";
 import useAxiosAuth from "@/hooks/useAxiosAuth";
 import { AiOutlineClose } from "react-icons/ai";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { getApiErrorMessage } from "@/utils";
 
 interface FeedFormData {
@@ -25,6 +26,7 @@ export default function CreateFeedModal({
   const queryClient = useQueryClient();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
@@ -77,6 +79,12 @@ export default function CreateFeedModal({
     }
   };
 
+  const clearImage = () => {
+    setImagePreview(null);
+    setSelectedFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
   if (!isOpen) return null;
 
   const onSubmit = (data: FeedFormData) => {
@@ -86,6 +94,8 @@ export default function CreateFeedModal({
     }
     mutation.mutate(data);
   };
+
+  const isLoading = isMutationLoading(mutation);
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50">
@@ -102,7 +112,7 @@ export default function CreateFeedModal({
           </div>
           <button
             onClick={onClose}
-            disabled={mutation.status === 'loading'}
+            disabled={isLoading}
             className="p-2 rounded-lg hover:bg-surface-container transition-colors text-on-surface-variant disabled:opacity-50"
           >
             <AiOutlineClose size={20} />
@@ -136,47 +146,31 @@ export default function CreateFeedModal({
           {/* Image Upload */}
           <div className="space-y-2">
             <label className="block text-sm font-body font-medium text-on-surface">
-              Add an image (optional)
+              Add an image <span className="text-on-surface-variant font-normal">(optional)</span>
             </label>
-            <div className="relative">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-              />
-              <div className="px-4 py-3 rounded-lg border-2 border-dashed border-outline-variant hover:border-primary/50 transition-colors cursor-pointer">
-                {imagePreview ? (
-                  <div className="space-y-2">
-                    <img
-                      src={imagePreview}
-                      alt="Preview"
-                      className="w-full h-32 object-cover rounded-lg"
-                    />
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setImagePreview(null);
-                        setSelectedFile(null);
-                      }}
-                      className="text-xs text-on-surface-variant hover:text-error transition-colors"
-                    >
-                      Remove image
-                    </button>
-                  </div>
-                ) : (
-                  <div className="text-center py-6">
-                    <span className="material-symbols-outlined text-3xl text-on-surface-variant block mb-2">
-                      image
-                    </span>
-                    <p className="text-sm text-on-surface-variant">
-                      Click to add an image
-                    </p>
-                  </div>
-                )}
+            {imagePreview ? (
+              <div className="relative w-full rounded-xl overflow-hidden border border-outline">
+                <img src={imagePreview} alt="Preview" className="w-full h-40 object-cover" />
+                <div className="absolute inset-0 bg-black/0 hover:bg-black/30 transition-colors flex items-center justify-center gap-2 opacity-0 hover:opacity-100">
+                  <label className="cursor-pointer px-3 py-1.5 bg-white/90 rounded-lg text-xs font-semibold text-on-surface flex items-center gap-1">
+                    <span className="material-symbols-outlined text-sm">swap_horiz</span>
+                    Replace
+                    <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                  </label>
+                  <button type="button" onClick={clearImage} className="px-3 py-1.5 bg-error/90 rounded-lg text-xs font-semibold text-white flex items-center gap-1">
+                    <span className="material-symbols-outlined text-sm">delete</span>
+                    Remove
+                  </button>
+                </div>
               </div>
-            </div>
+            ) : (
+              <label className="flex flex-col items-center justify-center w-full h-28 rounded-xl border-2 border-dashed border-outline cursor-pointer hover:border-primary hover:bg-primary/5 transition-colors group">
+                <span className="material-symbols-outlined text-3xl text-on-surface-variant group-hover:text-primary transition-colors">add_photo_alternate</span>
+                <p className="text-sm text-on-surface-variant group-hover:text-primary mt-1 transition-colors">Click to upload image</p>
+                <p className="text-xs text-on-surface-variant/60 mt-0.5">PNG, JPG, GIF</p>
+                <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+              </label>
+            )}
           </div>
 
           {/* Action Buttons */}
@@ -184,17 +178,17 @@ export default function CreateFeedModal({
             <button
               type="button"
               onClick={onClose}
-              disabled={mutation.status === 'loading'}
+              disabled={isLoading}
               className="flex-1 px-4 py-3 rounded-lg border border-outline text-on-surface bg-surface-container-lowest hover:bg-surface-container transition-colors font-body font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Cancel
             </button>
             <button
               type="submit"
-              disabled={mutation.status === 'loading'}
+              disabled={isLoading}
               className="flex-1 px-4 py-3 rounded-lg bg-primary text-on-primary font-body font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              {mutation.status === 'loading' ? (
+              {isLoading ? (
                 <>
                   <span className="inline-block w-4 h-4 border-2 border-on-primary border-t-transparent rounded-full animate-spin" />
                   Posting...

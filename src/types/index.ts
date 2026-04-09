@@ -99,7 +99,7 @@ export type NewUserFields = {
   password: string;
   password_confirmation: string;
   role_id?: number;
-  stack_id: number;
+  stack_id: number | null;  // Can be a valid stack ID or null (for "Other" or no selection)
   bio: string;
   phone_number: string;
   years_of_experience: number | null;
@@ -122,7 +122,7 @@ export type NewUserField = {
   password: string;
   password_confirmation: string;
   role_id?: number;
-  stack_id: number;
+  stack_id: number | null;  // Can be a valid stack ID or null (for "Other" or no selection)
   bio: string;
   phone_number: string;
   years_of_experience: number | null;

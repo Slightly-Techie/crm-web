@@ -63,9 +63,13 @@ export default function Signup() {
           (stack) => stack.id === selectedId
         );
 
+        // Convert -1 (Other) or invalid stack IDs to null
+        // Backend only accepts positive integers or null
+        const validStackId = selectedId > 0 ? selectedId : null;
+
         const payload = {
           ...otherUserData,
-          stack_id: selectedId,
+          stack_id: validStackId,
         };
         createNewUser(payload);
       }

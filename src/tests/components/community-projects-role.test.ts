@@ -41,9 +41,9 @@ describe("Community projects page - role fetching", () => {
     expect(source).not.toContain("fetchUserData");
   });
 
-  it("fixes non-null assertion on filteredItems length", () => {
-    // Should use nullish coalescing instead of non-null assertion
-    expect(source).toContain("filteredItems?.length ?? 0");
-    expect(source).not.toContain("filteredItems?.length!");
+  it("uses safe length access on the filtered list (no non-null assertion)", () => {
+    // filteredProjects is always an array, so .length is safe without a non-null assertion
+    expect(source).toContain("filteredProjects.length");
+    expect(source).not.toMatch(/filteredProjects[^\n.]*\.length!/);
   });
 });

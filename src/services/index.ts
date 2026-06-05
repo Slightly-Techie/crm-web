@@ -9,7 +9,9 @@ import {
   ISKillResponse,
   IStackResponse,
   IStack,
+  ITag,
   ITechie,
+  DirectoryFilters,
   IUser,
   ITask,
   ManagerInfo,
@@ -30,19 +32,60 @@ const useEndpoints = () => {
   const updateProfilePicture = (data: any) =>
     authAxios.patch(`/api/v1/users/profile/avatar`, data);
 
-  const getTechiesList = async ({ page = 1 }: { page: number }) => {
+  const buildDirectoryParams = (filters?: DirectoryFilters) => {
+    const params = new URLSearchParams({ active: "true" });
+    if (filters?.stack) params.set("stack", filters.stack);
+    if (filters?.tags?.length) {
+      for (const tag of filters.tags) params.append("tags", tag);
+    }
+    if (filters?.skills?.length) {
+      for (const skill of filters.skills) params.append("skills", skill);
+    }
+    if (filters?.experienceLevels?.length) {
+      for (const level of filters.experienceLevels) params.append("experience", level);
+    }
+    if (filters?.openToProjects != null) {
+      params.set("open_to_projects", String(filters.openToProjects));
+    }
+    if (filters?.createdAfter) params.set("created_after", filters.createdAfter);
+    return params;
+  };
+
+  const getTechiesList = async ({
+    page = 1,
+    size,
+    filters,
+  }: {
+    page?: number;
+    // Cap the page size — handy for count-only queries that read `total` and discard items.
+    size?: number;
+    filters?: DirectoryFilters;
+  }) => {
+    const params = buildDirectoryParams(filters);
+    params.set("page", String(page));
+    if (size != null) params.set("size", String(size));
     const response = await authAxios.get<IGetAllTechiesResponse>(
-      `/api/v1/users/?active=true&page=${page}`
+      `/api/v1/users/?${params.toString()}`
     );
     return response.data;
   };
 
-  const searchTechie = async (query: string) => {
+  const searchTechie = async (
+    query: string,
+    filters?: DirectoryFilters,
+    page?: number
+  ) => {
+    const params = buildDirectoryParams(filters);
+    params.set("p", query);
+    if (page != null) params.set("page", String(page));
     const response = await authAxios.get<IGetAllTechiesResponse>(
-      `/api/v1/users/?active=true&p=${query}`
+      `/api/v1/users/?${params.toString()}`
     );
     return response.data;
   };
+
+  const getAllTags = () =>
+    authAxios.get<{ tags: ITag[] }>(`/api/v1/users/tags/all`);
 
   const searchApplicant = async (query: string, page: number = 1, status: string = "") => {
     const params = new URLSearchParams({ active: "false", page: String(page) });
@@ -307,6 +350,7 @@ const useEndpoints = () => {
     createSkillInPool,
     deleteSkillFromPool,
     getMyTags,
+    getAllTags,
     createTag,
     deleteTag,
     getStacks,

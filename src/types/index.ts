@@ -53,6 +53,7 @@ export interface ITechie {
   stack: IStack | null;
   created_at: string;
   is_active: boolean;
+  open_to_projects?: boolean;
   status?: keyof typeof UserStatusEnum;
   username?: string;
   stack_id?: number | null;
@@ -78,6 +79,15 @@ export interface ISKillResponse {
 }
 
 export interface ITag extends ISkill {}
+
+export interface DirectoryFilters {
+  stack?: string; // stack name (backend filters by name)
+  tags?: string[]; // match ANY of these tag names
+  skills?: string[]; // match ANY of these skill names
+  experienceLevels?: string[]; // "entry" | "intermediate" | "expert" — match ANY
+  openToProjects?: boolean;
+  createdAfter?: string; // ISO timestamp; only members created on/after this
+}
 
 export interface NavbarProps {
   isOpen: boolean;

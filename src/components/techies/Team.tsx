@@ -4,12 +4,24 @@ import { useQuery } from "@tanstack/react-query";
 import useEndpoints from "@/services";
 import LoadingSpinner from "../loadingSpinner";
 import { useSession } from "next-auth/react";
+import FilterSelect, { SelectOption } from "./FilterSelect";
+
+const EXPERIENCE_LEVELS: { value: string; label: string }[] = [
+  { value: "entry", label: "Entry (0–2 yrs)" },
+  { value: "intermediate", label: "Intermediate (3–5 yrs)" },
+  { value: "expert", label: "Expert (6+ yrs)" },
+];
 
 function Team() {
-  const { getTechiesList, searchTechie, getStacks } = useEndpoints();
+  const { getTechiesList, searchTechie, getStacks, getAllTags, getSkills } =
+    useEndpoints();
   const { status: sessionStatus } = useSession();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStack, setSelectedStack] = useState<string>("all");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
+  const [openToProjects, setOpenToProjects] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
@@ -39,24 +51,116 @@ function Team() {
     }
   }
 
+  // Fetch all tags for the multi-select filter
+  const { data: tagsData } = useQuery({
+    queryKey: ["all-tags"],
+    queryFn: () => getAllTags().then((res) => res.data.tags),
+    refetchOnWindowFocus: false,
+    enabled: sessionStatus === "authenticated",
+  });
+  const tagOptions: SelectOption[] = Array.isArray(tagsData)
+    ? tagsData.map((tag) => ({ value: tag.name, label: tag.name }))
+    : [];
+
+  // Fetch the full skills pool for the multi-select filter.
+  // GET /skills/all returns a plain array; tolerate a paginated { items } shape too.
+  const { data: skillsData, isFetching: isLoadingSkills } = useQuery({
+    queryKey: ["all-skills"],
+    queryFn: () =>
+      getSkills().then((res) => {
+        const d: any = res.data;
+        return Array.isArray(d) ? d : d?.items ?? [];
+      }),
+    refetchOnWindowFocus: false,
+    enabled: sessionStatus === "authenticated",
+  });
+  const skillOptions: SelectOption[] = Array.isArray(skillsData)
+    ? skillsData.map((skill: any) => ({ value: skill.name, label: skill.name }))
+    : [];
+
+  // Translate UI state into backend filter params
+  const filters = useMemo(() => {
+    const stackName =
+      selectedStack === "all"
+        ? undefined
+        : stacks.find((s) => String(s.id) === selectedStack)?.name;
+    return {
+      stack: stackName,
+      tags: selectedTags.length > 0 ? selectedTags : undefined,
+      skills: selectedSkills.length > 0 ? selectedSkills : undefined,
+      experienceLevels: selectedLevels.length > 0 ? selectedLevels : undefined,
+      openToProjects: openToProjects ? true : undefined,
+    };
+  }, [selectedStack, selectedTags, selectedSkills, selectedLevels, openToProjects, stacks]);
+
   const {
     data: TechiesData,
     isLoading,
     isError,
     error,
   } = useQuery({
-    queryKey: ["techies", currentPage, selectedStack, debouncedSearch],
+    queryKey: ["techies", currentPage, debouncedSearch, filters],
     queryFn: async () => {
       if (debouncedSearch) {
-        return await searchTechie(debouncedSearch);
+        return await searchTechie(debouncedSearch, filters, currentPage);
       }
-      return await getTechiesList({ page: currentPage });
+      return await getTechiesList({ page: currentPage, filters });
     },
     refetchOnWindowFocus: false,
     retry: 3,
     enabled: sessionStatus === "authenticated",
     keepPreviousData: true,
   });
+
+  // Whole-directory count of members open to projects (independent of page/filters).
+  // Reads the server-side pagination `total` rather than counting the current page.
+  const { data: availableForProjectsCount = 0 } = useQuery({
+    queryKey: ["available-for-projects-count"],
+    queryFn: () =>
+      getTechiesList({ page: 1, size: 1, filters: { openToProjects: true } }).then(
+        (res) => res.total || 0
+      ),
+    refetchOnWindowFocus: false,
+    enabled: sessionStatus === "authenticated",
+  });
+
+  // Stable per-mount cutoff (day granularity) so the query key doesn't churn.
+  const oneWeekAgoIso = useMemo(
+    () => new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    []
+  );
+  const { data: newThisWeekCount = 0 } = useQuery({
+    queryKey: ["new-this-week-count", oneWeekAgoIso.slice(0, 10)],
+    queryFn: () =>
+      getTechiesList({ page: 1, size: 1, filters: { createdAfter: oneWeekAgoIso } }).then(
+        (res) => res.total || 0
+      ),
+    refetchOnWindowFocus: false,
+    enabled: sessionStatus === "authenticated",
+  });
+
+  const hasActiveFilters =
+    selectedStack !== "all" ||
+    selectedTags.length > 0 ||
+    selectedSkills.length > 0 ||
+    selectedLevels.length > 0 ||
+    openToProjects;
+
+  const clearAllFilters = () => {
+    setSelectedStack("all");
+    setSelectedTags([]);
+    setSelectedSkills([]);
+    setSelectedLevels([]);
+    setOpenToProjects(false);
+    setCurrentPage(1);
+  };
+
+  const toggleLevel = (level: string) => {
+    setSelectedLevels((prev) =>
+      prev.includes(level) ? prev.filter((l) => l !== level) : [...prev, level]
+    );
+    setCurrentPage(1);
+  };
 
   const handleSearch = (value: string) => {
     setSearchKeyword(value);
@@ -69,77 +173,33 @@ function Team() {
     page: TechiesData?.page || currentPage,
   };
 
-  const membersOnCurrentPage = TechiesData?.items || [];
-  const availableForProjectsCount = membersOnCurrentPage.filter((member) => member.is_active).length;
-  const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-  const newThisWeekCount = membersOnCurrentPage.filter((member) => {
-    if (!member.created_at) return false;
-    const createdTime = new Date(member.created_at).getTime();
-    return !Number.isNaN(createdTime) && createdTime >= oneWeekAgo;
-  }).length;
 
   const techies = useMemo(() => {
-    let filtered = TechiesData?.items || [];
-
-    // CRITICAL: Only show ACCEPTED + is_active users in Directory
-    // All others should appear in Applicants page only
-    filtered = filtered.filter(
+    // Stack, tags, experience and availability are all filtered server-side now.
+    // Keep the ACCEPTED + is_active guard as defence in depth — the Directory
+    // must never surface applicants regardless of backend behaviour.
+    return (TechiesData?.items || []).filter(
       (techie) => techie.status === "ACCEPTED" && techie.is_active === true
     );
-
-    // Filter by stack (client-side since backend doesn't filter by stack in search)
-    if (selectedStack && selectedStack !== "all") {
-      filtered = filtered.filter(
-        (techie) => techie.stack?.id === Number.parseInt(selectedStack)
-      );
-    }
-
-    return filtered;
-  }, [TechiesData?.items, selectedStack]);
+  }, [TechiesData?.items]);
 
   return (
     <div className="w-full h-full">
       <div className="p-4 md:p-8 w-full">
         <div className="max-w-7xl mx-auto space-y-8">
-          {/* Directory Header & Filters */}
-          <section className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-              <nav className="flex gap-2 text-xs font-semibold text-on-surface-variant/60 uppercase tracking-widest mb-2">
-                <span>Network</span>
-                <span>/</span>
-                <span className="text-primary">Directory</span>
-              </nav>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-on-surface font-headline tracking-tighter">
-                Directory
-              </h2>
-              <p className="text-on-surface-variant mt-3 text-lg">
-                Meet the talented builders in the ST network. Search and connect with team members across the organization.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 md:gap-0 md:flex-wrap md:flex-row md:items-end">
-              {/* Stack Filter */}
-              <div className="flex flex-col gap-1.5 min-w-[140px]">
-                <label htmlFor="team-stack-filter" className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant px-1">
-                  Stack
-                </label>
-                <select
-                  id="team-stack-filter"
-                  value={selectedStack}
-                  onChange={(e) => {
-                    setSelectedStack(e.target.value);
-                    setCurrentPage(1);
-                  }}
-                  className="bg-surface-container-high border-none rounded-lg py-2 pl-3 pr-8 text-sm focus:ring-primary/20 appearance-none"
-                >
-                  <option value="all">All Stacks</option>
-                  {stacks.map((stack: any) => (
-                    <option key={stack.id} value={stack.id}>
-                      {stack.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+          {/* Directory Header */}
+          <section>
+            <nav className="flex gap-2 text-xs font-semibold text-on-surface-variant/60 uppercase tracking-widest mb-2">
+              <span>Network</span>
+              <span>/</span>
+              <span className="text-primary">Directory</span>
+            </nav>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-on-surface font-headline tracking-tighter">
+              Directory
+            </h2>
+            <p className="text-on-surface-variant mt-3 text-lg max-w-2xl">
+              Meet the talented builders in the ST network. Search and connect with team members across the organization.
+            </p>
           </section>
 
           {/* Search Bar */}
@@ -152,6 +212,126 @@ function Team() {
               onChange={(e) => handleSearch(e.target.value)}
               className="bg-transparent focus:outline-none text-sm text-on-surface placeholder-on-surface-variant w-full"
             />
+          </div>
+
+          {/* Filter Bar */}
+          <div className="bg-surface-container-lowest rounded-xl p-4 md:p-5 space-y-4">
+            {/* Skills + Tags */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="directory-skills-input" className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant px-1">
+                  Skills
+                </label>
+                <FilterSelect
+                  instanceId="directory-skills"
+                  options={skillOptions}
+                  value={selectedSkills}
+                  onChange={(v) => {
+                    setSelectedSkills(v);
+                    setCurrentPage(1);
+                  }}
+                  placeholder="Search skills..."
+                  isLoading={isLoadingSkills}
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="directory-tags-input" className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant px-1">
+                  Tags
+                </label>
+                <FilterSelect
+                  instanceId="directory-tags"
+                  creatable
+                  options={tagOptions}
+                  value={selectedTags}
+                  onChange={(v) => {
+                    setSelectedTags(v);
+                    setCurrentPage(1);
+                  }}
+                  placeholder="Type a tag, e.g. Daddy…"
+                />
+              </div>
+            </div>
+
+            {/* Stack + Experience + Availability + Clear */}
+            <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-end gap-x-8 gap-y-4">
+              {/* Stack */}
+              <div className="flex flex-col gap-1.5 min-w-[160px]">
+                <label htmlFor="team-stack-filter" className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant px-1">
+                  Stack
+                </label>
+                <div className="relative">
+                  <select
+                    id="team-stack-filter"
+                    value={selectedStack}
+                    onChange={(e) => {
+                      setSelectedStack(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    className="w-full bg-surface-container-high border-none rounded-lg py-2.5 pl-3 pr-9 text-sm focus:ring-2 focus:ring-primary/20 appearance-none text-on-surface cursor-pointer"
+                  >
+                    <option value="all">All Stacks</option>
+                    {stacks.map((stack: any) => (
+                      <option key={stack.id} value={stack.id}>
+                        {stack.name}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="material-symbols-outlined pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">
+                    expand_more
+                  </span>
+                </div>
+              </div>
+
+              {/* Experience levels (Upwork-style, multi-select) */}
+              <fieldset className="flex flex-col gap-1.5">
+                <legend className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant px-1 mb-1.5">
+                  Experience level
+                </legend>
+                <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+                  {EXPERIENCE_LEVELS.map((level) => (
+                    <label key={level.value} className="flex items-center gap-2 cursor-pointer text-sm text-on-surface">
+                      <input
+                        type="checkbox"
+                        checked={selectedLevels.includes(level.value)}
+                        onChange={() => toggleLevel(level.value)}
+                        className="h-4 w-4 rounded border-outline/40 accent-primary cursor-pointer"
+                      />
+                      {level.label}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              {/* Availability */}
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant px-1 mb-1.5">
+                  Availability
+                </span>
+                <label className="flex items-center gap-2 cursor-pointer text-sm text-on-surface">
+                  <input
+                    type="checkbox"
+                    checked={openToProjects}
+                    onChange={() => {
+                      setOpenToProjects((prev) => !prev);
+                      setCurrentPage(1);
+                    }}
+                    className="h-4 w-4 rounded border-outline/40 accent-primary cursor-pointer"
+                  />
+                  Open to projects
+                </label>
+              </div>
+
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  onClick={clearAllFilters}
+                  className="sm:ml-auto flex items-center gap-1 self-start sm:self-end text-sm font-semibold text-primary hover:underline py-2"
+                >
+                  <span className="material-symbols-outlined text-base">close</span>
+                  Clear all
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Stats Bar */}

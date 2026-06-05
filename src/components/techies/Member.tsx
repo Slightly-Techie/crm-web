@@ -52,6 +52,20 @@ function Member({ data, onSelect, isSelected, className }: MemberProps) {
         {location}
       </p>
 
+      {/* Availability — always rendered so every card has the same height */}
+      <span
+        className={`mt-3 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-tighter ${
+          data.open_to_projects
+            ? "bg-primary/10 text-primary"
+            : "bg-surface-container-high text-on-surface-variant"
+        }`}
+      >
+        <span className="material-symbols-outlined text-xs">
+          {data.open_to_projects ? "work" : "do_not_disturb_on"}
+        </span>
+        {data.open_to_projects ? "Open to projects" : "Not available"}
+      </span>
+
       {/* Skills Tags */}
       <div className="flex flex-wrap justify-center gap-1.5 mt-4">
         {data.github_profile && (
@@ -62,11 +76,6 @@ function Member({ data, onSelect, isSelected, className }: MemberProps) {
         <span className="px-2 py-0.5 bg-surface-container-high rounded-full text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">
           {stackName}
         </span>
-        {data.is_active && (
-          <span className="px-2 py-0.5 bg-surface-container-high rounded-full text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">
-            Active
-          </span>
-        )}
       </div>
 
       {/* View Profile Button */}

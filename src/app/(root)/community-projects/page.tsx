@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import CreateProjectModal from "@/components/modals/CreateProjectModal";
 import EditProjectModal from "@/components/modals/EditProjectModal";
 import Link from "next/link";
@@ -71,14 +71,15 @@ function Page() {
     }
   };
 
-  const projects = projectsData?.items || [];
-
-  const filteredProjects = projects.filter((project: any) => {
-    if (selectedFilter === "all") return true;
-    if (selectedFilter === "COMMUNITY") return project.project_type === "COMMUNITY";
-    if (selectedFilter === "PAID") return project.project_type === "PAID";
-    return true;
-  });
+  const filteredProjects = useMemo(() => {
+    const projects = projectsData?.items || [];
+    return projects.filter((project: any) => {
+      if (selectedFilter === "all") return true;
+      if (selectedFilter === "COMMUNITY") return project.project_type === "COMMUNITY";
+      if (selectedFilter === "PAID") return project.project_type === "PAID";
+      return true;
+    });
+  }, [projectsData?.items, selectedFilter]);
 
   const getStatusColor = (status: string) => {
     switch (status?.toLowerCase()) {

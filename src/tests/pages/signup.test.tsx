@@ -15,6 +15,7 @@ vi.mock("@/hooks/useNavigateForms", () => ({
     resetForm: vi.fn(),
     currentForm: { element: <div data-testid="current-form">Form Step</div> },
     currentFormIndex: 0,
+    LAST_FORM_INDEX: 2,
   }),
 }));
 
@@ -70,8 +71,8 @@ describe("Signup Page", () => {
   it("renders the signup form with welcome message", () => {
     renderSignup();
 
-    expect(screen.getByText(/Welcome to CRM/)).toBeInTheDocument();
-    expect(screen.getByText("Create your account")).toBeInTheDocument();
+    expect(screen.getByText(/Welcome to ST Network/)).toBeInTheDocument();
+    expect(screen.getByText(/Step 1 of 3/)).toBeInTheDocument();
   });
 
   it("renders the current form step", () => {
@@ -80,10 +81,10 @@ describe("Signup Page", () => {
     expect(screen.getByTestId("current-form")).toBeInTheDocument();
   });
 
-  it("shows Proceed button on non-final steps", () => {
+  it("shows Continue button on non-final steps", () => {
     renderSignup();
 
-    expect(screen.getByText("Proceed")).toBeInTheDocument();
+    expect(screen.getByText("Continue")).toBeInTheDocument();
   });
 
   it("does not show back button on first step", () => {
@@ -105,7 +106,7 @@ describe("Signup Page", () => {
     );
 
     // First instance renders fine
-    expect(screen.getByText(/Welcome to CRM/)).toBeInTheDocument();
+    expect(screen.getByText(/Welcome to ST Network/)).toBeInTheDocument();
     unmount();
 
     // Second instance should also render correctly (not corrupted by first)
@@ -115,6 +116,6 @@ describe("Signup Page", () => {
       </QueryClientProvider>
     );
 
-    expect(screen.getByText(/Welcome to CRM/)).toBeInTheDocument();
+    expect(screen.getByText(/Welcome to ST Network/)).toBeInTheDocument();
   });
 });

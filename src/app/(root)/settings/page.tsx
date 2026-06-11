@@ -141,6 +141,7 @@ export default function SettingsPage() {
       github_profile: user?.github_profile || "",
       linkedin_profile: user?.linkedin_profile || "",
       twitter_profile: user?.twitter_profile || "",
+      open_to_projects: user?.open_to_projects ?? true,
     },
   });
 
@@ -160,6 +161,7 @@ export default function SettingsPage() {
       github_profile: user.github_profile || "",
       linkedin_profile: user.linkedin_profile || "",
       twitter_profile: user.twitter_profile || "",
+      open_to_projects: user.open_to_projects ?? true,
     });
   }, [user, reset]);
 
@@ -192,6 +194,7 @@ export default function SettingsPage() {
       if (data.github_profile) payload.github_profile = data.github_profile;
       if (data.linkedin_profile) payload.linkedin_profile = data.linkedin_profile;
       if (data.twitter_profile) payload.twitter_profile = data.twitter_profile;
+      payload.open_to_projects = !!data.open_to_projects;
 
       await updateUserProfile(payload);
 
@@ -392,6 +395,21 @@ export default function SettingsPage() {
                       className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                     />
                   </div>
+
+                  {/* Availability for projects */}
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input
+                      {...register("open_to_projects")}
+                      type="checkbox"
+                      className="mt-1 h-4 w-4 rounded border-outline/40 text-primary focus:ring-primary/20"
+                    />
+                    <span>
+                      <span className="text-sm font-medium text-on-surface block">Open to projects</span>
+                      <span className="text-xs text-on-surface-variant">
+                        Show that you&apos;re available for project work in the directory.
+                      </span>
+                    </span>
+                  </label>
                 </div>
 
                 {/* Social Links */}

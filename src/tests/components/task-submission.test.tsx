@@ -50,16 +50,16 @@ describe("TaskSubmissionForm", () => {
     renderTaskSubmission();
 
     expect(
-      screen.getByPlaceholderText("Your GitHub submission link")
+      screen.getByLabelText(/GitHub Repository URL/)
     ).toBeInTheDocument();
     expect(
-      screen.getByPlaceholderText("Live demo URL (optional)")
+      screen.getByLabelText(/Live Demo URL/)
     ).toBeInTheDocument();
     expect(
-      screen.getByPlaceholderText("Additional info (optional)")
+      screen.getByLabelText(/Additional Notes/)
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Submit assessment" })
+      screen.getByRole("button", { name: /submit assessment/i })
     ).toBeInTheDocument();
   });
 
@@ -69,12 +69,12 @@ describe("TaskSubmissionForm", () => {
 
     // Submit without filling github_link
     await user.click(
-      screen.getByRole("button", { name: "Submit assessment" })
+      screen.getByRole("button", { name: /submit assessment/i })
     );
 
     // Should show validation error
     expect(
-      screen.getByText(/Field must not be empty/)
+      screen.getByText(/Please enter a valid GitHub repository URL/)
     ).toBeInTheDocument();
   });
 
@@ -87,11 +87,11 @@ describe("TaskSubmissionForm", () => {
     renderTaskSubmission();
 
     await user.type(
-      screen.getByPlaceholderText("Your GitHub submission link"),
+      screen.getByLabelText(/GitHub Repository URL/),
       "https://github.com/test/repo"
     );
     await user.click(
-      screen.getByRole("button", { name: "Submit assessment" })
+      screen.getByRole("button", { name: /submit assessment/i })
     );
 
     // Wait for mutation to complete
@@ -117,16 +117,17 @@ describe("TaskSubmissionForm", () => {
     renderTaskSubmission();
 
     await user.type(
-      screen.getByPlaceholderText("Your GitHub submission link"),
+      screen.getByLabelText(/GitHub Repository URL/),
       "https://github.com/test/repo"
     );
     await user.click(
-      screen.getByRole("button", { name: "Submit assessment" })
+      screen.getByRole("button", { name: /submit assessment/i })
     );
 
     await vi.waitFor(() => {
       expect(mockToastError).toHaveBeenCalledWith(
-        "Submission deadline has passed"
+        "Submission deadline has passed",
+        expect.any(Object)
       );
     });
   });
@@ -138,16 +139,17 @@ describe("TaskSubmissionForm", () => {
     renderTaskSubmission();
 
     await user.type(
-      screen.getByPlaceholderText("Your GitHub submission link"),
+      screen.getByLabelText(/GitHub Repository URL/),
       "https://github.com/test/repo"
     );
     await user.click(
-      screen.getByRole("button", { name: "Submit assessment" })
+      screen.getByRole("button", { name: /submit assessment/i })
     );
 
     await vi.waitFor(() => {
       expect(mockToastError).toHaveBeenCalledWith(
-        "Failed to submit assessment. Please try again."
+        "Failed to submit assessment. Please try again.",
+        expect.any(Object)
       );
     });
   });
@@ -159,11 +161,11 @@ describe("TaskSubmissionForm", () => {
     renderTaskSubmission();
 
     await user.type(
-      screen.getByPlaceholderText("Your GitHub submission link"),
+      screen.getByLabelText(/GitHub Repository URL/),
       "https://github.com/test/repo"
     );
     const submitButton = screen.getByRole("button", {
-      name: "Submit assessment",
+      name: /submit assessment/i,
     });
     await user.click(submitButton);
 

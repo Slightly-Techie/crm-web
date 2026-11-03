@@ -2,6 +2,7 @@
 
 import { AiOutlineClose } from "react-icons/ai";
 import Image from "next/image";
+import { formatYears } from "@/utils";
 
 interface ApplicantDetailModalProps {
   applicant: any;
@@ -92,9 +93,7 @@ export default function ApplicantDetailModal({
                 <div className="flex-1">
                   <p className="text-xs text-on-surface-variant">Experience</p>
                   <p className="text-sm font-medium text-on-surface">
-                    {applicant.years_of_experience !== null && applicant.years_of_experience !== undefined
-                      ? `${applicant.years_of_experience} year${applicant.years_of_experience !== 1 ? "s" : ""}`
-                      : "Not specified"}
+                    {formatYears(applicant.years_of_experience)}
                   </p>
                 </div>
               </div>

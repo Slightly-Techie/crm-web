@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaXTwitter, FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa6";
+import { formatYears } from "@/utils";
 
 export default function ProfilePage() {
   const {
@@ -310,7 +311,7 @@ export default function ProfilePage() {
                         />
                       ) : (
                         <p className="text-on-surface font-semibold text-sm">
-                          {user.years_of_experience ? `${user.years_of_experience} Years` : "Not specified"}
+                          {formatYears(user.years_of_experience)}
                         </p>
                       )}
                     </div>

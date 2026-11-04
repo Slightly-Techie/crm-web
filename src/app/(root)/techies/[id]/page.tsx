@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import { FaXTwitter, FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa6";
+import { toSafeUrl } from "@/utils";
 
 function Page() { // NOSONAR
   const { id } = useParams();
@@ -245,33 +246,33 @@ function Page() { // NOSONAR
               </div>
 
               {/* Social Links */}
-              {(UserProfile.portfolio_url || UserProfile.github_profile || UserProfile.linkedin_profile || UserProfile.twitter_profile) && (
+              {(toSafeUrl(UserProfile.portfolio_url) || toSafeUrl(UserProfile.github_profile) || toSafeUrl(UserProfile.linkedin_profile) || toSafeUrl(UserProfile.twitter_profile)) && (
                 <div className="mt-6 pt-6 border-t border-surface-container">
                   <h4 className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-4">Connect</h4>
                   <div className="flex gap-3 flex-wrap">
-                    {UserProfile.portfolio_url && (
-                      <a href={UserProfile.portfolio_url} target="_blank" rel="noopener noreferrer"
+                    {toSafeUrl(UserProfile.portfolio_url) && (
+                      <a href={toSafeUrl(UserProfile.portfolio_url)} target="_blank" rel="noopener noreferrer"
                         className="w-10 h-10 rounded-full bg-surface-container hover:bg-primary transition-all flex items-center justify-center text-on-surface-variant hover:text-on-primary"
                         title="Portfolio">
                         <FaGlobe className="text-base" />
                       </a>
                     )}
-                    {UserProfile.github_profile && (
-                      <a href={UserProfile.github_profile} target="_blank" rel="noopener noreferrer"
+                    {toSafeUrl(UserProfile.github_profile) && (
+                      <a href={toSafeUrl(UserProfile.github_profile)} target="_blank" rel="noopener noreferrer"
                         className="w-10 h-10 rounded-full bg-surface-container hover:bg-[#333] transition-all flex items-center justify-center text-on-surface-variant hover:text-white"
                         title="GitHub">
                         <FaGithub className="text-base" />
                       </a>
                     )}
-                    {UserProfile.linkedin_profile && (
-                      <a href={UserProfile.linkedin_profile} target="_blank" rel="noopener noreferrer"
+                    {toSafeUrl(UserProfile.linkedin_profile) && (
+                      <a href={toSafeUrl(UserProfile.linkedin_profile)} target="_blank" rel="noopener noreferrer"
                         className="w-10 h-10 rounded-full bg-surface-container hover:bg-[#0A66C2] transition-all flex items-center justify-center text-on-surface-variant hover:text-white"
                         title="LinkedIn">
                         <FaLinkedin className="text-base" />
                       </a>
                     )}
-                    {UserProfile.twitter_profile && (
-                      <a href={UserProfile.twitter_profile} target="_blank" rel="noopener noreferrer"
+                    {toSafeUrl(UserProfile.twitter_profile) && (
+                      <a href={toSafeUrl(UserProfile.twitter_profile)} target="_blank" rel="noopener noreferrer"
                         className="w-10 h-10 rounded-full bg-surface-container hover:bg-black transition-all flex items-center justify-center text-on-surface-variant hover:text-white"
                         title="Twitter / X">
                         <FaXTwitter className="text-base" />

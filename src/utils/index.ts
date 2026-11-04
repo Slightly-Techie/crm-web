@@ -194,3 +194,23 @@ export function getApiErrorMessage(error: any, fallback = "Something went wrong"
 
   return fallback;
 }
+
+// A scheme like "javascript:" or "mailto:". A digit after the colon is a port
+// ("github.com:443"), not a scheme.
+const URL_SCHEME = /^[a-z][a-z0-9+.-]*:(?![0-9])/i;
+// Browsers ignore tabs and newlines inside URLs, so "java\tscript:" still runs.
+const IGNORED_URL_CHARS = /[\t\r\n]/g;
+
+// Turns a stored profile link into a safe absolute URL for an href, or
+// undefined when there is nothing safe to link to.
+export function toSafeUrl(
+  value: string | null | undefined
+): string | undefined {
+  if (!value) return undefined;
+  const url = value.replace(IGNORED_URL_CHARS, "").trim();
+  if (!url) return undefined;
+
+  if (url.startsWith("//")) return `https:${url}`;
+  if (!URL_SCHEME.test(url)) return `https://${url}`;
+  return /^https?:\/\//i.test(url) ? url : undefined;
+}

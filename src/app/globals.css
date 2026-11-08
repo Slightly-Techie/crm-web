@@ -262,3 +262,12 @@ small {
   text-decoration: none;
   cursor: pointer;
 }
+
+/* Material Symbols icons are ligatures: until the icon font loads, the browser
+   would show the icon's name ("dashboard") as text. Hide icons until layout.tsx
+   marks the font as loaded. The 1em width stops the layout jumping when they appear. */
+html:not([data-icons="ready"]) .material-symbols-outlined {
+  visibility: hidden;
+  width: 1em;
+  overflow: hidden;
+}

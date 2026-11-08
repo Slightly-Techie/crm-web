@@ -54,9 +54,8 @@ export default function CreateAnnouncement({
         e.preventDefault();
         onSubmit();
       }}
-      className=" pl-2 w-full h-fit lg:w-full lg:mx-auto lg:sticky lg:top-16 self-start"
+      className=" pl-2 border-4 bg-blue-500 w-full h-fit lg:w-full lg:mx-auto lg:sticky lg:top-16 self-start"
     >
-     
       <div className=" p-4  light:bg-st-edgeDark rounded-sm">
         <div className=" my-4 ">
           <label className=" light:text-st-gray dark:text-st-surface  text-st-text">

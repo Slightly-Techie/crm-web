@@ -35,7 +35,7 @@ function TableComponent(props: TableProps) {
   return (
     <>
       <div
-        className="table-wrapper p-2"
+        className="table-wrapper overflow-x-auto border-red-900 p-2"
         onClick={() => {
           if (selected) {
             setSelected((prev) => !prev);
@@ -55,14 +55,14 @@ function TableComponent(props: TableProps) {
             />
           </div>
         )}
-        <table className="">
+        <table>
           <thead className="">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className=" text-base py-2 bg-st-edge font-semibold dark:bg-[#232323] px-2 rounded-sm"
+                    className=" text-base py-2 bg-st-edge font-semibold dark:bg-[#232323]  rounded-sm"
                   >
                     {header.isPlaceholder
                       ? null
@@ -72,7 +72,7 @@ function TableComponent(props: TableProps) {
                         )}
                   </th>
                 ))}
-                <th className=" text-base py-2 bg-st-edge font-bold dark:bg-[#232323] px-2 rounded-sm"></th>
+                <th className=" text-base py-2 bg-st-edge font-bold dark:bg-[#232323]  rounded-sm"></th>
               </tr>
             ))}
           </thead>

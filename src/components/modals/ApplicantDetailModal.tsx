@@ -2,6 +2,7 @@
 
 import { AiOutlineClose } from "react-icons/ai";
 import Image from "next/image";
+import { toSafeUrl } from "@/utils";
 
 interface ApplicantDetailModalProps {
   applicant: any;
@@ -161,15 +162,15 @@ export default function ApplicantDetailModal({
           )}
 
           {/* Social Links */}
-          {(applicant.github_profile || applicant.linkedin_profile || applicant.portfolio_url || applicant.twitter_profile) && (
+          {(toSafeUrl(applicant.github_profile) || toSafeUrl(applicant.linkedin_profile) || toSafeUrl(applicant.portfolio_url) || toSafeUrl(applicant.twitter_profile)) && (
             <div className="space-y-3">
               <h3 className="text-sm font-bold uppercase tracking-wider text-on-surface-variant">
                 Links
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {applicant.github_profile && (
+                {toSafeUrl(applicant.github_profile) && (
                   <a
-                    href={applicant.github_profile}
+                    href={toSafeUrl(applicant.github_profile)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-high hover:bg-surface-container transition-colors"
@@ -183,9 +184,9 @@ export default function ApplicantDetailModal({
                     </div>
                   </a>
                 )}
-                {applicant.linkedin_profile && (
+                {toSafeUrl(applicant.linkedin_profile) && (
                   <a
-                    href={applicant.linkedin_profile}
+                    href={toSafeUrl(applicant.linkedin_profile)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-high hover:bg-surface-container transition-colors"
@@ -199,9 +200,9 @@ export default function ApplicantDetailModal({
                     </div>
                   </a>
                 )}
-                {applicant.portfolio_url && (
+                {toSafeUrl(applicant.portfolio_url) && (
                   <a
-                    href={applicant.portfolio_url}
+                    href={toSafeUrl(applicant.portfolio_url)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-high hover:bg-surface-container transition-colors"
@@ -215,9 +216,9 @@ export default function ApplicantDetailModal({
                     </div>
                   </a>
                 )}
-                {applicant.twitter_profile && (
+                {toSafeUrl(applicant.twitter_profile) && (
                   <a
-                    href={applicant.twitter_profile}
+                    href={toSafeUrl(applicant.twitter_profile)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-high hover:bg-surface-container transition-colors"

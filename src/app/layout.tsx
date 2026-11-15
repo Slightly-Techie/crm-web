@@ -4,6 +4,7 @@ import { Providers } from "./providers";
 import { Toaster } from "react-hot-toast";
 import { Inter } from "next/font/google";
 import { ProjectProvider } from "@/context/ProjectContext";
+import IconFontReady from "@/components/IconFontReady";
 
 export const metadata = {
   title: "Slightly Techie Network",
@@ -11,16 +12,6 @@ export const metadata = {
 };
 
 const inter = Inter({ subsets: ["latin"] });
-
-// Icons are Material Symbols ligatures: the text "dashboard" becomes an icon once
-// the font loads. Until then globals.css hides them, and this script marks the
-// page ready when the font has loaded (or failed, so the page never stays blank).
-const iconFontReadyScript = `(function () {
-  var root = document.documentElement;
-  function ready() { root.setAttribute("data-icons", "ready"); }
-  if (!document.fonts || !document.fonts.load) { ready(); return; }
-  document.fonts.load('24px "Material Symbols Outlined"').then(ready, ready);
-})();`;
 
 export default function RootLayout({
   children,
@@ -46,14 +37,20 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block"
           rel="stylesheet"
         />
-        {/* Must come after the icon stylesheet so the @font-face rule exists. */}
-        <script dangerouslySetInnerHTML={{ __html: iconFontReadyScript }} />
+        {/* Without JavaScript IconFontReady never runs, so show icons as usual. */}
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html:
+              "<style>.material-symbols-outlined{visibility:visible!important;width:auto!important;overflow:visible!important}</style>",
+          }}
+        />
       </head>
       <body
         suppressHydrationWarning={true}
         className={`${inter.className} overflow-x-hidden bg-surface text-on-surface transition-colors duration-200`}
       >
         <Toaster />
+        <IconFontReady />
         <Providers>
           <ProjectProvider>{children}</ProjectProvider>
         </Providers>

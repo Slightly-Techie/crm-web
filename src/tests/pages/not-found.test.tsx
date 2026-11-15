@@ -26,6 +26,19 @@ describe("404 page", () => {
     expect(link).toHaveAttribute("href", "/login");
   });
 
+  it("waits for the session before linking anywhere", () => {
+    useSession.mockReturnValue({ status: "loading" });
+    render(<NotFound />);
+
+    expect(
+      screen.queryByRole("link", { name: /back to dashboard/i })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: /go to login/i })
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /loading/i })).toBeDisabled();
+  });
+
   it("offers a way back to the previous page", () => {
     useSession.mockReturnValue({ status: "unauthenticated" });
     render(<NotFound />);

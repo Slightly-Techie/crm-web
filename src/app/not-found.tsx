@@ -7,6 +7,8 @@ export default function NotFound() {
   const router = useRouter();
   const { status } = useSession();
   const isSignedIn = status === "authenticated";
+  const primaryButtonClass =
+    "inline-flex items-center justify-center gap-2 bg-primary text-on-primary py-3 px-6 rounded-xl font-semibold hover:opacity-90 transition-opacity";
 
   return (
     <main className="min-h-screen bg-surface flex items-center justify-center p-4">
@@ -26,15 +28,27 @@ export default function NotFound() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Link
-            href={isSignedIn ? "/" : "/login"}
-            className="inline-flex items-center justify-center gap-2 bg-primary text-on-primary py-3 px-6 rounded-xl font-semibold hover:opacity-90 transition-opacity"
-          >
-            <span className="material-symbols-outlined text-xl">
-              {isSignedIn ? "dashboard" : "login"}
-            </span>
-            {isSignedIn ? "Back to dashboard" : "Go to login"}
-          </Link>
+          {/* The session starts as "loading" on a direct visit. Treating that as
+              signed out would send signed-in users to /login, so wait for it. */}
+          {status === "loading" ? (
+            <button
+              type="button"
+              disabled
+              className={`${primaryButtonClass} disabled:opacity-60 disabled:cursor-wait`}
+            >
+              Loading…
+            </button>
+          ) : (
+            <Link
+              href={isSignedIn ? "/" : "/login"}
+              className={primaryButtonClass}
+            >
+              <span className="material-symbols-outlined text-xl">
+                {isSignedIn ? "dashboard" : "login"}
+              </span>
+              {isSignedIn ? "Back to dashboard" : "Go to login"}
+            </Link>
+          )}
           <button
             type="button"
             onClick={() => router.back()}

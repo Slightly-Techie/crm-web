@@ -5,6 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import {
+  PROFILE_LINKS,
+  ProfileLinkField,
+  profileLinkRules,
+  toProfileLink,
+} from "@/utils/profileLinks";
 import toast from "react-hot-toast";
 import { FaXTwitter, FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa6";
 
@@ -25,7 +31,11 @@ export default function ProfilePage() {
   const [showAllReports, setShowAllReports] = useState(false);
   const avatarInputRef = useRef<HTMLInputElement>(null);
 
-  const { register, handleSubmit } = useForm<any>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<any>();
 
   const { data: user, refetch } = useQuery({
     queryKey: ["userProfile"],
@@ -112,10 +122,11 @@ export default function ProfilePage() {
       if (data.phone_number) payload.phone_number = data.phone_number;
       if (data.years_of_experience) payload.years_of_experience = parseInt(data.years_of_experience);
       if (data.stack_id) payload.stack_id = parseInt(data.stack_id);
-      if (data.portfolio_url) payload.portfolio_url = data.portfolio_url;
-      if (data.github_profile) payload.github_profile = data.github_profile;
-      if (data.linkedin_profile) payload.linkedin_profile = data.linkedin_profile;
-      if (data.twitter_profile) payload.twitter_profile = data.twitter_profile;
+      // Usernames become full links here, so the API always receives a link.
+      for (const field of Object.keys(PROFILE_LINKS) as ProfileLinkField[]) {
+        const link = toProfileLink(field, data[field]);
+        if (link) payload[field] = link;
+      }
 
       await updateUserProfile(payload);
 
@@ -376,21 +387,30 @@ export default function ProfilePage() {
                   <h4 className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mb-4">Connect</h4>
                   {editMode ? (
                     <div className="space-y-3">
-                      {[
-                        { icon: "language", key: "portfolio_url", placeholder: "Portfolio URL" },
-                        { icon: "code", key: "github_profile", placeholder: "GitHub profile URL" },
-                        { icon: "work", key: "linkedin_profile", placeholder: "LinkedIn profile URL" },
-                        { icon: "chat_bubble", key: "twitter_profile", placeholder: "Twitter / X profile URL" },
-                      ].map(({ icon, key, placeholder }) => (
-                        <div key={key} className="flex items-center gap-2">
-                          <span className="material-symbols-outlined text-on-surface-variant text-sm w-5">{icon}</span>
-                          <input
-                            type="url"
-                            {...register(key)}
-                            defaultValue={(user as any)[key] || ""}
-                            placeholder={placeholder}
-                            className="flex-1 bg-surface-container-high border-none rounded-lg py-2 px-3 text-sm focus:ring-2 focus:ring-primary/20 text-on-surface"
-                          />
+                      {(
+                        [
+                          { icon: "language", key: "portfolio_url", label: "Portfolio" },
+                          { icon: "code", key: "github_profile", label: "GitHub" },
+                          { icon: "work", key: "linkedin_profile", label: "LinkedIn" },
+                          { icon: "chat_bubble", key: "twitter_profile", label: "X" },
+                        ] as { icon: string; key: ProfileLinkField; label: string }[]
+                      ).map(({ icon, key, label }) => (
+                        <div key={key}>
+                          <div className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-on-surface-variant text-sm w-5">{icon}</span>
+                            {/* Plain text, not type="url": a username like "kobi" is allowed here. */}
+                            <input
+                              {...register(key, profileLinkRules(key))}
+                              defaultValue={(user as any)[key] || ""}
+                              placeholder={PROFILE_LINKS[key].placeholder}
+                              aria-label={label}
+                              aria-invalid={!!errors[key]}
+                              className="flex-1 bg-surface-container-high border-none rounded-lg py-2 px-3 text-sm focus:ring-2 focus:ring-primary/20 text-on-surface"
+                            />
+                          </div>
+                          {errors[key] && (
+                            <p className="text-xs text-error mt-1 ml-7">{String(errors[key]?.message)}</p>
+                          )}
                         </div>
                       ))}
                     </div>

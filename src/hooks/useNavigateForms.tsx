@@ -1,7 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import Skills from "@/components/signup/pages/Skills";
-import Social from "@/components/signup/pages/Social";
 import CreatePassword from "@/components/signup/pages/CreatePassword";
 import Profile from "@/components/signup/pages/Profile";
 import { NewUserFields } from "@/types";

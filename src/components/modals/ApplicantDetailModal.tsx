@@ -1,8 +1,8 @@
 "use client";
 
+import { toSafeUrl } from "@/utils";
 import { AiOutlineClose } from "react-icons/ai";
 import Image from "next/image";
-import { toSafeUrl } from "@/utils";
 
 interface ApplicantDetailModalProps {
   applicant: any;

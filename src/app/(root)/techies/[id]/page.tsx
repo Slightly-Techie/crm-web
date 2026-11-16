@@ -3,13 +3,13 @@
 import useEndpoints from "@/services";
 import LoadingSpinner from "@/components/loadingSpinner";
 import { useQuery } from "@tanstack/react-query";
+import { toSafeUrl } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import { FaXTwitter, FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa6";
-import { toSafeUrl } from "@/utils";
 
 function Page() { // NOSONAR
   const { id } = useParams();

@@ -2,12 +2,12 @@
 import useEndpoints from "@/services";
 import { useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { toSafeUrl } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { FaXTwitter, FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa6";
-import { toSafeUrl } from "@/utils";
 
 export default function ProfilePage() {
   const {

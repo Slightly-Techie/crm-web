@@ -71,6 +71,13 @@ export function getTimeElapsedOrDate(dateString: string): string {
   }
 }
 
+// Years of experience for display: "Less than a year", "1 year", "5 years".
+export function formatYears(years: number | null | undefined): string {
+  if (years === null || years === undefined) return "Not specified";
+  if (years === 0) return "Less than a year";
+  return `${years} ${years === 1 ? "year" : "years"}`;
+}
+
 export function getAccountUserName(
   link: string | null | undefined
 ): string | null {

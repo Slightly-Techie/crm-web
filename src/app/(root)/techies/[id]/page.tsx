@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import { FaXTwitter, FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa6";
+import { formatYears } from "@/utils";
 
 function Page() { // NOSONAR
   const { id } = useParams();
@@ -198,7 +199,7 @@ function Page() { // NOSONAR
                   <div>
                     <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">Experience</p>
                     <p className="text-on-surface font-semibold text-sm">
-                      {UserProfile.years_of_experience ? `${UserProfile.years_of_experience} Years` : "Not specified"}
+                      {formatYears(UserProfile.years_of_experience)}
                     </p>
                   </div>
                 </div>

@@ -9,6 +9,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { createPortal } from "react-dom";
 import toast from "react-hot-toast";
 import ApplicantDetailModal from "@/components/modals/ApplicantDetailModal";
+import { formatYears } from "@/utils";
 
 const STATUS_LABELS: Record<string, { label: string; color: string; dot: string }> = {
   "TO CONTACT":     { label: "To Contact",  color: "bg-blue-100 text-blue-700",                          dot: "bg-blue-500" },
@@ -677,11 +678,9 @@ export default function Applicants() {
                   </div>
                   <div className="rounded-xl bg-surface-container-high p-3">
                     <p className="text-xs text-on-surface-variant uppercase">Experience</p>
-                    <p className="text-on-surface">{(() => {
-                      const years = selectedApplicant.years_of_experience;
-                      if (years === null || years === undefined) return "-";
-                      return `${years} year${years === 1 ? "" : "s"}`;
-                    })()}</p>
+                    <p className="text-on-surface">
+                      {formatYears(selectedApplicant.years_of_experience)}
+                    </p>
                   </div>
                   <div className="rounded-xl bg-surface-container-high p-3">
                     <p className="text-xs text-on-surface-variant uppercase">Status</p>

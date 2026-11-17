@@ -69,7 +69,8 @@ export default function ForgotPassword() {
         <div className="space-y-4 rounded-2xl border border-outline-variant bg-surface-container-low p-5">
           <h3 className="text-lg font-semibold text-on-surface">Check your inbox</h3>
           <p className="text-sm text-on-surface-variant">
-            A password reset link has been sent to your email address.
+            If an account exists for that email, we&apos;ve sent a password
+            reset link.
           </p>
           <button
             onClick={resetForm}

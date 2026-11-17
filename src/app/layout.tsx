@@ -4,6 +4,7 @@ import { Providers } from "./providers";
 import { Toaster } from "react-hot-toast";
 import { Inter } from "next/font/google";
 import { ProjectProvider } from "@/context/ProjectContext";
+import IconFontReady from "@/components/IconFontReady";
 
 export const metadata = {
   title: "Slightly Techie Network",
@@ -20,13 +21,28 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
+        {/* "block" is right for an icon font: hidden icons beat icon names shown as text. */}
+        {/* eslint-disable-next-line @next/next/google-font-display */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block"
           rel="stylesheet"
+        />
+        {/* Without JavaScript IconFontReady never runs, so show icons as usual. */}
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html:
+              "<style>.material-symbols-outlined{visibility:visible!important;width:auto!important;overflow:visible!important}</style>",
+          }}
         />
       </head>
       <body
@@ -34,6 +50,7 @@ export default function RootLayout({
         className={`${inter.className} overflow-x-hidden bg-surface text-on-surface transition-colors duration-200`}
       >
         <Toaster />
+        <IconFontReady />
         <Providers>
           <ProjectProvider>{children}</ProjectProvider>
         </Providers>

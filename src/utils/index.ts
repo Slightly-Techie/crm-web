@@ -194,3 +194,15 @@ export function getApiErrorMessage(error: any, fallback = "Something went wrong"
 
   return fallback;
 }
+
+// Auth pages (login, signup, forgot and reset password) are always shown in the
+// light theme: their styles and the side illustration are designed for light mode,
+// and a user who logs out from dark mode should still land on a readable page.
+const AUTH_PATHS = ["/login", "/signup", "/users"];
+
+export function isAuthPage(pathname: string | null): boolean {
+  if (!pathname) return false;
+  return AUTH_PATHS.some(
+    (path) => pathname === path || pathname.startsWith(`${path}/`)
+  );
+}

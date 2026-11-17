@@ -4,6 +4,8 @@ import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "next-themes";
+import { usePathname } from "next/navigation";
+import { isAuthPage } from "@/utils";
 
 type Props = {
   children?: React.ReactNode;
@@ -18,9 +20,16 @@ const queryClient = new QueryClient({
 });
 
 export const Providers = ({ children }: Props) => {
+  const pathname = usePathname();
+
   return (
     <Provider store={store}>
-      <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="light"
+        enableSystem={false}
+        forcedTheme={isAuthPage(pathname) ? "light" : undefined}
+      >
         <QueryClientProvider client={queryClient}>
           <SessionProvider>{children}</SessionProvider>
         </QueryClientProvider>

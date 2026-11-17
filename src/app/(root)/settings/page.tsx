@@ -10,6 +10,12 @@ import toast from "react-hot-toast";
 import { getApiErrorMessage } from "@/utils";
 import Link from "next/link";
 import { FaXTwitter, FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa6";
+import {
+  PROFILE_LINKS,
+  ProfileLinkField,
+  profileLinkRules,
+  toProfileLink,
+} from "@/utils/profileLinks";
 
 type Section = "profile" | "account" | "skills" | "tags" | "team";
 
@@ -129,7 +135,12 @@ export default function SettingsPage() {
   // Show all assigned subordinates - they are the user's actual team
   const subordinates: any[] = subordinatesData || [];
 
-  const { register, handleSubmit, reset } = useForm<any>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<any>({
     defaultValues: {
       first_name: user?.first_name || "",
       last_name: user?.last_name || "",
@@ -190,10 +201,11 @@ export default function SettingsPage() {
       if (data.phone_number) payload.phone_number = data.phone_number;
       if (data.years_of_experience) payload.years_of_experience = Number.parseInt(data.years_of_experience);
       if (data.stack_id) payload.stack_id = Number.parseInt(data.stack_id);
-      if (data.portfolio_url) payload.portfolio_url = data.portfolio_url;
-      if (data.github_profile) payload.github_profile = data.github_profile;
-      if (data.linkedin_profile) payload.linkedin_profile = data.linkedin_profile;
-      if (data.twitter_profile) payload.twitter_profile = data.twitter_profile;
+      // Usernames become full links here, so the API always receives a link.
+      for (const field of Object.keys(PROFILE_LINKS) as ProfileLinkField[]) {
+        const link = toProfileLink(field, data[field]);
+        if (link) payload[field] = link;
+      }
       payload.open_to_projects = !!data.open_to_projects;
 
       await updateUserProfile(payload);
@@ -423,11 +435,17 @@ export default function SettingsPage() {
                       GitHub
                     </label>
                     <input
-                      {...register("github_profile")}
+                      {...register("github_profile", profileLinkRules("github_profile"))}
                       defaultValue={user?.github_profile || ""}
-                      placeholder="https://github.com/username"
+                      placeholder={PROFILE_LINKS.github_profile.placeholder}
+                      aria-invalid={!!errors.github_profile}
                       className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                     />
+                    {errors.github_profile && (
+                      <p className="text-xs text-error">
+                        {String(errors.github_profile.message)}
+                      </p>
+                    )}
                   </div>
 
                   {/* LinkedIn */}
@@ -437,11 +455,17 @@ export default function SettingsPage() {
                       LinkedIn
                     </label>
                     <input
-                      {...register("linkedin_profile")}
+                      {...register("linkedin_profile", profileLinkRules("linkedin_profile"))}
                       defaultValue={user?.linkedin_profile || ""}
-                      placeholder="https://linkedin.com/in/username"
+                      placeholder={PROFILE_LINKS.linkedin_profile.placeholder}
+                      aria-invalid={!!errors.linkedin_profile}
                       className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                     />
+                    {errors.linkedin_profile && (
+                      <p className="text-xs text-error">
+                        {String(errors.linkedin_profile.message)}
+                      </p>
+                    )}
                   </div>
 
                   {/* Twitter/X */}
@@ -451,11 +475,17 @@ export default function SettingsPage() {
                       Twitter / X
                     </label>
                     <input
-                      {...register("twitter_profile")}
+                      {...register("twitter_profile", profileLinkRules("twitter_profile"))}
                       defaultValue={user?.twitter_profile || ""}
-                      placeholder="https://twitter.com/username"
+                      placeholder={PROFILE_LINKS.twitter_profile.placeholder}
+                      aria-invalid={!!errors.twitter_profile}
                       className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                     />
+                    {errors.twitter_profile && (
+                      <p className="text-xs text-error">
+                        {String(errors.twitter_profile.message)}
+                      </p>
+                    )}
                   </div>
 
                   {/* Portfolio */}
@@ -465,11 +495,17 @@ export default function SettingsPage() {
                       Portfolio
                     </label>
                     <input
-                      {...register("portfolio_url")}
+                      {...register("portfolio_url", profileLinkRules("portfolio_url"))}
                       defaultValue={user?.portfolio_url || ""}
-                      placeholder="https://yoursite.com"
+                      placeholder={PROFILE_LINKS.portfolio_url.placeholder}
+                      aria-invalid={!!errors.portfolio_url}
                       className="w-full px-4 py-2.5 rounded-lg border border-outline/40 bg-surface-container-lowest text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors text-sm"
                     />
+                    {errors.portfolio_url && (
+                      <p className="text-xs text-error">
+                        {String(errors.portfolio_url.message)}
+                      </p>
+                    )}
                   </div>
                 </div>
 
